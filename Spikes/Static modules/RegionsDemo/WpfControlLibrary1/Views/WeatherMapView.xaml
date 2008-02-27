@@ -1,0 +1,8 @@
+﻿<UserControl x:Class="WeatherModule.Views.WeatherMapView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Height="210" Width="300">
+    <Grid>
+        <Image Name="image1" Stretch="Fill" Source="/WeatherModule;component/Resources/map.jpg" />
+    </Grid>
+</UserControl>

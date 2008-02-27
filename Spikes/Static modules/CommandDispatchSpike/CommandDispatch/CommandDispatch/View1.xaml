@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="CommandDispatch.View1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:s="clr-namespace:CommandDispatch"
+     Height="121" Width="203">
+    <UserControl.CommandBindings>
+        <CommandBinding CanExecute="CommandBinding_CanExecute"  PreviewCanExecute="CommandBinding_PreviewCanExecute"  Command="Save"/>
+       
+    </UserControl.CommandBindings>
+    <Border BorderBrush="Green" BorderThickness="3">
+    <Grid>
+        <TextBlock Foreground="Green">View 1</TextBlock>
+            <Button x:Name="SaveButton" Content="Save" Height="28" VerticalAlignment="Top" Margin="1,19,72,0" Command="Save"></Button>
+        </Grid>
+        </Border>
+</UserControl>

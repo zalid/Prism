@@ -1,0 +1,27 @@
+﻿<Window x:Class="RegionsSpike.Shell"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:s="clr-namespace:RegionsSpike"
+    Title="Shell" Height="300" Width="800" Initialized="Shell_Initialized">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static s:Commands.ProcessCommand}" Executed="CommandBinding_Executed" PreviewCanExecute="CommandBinding_PreviewCanExecute" PreviewExecuted="CommandBinding_PreviewExecuted"></CommandBinding>
+    </Window.CommandBindings>
+    <Grid>
+        
+        <Border BorderBrush="Blue" BorderThickness="10">
+
+            <DockPanel x:Name="MainDockPanel">
+                <Menu DockPanel.Dock="Top" Name="Menu" Height="29">
+                    <MenuItem Name="Tools" Header="Tools"> 
+                        <MenuItem Name="ProcessMenuItem" Header="Process" Command="{x:Static s:Commands.ProcessCommand}" />
+                    </MenuItem>
+                </Menu>
+                <Border BorderBrush="Orange" BorderThickness="10">
+                    <StackPanel DockPanel.Dock="Left" x:Name="ButtonsStackPanel">
+                   
+                </StackPanel>
+    </Border>
+        </DockPanel>
+        </Border>
+    </Grid>
+</Window>

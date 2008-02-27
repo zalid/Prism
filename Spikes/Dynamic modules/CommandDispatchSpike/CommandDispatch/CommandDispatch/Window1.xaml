@@ -1,0 +1,10 @@
+﻿<Window x:Class="CommandDispatch.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+     xmlns:v1="clr-namespace:CommandDispatch"
+        Title="Window1" Height="265" Width="428">
+    <Grid>
+
+        <v1:CompositeView ></v1:CompositeView>
+    </Grid>
+</Window>
