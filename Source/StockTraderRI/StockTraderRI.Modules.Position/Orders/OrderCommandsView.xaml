@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="StockTraderRI.Modules.Position.Orders.OrderCommandsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:inf="clr-namespace:StockTraderRI.Infrastructure;assembly=StockTraderRI.Infrastructure">
+    <Border BorderBrush="Blue" BorderThickness="2">
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <!--<Button Name="BuyLastButton" Grid.Row="0" Grid.Column="0" Margin="8,8,8,8"  HorizontalAlignment="Center" VerticalAlignment="Top">Buy at Last</Button>
+            <Button Name="SellLastButton" Grid.Row="1" Grid.Column="0" Margin="8,8,8,8"  HorizontalAlignment="Center" VerticalAlignment="Top">Sell at Last</Button>
+            <Rectangle Grid.Column="0" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="4" Fill="Blue"/ --> 
+            <Button Name="SubmitButton" Command="{x:Static inf:StockTraderRICommands.SubmitOrderCommand}" Grid.Row="0" Grid.Column="0" Margin="8,8,8,8"  HorizontalAlignment="Center" VerticalAlignment="Top">Submit</Button>
+            <Button Name="CancelButton" Command="{x:Static inf:StockTraderRICommands.CancelOrderCommand}" Grid.Row="0" Grid.Column="1" Margin="8,8,8,8"  HorizontalAlignment="Center" VerticalAlignment="Top">Cancel</Button>
+        </Grid>
+    </Border>
+</UserControl>

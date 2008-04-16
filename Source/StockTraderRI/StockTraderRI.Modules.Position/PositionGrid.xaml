@@ -1,0 +1,59 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:infConverters="clr-namespace:StockTraderRI.Infrastructure.Converters;assembly=StockTraderRI.Infrastructure"
+    xmlns:inf="clr-namespace:StockTraderRI.Infrastructure;assembly=StockTraderRI.Infrastructure"
+    x:Class="StockTraderRI.Modules.Position.PositionGrid" >
+    <UserControl.Resources>
+        <Style TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Background" Value="BurlyWood"/>
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+        <infConverters:TwoDecimalPlaceConverter x:Key="twoDecimalPlaceConverter" />
+        <BooleanToVisibilityConverter x:Key="boolToVisConverter" />
+        <DataTemplate x:Key="NewsFeedColumnButton">
+            <Button Content="News" Command="{x:Static inf:StockTraderRICommands.ShowNewsCommand}" CommandParameter="{Binding Path=TickerSymbol}" Visibility="{Binding Path=HasNews, Converter={StaticResource boolToVisConverter}}" AutomationProperties.AutomationId="{Binding Path=TickerSymbol}"></Button>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <ListView x:Name="_positionTable" ItemsSource="{Binding Path=Data}" SelectionChanged="_positionTable_SelectionChanged" IsSynchronizedWithCurrentItem="True">
+            <ListView.Resources>
+                <ContextMenu x:Name="watchListContextMenu" x:Key="ContextMenuKey" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}}">
+                    <MenuItem x:Name="BuyMenuItem" Header="Buy" Command="{Binding Path=DataContext.BuyCommand}" CommandParameter="{Binding Path=SelectedItem.TickerSymbol}"></MenuItem>
+                    <MenuItem x:Name="SellMenuItem" Header="Sell" Command="{Binding Path=DataContext.SellCommand}" CommandParameter="{Binding Path=SelectedItem.TickerSymbol}"></MenuItem>
+                </ContextMenu>
+            </ListView.Resources>
+            <ListView.ItemContainerStyle>
+                <Style>
+                    <Setter Property="ListViewItem.ContextMenu" Value="{StaticResource ContextMenuKey}"></Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Current positions">
+                    <GridViewColumn Header="Symbol" 
+                		DisplayMemberBinding="{Binding Path=TickerSymbol}" 
+                		Width="50"/>
+                    <GridViewColumn Header="Shares"  
+                      DisplayMemberBinding="{Binding Path=Shares}"
+                      Width="50" />
+                    <GridViewColumn Header="Last"  
+                      DisplayMemberBinding="{Binding Path=CurrentPrice, Converter={StaticResource twoDecimalPlaceConverter}, ConverterParameter=2}"
+                      Width="50" />
+                    <GridViewColumn Header="Cost Basis"  
+                      DisplayMemberBinding="{Binding Path=CostBasis, Converter={StaticResource twoDecimalPlaceConverter}, ConverterParameter=2}"
+                      Width="50" />
+                    <GridViewColumn Header="Market Value"  
+                      DisplayMemberBinding="{Binding Path=MarketValue, Converter={StaticResource twoDecimalPlaceConverter}, ConverterParameter=2}"
+                      Width="50" />
+                    <GridViewColumn Header="Gain Loss %"  
+                      DisplayMemberBinding="{Binding Path=GainLossPercent, Converter={StaticResource twoDecimalPlaceConverter}, ConverterParameter=2}"
+                      Width="50" />
+                    <GridViewColumn Header="News"  
+                      CellTemplate="{StaticResource NewsFeedColumnButton}"
+                      Width="50" />
+                </GridView>
+
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>

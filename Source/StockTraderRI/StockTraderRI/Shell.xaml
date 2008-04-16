@@ -1,0 +1,38 @@
+﻿<Window x:Class="StockTraderRI.Shell"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://www.codeplex.com/prism"
+    xmlns:controls="clr-namespace:StockTraderRI.Controls"
+    xmlns:inf="clr-namespace:StockTraderRI.Infrastructure;assembly=StockTraderRI.Infrastructure"
+    Title="Shell" Height="600" Width="600">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type inf:ExtendedHeader}">
+            <StackPanel Orientation="Horizontal" ToolTip="{Binding Path=ToolTip}">
+                <Image Source="{Binding Path=IconUri}" Width="16" Height="16" />
+                <TextBlock Text="{Binding Path=Title}" />
+            </StackPanel>
+        </DataTemplate>
+        <Style TargetType="{x:Type TabItem}" x:Key="HeaderStyle">
+            <Setter Property="Header" Value="{Binding Content.DataContext.HeaderInfo, RelativeSource={RelativeSource Self}}" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition ></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <ToolBarTray Grid.Row="0" Grid.ColumnSpan="2">
+            <ToolBar Name="MainToolbar" prism:RegionManager.Region="MainToolbarRegion"/>
+        </ToolBarTray>
+        <StackPanel Grid.Row="1" Grid.Column="0">
+            <Grid prism:RegionManager.Region="MainRegion"></Grid>
+            <TabControl Name="ResearchArticlesTab" prism:RegionManager.Region="ResearchArticlesRegion" ItemContainerStyle="{StaticResource HeaderStyle}" />
+        </StackPanel>
+        <controls:CollapsibleTabControl x:Name="CollapsibleTab" Grid.Row="1" Grid.Column="1" prism:RegionManager.Region="CollapsibleRegion" ItemContainerStyle="{StaticResource HeaderStyle}"/>
+    </Grid>
+
+</Window>

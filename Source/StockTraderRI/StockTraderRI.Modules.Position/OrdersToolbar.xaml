@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="StockTraderRI.Modules.Position.OrdersToolbar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:inf="clr-namespace:StockTraderRI.Infrastructure;assembly=StockTraderRI.Infrastructure">
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <Button Name="SubmitToolbarButton" Margin="2,0 2,0" Command="{x:Static inf:StockTraderRICommands.SubmitOrderCommand}">Submit</Button>
+            <Button Name="CancelToolbarButton" Margin="0,0 2,0" Command="{x:Static inf:StockTraderRICommands.CancelOrderCommand}">Cancel</Button>
+            <Button Name="SubmitAllToolbarButton" Margin="0,0 2,0" Command="{x:Static inf:StockTraderRICommands.SubmitAllOrdersCommand}">Submit All</Button>
+            <Button Name="CancelAllToolbarButton" Margin="0,0 2,0" Command="{x:Static inf:StockTraderRICommands.CancelAllOrdersCommand}">Cancel All</Button>
+            </StackPanel>
+    </Grid>
+</UserControl>

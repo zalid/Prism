@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="StockTraderRI.Modules.Watch.WatchList.WatchListView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Height="Auto" Width="Auto">
+
+    <ListView x:Name="watchListListView" ItemsSource="{Binding WatchListItems}" >
+        <ListView.Resources>
+            <ContextMenu x:Name="watchListContextMenu" x:Key="ContextMenuKey">
+                <MenuItem x:Name="RemoveMenuItem" Header="Remove" Click="RemoveMenuItem_Click"></MenuItem>
+            </ContextMenu>
+        </ListView.Resources>
+        <ListView.ItemContainerStyle>
+            <Style>
+                <Setter Property="ListViewItem.ContextMenu" Value="{StaticResource ContextMenuKey}"></Setter>
+            </Style>
+        </ListView.ItemContainerStyle>
+
+        <ListView.View>
+            <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="WatchList">
+                <GridViewColumn Header="Symbol" DisplayMemberBinding="{Binding Path=TickerSymbol}" Width="50"/>
+                <GridViewColumn Header="Last"  DisplayMemberBinding="{Binding Path=CurrentPrice}" Width="50" />
+            </GridView>
+        </ListView.View>
+    </ListView>
+
+
+</UserControl>

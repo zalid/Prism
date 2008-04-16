@@ -1,0 +1,9 @@
+﻿<UserControl x:Class="StockTraderRI.Modules.Market.TrendLine.TrendLineView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:chartControls="clr-namespace:StockTraderRI.ChartControls;assembly=StockTraderRI.ChartControls"
+    Height="300" Width="300">
+    <Grid>
+        <chartControls:LineChart x:Name="lineChart" ValuePath="Value" LabelPath="DateTimeMarker" Title="Market" Height="200" Grid.Row="1" Grid.Column="1"></chartControls:LineChart>
+    </Grid>
+</UserControl>

@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="StockTraderRI.Modules.Position.Orders.OrdersView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://www.codeplex.com/prism"
+    xmlns:inf="clr-namespace:StockTraderRI.Infrastructure;assembly=StockTraderRI.Infrastructure"
+     Background="White">
+    <StackPanel>
+        <TabControl x:Name="OrdersTabControl" prism:RegionManager.Region="OrdersRegion" ItemContainerStyle="{DynamicResource HeaderStyle}">
+        </TabControl>
+        <StackPanel Orientation="Horizontal">
+            <Button Name="SubmitAllButton" Command="{x:Static inf:StockTraderRICommands.SubmitAllOrdersCommand}">Submit All</Button>
+            <Button Name="CancelAllButton" Command="{x:Static inf:StockTraderRICommands.CancelAllOrdersCommand}">Cancel All</Button>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

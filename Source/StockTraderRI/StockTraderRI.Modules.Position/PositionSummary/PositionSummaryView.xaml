@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="StockTraderRI.Modules.Position.PositionSummary.PositionSummaryView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:StockTraderRI.Modules.Position"
+    xmlns:chartControls="clr-namespace:StockTraderRI.ChartControls;assembly=StockTraderRI.ChartControls">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <local:PositionGrid x:Name="positionGrid" Grid.Row="0" Grid.ColumnSpan="2"></local:PositionGrid>
+      
+        <chartControls:PieChart x:Name="pieChart" ValuePath="MarketValue" LabelPath="TickerSymbol" Title="" Height="200" Grid.Row="1" Grid.Column="0"></chartControls:PieChart>
+        <StackPanel Grid.Row="1" Grid.Column="1" x:Name="lineChartPanel"></StackPanel>
+    </Grid>
+</UserControl>

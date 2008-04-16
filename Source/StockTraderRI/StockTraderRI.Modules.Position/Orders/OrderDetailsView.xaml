@@ -1,0 +1,51 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:inf="clr-namespace:StockTraderRI.Infrastructure;assembly=StockTraderRI.Infrastructure"
+	xmlns:infConverters="clr-namespace:StockTraderRI.Infrastructure.Converters;assembly=StockTraderRI.Infrastructure"
+    x:Class="StockTraderRI.Modules.Position.Orders.OrderDetailsView"
+	x:Name="UserControl" MinWidth="240" MinHeight="200">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="ErrorTemplate">
+            <Border BorderBrush="Red" BorderThickness="2">
+                <AdornedElementPlaceholder />
+            </Border>
+        </ControlTemplate>
+        <Style x:Key="textBoxInError" TargetType="{x:Type TextBox}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+        Value="{Binding RelativeSource={RelativeSource Self},
+                        Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <infConverters:EnumToBooleanConverter x:Key="enumToBooleanConverter" />
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="42" />
+            <RowDefinition Height="Auto" MinHeight="42" />
+            <RowDefinition Height="Auto" MinHeight="42" />
+            <RowDefinition Height="Auto" MinHeight="42" />
+            <RowDefinition Height="Auto" MinHeight="42" />
+            <RowDefinition Height="Auto" MinHeight="42" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="88" />
+            <ColumnDefinition Width="Auto" MinWidth="91" />
+        </Grid.ColumnDefinitions>
+        <Label Target="{Binding ElementName=TickerSymbolTextBox}" Grid.Row="0" Grid.Column="0" Margin="8,8,8,8" HorizontalAlignment="Left" VerticalAlignment="Top" Content="_Symbol:"/>
+        <TextBox Name="TickerSymbolTextBox" Grid.Row="0" Grid.Column="1" Margin="8,8,8,8" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Text="{Binding TickerSymbol}"/>
+        <RadioButton Name="BuyRadio" Grid.Row="1" Grid.Column="0"  Margin="8,8,8,8"  HorizontalAlignment="Center" VerticalAlignment="Top" IsChecked="{Binding Path=TransactionType, Mode=TwoWay, Converter={StaticResource enumToBooleanConverter}, ConverterParameter={x:Static inf:TransactionType.Buy}}">Buy</RadioButton>
+        <RadioButton Name="SellRadio" Grid.Row="1" Grid.Column="1"  Margin="8,8,8,8"  HorizontalAlignment="Center" VerticalAlignment="Top" IsChecked="{Binding Path=TransactionType, Mode=TwoWay, Converter={StaticResource enumToBooleanConverter}, ConverterParameter={x:Static inf:TransactionType.Sell}}">Sell</RadioButton>
+        <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Margin="8,8,8,8" VerticalAlignment="Top" Content="Order Type:"/>
+        <ComboBox Name="OrderTypeCombo" MinWidth="75" Grid.Row="2" Grid.Column="1" Margin="8,8,8,8" HorizontalAlignment="Left" VerticalAlignment="Top" SelectedValue="{Binding Path=OrderType, Mode=TwoWay}" ItemsSource="{Binding AvailableOrderTypes}" SelectedValuePath="Value" />
+        <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" Margin="8,8,8,8" VerticalAlignment="Top" Content="Shares:" />
+        <TextBox Name="SharesTextBox" Grid.Row="3" Grid.Column="1" Margin="8,8,8,8" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Text="{Binding Path=Shares, ValidatesOnExceptions=True, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Style="{StaticResource textBoxInError}"/>
+         <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" Margin="8,8,8,8" VerticalAlignment="Top" Content="Limit/Stop Price:" />
+        <TextBox Name="StopLimitPriceTextBox" Grid.Row="4" Grid.Column="1" Margin="8,8,8,8" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Text="{Binding StopLimitPrice}"/>
+        <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Left" Margin="8,8,8,8" VerticalAlignment="Top" Content="Time in force:" />
+        <ComboBox MinWidth="75" Name="TimeInForceCombo" Grid.Row="5" Grid.Column="1" Margin="8,8,8,8" HorizontalAlignment="Left" VerticalAlignment="Top" SelectedValue="{Binding TimeInForce, Mode=TwoWay}" ItemsSource="{Binding AvailableTimesInForce}" SelectedValuePath="Value" />
+    </Grid>
+</UserControl>

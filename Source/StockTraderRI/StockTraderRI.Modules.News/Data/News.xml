@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<NewsItems xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <NewsItem TickerSymbol="FUND0" IconUri="/StockTraderRI.Modules.News;Component/Data/Images/Annotation_New.png">Company builds widget factory.</NewsItem>
+  <NewsItem TickerSymbol="FUND3" IconUri="/StockTraderRI.Modules.News;Component/Data/Images/Annotation_New.png">Company1 buys Company2.</NewsItem>
+  <NewsItem TickerSymbol="FUND6" IconUri="/StockTraderRI.Modules.News;Component/Data/Images/info.png">Company sells more widgets.</NewsItem>
+</NewsItems>
