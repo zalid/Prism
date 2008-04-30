@@ -15,19 +15,15 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System.Text;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Practices.Unity;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Prism.Interfaces;
-using StockTraderRI.Infrastructure.Interfaces;
-using StockTraderRI.Modules.WatchList.Services;
-using StockTraderRI.Modules.WatchList.Tests.Mocks;
 using Prism.Services;
-using System.Windows;
 using StockTraderRI.Modules.Watch;
-using StockTraderRI.Modules.Watch.WatchList;
 using StockTraderRI.Modules.Watch.AddWatch;
+using StockTraderRI.Modules.Watch.Services;
+using StockTraderRI.Modules.Watch.WatchList;
+using StockTraderRI.Modules.WatchList.Tests.Mocks;
 
 namespace StockTraderRI.Modules.WatchList.Tests
 {

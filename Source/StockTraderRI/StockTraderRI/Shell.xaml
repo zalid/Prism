@@ -4,7 +4,11 @@
     xmlns:prism="http://www.codeplex.com/prism"
     xmlns:controls="clr-namespace:StockTraderRI.Controls"
     xmlns:inf="clr-namespace:StockTraderRI.Infrastructure;assembly=StockTraderRI.Infrastructure"
-    Title="Shell" Height="600" Width="600">
+    xmlns:services="clr-namespace:Prism.Services;assembly=Prism"    
+    Title="Shell" Height="650" Width="650">
+    <prism:RegionManager.RegionManagerServiceScope>
+        <services:RegionManagerService />
+    </prism:RegionManager.RegionManagerServiceScope>
     <Window.Resources>
         <DataTemplate DataType="{x:Type inf:ExtendedHeader}">
             <StackPanel Orientation="Horizontal" ToolTip="{Binding Path=ToolTip}">
@@ -23,16 +27,20 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <ToolBarTray Grid.Row="0" Grid.ColumnSpan="2">
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontFamily="Franklin Gothic" FontSize="60" FontWeight="Normal" Foreground="#FF77B6EB" TextAlignment="Left" TextWrapping="Wrap" RenderTransformOrigin="0.482,-1.197"><Run FontSize="50" Foreground="#FF98C61F" Text="CFI "/><Run FontSize="50" Text="STOCK TRADER"/></TextBlock>
+        <WrapPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MainToolbar" prism:RegionManager.Region="MainToolbarRegion">
+        </WrapPanel>
+        <!--<ToolBarTray Grid.Row="1" Grid.ColumnSpan="2">
             <ToolBar Name="MainToolbar" prism:RegionManager.Region="MainToolbarRegion"/>
-        </ToolBarTray>
-        <StackPanel Grid.Row="1" Grid.Column="0">
+        </ToolBarTray>-->
+        <StackPanel Grid.Row="2" Grid.Column="0">
             <Grid prism:RegionManager.Region="MainRegion"></Grid>
             <TabControl Name="ResearchArticlesTab" prism:RegionManager.Region="ResearchArticlesRegion" ItemContainerStyle="{StaticResource HeaderStyle}" />
         </StackPanel>
-        <controls:CollapsibleTabControl x:Name="CollapsibleTab" Grid.Row="1" Grid.Column="1" prism:RegionManager.Region="CollapsibleRegion" ItemContainerStyle="{StaticResource HeaderStyle}"/>
+        <controls:CollapsibleTabControl x:Name="CollapsibleTab" Grid.Row="2" Grid.Column="1" prism:RegionManager.Region="CollapsibleRegion" ItemContainerStyle="{StaticResource HeaderStyle}"/>
     </Grid>
 
 </Window>

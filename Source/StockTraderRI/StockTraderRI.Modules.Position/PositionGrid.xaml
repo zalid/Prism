@@ -5,55 +5,83 @@
     xmlns:inf="clr-namespace:StockTraderRI.Infrastructure;assembly=StockTraderRI.Infrastructure"
     x:Class="StockTraderRI.Modules.Position.PositionGrid" >
     <UserControl.Resources>
-        <Style TargetType="{x:Type GridViewColumnHeader}">
-            <Setter Property="Background" Value="BurlyWood"/>
-            <Setter Property="FontWeight" Value="Bold" />
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border BorderBrush="#FF77B6EB" CornerRadius="6" Padding="1,1,1,1" BorderThickness="2,2,2,2">
+                            <TextBlock FontSize="12" FontFamily="Franklin Gothic" FontWeight="Normal" Foreground="#FF77B6EB" TextAlignment="Center" TextWrapping="Wrap">
+                                <ContentPresenter/>
+                            </TextBlock>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
         <infConverters:TwoDecimalPlaceConverter x:Key="twoDecimalPlaceConverter" />
         <BooleanToVisibilityConverter x:Key="boolToVisConverter" />
         <DataTemplate x:Key="NewsFeedColumnButton">
             <Button Content="News" Command="{x:Static inf:StockTraderRICommands.ShowNewsCommand}" CommandParameter="{Binding Path=TickerSymbol}" Visibility="{Binding Path=HasNews, Converter={StaticResource boolToVisConverter}}" AutomationProperties.AutomationId="{Binding Path=TickerSymbol}"></Button>
         </DataTemplate>
+        <Style x:Key="HeaderContainerStyle" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="FontFamily" Value="Franklin Gothic"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Background" Value="#FF77B6EB"/>
+            <Setter Property="Foreground" Value="#FFFFFFFF"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
     </UserControl.Resources>
-    <Grid>
-        <ListView x:Name="_positionTable" ItemsSource="{Binding Path=Data}" SelectionChanged="_positionTable_SelectionChanged" IsSynchronizedWithCurrentItem="True">
-            <ListView.Resources>
-                <ContextMenu x:Name="watchListContextMenu" x:Key="ContextMenuKey" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}}">
-                    <MenuItem x:Name="BuyMenuItem" Header="Buy" Command="{Binding Path=DataContext.BuyCommand}" CommandParameter="{Binding Path=SelectedItem.TickerSymbol}"></MenuItem>
-                    <MenuItem x:Name="SellMenuItem" Header="Sell" Command="{Binding Path=DataContext.SellCommand}" CommandParameter="{Binding Path=SelectedItem.TickerSymbol}"></MenuItem>
-                </ContextMenu>
-            </ListView.Resources>
-            <ListView.ItemContainerStyle>
-                <Style>
-                    <Setter Property="ListViewItem.ContextMenu" Value="{StaticResource ContextMenuKey}"></Setter>
-                </Style>
-            </ListView.ItemContainerStyle>
-            <ListView.View>
-                <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Current positions">
-                    <GridViewColumn Header="Symbol" 
-                		DisplayMemberBinding="{Binding Path=TickerSymbol}" 
-                		Width="50"/>
-                    <GridViewColumn Header="Shares"  
-                      DisplayMemberBinding="{Binding Path=Shares}"
-                      Width="50" />
-                    <GridViewColumn Header="Last"  
-                      DisplayMemberBinding="{Binding Path=CurrentPrice, Converter={StaticResource twoDecimalPlaceConverter}, ConverterParameter=2}"
-                      Width="50" />
-                    <GridViewColumn Header="Cost Basis"  
-                      DisplayMemberBinding="{Binding Path=CostBasis, Converter={StaticResource twoDecimalPlaceConverter}, ConverterParameter=2}"
-                      Width="50" />
-                    <GridViewColumn Header="Market Value"  
-                      DisplayMemberBinding="{Binding Path=MarketValue, Converter={StaticResource twoDecimalPlaceConverter}, ConverterParameter=2}"
-                      Width="50" />
-                    <GridViewColumn Header="Gain Loss %"  
-                      DisplayMemberBinding="{Binding Path=GainLossPercent, Converter={StaticResource twoDecimalPlaceConverter}, ConverterParameter=2}"
-                      Width="50" />
-                    <GridViewColumn Header="News"  
-                      CellTemplate="{StaticResource NewsFeedColumnButton}"
-                      Width="50" />
-                </GridView>
-
-            </ListView.View>
-        </ListView>
-    </Grid>
+    <ListView x:Name="_positionTable" BorderThickness="0"
+                  ItemsSource="{Binding Path=Data}" 
+                  SelectionChanged="_positionTable_SelectionChanged" 
+                  IsSynchronizedWithCurrentItem="True">
+        <ListView.Resources>
+            <ContextMenu x:Name="watchListContextMenu" x:Key="ContextMenuKey" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}">
+                <MenuItem x:Name="BuyMenuItem" Header="Buy" Command="{Binding Path=DataContext.BuyCommand}" CommandParameter="{Binding Path=SelectedItem.TickerSymbol}"></MenuItem>
+                <MenuItem x:Name="SellMenuItem" Header="Sell" Command="{Binding Path=DataContext.SellCommand}" CommandParameter="{Binding Path=SelectedItem.TickerSymbol}"></MenuItem>
+            </ContextMenu>
+        </ListView.Resources>
+        <ListView.ItemContainerStyle>
+            <Style TargetType="{x:Type ListViewItem}">
+                <Setter Property="ContextMenu" Value="{StaticResource ContextMenuKey}"></Setter>
+                <Setter Property="FontFamily" Value="Franklin Gothic"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="FontWeight" Value="Normal"/>
+                <Setter Property="Foreground" Value="#FF77B6EB"/>
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Foreground" Value="Black"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ListView.ItemContainerStyle>
+        <ListView.View>
+            <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Current positions"
+                          ColumnHeaderContainerStyle="{StaticResource HeaderContainerStyle}">
+                <GridViewColumn Header="Symbol" 
+            		DisplayMemberBinding="{Binding Path=TickerSymbol}" 
+            		Width="65"/>
+                <GridViewColumn Header="Shares"  
+                  DisplayMemberBinding="{Binding Path=Shares}"
+                  Width="65" />
+                <GridViewColumn Header="Last"  
+                  DisplayMemberBinding="{Binding Path=CurrentPrice, Converter={StaticResource twoDecimalPlaceConverter}, ConverterParameter=2}"
+                  Width="65" />
+                <GridViewColumn Header="Cost Basis"  
+                  DisplayMemberBinding="{Binding Path=CostBasis, Converter={StaticResource twoDecimalPlaceConverter}, ConverterParameter=2}"
+                  Width="85" />
+                <GridViewColumn Header="Market Value"  
+                  DisplayMemberBinding="{Binding Path=MarketValue, Converter={StaticResource twoDecimalPlaceConverter}, ConverterParameter=2}"
+                  Width="85" />
+                <GridViewColumn Header="Gain Loss %"  
+                  DisplayMemberBinding="{Binding Path=GainLossPercent, Converter={StaticResource twoDecimalPlaceConverter}, ConverterParameter=2}"
+                  Width="85" />
+                <GridViewColumn Header="News"  
+                        CellTemplate="{StaticResource NewsFeedColumnButton}"
+                  Width="50" />
+            </GridView>
+        </ListView.View>
+    </ListView>
 </UserControl>

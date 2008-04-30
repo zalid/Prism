@@ -37,9 +37,9 @@ namespace StockTraderRI.Infrastructure.Tests.Mocks
             container.RegisterType<IPrismContainer, UnityPrismContainer>(new ContainerControlledLifetimeManager());
 
             container.RegisterInstance<IModuleEnumerator>(MockModuleEnumerator);
-            container.RegisterType<IModuleInitializerService, MockModuleInitializerService>();
+            container.RegisterType<IModuleLoaderService, MockModuleLoaderService>();
             container.RegisterType<IRegionManagerService, MockRegionManagerService>();
-            
+
             container.RegisterInstance<IShellView>(MockShellView);
         }
     }

@@ -4,10 +4,30 @@
     xmlns:prism="http://www.codeplex.com/prism"
     xmlns:inf="clr-namespace:StockTraderRI.Infrastructure;assembly=StockTraderRI.Infrastructure"
      Background="White">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border BorderBrush="#FFD2E6F6" CornerRadius="8" Padding="4,4,4,4" BorderThickness="2,2,2,2">
+                            <TextBlock x:Name="ButtonTextBlock" FontFamily="Franklin Gothic" FontSize="14" FontWeight="Normal" Foreground="#FF79B8EC" TextAlignment="Center" TextWrapping="Wrap">
+                                <ContentPresenter/>
+                            </TextBlock>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="ButtonTextBlock" Property="Foreground" Value="LightGray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <StackPanel>
-        <TabControl x:Name="OrdersTabControl" prism:RegionManager.Region="OrdersRegion" ItemContainerStyle="{DynamicResource HeaderStyle}">
+        <TabControl  x:Name="OrdersTabControl" prism:RegionManager.Region="OrdersRegion" ItemContainerStyle="{DynamicResource HeaderStyle}">
         </TabControl>
-        <StackPanel Orientation="Horizontal">
+        <StackPanel  Orientation="Horizontal">
             <Button Name="SubmitAllButton" Command="{x:Static inf:StockTraderRICommands.SubmitAllOrdersCommand}">Submit All</Button>
             <Button Name="CancelAllButton" Command="{x:Static inf:StockTraderRICommands.CancelAllOrdersCommand}">Cancel All</Button>
         </StackPanel>

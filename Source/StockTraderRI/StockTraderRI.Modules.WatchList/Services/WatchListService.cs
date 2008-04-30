@@ -16,21 +16,16 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections;
-using System.Windows.Documents;
 using System.Collections.ObjectModel;
-using StockTraderRI.Infrastructure.Interfaces;
-using StockTraderRI.Modules.Watch;
+using System.Windows.Input;
 using Prism.Commands;
+using StockTraderRI.Infrastructure.Interfaces;
 
-namespace StockTraderRI.Modules.WatchList.Services
+namespace StockTraderRI.Modules.Watch.Services
 {
     public class WatchListService : IWatchListService
     {
-        private IMarketFeedService marketFeedService;
+        private readonly IMarketFeedService marketFeedService;
 
         private ObservableCollection<string> WatchItems { get; set; }
 
@@ -62,6 +57,6 @@ namespace StockTraderRI.Modules.WatchList.Services
             }
         }
 
-        public DelegateCommand<string> AddWatchCommand { get; set; }
+        public ICommand AddWatchCommand { get; set; }
     }
 }

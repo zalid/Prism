@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <StackPanel>
         <TextBlock Text="This employee is part of the following projects:"></TextBlock>
-        <ListView x:Name="ProjectsList" ItemsSource="{Binding}">
+        <ListView x:Name="ProjectsList" ItemsSource="{Binding Projects}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Project" DisplayMemberBinding="{Binding Path=ProjectName}"></GridViewColumn>

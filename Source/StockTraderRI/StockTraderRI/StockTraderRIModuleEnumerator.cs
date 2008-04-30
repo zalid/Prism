@@ -17,8 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Prism.Interfaces;
 using StockTraderRI.Modules.Market;
 using StockTraderRI.Modules.News;
@@ -29,17 +27,37 @@ namespace StockTraderRI
 {
     public class StockTraderRIModuleEnumerator : IModuleEnumerator
     {
-        public Type[] GetTypes()
+        public ModuleInfo[] GetModules()
         {
-            Type[] modules = new Type[]
-                                 {
-                                    typeof(NewsModule),
-                                    typeof(MarketModule),
-                                    typeof(WatchModule),
-                                    typeof(PositionModule)
-                                };
+            return GetModuleList().ToArray();
+        }
 
+        public ModuleInfo[] GetStartupLoadedModules()
+        {
+            return GetModuleList().ToArray();
+        }
+
+        public ModuleInfo[] GetModule(string moduleName)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static List<ModuleInfo> GetModuleList()
+        {
+            List<ModuleInfo> modules = new List<ModuleInfo>();
+
+            modules.Add(GetModuleInfo(typeof(NewsModule)));
+            modules.Add(GetModuleInfo(typeof(MarketModule)));
+            modules.Add(GetModuleInfo(typeof(WatchModule), new[] { "MarketModule" }));
+            modules.Add(GetModuleInfo(typeof(PositionModule), new[] { "MarketModule", "NewsModule" }));
             return modules;
         }
+
+        private static ModuleInfo GetModuleInfo(Type moduleType, params String[] dependsOn)
+        {
+            return new ModuleInfo(moduleType.Assembly.Location
+                                  , moduleType.FullName, moduleType.Name, dependsOn);
+        }
+
     }
 }

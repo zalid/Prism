@@ -20,6 +20,7 @@ using System.Data;
 using System.Collections.Generic;
 using StockTraderRI.AcceptanceTests.Helpers;
 using System.IO;
+using System.Globalization;
 
 
 namespace StockTraderRI.AcceptanceTests.TestInfrastructure
@@ -53,9 +54,9 @@ namespace StockTraderRI.AcceptanceTests.TestInfrastructure
                     dr = ds.Tables[0].Rows[i];
                     order.Add(
                         new Order(dr["TickerSymbol"].ToString(),
-                        decimal.Parse(dr["StopLimitPrice"].ToString()),
+                        decimal.Parse(dr["StopLimitPrice"].ToString(), CultureInfo.InvariantCulture),
                         dr["OrderType"].ToString(),
-                        int.Parse(dr["Shares"].ToString()),
+                        int.Parse(dr["Shares"].ToString(), CultureInfo.InvariantCulture),
                         dr["TimeInForce"].ToString(),
                         dr["TransactionType"].ToString())
                         );

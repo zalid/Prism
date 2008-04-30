@@ -29,7 +29,7 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
 {
     [TestClass]
     [DeploymentItem(@".\UIComposition\bin\Debug")]
-    [DeploymentItem(@".\UIComposition.AcceptanceTests\bin\Debug")] 
+    [DeploymentItem(@".\UIComposition.Tests.AcceptanceTests\bin\Debug")] 
     public class UICompositionFixture: FixtureBase
     {
         [TestInitialize()]
@@ -66,7 +66,6 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
         /// Employee List table is found with 2 rows and 2 columns. Send Mail, Call and Previous Projects button are dispalyed.
         /// </summary>
         [TestMethod]
-        [Ignore]
         [WorkItem(16909)]
         public void ApplicationLaunch()
         {
@@ -80,6 +79,7 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
             Assert.AreEqual(2, list.Rows.Count, ConfigHandler.GetTestInputData("EmployeeListIncorrectRowCount"));
             Assert.AreEqual(2, list.Header.Columns.Count, ConfigHandler.GetTestInputData("EmployeeListIncorrectColumnCount"));
 
+            /* Buttons have been removed
             searchCriteria = SearchCriteria.ByAutomationId(ConfigHandler.GetControlId("SendEmailButton")).AndControlType(typeof(Button));
             Button sendEmailButton = window.Get<Button>(searchCriteria);
             Assert.IsNotNull(sendEmailButton, ConfigHandler.GetTestInputData("SendMailButtonNotFound"));
@@ -91,6 +91,7 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
             searchCriteria = SearchCriteria.ByAutomationId(ConfigHandler.GetControlId("PastProjectsButton")).AndControlType(typeof(Button));
             Button pastProjectsButton = window.Get<Button>(searchCriteria);
             Assert.IsNotNull(callButton, ConfigHandler.GetTestInputData("PastProjectsButtonNotfound"));
+            */ 
         }
     }
 }

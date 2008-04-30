@@ -17,6 +17,7 @@
 
 using System;
 using System.Configuration;
+using System.Collections.Specialized;
 
 namespace UIComposition.AcceptanceTests.Helpers
 {
@@ -28,6 +29,11 @@ namespace UIComposition.AcceptanceTests.Helpers
         public static string GetValue(string key)
         {
             return ConfigurationManager.AppSettings[key] ?? String.Empty;
+        }
+
+        public static NameValueCollection GetConfigSection(string name)
+        {
+            return (NameValueCollection)ConfigurationManager.GetSection(name) ?? null;
         }
 
         public static string GetTestInputData(string key)

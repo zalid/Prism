@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using StockTraderRI.AcceptanceTests.TestInfrastructure.MockModels;
 using StockTraderRI.AcceptanceTests.Helpers;
 using System.Data;
+using System.Globalization;
 
 namespace StockTraderRI.AcceptanceTests.TestInfrastructure
 {
@@ -47,8 +48,8 @@ namespace StockTraderRI.AcceptanceTests.TestInfrastructure
                 history.Add(
                     new MarketHistoryItem(
                         dr[ConfigHandler.GetTestInputData("TickerSymbol")].ToString(),
-                        DateTime.Parse(dr[ConfigHandler.GetTestInputData("Date")].ToString()),
-                        decimal.Parse(dr[2].ToString())
+                        DateTime.Parse(dr[ConfigHandler.GetTestInputData("Date")].ToString(), CultureInfo.InvariantCulture),
+                        decimal.Parse(dr[2].ToString(), CultureInfo.InvariantCulture)
                         ));
             }
 

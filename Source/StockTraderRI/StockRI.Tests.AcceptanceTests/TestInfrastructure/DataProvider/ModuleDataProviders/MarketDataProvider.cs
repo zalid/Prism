@@ -22,6 +22,7 @@ using System.Text;
 using System.Data;
 using StockTraderRI.AcceptanceTests.TestInfrastructure.MockModels;
 using StockTraderRI.AcceptanceTests.Helpers;
+using System.Globalization;
 
 namespace StockTraderRI.AcceptanceTests.TestInfrastructure
 {
@@ -46,7 +47,10 @@ namespace StockTraderRI.AcceptanceTests.TestInfrastructure
             for (int i = 0; i < ds.Tables[1].Rows.Count; i++)
             {
                 dr = ds.Tables[1].Rows[i];
-                market.Add(new Market(dr[ConfigHandler.GetTestInputData("TickerSymbol")].ToString(), decimal.Parse(dr[ConfigHandler.GetTestInputData("LastPrice")].ToString())));
+                market.Add(
+                    new Market(
+                        dr[ConfigHandler.GetTestInputData("TickerSymbol")].ToString(), 
+                        decimal.Parse(dr[ConfigHandler.GetTestInputData("LastPrice")].ToString(), CultureInfo.InvariantCulture)));
             }
 
             return market;

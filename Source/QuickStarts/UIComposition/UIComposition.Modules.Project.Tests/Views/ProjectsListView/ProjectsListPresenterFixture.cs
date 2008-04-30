@@ -60,7 +60,7 @@ namespace UIComposition.Modules.Project.Tests
             Assert.IsNotNull(view.Model);
             Assert.IsTrue(projectService.RetrieveProjectsCalled);
             Assert.AreEqual(10, projectService.EmployeeId);
-            Assert.AreEqual(projectService.RetrieveProjects(employeeId).Count, view.Model.Count);
+            Assert.AreEqual(projectService.RetrieveProjects(employeeId).Count, view.Model.Projects.Count);
         }
 
         private ProjectsListPresenter CreatePresenter()

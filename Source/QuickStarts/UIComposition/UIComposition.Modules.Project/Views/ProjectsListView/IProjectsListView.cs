@@ -18,10 +18,9 @@
 namespace UIComposition.Modules.Project
 {
     using Prism.Interfaces;
-    using System.Collections.ObjectModel;
 
-    public interface IProjectsListView : IMetadataInfoProvider
+    public interface IProjectsListView
     {
-        ObservableCollection<BusinessEntities.Project> Model { get; set; }
+        ProjectsListPresentationModel Model { get; set; }
     }
 }

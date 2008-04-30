@@ -15,9 +15,10 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using System.Windows.Controls;
 namespace StockTraderRI.Infrastructure.Tests.Mocks
 {
-    internal class MockShellView : IShellView
+    internal class MockShellView : Control, IShellView
     {
         public bool ShowCalled{ get; set; }
 
@@ -29,5 +30,10 @@ namespace StockTraderRI.Infrastructure.Tests.Mocks
         }
 
         #endregion
+
+        public Prism.Interfaces.IRegionManagerService RegionManagerService
+        {
+            get { return new MockRegionManagerService(); }
+        }
     }
 }

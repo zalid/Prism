@@ -45,9 +45,9 @@ namespace StockTraderRI.Modules.Position.Controllers
             SellCommand = new DelegateCommand<string>(OnSellExecuted);
         }
 
-        void OnSellExecuted(object parameter)
+        void OnSellExecuted(string parameter)
         {
-            StartOrder(parameter as string, TransactionType.Sell);
+            StartOrder(parameter, TransactionType.Sell);
         }
 
         void OnBuyExecuted(string parameter)

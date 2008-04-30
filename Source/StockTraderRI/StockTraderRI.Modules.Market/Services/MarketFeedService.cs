@@ -17,27 +17,25 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Xml;
 using System.Globalization;
+using System.Linq;
+using System.Threading;
 using System.Xml.Linq;
 using StockTraderRI.Infrastructure.Interfaces;
-using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.Market.Properties;
 
 namespace StockTraderRI.Modules.Market.Services
 {
     public class MarketFeedService : IMarketFeedService, IDisposable
     {
-        private Dictionary<string, decimal> _priceList = new Dictionary<string, decimal>();
-        private Dictionary<string, long> _volumeList = new Dictionary<string, long>();
-        static Random randomGenerator = new Random(unchecked((int)DateTime.Now.Ticks));
+        private readonly Dictionary<string, decimal> _priceList = new Dictionary<string, decimal>();
+        private readonly Dictionary<string, long> _volumeList = new Dictionary<string, long>();
+        static readonly Random randomGenerator = new Random(unchecked((int)DateTime.Now.Ticks));
         private Timer _timer;
         private int _refreshInterval = 10000;
 
-        public MarketFeedService() : this (XDocument.Load("Data/Market.xml"))
+        public MarketFeedService()
+            : this(XDocument.Load("Data/Market.xml"))
         {
         }
 
@@ -45,9 +43,9 @@ namespace StockTraderRI.Modules.Market.Services
         {
             _timer = new Timer(TimerTick);
 
-            var marketItems = document.Element("MarketItems");
-            var items = marketItems.Elements("MarketItem");
-            foreach (var item in items)
+            var marketItemsElement = document.Element("MarketItems");
+            var itemElements = marketItemsElement.Elements("MarketItem");
+            foreach (XElement item in itemElements)
             {
                 string tickerSymbol = item.Attribute("TickerSymbol").Value;
                 decimal lastPrice = decimal.Parse(item.Attribute("LastPrice").Value, NumberStyles.Float, CultureInfo.InvariantCulture);
@@ -56,17 +54,14 @@ namespace StockTraderRI.Modules.Market.Services
                 _volumeList.Add(tickerSymbol, volume);
             }
 
-            var refreshRateAttribute = marketItems.Attribute("RefreshRate");
+            var refreshRateAttribute = marketItemsElement.Attribute("RefreshRate");
             if (refreshRateAttribute != null)
             {
                 RefreshInterval = CalculateRefreshIntervalMillisecondsFromSeconds(int.Parse(refreshRateAttribute.Value));
             }
         }
 
-        private static int CalculateRefreshIntervalMillisecondsFromSeconds(int seconds)
-        {
-            return seconds * 1000;
-        }
+        public event EventHandler Updated = delegate { };
 
         public int RefreshInterval
         {
@@ -105,8 +100,6 @@ namespace StockTraderRI.Modules.Market.Services
             return _priceList.ContainsKey(tickerSymbol);
         }
 
-        public event EventHandler Updated = delegate { };
-
 
         protected void UpdatePrice(string tickerSymbol, decimal newPrice, long newVolume)
         {
@@ -131,8 +124,13 @@ namespace StockTraderRI.Modules.Market.Services
             OnUpdated(this, EventArgs.Empty);
         }
 
+        private static int CalculateRefreshIntervalMillisecondsFromSeconds(int seconds)
+        {
+            return seconds * 1000;
+        }
 
-        //Implement IDisposable.
+        #region IDisposable
+
         public void Dispose()
         {
             Dispose(true);
@@ -151,6 +149,8 @@ namespace StockTraderRI.Modules.Market.Services
         ~MarketFeedService()
         {
             Dispose(false);
-        } 
+        }
+
+        #endregion
     }
 }

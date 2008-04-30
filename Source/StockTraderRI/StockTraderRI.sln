@@ -12,15 +12,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTraderRI.Infrastructure", "StockTraderRI.Infrastructure\StockTraderRI.Infrastructure.csproj", "{0A123C1B-F316-447D-99A5-44CCF8023683}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism", "Prism\Prism.csproj", "{E20361F8-7B3F-437D-8799-EDE1FB7B15C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism", "..\Prism\Prism\Prism.csproj", "{E20361F8-7B3F-437D-8799-EDE1FB7B15C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.Tests", "Prism.Tests\Prism.Tests.csproj", "{BBC4F378-C99A-4F50-B0E6-E3B97B9F22CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.Tests", "..\Prism\Prism.Tests\Prism.Tests.csproj", "{BBC4F378-C99A-4F50-B0E6-E3B97B9F22CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTraderRI.Modules.Position", "StockTraderRI.Modules.Position\StockTraderRI.Modules.Position.csproj", "{46F2DA52-ACB0-4183-912F-7CC29971ED50}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTraderRI.ChartControls", "..\ChartControls\StockTraderRI.ChartControls.csproj", "{CBF8605C-8DAC-4CBB-9A1E-D798D83B277E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.Interfaces", "Prism.Interfaces\Prism.Interfaces.csproj", "{C4E0705E-7D35-441A-BC04-6F4E5D25FD60}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.Interfaces", "..\Prism\Prism.Interfaces\Prism.Interfaces.csproj", "{C4E0705E-7D35-441A-BC04-6F4E5D25FD60}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockTraderRI.Modules.Watch", "StockTraderRI.Modules.WatchList\StockTraderRI.Modules.Watch.csproj", "{78621307-C67F-4C61-96AA-7EE4B3C08620}"
 EndProject
@@ -42,13 +42,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{6C23EC02-A668-4374-954E-9A16EC7BCA42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.UnityContainerAdapter", "Prism.UnityContainerAdapter\Prism.UnityContainerAdapter.csproj", "{17831F3B-6B82-4916-BD2B-2CE2071EA622}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.UnityContainerAdapter", "..\Prism\Prism.UnityContainerAdapter\Prism.UnityContainerAdapter.csproj", "{17831F3B-6B82-4916-BD2B-2CE2071EA622}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.UnityContainerAdapter.Tests", "Prism.UnityContainerAdapter.Tests\Prism.UnityContainerAdapter.Tests.csproj", "{75511F4B-2602-4623-945C-AF8156B51F4E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.UnityContainerAdapter.Tests", "..\Prism\Prism.UnityContainerAdapter.Tests\Prism.UnityContainerAdapter.Tests.csproj", "{75511F4B-2602-4623-945C-AF8156B51F4E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Prism Framework", "_Prism Framework", "{5BC86DB2-A7B6-41CA-97A4-8FD8ACEDE9BF}"
 EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = StockTraderRI4.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

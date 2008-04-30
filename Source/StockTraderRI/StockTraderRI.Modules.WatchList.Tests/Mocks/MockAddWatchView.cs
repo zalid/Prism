@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Input;
 using StockTraderRI.Modules.Watch.AddWatch;
 using Prism.Commands;
 
@@ -27,11 +28,11 @@ namespace StockTraderRI.Modules.WatchList.Tests.Mocks
 {
     public class MockAddWatchView : UIElement, IAddWatchView
     {
-        public DelegateCommand<string> AddWatchCommand { get; set; }
+        public ICommand AddWatchCommand { get; set; }
 
         #region IAddWatchView Members
 
-        public void SetAddWatchCommand(DelegateCommand<string> addWatchCommand)
+        public void SetAddWatchCommand(ICommand addWatchCommand)
         {
             AddWatchCommand = addWatchCommand;
         }

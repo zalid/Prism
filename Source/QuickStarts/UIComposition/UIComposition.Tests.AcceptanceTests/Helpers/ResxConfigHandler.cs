@@ -20,13 +20,14 @@ using System.Collections.Generic;
 using System.Xml.XPath;
 using System.Resources;
 using System.Collections;
+using System.Globalization;
 
 namespace UIComposition.AcceptanceTests.Helpers
 {
     /// <summary>
     /// Handler to read value from XML file (having key-value pair) on specifying the XML file path and the key.
     /// </summary>
-    public class ResxConfigHandler
+    public class ResxConfigHandler : IDisposable
     {
         ResXResourceReader rsxr;
         IDictionaryEnumerator id;
@@ -47,17 +48,32 @@ namespace UIComposition.AcceptanceTests.Helpers
             {
                 if(d.Key.ToString().Equals(key))
                 {
-                    return d.Value.ToString();
+                    return String.Format(CultureInfo.InvariantCulture, d.Value.ToString());
                 }
             }
             return String.Empty;
         }
 
-        //TODO: Implement Dispose pattern
-        ~ResxConfigHandler()
+        #region IDisposable Members
+
+        public void Dispose()
         {
-            //Close the reader.
-            rsxr.Close();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
+
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (null != rsxr)
+                {
+                    //Close the reader.
+                    rsxr.Close();
+                }
+            }
         }
     }
 }

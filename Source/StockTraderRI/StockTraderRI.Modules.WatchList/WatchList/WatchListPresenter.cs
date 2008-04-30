@@ -16,22 +16,14 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Threading;
-using StockTraderRI.Infrastructure.Interfaces;
-using Microsoft.Practices.Unity;
-using Prism;
-using System.Windows;
-using StockTraderRI.Infrastructure.Models;
-using StockTraderRI.Infrastructure.PresentationModels;
 using System.Collections.ObjectModel;
-using Prism.Interfaces;
-using StockTraderRI.Modules.WatchList.Services;
+using System.Windows;
+using System.Windows.Threading;
 using Prism.Utility;
+using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Modules.Watch.PresentationModels;
 using StockTraderRI.Modules.Watch.Properties;
+using StockTraderRI.Modules.Watch.Services;
 
 namespace StockTraderRI.Modules.Watch.WatchList
 {
@@ -50,7 +42,7 @@ namespace StockTraderRI.Modules.Watch.WatchList
             this.watchList = watchListService.RetrieveWatchList();
             watchList.CollectionChanged += delegate { PopulateWatchItemsList(watchList); };
             PopulateWatchItemsList(watchList);
-            
+
             InitializeEvents();
         }
 
@@ -75,7 +67,7 @@ namespace StockTraderRI.Modules.Watch.WatchList
 
         private void PopulateWatchItemsList(ObservableCollection<string> watchItemsList)
         {
-            Dispatcher dispatcher = ((UIElement) View).Dispatcher;
+            Dispatcher dispatcher = ((UIElement)View).Dispatcher;
             if (!dispatcher.CheckAccess())
             {
                 dispatcher.BeginInvoke(DispatcherPriority.Normal,

@@ -91,11 +91,11 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Prism.Interfaces\Prism.Interfaces.csproj">
+    <ProjectReference Include="..\..\Prism\Prism.Interfaces\Prism.Interfaces.csproj">
       <Project>{C4E0705E-7D35-441A-BC04-6F4E5D25FD60}</Project>
       <Name>Prism.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Prism\Prism.csproj">
+    <ProjectReference Include="..\..\Prism\Prism\Prism.csproj">
       <Project>{E20361F8-7B3F-437D-8799-EDE1FB7B15C1}</Project>
       <Name>Prism</Name>
     </ProjectReference>

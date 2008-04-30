@@ -15,18 +15,12 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Windows;
 using Microsoft.Practices.Unity;
 using Prism.Interfaces;
-using StockTraderRI.Infrastructure.Interfaces;
-using StockTraderRI.Modules.WatchList.Services;
-using System.Windows.Controls;
-using System.Windows;
-using StockTraderRI.Modules.Watch.WatchList;
 using StockTraderRI.Modules.Watch.AddWatch;
+using StockTraderRI.Modules.Watch.Services;
+using StockTraderRI.Modules.Watch.WatchList;
 
 namespace StockTraderRI.Modules.Watch
 {

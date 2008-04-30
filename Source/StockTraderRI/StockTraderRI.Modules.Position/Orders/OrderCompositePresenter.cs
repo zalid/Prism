@@ -16,24 +16,18 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using StockTraderRI.Infrastructure.Models;
-using Microsoft.Practices.Unity;
+using System.Windows.Data;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Modules.Position.Interfaces;
-using StockTraderRI.Modules.Position.Orders;
 using StockTraderRI.Modules.Position.PresentationModels;
-using System.Windows.Data;
 
 namespace StockTraderRI.Modules.Position.Orders
 {
     public class OrderCompositePresenter : IOrderCompositePresenter, IDisposable
     {
-        private IOrderCompositeView _view;
-        private IOrderDetailsPresenter _orderDetailsPresenter;
+        private readonly IOrderCompositeView _view;
+        private readonly IOrderDetailsPresenter _orderDetailsPresenter;
 
         public OrderCompositePresenter(IOrderCompositeView orderCompositeView, IOrderDetailsPresenter orderDetailsPresenter,
                                          OrderCommandsView orderCommandsView)
@@ -42,7 +36,7 @@ namespace StockTraderRI.Modules.Position.Orders
             _orderDetailsPresenter.CloseViewRequested += _orderPresenter_CloseViewRequested;
             _view = orderCompositeView;
             _view.SetDetailView((UIElement)_orderDetailsPresenter.View);
-            _view.SetCommandView((UIElement)orderCommandsView);
+            _view.SetCommandView(orderCommandsView);
             _view.IsActiveChanged += compositeView_IsActiveChanged;
         }
 
@@ -89,10 +83,25 @@ namespace StockTraderRI.Modules.Position.Orders
             }
         }
 
+        #region Dispose pattern
+
         public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
         {
             _orderDetailsPresenter.Dispose();
         }
+
+        ~OrderCompositePresenter()
+        {
+            Dispose(false);
+        }
+
+        #endregion
 
         public class OrderHeaderConverter : IMultiValueConverter
         {

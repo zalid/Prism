@@ -15,7 +15,6 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
 using System.Collections.Generic;
 using Prism.Interfaces;
 
@@ -23,20 +22,32 @@ namespace StockTraderRI.Infrastructure.Tests.Mocks
 {
     internal class MockModuleEnumerator : IModuleEnumerator
     {
-        public List<Type> Types { get; set; }
+        public List<ModuleInfo> Modules { get; set; }
 
-        public bool GetTypesCalled { get; set; }
-        
+        public bool GetStartupLoadedModulesCalled { get; set; }
+
         public MockModuleEnumerator()
         {
-            GetTypesCalled = false;
-            Types = new List<Type>();
+            GetStartupLoadedModulesCalled = false;
+            Modules = new List<ModuleInfo>();
         }
-        
-        public Type[] GetTypes()
+
+        public ModuleInfo[] GetModules()
         {
-            GetTypesCalled = true;
-            return Types.ToArray();
+            throw new System.NotImplementedException();
+
         }
+
+        public ModuleInfo[] GetStartupLoadedModules()
+        {
+            GetStartupLoadedModulesCalled = true;
+            return Modules.ToArray();
+        }
+
+        public ModuleInfo[] GetModule(string moduleName)
+        {
+            throw new System.NotImplementedException();
+        }
+
     }
 }

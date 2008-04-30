@@ -26,7 +26,7 @@ namespace StockTraderRI.Infrastructure
     {
         protected IUnityContainer Container { get; set; }
         private IPrismLogger _logger;
-       
+
         public Bootstrapper(IPrismLogger logger)
         {
             _logger = logger;
@@ -41,8 +41,8 @@ namespace StockTraderRI.Infrastructure
 
         protected void InitializeContainer(IUnityContainerConfigurator configurator)
         {
-            _logger.Log("Container initialization started.",Category.Debug,Priority.Low);
-            UnityContainer unityContainer = new UnityContainer();            
+            _logger.Log("Container initialization started.", Category.Debug, Priority.Low);
+            UnityContainer unityContainer = new UnityContainer();
             unityContainer.RegisterInstance<IPrismLogger>(_logger);
             Container = unityContainer;
 
@@ -53,14 +53,16 @@ namespace StockTraderRI.Infrastructure
         protected void InitializeModules()
         {
             IModuleEnumerator moduleEnumerator = Container.Resolve<IModuleEnumerator>();
-            Container.Resolve<IModuleInitializerService>().Initialize(moduleEnumerator.GetTypes());
+            Container.Resolve<IModuleLoaderService>().Initialize(moduleEnumerator.GetStartupLoadedModules());
         }
 
         private void ShowShellView()
         {
             ShellPresenter shellPresenter = Container.Resolve<ShellPresenter>();
+
+            Container.RegisterInstance<IRegionManagerService>(shellPresenter.View.RegionManagerService);
+
             shellPresenter.View.ShowView();
         }
-
     }
 }

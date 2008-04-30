@@ -31,6 +31,7 @@ using Prism.Regions;
 using Prism.Interfaces;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Modules.Position;
+using Prism;
 
 namespace StockTraderRI
 {
@@ -45,14 +46,14 @@ namespace StockTraderRI
             InitializeComponent();
         }
 
-        #region IShellView Members
-
         public void ShowView()
         {
             this.Show();
         }
 
-        #endregion
+        public IRegionManagerService RegionManagerService
+        {
+            get { return RegionManager.GetRegionManagerServiceScope(this); }
+        }
     }
-
 }

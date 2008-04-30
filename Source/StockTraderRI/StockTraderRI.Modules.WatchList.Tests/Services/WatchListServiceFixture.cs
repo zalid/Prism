@@ -15,12 +15,11 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StockTraderRI.Modules.WatchList.Services;
 using System.Collections.ObjectModel;
-using StockTraderRI.Modules.WatchList.Tests.Mocks;
-using StockTraderRI.Modules.Watch;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockTraderRI.Infrastructure.Interfaces;
+using StockTraderRI.Modules.Watch.Services;
+using StockTraderRI.Modules.WatchList.Tests.Mocks;
 
 namespace StockTraderRI.Modules.WatchList.Tests.Services
 {
@@ -62,7 +61,7 @@ namespace StockTraderRI.Modules.WatchList.Tests.Services
             service.AddWatchCommand.Execute("Stock000");
             ObservableCollection<string> watchList = service.RetrieveWatchList();
 
-            bool collectionChanged= false;
+            bool collectionChanged = false;
             watchList.CollectionChanged += delegate
             {
                 collectionChanged = true;
@@ -92,7 +91,7 @@ namespace StockTraderRI.Modules.WatchList.Tests.Services
             service.AddWatchCommand.Execute(string.Empty);
 
             Assert.AreEqual(0, service.RetrieveWatchList().Count);
-        } 
+        }
 
         [TestMethod]
         public void AddingSameSymbolTwiceOnlyAddsItOnceToTheList()
@@ -177,13 +176,14 @@ namespace StockTraderRI.Modules.WatchList.Tests.Services
             Assert.AreEqual("TESTSYMBOL", service.RetrieveWatchList()[0]);
 
         }
-	
-	
+
+
     }
 
     class TestableWatchListService : WatchListService
     {
-        public TestableWatchListService(IMarketFeedService marketFeedService) : base(marketFeedService)
+        public TestableWatchListService(IMarketFeedService marketFeedService)
+            : base(marketFeedService)
         {
         }
     }

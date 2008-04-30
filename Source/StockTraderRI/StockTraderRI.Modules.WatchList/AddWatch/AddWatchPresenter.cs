@@ -15,11 +15,7 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using StockTraderRI.Modules.WatchList.Services;
+using StockTraderRI.Modules.Watch.Services;
 
 namespace StockTraderRI.Modules.Watch.AddWatch
 {

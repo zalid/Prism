@@ -21,6 +21,8 @@ using Core.UIItems.WindowItems;
 using UIComposition.AcceptanceTests.ApplicationObserver;
 using UIComposition.AcceptanceTests.TestInfrastructure;
 using UIComposition.AcceptanceTests.Helpers;
+using System.Collections.Specialized;
+using Core.Configuration;
 
 namespace UIComposition.AcceptanceTests
 {
@@ -53,6 +55,20 @@ namespace UIComposition.AcceptanceTests
             if (null != app)
             {
                 app.Kill();
+            }
+        }
+
+        private void SetupWhiteConfigParameters()
+        {
+            NameValueCollection collection = ConfigHandler.GetConfigSection("White/Core");
+
+            Type coreAppXmlConfigType = CoreAppXmlConfiguration.Instance.GetType();
+            foreach (string property in collection.Keys)
+            {
+                if (coreAppXmlConfigType.GetProperty(property).PropertyType.Equals(typeof(Int32)))
+                {
+                    coreAppXmlConfigType.GetProperty(property).SetValue(CoreAppXmlConfiguration.Instance, Convert.ToInt32(collection[property]), null);
+                }
             }
         }
 

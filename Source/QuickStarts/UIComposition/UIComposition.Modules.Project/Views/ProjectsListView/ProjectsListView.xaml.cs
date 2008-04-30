@@ -33,15 +33,10 @@ namespace UIComposition.Modules.Project
             InitializeComponent();
         }
 
-        public ObservableCollection<BusinessEntities.Project> Model
+        public ProjectsListPresentationModel Model
         {
-            get { return this.DataContext as ObservableCollection<BusinessEntities.Project>; }
+            get { return this.DataContext as ProjectsListPresentationModel; }
             set { this.DataContext = value; }
-        }
-
-        public IMetadataInfo GetMetadataInfo()
-        {
-            return new MetadataInfo() { Title = "Current Projects" };
         }
     }
 }

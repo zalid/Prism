@@ -32,6 +32,7 @@ using StockTraderRI.AcceptanceTests.AutomatedTests;
 using StockTraderRI.AcceptanceTests.Helpers;
 using StockTraderRI.AcceptanceTests.TestInfrastructure.MockModels;
 using System.IO;
+using System.Globalization;
 
 namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
 {
@@ -64,7 +65,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
             Order symbolOrder = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
                                         symbolShare + 1,
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
@@ -110,7 +111,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
             Order symbolOrder = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
                                         symbolShare + 1,
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
@@ -127,7 +128,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, anotherSymbol);
             Order anotherSymbolOrder = new Order(
                                         anotherSymbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
                                         anotherSymbolShare + 1,
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
@@ -174,7 +175,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
             Order symbolOrder = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
                                         symbolShare + 1,
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
@@ -191,7 +192,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, anotherSymbol);
             Order anotherSymbolOrder = new Order(
                                         anotherSymbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
                                         anotherSymbolShare,
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
@@ -238,7 +239,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
             Order symbolOrder = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
                                         symbolShare + 1,
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
@@ -255,7 +256,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, anotherSymbol);
             Order anotherSymbolOrder = new Order(
                                         anotherSymbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
                                         anotherSymbolShare,
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
@@ -311,7 +312,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
             Order sellSymbolOrder = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
                                         Convert.ToInt32(symbolShare / 2),
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
@@ -368,7 +369,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
             Order sellSymbolOrder = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
                                         Convert.ToInt32(symbolShare / 2),
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
@@ -385,7 +386,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
             Order sellSymbolAnotherOrder = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
                                         Convert.ToInt32(symbolShare / 2) + 1,
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
@@ -430,9 +431,9 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, symbol);
             Order buySymbolOrder = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares")),
+                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Buy.ToString()
                                     );
@@ -482,9 +483,9 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
             Order model = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares")),
+                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Buy.ToString()
                                     );
@@ -538,9 +539,9 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, buySymbol);
             Order buyModel = new Order(
                                         invalidSymbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares")),
+                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Buy.ToString()
                                     );
@@ -554,9 +555,9 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, sellSymbol);
             Order sellModel = new Order(
                                         invalidSymbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares")),
+                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Sell.ToString()
                                     );
@@ -604,9 +605,9 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, buySymbol);
             Order buyModel = new Order(
                                         invalidBuySymbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares")),
+                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Buy.ToString()
                                     );
@@ -619,7 +620,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, sellSymbol);
             Order sellModel = new Order(
                                         sellSymbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
                                         sellSymbolShare,
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
@@ -675,9 +676,9 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, buySymbol);
             Order buyModel = new Order(
                                         buySymbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares")),
+                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Buy.ToString()
                                     );
@@ -691,9 +692,9 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, sellSymbol);
             Order sellModel = new Order(
                                         invalidSellSymbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares")),
+                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Sell.ToString()
                                         );
@@ -832,7 +833,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, symbol);
             Order buyModel = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
                                         symbolShare,
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
@@ -849,7 +850,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
             Order sellModel = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
                                         symbolShare,
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
@@ -918,7 +919,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, sellSymbol);
             Order sellModel = new Order(
                                         sellSymbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
                                         symbolShare,
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
@@ -935,7 +936,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, sellAnotherSymbol);
             Order anotherSellModel = new Order(
                                         sellAnotherSymbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
                                         anotherSymbolShare,
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
@@ -952,9 +953,9 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, buySymbol);
             Order buyModel = new Order(
                                          buySymbol,
-                                         Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                         Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                          ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                         int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares")),
+                                         int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
                                          ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
                                          BuySellEnum.Buy.ToString()
                                      );
@@ -969,9 +970,9 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, buyAnotherSymbol);
             Order anotherBuyModel = new Order(
                                         buyAnotherSymbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares")),
+                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Buy.ToString()
                                     );
@@ -1032,7 +1033,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
 
             Order model = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice")),
+                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
                                         ConfigHandler.GetTestInputData("BuySellOrderType"),
                                         numberOfShares,
                                         ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),

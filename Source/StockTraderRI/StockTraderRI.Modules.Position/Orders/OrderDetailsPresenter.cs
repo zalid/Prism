@@ -16,38 +16,28 @@
 //===============================================================================
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Resources;
-using System.Text;
-using StockTraderRI.Modules.Position.PresentationModels;
-using Prism.Commands;
 using System.ComponentModel;
-using System.Windows.Input;
+using System.Globalization;
+using Prism.Commands;
+using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Infrastructure.Models;
-using System.Xml.Serialization;
-using System.Xml;
-using StockTraderRI.Infrastructure;
-using System.Globalization;
-using System.IO;
 using StockTraderRI.Modules.Position.Interfaces;
 using StockTraderRI.Modules.Position.Models;
+using StockTraderRI.Modules.Position.PresentationModels;
 using StockTraderRI.Modules.Position.Properties;
-using System.Windows.Data;
 
 namespace StockTraderRI.Modules.Position.Orders
 {
     public class OrderDetailsPresenter : IOrderDetailsPresenter
     {
-        protected ActiveAwareDelegateCommand<string> submitCommand;
-        protected ActiveAwareDelegateCommand<string> cancelCommand;
         private readonly IAccountPositionService accountPositionService;
-        private readonly IOrdersService ordersService;
         private readonly StockTraderRICommandProxy commandProxy;
-
-        public event EventHandler CloseViewRequested = delegate { };
+        private readonly IOrdersService ordersService;
+        private TransactionInfo _transactionInfo;
+        protected ActiveAwareDelegateCommand<string> cancelCommand;
+        protected ActiveAwareDelegateCommand<string> submitCommand;
 
         public OrderDetailsPresenter(IOrderDetailsView view, IAccountPositionService accountPositionService, IOrdersService ordersService, StockTraderRICommandProxy commandProxy)
         {
@@ -89,6 +79,26 @@ namespace StockTraderRI.Modules.Position.Orders
 
         }
 
+        public OrderDetailsPresentationModel Model { get; set; }
+
+        #region IOrderDetailsPresenter Members
+
+        public event EventHandler CloseViewRequested = delegate { };
+        public IOrderDetailsView View { get; set; }
+
+        public TransactionInfo TransactionInfo
+        {
+            get { return _transactionInfo; }
+            set
+            {
+                _transactionInfo = value;
+                Model.TransactionType = _transactionInfo.TransactionType;
+                Model.TickerSymbol = _transactionInfo.TickerSymbol;
+            }
+        }
+
+        #endregion
+
         private void Model_OnPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             submitCommand.RaiseCanExecuteChanged();
@@ -109,21 +119,18 @@ namespace StockTraderRI.Modules.Position.Orders
             cancelCommand.IsActive = View.IsActive;
         }
 
-        public IOrderDetailsView View { get; set; }
-        public OrderDetailsPresentationModel Model { get; set; }
-
         bool CanSubmit(object parameter)
         {
             //Validate the model
             if (Model.Shares <= 0)
             {
-                Model["Shares"] = Properties.Resources.InvalidSharesRange;
+                Model["Shares"] = Resources.InvalidSharesRange;
                 return false;
             }
 
             if ((Model.TransactionType == TransactionType.Sell) && !HoldsEnoughShares(Model.TickerSymbol, Model.Shares))
             {
-                Model["Shares"] = String.Format(CultureInfo.InvariantCulture, Properties.Resources.NotEnoughSharesToSell, Model.Shares);
+                Model["Shares"] = String.Format(CultureInfo.InvariantCulture, Resources.NotEnoughSharesToSell, Model.Shares);
                 return false;
             }
 
@@ -155,7 +162,7 @@ namespace StockTraderRI.Modules.Position.Orders
             if (!CanSubmit(parameter))
                 throw new InvalidOperationException();
 
-            OrderDetailsPresentationModel presentationModel = this.Model;
+            OrderDetailsPresentationModel presentationModel = Model;
             var order = new Order()
                             {
                                 TransactionType = presentationModel.TransactionType,
@@ -176,18 +183,6 @@ namespace StockTraderRI.Modules.Position.Orders
             CloseViewRequested(this, EventArgs.Empty);
         }
 
-        private TransactionInfo _transactionInfo;
-        public TransactionInfo TransactionInfo
-        {
-            get { return _transactionInfo; }
-            set
-            {
-                _transactionInfo = value;
-                Model.TransactionType = _transactionInfo.TransactionType;
-                Model.TickerSymbol = _transactionInfo.TickerSymbol;
-            }
-        }
-
         #region Disposable Pattern
         public void Dispose()
         {
@@ -206,8 +201,6 @@ namespace StockTraderRI.Modules.Position.Orders
             }
         }
         #endregion
-
-
 
     }
 }

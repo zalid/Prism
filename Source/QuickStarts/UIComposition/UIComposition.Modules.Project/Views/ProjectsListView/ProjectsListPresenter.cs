@@ -22,7 +22,7 @@ namespace UIComposition.Modules.Project
 
     public class ProjectsListPresenter : IProjectsListPresenter
     {
-        private IProjectService projectService;
+        private readonly IProjectService projectService;
 
         public ProjectsListPresenter(IProjectsListView view, IProjectService projectService)
         {
@@ -34,7 +34,10 @@ namespace UIComposition.Modules.Project
 
         public void SetProjects(int employeeId)
         {
-            this.View.Model = this.projectService.RetrieveProjects(employeeId);
+            this.View.Model = new ProjectsListPresentationModel
+                                  {
+                                      Projects = this.projectService.RetrieveProjects(employeeId)
+                                  };
         }
     }
 }

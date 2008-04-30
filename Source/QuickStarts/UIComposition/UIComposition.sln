@@ -20,17 +20,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIComposition.Modules.Project.Tests", "UIComposition.Modules.Project.Tests\UIComposition.Modules.Project.Tests.csproj", "{4C7FC8CC-1E27-4500-9D05-71049EA1A3B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.Tests", "Prism.Tests\Prism.Tests.csproj", "{BBC4F378-C99A-4F50-B0E6-E3B97B9F22CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.Tests", "..\..\Prism\Prism.Tests\Prism.Tests.csproj", "{BBC4F378-C99A-4F50-B0E6-E3B97B9F22CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.UnityContainerAdapter.Tests", "Prism.UnityContainerAdapter.Tests\Prism.UnityContainerAdapter.Tests.csproj", "{75511F4B-2602-4623-945C-AF8156B51F4E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.UnityContainerAdapter.Tests", "..\..\Prism\Prism.UnityContainerAdapter.Tests\Prism.UnityContainerAdapter.Tests.csproj", "{75511F4B-2602-4623-945C-AF8156B51F4E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Prism Framework", "_Prism Framework", "{012184A3-2085-4B51-A15C-5F3FC68392E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism", "Prism\Prism.csproj", "{E20361F8-7B3F-437D-8799-EDE1FB7B15C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism", "..\..\Prism\Prism\Prism.csproj", "{E20361F8-7B3F-437D-8799-EDE1FB7B15C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.Interfaces", "Prism.Interfaces\Prism.Interfaces.csproj", "{C4E0705E-7D35-441A-BC04-6F4E5D25FD60}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.Interfaces", "..\..\Prism\Prism.Interfaces\Prism.Interfaces.csproj", "{C4E0705E-7D35-441A-BC04-6F4E5D25FD60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.UnityContainerAdapter", "Prism.UnityContainerAdapter\Prism.UnityContainerAdapter.csproj", "{17831F3B-6B82-4916-BD2B-2CE2071EA622}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.UnityContainerAdapter", "..\..\Prism\Prism.UnityContainerAdapter\Prism.UnityContainerAdapter.csproj", "{17831F3B-6B82-4916-BD2B-2CE2071EA622}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_UIComposition Common", "_UIComposition Common", "{F504DEE4-0212-43DA-8D54-3F1184E52B9A}"
 EndProject

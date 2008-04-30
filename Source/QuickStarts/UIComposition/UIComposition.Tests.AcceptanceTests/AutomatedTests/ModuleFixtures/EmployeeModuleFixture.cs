@@ -32,7 +32,7 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
 {
     [TestClass]
     [DeploymentItem(@".\UIComposition\bin\Debug")]
-    [DeploymentItem(@".\UIComposition.AcceptanceTests\bin\Debug")] 
+    [DeploymentItem(@".\UIComposition.Tests.AcceptanceTests\bin\Debug")] 
     public class EmployeeModuleFixture : FixtureBase
     {
         [TestInitialize()]
@@ -71,7 +71,6 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
         /// The tab items headers match with "General", "Location" and "Current Projects"
         /// </summary>
         [TestMethod]
-        [Ignore]
         [WorkItem(0)]
         public void ValidateEmployeeSelection()
         {
@@ -109,7 +108,6 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
         /// Employee First Name, Last Name, Phone and Email are correctly displayed in the General Tab
         /// </summary>
         [TestMethod]
-        [Ignore]
         public void ValidateEmployeeDetailsGeneralSection()
         {
             ListView list = window.Get<ListView>(ConfigHandler.GetControlId("EmployeesList"));
@@ -132,7 +130,6 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
         /// Loaction Tab has a frame with required data
         /// </summary>
         [TestMethod]
-        [Ignore]
         public void ValidateEmployeeDetailsLocationSection()
         {
             ListView list = window.Get<ListView>(ConfigHandler.GetControlId("EmployeesList"));
@@ -155,7 +152,6 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
         /// Current Project and Role of the selected Employee are correctly displayed in the Current Projects Tab
         /// </summary>
         [TestMethod]
-        [Ignore]
         public void ValidateEmployeeDetailsCurrentProjectsSection()
         {
             ListView list = window.Get<ListView>(ConfigHandler.GetControlId("EmployeesList"));

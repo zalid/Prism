@@ -15,16 +15,12 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Prism.Commands;
+using System.Windows.Input;
 
 namespace StockTraderRI.Modules.Watch.AddWatch
 {
     public interface IAddWatchView
     {
-        void SetAddWatchCommand(DelegateCommand<string> addWatchCommand);
+        void SetAddWatchCommand(ICommand addWatchCommand);
     }
 }

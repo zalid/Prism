@@ -42,5 +42,10 @@ using Prism;
         {
             get {  return RegionManager.GetRegionManagerServiceScope(this); } 
         }
+
+        private void Frame_NavigationFailed(object sender, System.Windows.Navigation.NavigationFailedEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

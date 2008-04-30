@@ -38,7 +38,7 @@ namespace UIComposition.AcceptanceTests
 {
     [TestClass]
     [DeploymentItem(@".\UIComposition\bin\Debug")]
-    [DeploymentItem(@".\UIComposition.AcceptanceTests\bin\Debug")] 
+    [DeploymentItem(@".\UIComposition.Tests.AcceptanceTests\bin\Debug")] 
     public class ProjectModuleFixture : FixtureBase
     {
         [TestInitialize()]
@@ -63,14 +63,5 @@ namespace UIComposition.AcceptanceTests
             base.TestCleanup();
         }
 
-        
-
-
-
-        [TestMethod]
-        public void TestMethod2()
-        {
-            Assert.Inconclusive();
-        }
     }
 }

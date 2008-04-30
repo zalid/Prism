@@ -16,12 +16,10 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using StockTraderRI.Modules.WatchList.Services;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 using Prism.Commands;
+using StockTraderRI.Modules.Watch.Services;
 
 namespace StockTraderRI.Modules.WatchList.Tests.Mocks
 {
@@ -37,7 +35,7 @@ namespace StockTraderRI.Modules.WatchList.Tests.Mocks
         }
 
         private DelegateCommand<string> _testDelegate = new DelegateCommand<string>(delegate { });
-        public DelegateCommand<string> AddWatchCommand
+        public ICommand AddWatchCommand
         {
             get
             {

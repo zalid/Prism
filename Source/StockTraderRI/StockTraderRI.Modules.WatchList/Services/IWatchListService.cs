@@ -15,15 +15,14 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
 using System.Collections.ObjectModel;
-using Prism.Commands;
+using System.Windows.Input;
 
-namespace StockTraderRI.Modules.WatchList.Services
+namespace StockTraderRI.Modules.Watch.Services
 {
     public interface IWatchListService
     {
         ObservableCollection<string> RetrieveWatchList();
-        DelegateCommand<string> AddWatchCommand { get; set; }
+        ICommand AddWatchCommand { get; set; }
     }
 }

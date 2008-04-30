@@ -15,13 +15,11 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System.Text;
 using System.Linq;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Prism.Interfaces;
 using Prism.Interfaces.Logging;
-using Prism.Services;
 using StockTraderRI.Infrastructure.Tests.Mocks;
 
 namespace StockTraderRI.Infrastructure.Tests
@@ -37,9 +35,10 @@ namespace StockTraderRI.Infrastructure.Tests
         {
             MockPrismLogger mockPrismLogger = new MockPrismLogger();
             MockContainerConfigurator containerConfigurator = new MockContainerConfigurator();
-            containerConfigurator.MockModuleEnumerator.Types.Add(typeof(MockModule));
+            ModuleInfo moduleInfo = new ModuleInfo(typeof(MockModule).Assembly.Location, typeof(MockModule).FullName, "MockModule");
+            containerConfigurator.MockModuleEnumerator.Modules.Add(moduleInfo);
 
-            TestableBootstrapper2 bs = new TestableBootstrapper2(mockPrismLogger);
+            TestableBootstrapper bs = new TestableBootstrapper(mockPrismLogger);
 
             Assert.AreEqual<int>(0, mockPrismLogger.Messages.Count);
             bs.Initialize(containerConfigurator);
@@ -54,9 +53,8 @@ namespace StockTraderRI.Infrastructure.Tests
         {
             MockPrismLogger mockPrismLogger = new MockPrismLogger();
             MockContainerConfigurator containerConfigurator = new MockContainerConfigurator();
-            containerConfigurator.MockModuleEnumerator.Types.Add(typeof(MockModule));
 
-            TestableBootstrapper2 bs = new TestableBootstrapper2(mockPrismLogger);
+            TestableBootstrapper bs = new TestableBootstrapper(mockPrismLogger);
             bs.Initialize(containerConfigurator);
 
             Assert.IsNotNull(bs.GetContainer().Resolve<IPrismLogger>());
@@ -67,12 +65,13 @@ namespace StockTraderRI.Infrastructure.Tests
         {
             MockPrismLogger mockPrismLogger = new MockPrismLogger();
             MockContainerConfigurator containerConfigurator = new MockContainerConfigurator();
-            containerConfigurator.MockModuleEnumerator.Types.Add(typeof(MockModule));
+            ModuleInfo moduleInfo = new ModuleInfo(typeof(MockModule).Assembly.Location, typeof(MockModule).FullName, "MockModule");
+            containerConfigurator.MockModuleEnumerator.Modules.Add(moduleInfo);
 
-            TestableBootstrapper2 bs = new TestableBootstrapper2(mockPrismLogger);
+            TestableBootstrapper bs = new TestableBootstrapper(mockPrismLogger);
             bs.Initialize(containerConfigurator);
 
-            Assert.IsTrue(containerConfigurator.MockModuleEnumerator.GetTypesCalled);
+            Assert.IsTrue(containerConfigurator.MockModuleEnumerator.GetStartupLoadedModulesCalled);
         }
 
         [TestMethod]
@@ -80,20 +79,34 @@ namespace StockTraderRI.Infrastructure.Tests
         {
             MockPrismLogger mockPrismLogger = new MockPrismLogger();
             MockContainerConfigurator containerConfigurator = new MockContainerConfigurator();
-            containerConfigurator.MockModuleEnumerator.Types.Add(typeof(MockModule));
-            
-            TestableBootstrapper2 bs = new TestableBootstrapper2(mockPrismLogger);
+            ModuleInfo moduleInfo = new ModuleInfo(typeof(MockModule).Assembly.Location, typeof(MockModule).FullName, "MockModule");
+            containerConfigurator.MockModuleEnumerator.Modules.Add(moduleInfo);
+
+            TestableBootstrapper bs = new TestableBootstrapper(mockPrismLogger);
             bs.Initialize(containerConfigurator);
 
             Assert.IsTrue(containerConfigurator.MockShellView.ShowCalled);
         }
 
+        [TestMethod]
+        public void ShouldRegisterRegionManagerServiceWithContainer()
+        {
+            MockPrismLogger mockPrismLogger = new MockPrismLogger();
+            MockContainerConfigurator containerConfigurator = new MockContainerConfigurator();
+
+            TestableBootstrapper bs = new TestableBootstrapper(mockPrismLogger);
+            bs.Initialize(containerConfigurator);
+
+            Assert.IsNotNull(bs.GetContainer().Resolve<IRegionManagerService>());
+        }
+
     }
 
-    internal class TestableBootstrapper2 : Bootstrapper
+    internal class TestableBootstrapper : Bootstrapper
     {
-     
-        public TestableBootstrapper2(IPrismLogger logger):base(logger)
+
+        public TestableBootstrapper(IPrismLogger logger)
+            : base(logger)
         {
         }
 
@@ -101,6 +114,5 @@ namespace StockTraderRI.Infrastructure.Tests
         {
             return base.Container;
         }
-
     }
 }

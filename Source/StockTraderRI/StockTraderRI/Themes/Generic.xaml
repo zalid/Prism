@@ -16,7 +16,7 @@
                                 <TabPanel Margin="2,2,2,0" x:Name="HeaderPanel" IsItemsHost="True" Panel.ZIndex="1" Grid.Column="0" Grid.Row="0" KeyboardNavigation.TabIndex="1"/>
                             </StackPanel>
                             <Canvas>
-                                <Border BorderBrush="LightGray" BorderThickness="1" Canvas.Right="0" Name="watchListBorder">
+                                <Border BorderBrush="#FF9B9C9D" BorderThickness="1" Canvas.Right="0" Name="watchListBorder">
                                     <Grid x:Name="HeaderedContentContainer" Visibility="Collapsed">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition/>
@@ -30,10 +30,10 @@
                                             <ContentControl Grid.Row="0">
                                                 <!-- TODO: Make this templatable -->
                                                 <DockPanel>
-                                                    <Button x:Name="HeaderAutoHideButton" Command="{x:Static local:CollapsibleTabControl.ToggleDockedStateCommand}" DockPanel.Dock="Right" AutomationProperties.AutomationId="HeaderAutoHideButton" >
+                                                    <Button Background="#FF9B9C9D" x:Name="HeaderAutoHideButton" Command="{x:Static local:CollapsibleTabControl.ToggleDockedStateCommand}" DockPanel.Dock="Right" AutomationProperties.AutomationId="HeaderAutoHideButton" >
                                                     </Button>
 
-                                                    <TextBlock Padding="3" Foreground="White" DockPanel.Dock="Left" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem.Header}" Background="DarkBlue" />
+                                                    <TextBlock Padding="3" Foreground="White" FontFamily="Franklin Gothic" FontSize="14" FontWeight="Normal" DockPanel.Dock="Left" Background="#FF9B9C9D" />
                                                 </DockPanel>
                                             </ContentControl>
                                             <ContentPresenter Grid.Row="1" Margin="{TemplateBinding Padding}" x:Name="PART_SelectedContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="SelectedContent" />

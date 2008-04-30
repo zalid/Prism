@@ -29,15 +29,6 @@ namespace UIComposition.Modules.Employee.Tests.Mocks
 {
     class MockProjectsListView : Control, IProjectsListView
     {
-        public IMetadataInfo GetMetadataInfo()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ObservableCollection<UIComposition.Modules.Project.BusinessEntities.Project> Model
-        {
-            get;
-            set;
-        }
+        public ProjectsListPresentationModel Model { get; set; }
     }
 }

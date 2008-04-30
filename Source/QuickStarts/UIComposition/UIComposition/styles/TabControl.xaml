@@ -55,7 +55,7 @@
   
   <!-- SimpleStyles: TabItem -->
   
-  <Style TargetType="{x:Type TabItem}">
+  <Style TargetType="{x:Type TabItem}" x:Key="RoundedTabItem">
     <!-- Setter Property="FocusVisualStyle" Value="{StaticResource TabItemFocusVisual}"/ -->
     <Setter Property="Template">
       <Setter.Value>

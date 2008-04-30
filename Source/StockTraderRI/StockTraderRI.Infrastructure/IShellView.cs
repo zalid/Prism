@@ -19,10 +19,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Prism.Interfaces;
 
 namespace StockTraderRI.Infrastructure
 {
-    public interface IShellView
+    public interface IShellView : IRegionManagerServiceScopeProvider
     {
         void ShowView();
     }

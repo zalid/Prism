@@ -20,7 +20,7 @@ namespace UIComposition.Modules.Employee
     using Prism.Interfaces;
     using UIComposition.Modules.Employee.PresententationModels;
 
-    public interface IEmployeesDetailsView : IRegionManagerScopeProvider
+    public interface IEmployeesDetailsView : IRegionManagerServiceScopeProvider
     {
         EmployeesDetailsPresentationModel Model { get; set; }
     }

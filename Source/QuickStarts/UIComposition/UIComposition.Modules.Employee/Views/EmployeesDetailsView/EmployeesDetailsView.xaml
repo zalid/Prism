@@ -8,6 +8,11 @@
         <services:RegionManagerService></services:RegionManagerService>
     </prism:RegionManager.RegionManagerServiceScope>
     <TabControl x:Name="DetailsTabControl" prism:RegionManager.Region="{x:Static local:RegionNames.TabRegion}">
+        <TabControl.ItemContainerStyle>
+            <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource RoundedTabItem}">
+                <Setter Property="Header" Value="{Binding Content.DataContext.HeaderInfo}" />
+            </Style>
+        </TabControl.ItemContainerStyle>
         <TabItem x:Name="GeneralTabItem" Header="General">
             <Grid x:Name="GeneralGrid" DataContext="{Binding SelectedEmployee}">
                 <Grid.ColumnDefinitions>
@@ -33,7 +38,7 @@
             </Grid>
         </TabItem>
         <TabItem Header="Location">
-            <Frame Source="{Binding AddressMapUrl}" Height="300"></Frame>
+            <Frame Source="{Binding AddressMapUrl}" Height="300" NavigationFailed="Frame_NavigationFailed"></Frame>
         </TabItem>
     </TabControl>
 </UserControl>
