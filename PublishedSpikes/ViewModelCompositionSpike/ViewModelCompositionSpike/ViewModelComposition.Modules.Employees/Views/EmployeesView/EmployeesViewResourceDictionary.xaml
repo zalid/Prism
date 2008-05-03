@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:EmployeesView="clr-namespace:ViewModelComposition.Modules.Employees.Views.EmployeesView">
+
+    <DataTemplate DataType="{x:Type EmployeesView:EmployeesPresentationModel}">
+        <StackPanel x:Name="EmployeesPanel">
+            <ContentControl Name="Master" Content="{Binding Master}"/>
+            <ContentControl Name="Details" Content="{Binding Details}"/>
+        </StackPanel>
+    </DataTemplate>
+</ResourceDictionary>
