@@ -41,6 +41,9 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -60,10 +63,19 @@
     <Compile Include="Configuration\ModuleDependencyCollection.cs" />
     <Compile Include="Configuration\ModuleDependencyConfigurationElement.cs" />
     <Compile Include="Configuration\ModulesConfigurationSection.cs" />
+    <Compile Include="Events\EventAggregator.cs" />
+    <Compile Include="Events\PrismEvent.cs" />
+    <Compile Include="Events\SubscriptionToken.cs" />
+    <Compile Include="Events\WeakDelegate.cs" />
     <Compile Include="Exceptions\CyclicDependencyFoundException.cs" />
     <Compile Include="Exceptions\ModuleLoadException.cs" />
     <Compile Include="ModuleAttribute.cs" />
-    <Compile Include="ModuleDependencySolver.cs" />
+    <Compile Include="Regions\ContentControlRegionAdapter.cs" />
+    <Compile Include="Regions\ItemsControlRegionAdapter.cs" />
+    <Compile Include="Regions\RegionAdapterMappings.cs" />
+    <Compile Include="Regions\SimpleRegion.cs" />
+    <Compile Include="Services\ModuleDependencySolver.cs" />
+    <Compile Include="Regions\RegionManager.cs" />
     <Compile Include="Services\ConfigurationStore.cs" />
     <Compile Include="Services\ConfigurationModuleEnumerator.cs" />
     <Compile Include="Services\DirectoryLookupModuleEnumerator.cs" />
@@ -73,14 +85,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\ModuleLoaderService.cs" />
+    <Compile Include="Services\StaticModuleEnumerator.cs" />
     <Compile Include="Utility\DataEventArgs.cs" />
-    <Compile Include="PrismContainerProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegionManager.cs" />
-    <Compile Include="RegionPropertyChangedEventArgs.cs" />
-    <Compile Include="Regions\PanelRegion.cs" />
-    <Compile Include="Regions\ItemsControlRegion.cs" />
-    <Compile Include="Services\RegionManagerService.cs" />
     <Compile Include="Utility\IHeaderInfoProvider.cs" />
     <Compile Include="Utility\ListDictionary.cs" />
   </ItemGroup>

@@ -60,8 +60,8 @@ namespace StockTraderRI.Modules.Position.Tests.PresentationModels
         public void CanGetCollectionOfPositions()
         {
             PositionSummaryPresentationModel presentationModel = new PositionSummaryPresentationModel();
-            presentationModel.AddPosition("FUND0", 3.99M, 1000, 45.99M, false, new MarketHistoryCollection());
-            presentationModel.AddPosition("FUND1", 50.00M, 100, 65.99M, false, new MarketHistoryCollection());
+            presentationModel.AddPosition("FUND0", 3.99M, 1000, 45.99M, new MarketHistoryCollection());
+            presentationModel.AddPosition("FUND1", 50.00M, 100, 65.99M, new MarketHistoryCollection());
 
             ObservableCollection<PositionSummaryItem> positionSummaries = presentationModel.Data;
 
@@ -74,8 +74,8 @@ namespace StockTraderRI.Modules.Position.Tests.PresentationModels
         public void ChangeInAllPositionsCollectionShouldFireCollectionChangeNotify()
         {
             PositionSummaryPresentationModel presentationModel = new PositionSummaryPresentationModel();
-            presentationModel.AddPosition("FUND0", 3.99M, 1000, 45.99M, false, new MarketHistoryCollection());
-            presentationModel.AddPosition("FUND1", 50.00M, 100, 65.99M, false, new MarketHistoryCollection());
+            presentationModel.AddPosition("FUND0", 3.99M, 1000, 45.99M, new MarketHistoryCollection());
+            presentationModel.AddPosition("FUND1", 50.00M, 100, 65.99M, new MarketHistoryCollection());
 
             ObservableCollection<PositionSummaryItem> positionSummaries = presentationModel.Data;
             
@@ -85,7 +85,7 @@ namespace StockTraderRI.Modules.Position.Tests.PresentationModels
                 collectionChanged = true;
             };
 
-            presentationModel.AddPosition("FUND2", 3.99M, 1000, 32.99M, false, new MarketHistoryCollection());
+            presentationModel.AddPosition("FUND2", 3.99M, 1000, 32.99M, new MarketHistoryCollection());
             
             Assert.IsTrue(collectionChanged);
             Assert.AreEqual<string>("FUND2", presentationModel.Data.First(p => p.TickerSymbol == "FUND2").TickerSymbol);

@@ -15,26 +15,16 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Practices.Unity;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Prism.Interfaces;
 using StockTraderRI.Infrastructure.Interfaces;
-using StockTraderRI.Modules.Position;
-using StockTraderRI.Modules.Position.Tests.Mocks;
-using Prism;
-using System.Windows.Controls;
-using StockTraderRI.Infrastructure.Models;
-using Prism.Services;
+using StockTraderRI.Modules.Position.Controllers;
 using StockTraderRI.Modules.Position.Interfaces;
-using StockTraderRI.Modules.Position.Tests.Mocks;
-using StockTraderRI.Modules.Position.Services;
 using StockTraderRI.Modules.Position.Orders;
 using StockTraderRI.Modules.Position.PositionSummary;
-using StockTraderRI.Modules.Position.Controllers;
+using StockTraderRI.Modules.Position.Services;
+using StockTraderRI.Modules.Position.Tests.Mocks;
 
 namespace StockTraderRI.Modules.Position.Tests
 {
@@ -47,8 +37,8 @@ namespace StockTraderRI.Modules.Position.Tests
         {
             MockUnityContainer container = new MockUnityContainer();
 
-            TestablePositionModule module = new TestablePositionModule(container, new MockRegionManagerService());
-            
+            TestablePositionModule module = new TestablePositionModule(container, new MockRegionManager());
+
             module.InvokeRegisterViewsAndServices();
 
             Assert.AreEqual(typeof(AccountPositionService), container.Types[typeof(IAccountPositionService)]);
@@ -63,7 +53,7 @@ namespace StockTraderRI.Modules.Position.Tests
             Assert.AreEqual(typeof(OrderCompositePresenter), container.Types[typeof(IOrderCompositePresenter)]);
             Assert.AreEqual(typeof(OrdersController), container.Types[typeof(IOrdersController)]);
             Assert.AreEqual(typeof(XmlOrdersService), container.Types[typeof(IOrdersService)]);
-            
+
         }
 
         [TestMethod]
@@ -71,29 +61,30 @@ namespace StockTraderRI.Modules.Position.Tests
         {
             MockRegion toolbarRegion = new MockRegion();
             MockRegion mainRegion = new MockRegion();
-            MockRegionManagerService regionManagerService = new MockRegionManagerService();
+            MockRegionManager regionManager = new MockRegionManager();
             var container = new MockUnityResolver();
             container.Bag.Add(typeof(IOrdersController), new MockOrdersController());
             container.Bag.Add(typeof(IPositionSummaryPresenter), new MockPositionSummaryPresenter());
-            PositionModule module = new PositionModule(container, regionManagerService);
-            regionManagerService.Register("MainRegion", mainRegion);
-            regionManagerService.Register("CollapsibleRegion", new MockRegion());
-            regionManagerService.Register("MainToolbarRegion", toolbarRegion);
+            PositionModule module = new PositionModule(container, regionManager);
+            regionManager.Register("MainRegion", mainRegion);
+            regionManager.Register("CollapsibleRegion", new MockRegion());
+            regionManager.Register("MainToolbarRegion", toolbarRegion);
 
-            Assert.AreEqual(0, toolbarRegion.Views.Count);
-            Assert.AreEqual(0, mainRegion.Views.Count);
+            Assert.AreEqual(0, toolbarRegion.AddedViews.Count);
+            Assert.AreEqual(0, mainRegion.AddedViews.Count);
 
             module.Initialize();
 
-            Assert.AreEqual(1, mainRegion.Views.Count);
-            Assert.AreEqual(1, toolbarRegion.Views.Count);
+            Assert.AreEqual(1, mainRegion.AddedViews.Count);
+            Assert.AreEqual(1, toolbarRegion.AddedViews.Count);
 
         }
 
 
         internal class TestablePositionModule : PositionModule
         {
-            public TestablePositionModule(IUnityContainer container, IRegionManagerService regionManagerService) : base(container, regionManagerService)
+            public TestablePositionModule(IUnityContainer container, IRegionManager regionManager)
+                : base(container, regionManager)
             {
             }
 

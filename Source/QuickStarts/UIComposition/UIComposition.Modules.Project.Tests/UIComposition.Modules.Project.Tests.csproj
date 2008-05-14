@@ -59,7 +59,7 @@
     <Compile Include="Mocks\MockProjectService.cs" />
     <Compile Include="Mocks\MockProjectsListView.cs" />
     <Compile Include="Mocks\MockRegion.cs" />
-    <Compile Include="Mocks\MockRegionManagerService.cs" />
+    <Compile Include="Mocks\MockRegionManager.cs" />
     <Compile Include="Mocks\MockUnityContainer.cs" />
     <Compile Include="ProjectModuleFixture.cs" />
     <Compile Include="Views\ProjectsListView\ProjectsListPresenterFixture.cs" />

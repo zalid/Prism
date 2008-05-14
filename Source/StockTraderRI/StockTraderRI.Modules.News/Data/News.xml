@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <NewsItems xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <NewsItem TickerSymbol="FUND0" IconUri="/StockTraderRI.Modules.News;Component/Data/Images/Annotation_New.png">Company builds widget factory.</NewsItem>
-  <NewsItem TickerSymbol="FUND3" IconUri="/StockTraderRI.Modules.News;Component/Data/Images/Annotation_New.png">Company1 buys Company2.</NewsItem>
-  <NewsItem TickerSymbol="FUND6" IconUri="/StockTraderRI.Modules.News;Component/Data/Images/info.png">Company sells more widgets.</NewsItem>
+  <NewsItem TickerSymbol="STOCK0" IconUri="/StockTraderRI.Modules.News;Component/Data/Images/Annotation_New.png" PublishedDate="4/18/2008">
+    <Title>Big News on Blue Chips</Title>
+    <Body>STOCK0 reaches an all time high</Body>
+  </NewsItem>
+  <NewsItem TickerSymbol="STOCK0" IconUri="/StockTraderRI.Modules.News;Component/Data/Images/Annotation_New.png" PublishedDate="4/18/2008">
+    <Title>Big News on Blue Chips</Title>
+    <Body>STOCK0 reaches an all time high</Body>
+  </NewsItem>
+  <NewsItem TickerSymbol="STOCK0" IconUri="/StockTraderRI.Modules.News;Component/Data/Images/Annotation_New.png" PublishedDate="5/18/2008">
+    <Title>Sad Day on Wallstreet</Title>
+    <Body>STOCK0 reaches an all time low</Body>
+  </NewsItem>
+  <NewsItem TickerSymbol="STOCK0" IconUri="/StockTraderRI.Modules.News;Component/Data/Images/Annotation_New.png" PublishedDate="6/18/2008">
+    <Title>The sky is the limit</Title>
+    <Body>STOCK0 reaches an all time high again</Body>
+  </NewsItem>
+  <NewsItem TickerSymbol="STOCK3" IconUri="/StockTraderRI.Modules.News;Component/Data/Images/Annotation_New.png" PublishedDate="4/19/2008">
+    <Title>Title</Title>
+    <Body>Company1 buys Company2</Body>
+  </NewsItem>
+  <NewsItem TickerSymbol="STOCK6" IconUri="/StockTraderRI.Modules.News;Component/Data/Images/info.png" PublishedDate="4/20/2008">
+    <Title>Title</Title>
+    <Body>Company sells more widgets.</Body>
+  </NewsItem>
 </NewsItems>

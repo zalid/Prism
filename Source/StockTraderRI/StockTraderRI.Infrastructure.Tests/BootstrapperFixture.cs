@@ -20,6 +20,7 @@ using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Prism.Interfaces;
 using Prism.Interfaces.Logging;
+using Prism.Regions;
 using StockTraderRI.Infrastructure.Tests.Mocks;
 
 namespace StockTraderRI.Infrastructure.Tests
@@ -89,7 +90,7 @@ namespace StockTraderRI.Infrastructure.Tests
         }
 
         [TestMethod]
-        public void ShouldRegisterRegionManagerServiceWithContainer()
+        public void ShouldRegisterRegionManagerWithContainer()
         {
             MockPrismLogger mockPrismLogger = new MockPrismLogger();
             MockContainerConfigurator containerConfigurator = new MockContainerConfigurator();
@@ -97,7 +98,7 @@ namespace StockTraderRI.Infrastructure.Tests
             TestableBootstrapper bs = new TestableBootstrapper(mockPrismLogger);
             bs.Initialize(containerConfigurator);
 
-            Assert.IsNotNull(bs.GetContainer().Resolve<IRegionManagerService>());
+            Assert.IsNotNull(RegionManager.GetRegionManager(containerConfigurator.MockShellView));
         }
 
     }

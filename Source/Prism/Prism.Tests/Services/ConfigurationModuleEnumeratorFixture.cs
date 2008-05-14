@@ -152,5 +152,26 @@ namespace Prism.Tests.Services
             Assert.AreEqual(1, modules.Length);
             Assert.AreEqual("Module1", modules[0].ModuleName);
         }
+
+        [TestMethod]
+        public void GetModulesNotThrownIfModuleSectionIsNotDeclared()
+        {
+            MockNullConfigurationStore store = new MockNullConfigurationStore();
+
+            IModuleEnumerator enumerator = new ConfigurationModuleEnumerator(store);
+
+            var modules = enumerator.GetModules();
+
+            Assert.IsNotNull(modules);
+            Assert.AreEqual(0, modules.Length);
+        }
+    }
+
+    internal class MockNullConfigurationStore : ConfigurationStore
+    {
+        public override ModulesConfigurationSection RetrieveModuleConfigurationSection()
+        {
+            return null;
+        }
     }
 }

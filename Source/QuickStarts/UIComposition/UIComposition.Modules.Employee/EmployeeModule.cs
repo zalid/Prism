@@ -20,18 +20,18 @@ namespace UIComposition.Modules.Employee
     using System.Windows;
     using Microsoft.Practices.Unity;
     using Prism.Interfaces;
-    using UIComposition.Modules.Employee.Services;
     using UIComposition.Modules.Employee.Controllers;
+    using UIComposition.Modules.Employee.Services;
 
     public class EmployeeModule : IModule
     {
         private IUnityContainer container;
-        private IRegionManagerService regionManagerService;
+        private IRegionManager regionManager;
 
-        public EmployeeModule(IUnityContainer container, IRegionManagerService regionManagerService)
+        public EmployeeModule(IUnityContainer container, IRegionManager regionManager)
         {
             this.container = container;
-            this.regionManagerService = regionManagerService;
+            this.regionManager = regionManager;
         }
 
         public void Initialize()
@@ -39,8 +39,8 @@ namespace UIComposition.Modules.Employee
             this.RegisterViewsAndServices();
 
             EmployeesPresenter presenter = this.container.Resolve<EmployeesPresenter>();
-            
-            IRegion mainRegion = this.regionManagerService.GetRegion(RegionNames.MainRegion);
+
+            IRegion mainRegion = this.regionManager.GetRegion(RegionNames.MainRegion);
             mainRegion.Add((UIElement)presenter.View);
         }
 

@@ -21,6 +21,6 @@ namespace Prism.Interfaces
 {
     public interface IModuleLoaderService
     {
-        void Initialize(ModuleInfo[] moduleInfoList);
+        void Initialize(ModuleInfo[] moduleInfos);
     }
 }

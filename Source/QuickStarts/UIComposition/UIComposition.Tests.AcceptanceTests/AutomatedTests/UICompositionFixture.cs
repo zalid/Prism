@@ -24,6 +24,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UIComposition.AcceptanceTests.Helpers;
 using Core.UIItems.Finders;
 using Core.UIItems;
+using UIComposition.AcceptanceTests.TestInfrastructure;
 
 namespace UIComposition.AcceptanceTests.AutomatedTests
 {
@@ -39,7 +40,7 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
             // If so, fail the test case.
             if (StateDiagnosis.IsFailed)
             {
-                Assert.Fail(ConfigHandler.GetTestInputData("ApplicationLoadFailure"));
+                Assert.Fail(TestDataInfrastructure.GetTestInputData("ApplicationLoadFailure"));
             }
 
             base.TestInitialize();
@@ -69,28 +70,28 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
         [WorkItem(16909)]
         public void ApplicationLaunch()
         {
-            SearchCriteria searchCriteria = SearchCriteria.ByText(ConfigHandler.GetTestInputData("SelectEmployeeLabelText")).AndControlType(typeof(Label));
+            SearchCriteria searchCriteria = SearchCriteria.ByText(TestDataInfrastructure.GetTestInputData("SelectEmployeeLabelText")).AndControlType(typeof(Label));
             Label selectEmployeeLabel = window.Get<Label>(searchCriteria);
             Assert.IsNotNull(selectEmployeeLabel);
 
-            ListView list = window.Get<ListView>(ConfigHandler.GetControlId("EmployeesList"));
-            Assert.IsNotNull(list, ConfigHandler.GetTestInputData("EmployeeListNotFound"));
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("EmployeesList"));
+            Assert.IsNotNull(list, TestDataInfrastructure.GetTestInputData("EmployeeListNotFound"));
 
-            Assert.AreEqual(2, list.Rows.Count, ConfigHandler.GetTestInputData("EmployeeListIncorrectRowCount"));
-            Assert.AreEqual(2, list.Header.Columns.Count, ConfigHandler.GetTestInputData("EmployeeListIncorrectColumnCount"));
+            Assert.AreEqual(2, list.Rows.Count, TestDataInfrastructure.GetTestInputData("EmployeeListIncorrectRowCount"));
+            Assert.AreEqual(2, list.Header.Columns.Count, TestDataInfrastructure.GetTestInputData("EmployeeListIncorrectColumnCount"));
 
             /* Buttons have been removed
-            searchCriteria = SearchCriteria.ByAutomationId(ConfigHandler.GetControlId("SendEmailButton")).AndControlType(typeof(Button));
+            searchCriteria = SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("SendEmailButton")).AndControlType(typeof(Button));
             Button sendEmailButton = window.Get<Button>(searchCriteria);
-            Assert.IsNotNull(sendEmailButton, ConfigHandler.GetTestInputData("SendMailButtonNotFound"));
+            Assert.IsNotNull(sendEmailButton, TestDataInfrastructure.GetTestInputData("SendMailButtonNotFound"));
 
-            searchCriteria = SearchCriteria.ByAutomationId(ConfigHandler.GetControlId("CallButton")).AndControlType(typeof(Button));
+            searchCriteria = SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("CallButton")).AndControlType(typeof(Button));
             Button callButton = window.Get<Button>(searchCriteria);
-            Assert.IsNotNull(callButton, ConfigHandler.GetTestInputData("CallButtonNotFound"));
+            Assert.IsNotNull(callButton, TestDataInfrastructure.GetTestInputData("CallButtonNotFound"));
 
-            searchCriteria = SearchCriteria.ByAutomationId(ConfigHandler.GetControlId("PastProjectsButton")).AndControlType(typeof(Button));
+            searchCriteria = SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("PastProjectsButton")).AndControlType(typeof(Button));
             Button pastProjectsButton = window.Get<Button>(searchCriteria);
-            Assert.IsNotNull(callButton, ConfigHandler.GetTestInputData("PastProjectsButtonNotfound"));
+            Assert.IsNotNull(callButton, TestDataInfrastructure.GetTestInputData("PastProjectsButtonNotfound"));
             */ 
         }
     }

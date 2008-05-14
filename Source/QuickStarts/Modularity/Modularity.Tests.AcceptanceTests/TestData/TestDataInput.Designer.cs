@@ -61,15 +61,6 @@ namespace Modularity_AcceptanceTests.TestData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to allowsDelayLoading.
-        /// </summary>
-        internal static string AllowsDelayLoadingAttribute {
-            get {
-                return ResourceManager.GetString("AllowsDelayLoadingAttribute", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Failing the test cases as the application failed to load.
         /// </summary>
         internal static string ApplicationLoadFailure {
@@ -93,6 +84,15 @@ namespace Modularity_AcceptanceTests.TestData {
         internal static string DependenciesNode {
             get {
                 return ResourceManager.GetString("DependenciesNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DependsOn.
+        /// </summary>
+        internal static string DependencyAttributeDirLookup {
+            get {
+                return ResourceManager.GetString("DependencyAttributeDirLookup", resourceCulture);
             }
         }
         
@@ -156,6 +156,33 @@ namespace Modularity_AcceptanceTests.TestData {
         internal static string ModuleSectionName {
             get {
                 return ResourceManager.GetString("ModuleSectionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modules.
+        /// </summary>
+        internal static string ModulesFolder {
+            get {
+                return ResourceManager.GetString("ModulesFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to startupLoaded.
+        /// </summary>
+        internal static string StartupLoadingAttributeConfigDriven {
+            get {
+                return ResourceManager.GetString("StartupLoadingAttributeConfigDriven", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to StartupLoaded.
+        /// </summary>
+        internal static string StartupLoadingAttributeDirLookup {
+            get {
+                return ResourceManager.GetString("StartupLoadingAttributeDirLookup", resourceCulture);
             }
         }
     }

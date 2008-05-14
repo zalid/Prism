@@ -29,13 +29,12 @@ namespace StockTraderRI.Modules.Position.PresentationModels
         private const string GAINLOSSPERCENTPROPERTYNAME = "GainLossPercent";
         private const string MARKETVALUEPROPERTYNAME = "MarketValue";
 
-        public PositionSummaryItem(string tickerSymbol, decimal costBasis, long shares, decimal currentPrice, bool hasNews)
+        public PositionSummaryItem(string tickerSymbol, decimal costBasis, long shares, decimal currentPrice)
         {
             TickerSymbol = tickerSymbol;
             CostBasis = costBasis;
             Shares = shares;
             CurrentPrice = currentPrice;
-            HasNews = hasNews;
         }
 
         private string _tickerSymbol;
@@ -114,25 +113,6 @@ namespace StockTraderRI.Modules.Position.PresentationModels
                     PropertyChanged(this, new PropertyChangedEventArgs("CurrentPrice"));
                     PropertyChanged(this, new PropertyChangedEventArgs(MARKETVALUEPROPERTYNAME));
                     PropertyChanged(this, new PropertyChangedEventArgs(GAINLOSSPERCENTPROPERTYNAME));
-                }
-            }
-        }
-
-
-        private bool _hasNews;
-
-        public bool HasNews
-        {
-            get
-            {
-                return _hasNews;
-            }
-            set
-            {
-                if (!value.Equals(_hasNews))
-                {
-                    _hasNews = value;
-                    PropertyChanged(this, new PropertyChangedEventArgs("HasNews"));
                 }
             }
         }

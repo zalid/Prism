@@ -15,28 +15,12 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Controls;
-using Prism.Interfaces;
 
 namespace UIComposition.Modules.Employee.Tests.Mocks
 {
     class MockEmployeesView : Control, IEmployeesView
     {
-        IRegionManagerService regionManagerService;
-        public MockRegion DetailsRegion;
-
-        public MockEmployeesView()
-        {
-            regionManagerService = new MockRegionManagerService();
-
-            DetailsRegion = new MockRegion();
-
-            regionManagerService.Register(RegionNames.DetailsRegion, DetailsRegion);
-        }
         public bool SetHeaderCalled;
 
         public void SetHeader(IEmployeesListView employeesListView)
@@ -44,10 +28,9 @@ namespace UIComposition.Modules.Employee.Tests.Mocks
             SetHeaderCalled = true;
         }
 
-
-        public Prism.Interfaces.IRegionManagerService RegionManagerService
+        public Prism.Interfaces.IRegionManager RegionManager
         {
-            get { return regionManagerService; }
+            get { return null; }
         }
     }
 }

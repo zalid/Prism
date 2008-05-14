@@ -36,7 +36,7 @@ namespace Prism.Services
             _baseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, baseDirectory ?? string.Empty);
         }
 
-        public virtual ModulesConfigurationSection GetModuleConfigurationSection()
+        public virtual ModulesConfigurationSection RetrieveModuleConfigurationSection()
         {
             foreach (string fileName in Directory.GetFiles(_baseDirectory, "*.config", SearchOption.TopDirectoryOnly))
             {

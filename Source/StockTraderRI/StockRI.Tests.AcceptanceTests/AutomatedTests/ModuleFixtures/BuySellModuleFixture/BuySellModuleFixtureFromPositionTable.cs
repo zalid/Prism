@@ -56,7 +56,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         public void BuySellScreenLoadForBuyFromPositionTable()
         {
             string symbol;
-            symbol = ConfigHandler.GetTestInputData("Symbol");
+            symbol = TestDataInfrastructure.GetTestInputData("Symbol");
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, symbol);
 
             Order model =
@@ -87,14 +87,14 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         public void BuySellScreenLoadForSellFromPositionTable()
         {
             string symbol;
-            symbol = ConfigHandler.GetTestInputData("Symbol");
+            symbol = TestDataInfrastructure.GetTestInputData("Symbol");
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
 
             //TODO: Dock the panel.
 
             //Button collapsiblePinButton = window.Get<Button>("HeaderAutoHideButton");
             //collapsiblePinButton.Click();
-            //buySellListTab = window.Get<ListView>(ConfigHandler.GetControlId("buySellListTab"));
+            //buySellListTab = window.Get<ListView>(TestDataInfrastructure.GetControlId("buySellListTab"));
 
             Order model =
                new Order(symbol, 0,
@@ -125,20 +125,20 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         public void BuyStockFromPositionTableByClickingSubmit()
         {
             string symbol;
-            symbol = ConfigHandler.GetTestInputData("Symbol");
+            symbol = TestDataInfrastructure.GetTestInputData("Symbol");
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, symbol);
 
             Order model = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
+                                        Decimal.Parse(TestDataInfrastructure.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("BuySellOrderType"),
+                                        int.Parse(TestDataInfrastructure.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Buy.ToString()
                                     );
             PopulateBuySellPanelWithData(model);
 
-            Button submitButton = window.Get<Button>(ConfigHandler.GetControlId("BuySellSubmitButton"));
+            Button submitButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
             submitButton.Click();
 
             //give time for submit processing
@@ -174,20 +174,20 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         public void SellStockFromPositionTableByClickingSubmit()
         {
             string symbol;
-            symbol = ConfigHandler.GetTestInputData("Symbol");
+            symbol = TestDataInfrastructure.GetTestInputData("Symbol");
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
 
             Order model = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
+                                        Decimal.Parse(TestDataInfrastructure.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("BuySellOrderType"),
+                                        int.Parse(TestDataInfrastructure.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Sell.ToString()
                                     );
             PopulateBuySellPanelWithData(model);
 
-            Button submitButton = window.Get<Button>(ConfigHandler.GetControlId("BuySellSubmitButton"));
+            Button submitButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
             submitButton.Click();
 
             //give time for submit processing
@@ -227,18 +227,18 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         {
             string symbol;
             string anotherSymbol;
-            symbol = ConfigHandler.GetTestInputData("Symbol");
-            anotherSymbol = ConfigHandler.GetTestInputData("PositionSymbol");
+            symbol = TestDataInfrastructure.GetTestInputData("Symbol");
+            anotherSymbol = TestDataInfrastructure.GetTestInputData("PositionSymbol");
 
             /////////////////////////////////
             //Enter Share 1 Details
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, symbol);
             Order model = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
+                                        Decimal.Parse(TestDataInfrastructure.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("BuySellOrderType"),
+                                        int.Parse(TestDataInfrastructure.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Buy.ToString()
                                     );
             PopulateBuySellPanelWithData(model);
@@ -246,7 +246,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
 
             //if the Buy/Sell collapsible panel is not pinned, then loss focus of it so as to enable rest of the screen
             //to accept user input
-            ListView list = window.Get<ListView>(ConfigHandler.GetControlId("PositionTableId"));
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             list.Hover();
 
             /////////////////////////////////
@@ -254,16 +254,16 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, anotherSymbol);
             Order anotherModel = new Order(
                                         anotherSymbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
+                                        Decimal.Parse(TestDataInfrastructure.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("BuySellOrderType"),
+                                        int.Parse(TestDataInfrastructure.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Buy.ToString()
                                     );
             PopulateBuySellPanelWithData(anotherModel);
             /////////////////////////////////
 
-            Button submitAllButton = window.Get<Button>(ConfigHandler.GetControlId("BuySellSubmitAllButton"));
+            Button submitAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
             submitAllButton.Click();
 
             //give time for submit processing
@@ -281,13 +281,12 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
 
             //validate if the buy transactions were successful
             List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
-            Assert.IsNotNull(orders.Find(o => o.Symbol.Equals(symbol) || o.Symbol.Equals(anotherSymbol)));
+            Assert.IsNotNull(orders.Find(o => o.Symbol.Equals(symbol)));
+            Assert.IsNotNull(orders.Find(o => o.Symbol.Equals(anotherSymbol)));
 
             // Validate the correctness of data.
             Assert.IsTrue(orders.Find(o => o.Symbol.Equals(symbol)).Equals(model));
             Assert.IsTrue(orders.Find(o => o.Symbol.Equals(anotherSymbol)).Equals(anotherModel));
-
-
         }
 
         /// <summary>
@@ -310,18 +309,18 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         {
             string symbol;
             string anotherSymbol;
-            symbol = ConfigHandler.GetTestInputData("Symbol");
-            anotherSymbol = ConfigHandler.GetTestInputData("PositionSymbol");
+            symbol = TestDataInfrastructure.GetTestInputData("Symbol");
+            anotherSymbol = TestDataInfrastructure.GetTestInputData("PositionSymbol");
 
             /////////////////////////////////
             //Enter Share 1 Details
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
             Order model = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
+                                        Decimal.Parse(TestDataInfrastructure.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("BuySellOrderType"),
+                                        int.Parse(TestDataInfrastructure.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Sell.ToString()
                                     );
             PopulateBuySellPanelWithData(model);
@@ -329,7 +328,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
 
             //if the Buy/Sell collapsible panel is not pinned, then loss focus of it so as to enable rest of the screen
             //to accept user input
-            ListView list = window.Get<ListView>(ConfigHandler.GetControlId("PositionTableId"));
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             list.Hover();
 
             /////////////////////////////////
@@ -337,15 +336,15 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, anotherSymbol);
             Order anotherModel = new Order(
                                         anotherSymbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
+                                        Decimal.Parse(TestDataInfrastructure.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("BuySellOrderType"),
+                                        int.Parse(TestDataInfrastructure.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Sell.ToString()
                                     );
             PopulateBuySellPanelWithData(anotherModel);
 
-            Button submitAllButton = window.Get<Button>(ConfigHandler.GetControlId("BuySellSubmitAllButton"));
+            Button submitAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
             submitAllButton.Click();
 
             //give time for submit processing
@@ -389,19 +388,19 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         public void LaunchBuySellPanelFromPositionTableAndEnterStockBuyDetailsAndClickCancel()
         {
             string symbol;
-            symbol = ConfigHandler.GetTestInputData("Symbol");
+            symbol = TestDataInfrastructure.GetTestInputData("Symbol");
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, symbol);
             Order model = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
+                                        Decimal.Parse(TestDataInfrastructure.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("BuySellOrderType"),
+                                        int.Parse(TestDataInfrastructure.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Buy.ToString()
                                     );
             PopulateBuySellPanelWithData(model);
 
-            Button cancelButton = window.Get<Button>(ConfigHandler.GetControlId("BuySellCancelButton"));
+            Button cancelButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellCancelButton"));
             cancelButton.Click();
 
             //give time for cancel processing
@@ -439,18 +438,18 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         {
             string symbol;
             string anotherSymbol;
-            symbol = ConfigHandler.GetTestInputData("Symbol");
-            anotherSymbol = ConfigHandler.GetTestInputData("PositionSymbol");
+            symbol = TestDataInfrastructure.GetTestInputData("Symbol");
+            anotherSymbol = TestDataInfrastructure.GetTestInputData("PositionSymbol");
 
             /////////////////////////////////
             //Enter Share 1 Details
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
             Order model = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
+                                        Decimal.Parse(TestDataInfrastructure.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("BuySellOrderType"),
+                                        int.Parse(TestDataInfrastructure.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Sell.ToString()
                                     );
             PopulateBuySellPanelWithData(model);
@@ -458,7 +457,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
 
             //if the Buy/Sell collapsible panel is not pinned, then loss focus of it so as to enable rest of the screen
             //to accept user input
-            ListView list = window.Get<ListView>(ConfigHandler.GetControlId("PositionTableId"));
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             list.Hover();
 
             /////////////////////////////////
@@ -466,15 +465,15 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, anotherSymbol);
             Order anotherModel = new Order(
                                         anotherSymbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
+                                        Decimal.Parse(TestDataInfrastructure.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("BuySellOrderType"),
+                                        int.Parse(TestDataInfrastructure.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Sell.ToString()
                                     );
             PopulateBuySellPanelWithData(anotherModel);
 
-            Button cancelAllButton = window.Get<Button>(ConfigHandler.GetControlId("BuySellCancelAllButton"));
+            Button cancelAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellCancelAllButton"));
             cancelAllButton.Click();
 
             //give time for cancel processing
@@ -513,26 +512,26 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         public void BuyStockFromPositionTableByClickingBuyAtLast()
         {
             string symbol;
-            symbol = ConfigHandler.GetTestInputData("Symbol");
+            symbol = TestDataInfrastructure.GetTestInputData("Symbol");
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, symbol);
             Order model = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
+                                        Decimal.Parse(TestDataInfrastructure.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("BuySellOrderType"),
+                                        int.Parse(TestDataInfrastructure.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Buy.ToString()
                                     );
             PopulateBuySellPanelWithData(model);
 
-            Button buyAtLastButton = window.Get<Button>(ConfigHandler.GetControlId("BuySellBuyLastButton"));
+            Button buyAtLastButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellBuyLastButton"));
             buyAtLastButton.Click();
 
             //get the last price for the share
             List<Market> market = testDataInfrastructure.GetData<MarketDataProvider, Market>();
             model.LimitStopPrice = market.Find(m => m.TickerSymbol.Equals(symbol)).LastPrice;
 
-            Button submitButton = window.Get<Button>(ConfigHandler.GetControlId("BuySellSubmitButton"));
+            Button submitButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
             submitButton.Click();
 
             //give time for submit processing
@@ -568,26 +567,26 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         public void SellStockFromPositionTableByClickingSellAtLast()
         {
             string symbol;
-            symbol = ConfigHandler.GetTestInputData("Symbol");
+            symbol = TestDataInfrastructure.GetTestInputData("Symbol");
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
             Order model = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("BuySellTfimeInForce"),
+                                        Decimal.Parse(TestDataInfrastructure.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("BuySellOrderType"),
+                                        int.Parse(TestDataInfrastructure.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("BuySellTfimeInForce"),
                                         BuySellEnum.Sell.ToString()
                                     );
             PopulateBuySellPanelWithData(model);
 
-            Button sellAtLastButton = window.Get<Button>(ConfigHandler.GetControlId("BuySellSellLastButton"));
+            Button sellAtLastButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSellLastButton"));
             sellAtLastButton.Click();
 
             //get the last price for the share
             List<Market> market = testDataInfrastructure.GetData<MarketDataProvider, Market>();
             model.LimitStopPrice = market.Find(m => m.TickerSymbol.Equals(symbol)).LastPrice;
 
-            Button submitButton = window.Get<Button>(ConfigHandler.GetControlId("BuySellSubmitButton"));
+            Button submitButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
             submitButton.Click();
 
             //give time for submit processing
@@ -621,19 +620,19 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         public void BuyStockFromPositionTableByClickingToolbarSubmit()
         {
             string symbol;
-            symbol = ConfigHandler.GetTestInputData("Symbol");
+            symbol = TestDataInfrastructure.GetTestInputData("Symbol");
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, symbol);
             Order model = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
+                                        Decimal.Parse(TestDataInfrastructure.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("BuySellOrderType"),
+                                        int.Parse(TestDataInfrastructure.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Buy.ToString()
                                     );
             PopulateBuySellPanelWithData(model);
 
-            Button submitButton = window.Get<Button>(ConfigHandler.GetControlId("ToolbarSubmitButton"));
+            Button submitButton = window.Get<Button>(TestDataInfrastructure.GetControlId("ToolbarSubmitButton"));
             submitButton.Click();
 
             //give time for submit processing
@@ -671,18 +670,18 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         {
             string symbol;
             string anotherSymbol;
-            symbol = ConfigHandler.GetTestInputData("Symbol");
-            anotherSymbol = ConfigHandler.GetTestInputData("PositionSymbol");
+            symbol = TestDataInfrastructure.GetTestInputData("Symbol");
+            anotherSymbol = TestDataInfrastructure.GetTestInputData("PositionSymbol");
 
             /////////////////////////////////
             //Enter Share 1 Details
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, symbol);
             Order model = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
+                                        Decimal.Parse(TestDataInfrastructure.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("BuySellOrderType"),
+                                        int.Parse(TestDataInfrastructure.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Buy.ToString()
                                     );
             PopulateBuySellPanelWithData(model);
@@ -690,7 +689,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
 
             //if the Buy/Sell collapsible panel is not pinned, then loss focus of it so as to enable rest of the screen
             //to accept user input
-            ListView list = window.Get<ListView>(ConfigHandler.GetControlId("PositionTableId"));
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             list.Hover();
 
             /////////////////////////////////
@@ -698,16 +697,16 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, anotherSymbol);
             Order anotherModel = new Order(
                                         anotherSymbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
+                                        Decimal.Parse(TestDataInfrastructure.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("BuySellOrderType"),
+                                        int.Parse(TestDataInfrastructure.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Buy.ToString()
                                     );
             PopulateBuySellPanelWithData(anotherModel);
             /////////////////////////////////
 
-            Button submitAllButton = window.Get<Button>(ConfigHandler.GetControlId("ToolbarSubmitAllButton"));
+            Button submitAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("ToolbarSubmitAllButton"));
             submitAllButton.Click();
 
             //give time for submit processing
@@ -724,13 +723,12 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             Assert.IsNull(buySellAnotherSymbolTab);
 
             List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
-            Assert.IsNotNull(orders.Find(o => o.Symbol.Equals(symbol) || o.Symbol.Equals(anotherSymbol)));
+            Assert.IsNotNull(orders.Find(o => o.Symbol.Equals(symbol)));
+            Assert.IsNotNull(orders.Find(o => o.Symbol.Equals(anotherSymbol)));
 
             // Validate the correctness of data.
             Assert.IsTrue(orders.Find(o => o.Symbol.Equals(symbol)).Equals(model));
             Assert.IsTrue(orders.Find(o => o.Symbol.Equals(anotherSymbol)).Equals(anotherModel));
-
-
         }
 
         /// <summary>
@@ -752,19 +750,19 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         public void LaunchBuySellPanelFromPositionTableAndEnterStockBuyDetailsAndClickToolbarCancel()
         {
             string symbol;
-            symbol = ConfigHandler.GetTestInputData("Symbol");
+            symbol = TestDataInfrastructure.GetTestInputData("Symbol");
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, symbol);
             Order model = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
+                                        Decimal.Parse(TestDataInfrastructure.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("BuySellOrderType"),
+                                        int.Parse(TestDataInfrastructure.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Buy.ToString()
                                     );
             PopulateBuySellPanelWithData(model);
 
-            Button cancelButton = window.Get<Button>(ConfigHandler.GetControlId("ToolbarCancelButton"));
+            Button cancelButton = window.Get<Button>(TestDataInfrastructure.GetControlId("ToolbarCancelButton"));
             cancelButton.Click();
 
             //give time for cancel processing
@@ -801,18 +799,18 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         {
             string symbol;
             string anotherSymbol;
-            symbol = ConfigHandler.GetTestInputData("Symbol");
-            anotherSymbol = ConfigHandler.GetTestInputData("PositionSymbol");
+            symbol = TestDataInfrastructure.GetTestInputData("Symbol");
+            anotherSymbol = TestDataInfrastructure.GetTestInputData("PositionSymbol");
 
             /////////////////////////////////
             //Enter Share 1 Details
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
             Order model = new Order(
                                         symbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
+                                        Decimal.Parse(TestDataInfrastructure.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("BuySellOrderType"),
+                                        int.Parse(TestDataInfrastructure.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Sell.ToString()
                                     );
             PopulateBuySellPanelWithData(model);
@@ -820,7 +818,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
 
             //if the Buy/Sell collapsible panel is not pinned, then loss focus of it so as to enable rest of the screen
             //to accept user input
-            ListView list = window.Get<ListView>(ConfigHandler.GetControlId("PositionTableId"));
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             list.Hover();
 
             /////////////////////////////////
@@ -828,16 +826,16 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, anotherSymbol);
             Order anotherModel = new Order(
                                         anotherSymbol,
-                                        Decimal.Parse(ConfigHandler.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("BuySellOrderType"),
-                                        int.Parse(ConfigHandler.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
-                                        ConfigHandler.GetTestInputData("TimeInForceEndOfDay"),
+                                        Decimal.Parse(TestDataInfrastructure.GetTestInputData("BuySellLimitPrice"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("BuySellOrderType"),
+                                        int.Parse(TestDataInfrastructure.GetTestInputData("BuySellNumberOfShares"), CultureInfo.InvariantCulture),
+                                        TestDataInfrastructure.GetTestInputData("TimeInForceEndOfDay"),
                                         BuySellEnum.Sell.ToString()
                                     );
             PopulateBuySellPanelWithData(anotherModel);
             /////////////////////////////////
 
-            Button cancelAllButton = window.Get<Button>(ConfigHandler.GetControlId("ToolbarCancelAllButton"));
+            Button cancelAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("ToolbarCancelAllButton"));
             cancelAllButton.Click();
 
             //give time for cancel processing

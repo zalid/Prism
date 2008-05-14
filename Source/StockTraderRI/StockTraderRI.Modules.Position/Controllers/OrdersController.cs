@@ -16,28 +16,25 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Windows;
 using Microsoft.Practices.Unity;
+using Prism.Commands;
 using Prism.Interfaces;
 using StockTraderRI.Infrastructure;
-using StockTraderRI.Modules.Position.Orders;
 using StockTraderRI.Modules.Position.Interfaces;
-using System.Windows;
-using Prism.Commands;
+using StockTraderRI.Modules.Position.Orders;
 
 namespace StockTraderRI.Modules.Position.Controllers
 {
     public class OrdersController : IOrdersController
     {
-        private IRegionManagerService _regionManager;
+        private IRegionManager _regionManager;
         private IUnityContainer _container;
         private IOrdersView _ordersView;
 
         private readonly string ORDERS_REGION = "OrdersRegion";
 
-        public OrdersController(IRegionManagerService regionManager, IUnityContainer container)
+        public OrdersController(IRegionManager regionManager, IUnityContainer container)
         {
             _regionManager = regionManager;
             _container = container;
@@ -70,10 +67,11 @@ namespace StockTraderRI.Modules.Position.Controllers
                 var ordersPresenter = _container.Resolve<IOrdersPresenter>();
                 _ordersView = ordersPresenter.View;
                 region.Add((UIElement)_ordersView, "OrdersView");
+                region.Show(_ordersView);
             }
 
             IRegion ordersRegion = _regionManager.GetRegion(ORDERS_REGION);
-           
+
             var orderCompositePresenter = _container.Resolve<IOrderCompositePresenter>();
             orderCompositePresenter.SetTransactionInfo(tickerSymbol, transactionType);
             orderCompositePresenter.CloseViewRequested += delegate
@@ -86,14 +84,15 @@ namespace StockTraderRI.Modules.Position.Controllers
                 }
             };
 
-            ordersRegion.Add((UIElement)orderCompositePresenter.View);     
+            ordersRegion.Add((UIElement)orderCompositePresenter.View);
+            ordersRegion.Show(orderCompositePresenter.View);
         }
 
         #region IOrdersController Members
 
         public DelegateCommand<string> BuyCommand { get; private set; }
 
-        public DelegateCommand<string> SellCommand {get; private set; }
+        public DelegateCommand<string> SellCommand { get; private set; }
 
         #endregion
     }

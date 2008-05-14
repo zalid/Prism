@@ -63,19 +63,20 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         /// Expected Result:
         /// When mouse hover over on watch list, Watch list window should be displayed
         /// </summary>
-        [TestMethod]
+        [Ignore]
+        [TestMethod]        
         public void WatchListHoverShow()
         {
-            ListView watchList = window.Get<ListView>(ConfigHandler.GetControlId("WatchListView"));
+            ListView watchList = window.Get<ListView>(TestDataInfrastructure.GetControlId("WatchListView"));
             UIItem watchListTab = window.GetWatchListRegionHeader();
             watchListTab.Hover();
-            watchList = window.Get<ListView>(ConfigHandler.GetControlId("WatchListView"));
+            watchList = window.Get<ListView>(TestDataInfrastructure.GetControlId("WatchListView"));
 
             Assert.IsFalse(IsWatchListWindowCollapsed(watchList));
 
             //**** if WatchList button loses focus, the WatchList window should collapse back ****
             //to lose focus on the WatchList button, hover over the Account Position List
-            UIItem otherControl = window.Get<UIItem>(ConfigHandler.GetControlId("WatchListAddTextBox"));
+            UIItem otherControl = window.Get<UIItem>(TestDataInfrastructure.GetControlId("WatchListAddTextBox"));
             otherControl.Hover();
             
             //WatchList window should collapse
@@ -95,17 +96,18 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         /// Expected Result:
         /// On watchList click: watchlist window should be displayed.
         /// </summary>
-        [TestMethod]
+        [Ignore]
+        [TestMethod]      
         public void WatchListClickShow()
         {
-            ListView watchList = window.Get<ListView>(ConfigHandler.GetControlId("WatchListView"));
+            ListView watchList = window.Get<ListView>(TestDataInfrastructure.GetControlId("WatchListView"));
             UIItem watchListTab = window.GetWatchListRegionHeader();
             watchListTab.Click();
-            watchList = window.Get<ListView>(ConfigHandler.GetControlId("WatchListView"));
+            watchList = window.Get<ListView>(TestDataInfrastructure.GetControlId("WatchListView"));
 
             Assert.IsFalse(IsWatchListWindowCollapsed(watchList));
 
-            ListView list = window.Get<ListView>(ConfigHandler.GetControlId("PositionTableId"));
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             list.Click();
             
             Assert.IsTrue(IsWatchListWindowCollapsed(watchList));
@@ -126,18 +128,18 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         /// On pin watch list panel: watch list window should get pinned (display visible)
         /// On unpin watch list panel: watch list window should get unpinned (display collapsed)
         /// </summary>
-        //TODO: Find a way to get the pin toggle button
+        //TODO: Find a way to get the pin toggle button 
         [Ignore]
         [TestMethod]
         public void WatchListPin()
         {
-            ListView watchList = window.Get<ListView>(ConfigHandler.GetControlId("WatchListView"));
+            ListView watchList = window.Get<ListView>(TestDataInfrastructure.GetControlId("WatchListView"));
             UIItem watchListTabHeader = window.GetWatchListRegionHeader();
             watchListTabHeader.Click();
-            watchList = window.Get<ListView>(ConfigHandler.GetControlId("WatchListView"));
+            watchList = window.Get<ListView>(TestDataInfrastructure.GetControlId("WatchListView"));
 
             //pin the watch list panel
-            //Button pinImage = window.Get<Button>(ConfigHandler.GetControlId("WatchListHideButton"));
+            //Button pinImage = window.Get<Button>(TestDataInfrastructure.GetControlId("WatchListHideButton"));
             Button pinImage = window.Get<Button>("HeaderAutoHideButton");
             pinImage.Click();
 
@@ -145,7 +147,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
             Assert.IsFalse(watchListTabHeader.Visible);
 
             //to lose focus on the WatchList button, click somewhere on the Account Position List
-            ListView list = window.Get<ListView>(ConfigHandler.GetControlId("PositionTableId"));
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             list.Click();
             
             Assert.IsFalse(IsWatchListWindowCollapsed(watchList));
@@ -172,14 +174,13 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         [TestMethod]
         public void AddWatchList()
         {
-            window.GetWatchListRegionHeader().Click();
-            ListView watchList = window.Get<ListView>(ConfigHandler.GetControlId("WatchListView"));
+            ListView watchList = window.Get<ListView>(TestDataInfrastructure.GetControlId("WatchListView"));
             int watchListCountBeforeClick = watchList.Rows.Count;
             
-            TextBox addWatchTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("WatchListAddTextBox"));
-            addWatchTextBox.Text = ConfigHandler.GetTestInputData("WatchListSymbol");
+            TextBox addWatchTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("WatchListAddTextBox"));
+            addWatchTextBox.Text = TestDataInfrastructure.GetTestInputData("WatchListSymbol");
             
-            Button addWatchListButton = window.Get<Button>(ConfigHandler.GetControlId("WatchListAddButton"));
+            Button addWatchListButton = window.Get<Button>(TestDataInfrastructure.GetControlId("WatchListAddButton"));
             addWatchListButton.Click();
 
             Assert.AreEqual(watchListCountBeforeClick + 1, watchList.Rows.Count);
@@ -205,14 +206,14 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         [TestMethod]
         public void WatchListTableContent()
         {
-            window.GetWatchListRegionHeader().Click();
-            ListView watchList = window.Get<ListView>(ConfigHandler.GetControlId("WatchListView"));
+           
+            ListView watchList = window.Get<ListView>(TestDataInfrastructure.GetControlId("WatchListView"));
             int watchListCountBeforeClick = watchList.Rows.Count;
 
-            TextBox addWatchTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("WatchListAddTextBox"));
-            addWatchTextBox.Text = ConfigHandler.GetTestInputData("WatchListSymbol");
+            TextBox addWatchTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("WatchListAddTextBox"));
+            addWatchTextBox.Text = TestDataInfrastructure.GetTestInputData("WatchListSymbol");
 
-            Button addWatchListButton = window.Get<Button>(ConfigHandler.GetControlId("WatchListAddButton"));
+            Button addWatchListButton = window.Get<Button>(TestDataInfrastructure.GetControlId("WatchListAddButton"));
             addWatchListButton.Click();
 
             Assert.AreEqual(watchListCountBeforeClick + 1, watchList.Rows.Count);
@@ -243,14 +244,13 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         [TestMethod]
         public void AddSymbolTwiceToWatchList()
         {
-            window.GetWatchListRegionHeader().Click();
-            ListView watchList = window.Get<ListView>(ConfigHandler.GetControlId("WatchListView"));
+            ListView watchList = window.Get<ListView>(TestDataInfrastructure.GetControlId("WatchListView"));
             int watchListCountBeforeClick = watchList.Rows.Count;
 
-            TextBox addWatchTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("WatchListAddTextBox"));
-            addWatchTextBox.Text = ConfigHandler.GetTestInputData("WatchListSymbol");
+            TextBox addWatchTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("WatchListAddTextBox"));
+            addWatchTextBox.Text = TestDataInfrastructure.GetTestInputData("WatchListSymbol");
 
-            Button addWatchListButton = window.Get<Button>(ConfigHandler.GetControlId("WatchListAddButton"));
+            Button addWatchListButton = window.Get<Button>(TestDataInfrastructure.GetControlId("WatchListAddButton"));
             //click the Add to WatchList button twice and check if the symbol gets added twice
             addWatchListButton.Click();
             addWatchListButton.Click();
@@ -275,14 +275,13 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         [TestMethod]
         public void AddInvalidSymbolToWatchList()
         {
-            window.GetWatchListRegionHeader().Click();
-            ListView watchList = window.Get<ListView>(ConfigHandler.GetControlId("WatchListView"));
+            ListView watchList = window.Get<ListView>(TestDataInfrastructure.GetControlId("WatchListView"));
             int watchListCountBeforeClick = watchList.Rows.Count;
 
-            TextBox addWatchTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("WatchListAddTextBox"));
-            addWatchTextBox.Text = ConfigHandler.GetTestInputData("InvalidSymbol");
+            TextBox addWatchTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("WatchListAddTextBox"));
+            addWatchTextBox.Text = TestDataInfrastructure.GetTestInputData("InvalidSymbol");
 
-            Button addWatchListButton = window.Get<Button>(ConfigHandler.GetControlId("WatchListAddButton"));
+            Button addWatchListButton = window.Get<Button>(TestDataInfrastructure.GetControlId("WatchListAddButton"));
             addWatchListButton.Click();
 
             List<AccountPosition> position = testDataInfrastructure.GetData<AccountPositionDataProvider, AccountPosition>();
@@ -309,16 +308,17 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         /// Expected Result:
         /// Watchlist should have the newly added symbol and the
         /// Watchlist should be expanded again on click on region header
-        [TestMethod]
+        [Ignore]
+        [TestMethod]       
         public void AddingWatchListItemFromToolBarAddsRowToListAndExpandsWatchList()
         {
             window.GetWatchListRegionHeader().Click();
-            ListView watchList = window.Get<ListView>(ConfigHandler.GetControlId("WatchListView"));
+            ListView watchList = window.Get<ListView>(TestDataInfrastructure.GetControlId("WatchListView"));
             int oldCount = watchList.Rows.Count;
-            TextBox addWatchListTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("WatchListAddTextBox"));
-            addWatchListTextBox.Text = ConfigHandler.GetTestInputData("WatchListSymbol");
+            TextBox addWatchListTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("WatchListAddTextBox"));
+            addWatchListTextBox.Text = TestDataInfrastructure.GetTestInputData("WatchListSymbol");
 
-            Button addWatchListButton = window.Get<Button>(ConfigHandler.GetControlId("WatchListAddButton"));
+            Button addWatchListButton = window.Get<Button>(TestDataInfrastructure.GetControlId("WatchListAddButton"));
             addWatchListButton.Click();
 
             window.GetWatchListRegionHeader().Click();
@@ -341,14 +341,13 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         [TestMethod]
         public void AddSymbolWithLeadingBlankSpacesToWatchList()
         {
-            window.GetWatchListRegionHeader().Click();
-            ListView watchList = window.Get<ListView>(ConfigHandler.GetControlId("WatchListView"));
+            ListView watchList = window.Get<ListView>(TestDataInfrastructure.GetControlId("WatchListView"));
             int watchListCountBeforeClick = watchList.Rows.Count;
 
-            TextBox addWatchTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("WatchListAddTextBox"));
-            addWatchTextBox.Text = ConfigHandler.GetTestInputData("LeadingBlankSpacePositionSymbol");
+            TextBox addWatchTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("WatchListAddTextBox"));
+            addWatchTextBox.Text = TestDataInfrastructure.GetTestInputData("LeadingBlankSpacePositionSymbol");
 
-            Button addWatchListButton = window.Get<Button>(ConfigHandler.GetControlId("WatchListAddButton"));
+            Button addWatchListButton = window.Get<Button>(TestDataInfrastructure.GetControlId("WatchListAddButton"));
             addWatchListButton.Click();
 
             List<AccountPosition> position = testDataInfrastructure.GetData<AccountPositionDataProvider, AccountPosition>();
@@ -374,14 +373,13 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         [TestMethod]
         public void AddSymbolWithTrailingBlankSpacesToWatchList()
         {
-            window.GetWatchListRegionHeader().Click();
-            ListView watchList = window.Get<ListView>(ConfigHandler.GetControlId("WatchListView"));
+            ListView watchList = window.Get<ListView>(TestDataInfrastructure.GetControlId("WatchListView"));
             int watchListCountBeforeClick = watchList.Rows.Count;
 
-            TextBox addWatchTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("WatchListAddTextBox"));
-            addWatchTextBox.Text = ConfigHandler.GetTestInputData("TrailingBlankSpacePositionSymbol");
+            TextBox addWatchTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("WatchListAddTextBox"));
+            addWatchTextBox.Text = TestDataInfrastructure.GetTestInputData("TrailingBlankSpacePositionSymbol");
 
-            Button addWatchListButton = window.Get<Button>(ConfigHandler.GetControlId("WatchListAddButton"));
+            Button addWatchListButton = window.Get<Button>(TestDataInfrastructure.GetControlId("WatchListAddButton"));
             addWatchListButton.Click();
 
             List<AccountPosition> position = testDataInfrastructure.GetData<AccountPositionDataProvider, AccountPosition>();
@@ -407,14 +405,13 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         [TestMethod]
         public void AddSpaceCharacterToWatchList()
         {
-            window.GetWatchListRegionHeader().Click();
-            ListView watchList = window.Get<ListView>(ConfigHandler.GetControlId("WatchListView"));
+            ListView watchList = window.Get<ListView>(TestDataInfrastructure.GetControlId("WatchListView"));
             int watchListCountBeforeClick = watchList.Rows.Count;
 
-            TextBox addWatchTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("WatchListAddTextBox"));
-            addWatchTextBox.Text = ConfigHandler.GetTestInputData("SpaceCharacter");
+            TextBox addWatchTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("WatchListAddTextBox"));
+            addWatchTextBox.Text = TestDataInfrastructure.GetTestInputData("SpaceCharacter");
 
-            Button addWatchListButton = window.Get<Button>(ConfigHandler.GetControlId("WatchListAddButton"));
+            Button addWatchListButton = window.Get<Button>(TestDataInfrastructure.GetControlId("WatchListAddButton"));
             addWatchListButton.Click();
 
             List<AccountPosition> position = testDataInfrastructure.GetData<AccountPositionDataProvider, AccountPosition>();
@@ -437,18 +434,16 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         /// 
         /// Expected Result:
         /// Special characters symbol should not get added to the WatchList
-        [Ignore]//TODO: not able to enter special characters in the textbox
         [TestMethod]
         public void AddSpecialCharactersSymbolToWatchList()
         {
-            window.GetWatchListRegionHeader().Click();
-            ListView watchList = window.Get<ListView>(ConfigHandler.GetControlId("WatchListView"));
+            ListView watchList = window.Get<ListView>(TestDataInfrastructure.GetControlId("WatchListView"));
             int watchListCountBeforeClick = watchList.Rows.Count;
 
-            TextBox addWatchTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("WatchListAddTextBox"));
-            addWatchTextBox.Text = ConfigHandler.GetTestInputData("SpecialCharacterSymbol");
+            TextBox addWatchTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("WatchListAddTextBox"));
+            addWatchTextBox.Text = TestDataInfrastructure.GetTestInputData("SpecialCharacterSymbol");
 
-            Button addWatchListButton = window.Get<Button>(ConfigHandler.GetControlId("WatchListAddButton"));
+            Button addWatchListButton = window.Get<Button>(TestDataInfrastructure.GetControlId("WatchListAddButton"));
             addWatchListButton.Click();
 
             List<AccountPosition> position = testDataInfrastructure.GetData<AccountPositionDataProvider, AccountPosition>();
@@ -471,34 +466,30 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         /// Expected Result;
         /// Check if the selected symbol is removed from the WatchList Panel
         /// </summary>
-        //TODO: get a handle of the Pin toggle button
-        [Ignore]
         [TestMethod]
         public void RemoveSymbolFromWatchList()
         {
-            window.GetWatchListRegionHeader().Click();
-            Button pinImage = window.Get<Button>("HeaderAutoHideButton");
-            pinImage.Click();
+            TextBox addWatchTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("WatchListAddTextBox"));
+            addWatchTextBox.Text = TestDataInfrastructure.GetTestInputData("WatchListSymbol");
 
-            TextBox addWatchTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("WatchListAddTextBox"));
-            addWatchTextBox.Text = ConfigHandler.GetTestInputData("WatchListSymbol");
-
-            Button addWatchListButton = window.Get<Button>(ConfigHandler.GetControlId("WatchListAddButton"));
+            Button addWatchListButton = window.Get<Button>(TestDataInfrastructure.GetControlId("WatchListAddButton"));
             addWatchListButton.Click();
 
-            ListView watchList = window.Get<ListView>(ConfigHandler.GetControlId("WatchListView"));
+            ListView watchList = window.Get<ListView>(TestDataInfrastructure.GetControlId("WatchListView"));
             int watchListCountBeforeRemoveClick = watchList.Rows.Count;
 
             //right click on the added symbol in the WatchList panel and click remove
             watchList.Rows[0].RightClick();
-            Menu contextMenu = window.Get<Menu>("Remove");
-            contextMenu.Click();
+            System.Threading.Thread.Sleep(1000);
+            window.PopupMenu("Remove").Click();
+            System.Threading.Thread.Sleep(1000);
+
 
             Assert.AreEqual(watchListCountBeforeRemoveClick - 1, watchList.Rows.Count);
         }
 
         #region Private Helper methods
-
+        //TODO: Need to remove when [Ignore] tests are cleaned up
         private static bool IsWatchListWindowCollapsed(UIItem item)
         {
             return !item.Visible;

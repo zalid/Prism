@@ -25,7 +25,7 @@
         </Style>
     </UserControl.Resources>
     <StackPanel>
-        <TabControl  x:Name="OrdersTabControl" prism:RegionManager.Region="OrdersRegion" ItemContainerStyle="{DynamicResource HeaderStyle}">
+        <TabControl  x:Name="OrdersTabControl" prism:RegionManager.RegionName="OrdersRegion" ItemContainerStyle="{DynamicResource HeaderStyle}">
         </TabControl>
         <StackPanel  Orientation="Horizontal">
             <Button Name="SubmitAllButton" Command="{x:Static inf:StockTraderRICommands.SubmitAllOrdersCommand}">Submit All</Button>

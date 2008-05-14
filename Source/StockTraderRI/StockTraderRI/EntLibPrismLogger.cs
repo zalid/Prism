@@ -15,11 +15,6 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Prism.Interfaces;
 using Microsoft.Practices.EnterpriseLibrary.Logging;
 using Prism.Interfaces.Logging;
 

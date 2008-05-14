@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AllowsDelayLoadingAttribute" xml:space="preserve">
-    <value>allowsDelayLoading</value>
-  </data>
   <data name="ApplicationLoadFailure" xml:space="preserve">
     <value>Failing the test cases as the application failed to load</value>
   </data>
@@ -128,6 +125,9 @@
   </data>
   <data name="DependenciesNode" xml:space="preserve">
     <value>dependencies</value>
+  </data>
+  <data name="DependencyAttributeDirLookup" xml:space="preserve">
+    <value>DependsOn</value>
   </data>
   <data name="DependencyNode" xml:space="preserve">
     <value>dependency</value>
@@ -149,5 +149,14 @@
   </data>
   <data name="ModuleSectionName" xml:space="preserve">
     <value>module</value>
+  </data>
+  <data name="ModulesFolder" xml:space="preserve">
+    <value>Modules</value>
+  </data>
+  <data name="StartupLoadingAttributeConfigDriven" xml:space="preserve">
+    <value>startupLoaded</value>
+  </data>
+  <data name="StartupLoadingAttributeDirLookup" xml:space="preserve">
+    <value>StartupLoaded</value>
   </data>
 </root>

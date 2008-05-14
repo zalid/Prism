@@ -17,7 +17,6 @@
 
 using System;
 using Prism.Interfaces;
-using System.Windows;
 
 namespace Prism.Tests.Mocks
 {
@@ -25,16 +24,11 @@ namespace Prism.Tests.Mocks
     {
         public T Resolve<T>()
         {
-            return Activator.CreateInstance<T>();
+            throw new NotImplementedException();
         }
 
         public object TryResolve(Type type)
         {
-            if (type.Equals(typeof(IRegion<DependencyObject>)))
-            {
-                return new MockRegion();
-            }
-
             return null;
         }
 

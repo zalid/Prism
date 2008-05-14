@@ -22,6 +22,7 @@ using System.Text;
 using Core.UIItems;
 using System.Windows.Automation;
 using Core.UIItems.TabItems;
+using StockTraderRI.AcceptanceTests.TestInfrastructure;
 
 namespace StockTraderRI.AcceptanceTests.Helpers
 {
@@ -55,15 +56,15 @@ namespace StockTraderRI.AcceptanceTests.Helpers
 
         public static UIItem GetWatchListRegionHeader(this UIItemContainer rootElement)
         {
-            Tab tab = rootElement.Get<Tab>(ConfigHandler.GetControlId("CollapsibleRegion"));
-            UIItem watchListTab = tab.Pages.Find(x => x.NameMatches(ConfigHandler.GetControlId("WatchListHeader"))) as UIItem;
+            Tab tab = rootElement.Get<Tab>(TestDataInfrastructure.GetControlId("CollapsibleRegion"));
+            UIItem watchListTab = tab.Pages.Find(x => x.NameMatches(TestDataInfrastructure.GetControlId("WatchListHeader"))) as UIItem;
             return watchListTab;
         }
 
         public static UIItem GetCollapsibleRegionHeader(this UIItemContainer rootElement, string controlID)
         {
-            Tab tab = rootElement.Get<Tab>(ConfigHandler.GetControlId("CollapsibleRegion"));
-            UIItem watchListTab = tab.Pages.Find(x => x.NameMatches(ConfigHandler.GetControlId(controlID))) as UIItem;
+            Tab tab = rootElement.Get<Tab>(TestDataInfrastructure.GetControlId("CollapsibleRegion"));
+            UIItem watchListTab = tab.Pages.Find(x => x.NameMatches(TestDataInfrastructure.GetControlId(controlID))) as UIItem;
             return watchListTab;
         }
 
@@ -79,9 +80,9 @@ namespace StockTraderRI.AcceptanceTests.Helpers
             switch (header)
             {
                 case PositionTableColumnHeader.Symbol:
-                    return list.Rows[rowNumber].Cells[ConfigHandler.GetTestInputData("PositionTableSymbol")].Text;
+                    return list.Rows[rowNumber].Cells[TestDataInfrastructure.GetTestInputData("PositionTableSymbol")].Text;
                 case PositionTableColumnHeader.NumberOfShares:
-                    return Convert.ToInt32(list.Rows[rowNumber].Cells[ConfigHandler.GetTestInputData("PositionTableShares")].Text);
+                    return Convert.ToInt32(list.Rows[rowNumber].Cells[TestDataInfrastructure.GetTestInputData("PositionTableShares")].Text);
                 default:
                     return null;
             }
@@ -101,8 +102,8 @@ namespace StockTraderRI.AcceptanceTests.Helpers
                 case PositionTableColumnHeader.Symbol:
                     return forSymbol;
                 case PositionTableColumnHeader.NumberOfShares:
-                    return Convert.ToInt32(list.Rows.Find(r => r.Cells[ConfigHandler.GetTestInputData("PositionTableSymbol")].Text.Equals(forSymbol))
-                        .Cells[ConfigHandler.GetTestInputData("PositionTableShares")].Text);
+                    return Convert.ToInt32(list.Rows.Find(r => r.Cells[TestDataInfrastructure.GetTestInputData("PositionTableSymbol")].Text.Equals(forSymbol))
+                        .Cells[TestDataInfrastructure.GetTestInputData("PositionTableShares")].Text);
                 default:
                     return null;
             }

@@ -15,17 +15,13 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Prism.Interfaces;
-using Microsoft.Practices.Unity;
 using StockTraderRI.Infrastructure.Interfaces;
-using StockTraderRI.Modules.News;
 using StockTraderRI.Modules.News.Article;
 using StockTraderRI.Modules.News.Controllers;
+using StockTraderRI.Modules.News.Tests.Mocks;
 
 namespace StockTraderRI.Modules.News.Tests
 {
@@ -40,23 +36,26 @@ namespace StockTraderRI.Modules.News.Tests
         public void NewsModuleRegistersNewsViewAndNewsFeedService()
         {
             IUnityContainer container = new UnityContainer();
-            container.RegisterType<IRegionManagerService, MockRegionManagerService>();
+            container.RegisterType<IRegionManager, MockRegionManager>();
             container.RegisterInstance<IUnityContainer>(container);
             TestableNewsModule newsModule = new TestableNewsModule(container);
-            
+
             newsModule.InvokeRegisterViewsAndServices();
 
             Assert.IsNotNull(container.Resolve<IArticleView>());
             Assert.IsNotNull(container.Resolve<INewsFeedService>());
             Assert.IsNotNull(container.Resolve<INewsController>());
             Assert.IsNotNull(container.Resolve<IArticlePresenter>());
+            Assert.IsNotNull(container.Resolve<INewsReaderPresenter>());
+            Assert.IsNotNull(container.Resolve<INewsReaderView>());
         }
 
         internal class TestableNewsModule : NewsModule
         {
-            public TestableNewsModule(IUnityContainer container) : base(container)
+            public TestableNewsModule(IUnityContainer container)
+                : base(container)
             {
-                
+
             }
 
             public void InvokeRegisterViewsAndServices()

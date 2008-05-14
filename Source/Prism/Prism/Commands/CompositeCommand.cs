@@ -171,9 +171,9 @@ namespace Prism.Commands
         /// </summary>
         /// <returns></returns>
         /// <remarks>This is added for testing only and is not intended to be used from outside code.</remarks>
-        protected int GetCanExecuteChangedDelegateCount()
+        protected int CanExecuteChangedDelegateCount
         {
-            return CanExecuteChanged.GetInvocationList().Count();
+            get { return CanExecuteChanged.GetInvocationList().Count(); }
         }
     }
 }

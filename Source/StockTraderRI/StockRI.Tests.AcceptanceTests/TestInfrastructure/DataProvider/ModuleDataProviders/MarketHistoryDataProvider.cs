@@ -47,8 +47,8 @@ namespace StockTraderRI.AcceptanceTests.TestInfrastructure
                 dr = ds.Tables[0].Rows[i];
                 history.Add(
                     new MarketHistoryItem(
-                        dr[ConfigHandler.GetTestInputData("TickerSymbol")].ToString(),
-                        DateTime.Parse(dr[ConfigHandler.GetTestInputData("Date")].ToString(), CultureInfo.InvariantCulture),
+                        dr[TestDataInfrastructure.GetTestInputData("TickerSymbol")].ToString(),
+                        DateTime.Parse(dr[TestDataInfrastructure.GetTestInputData("Date")].ToString(), CultureInfo.InvariantCulture),
                         decimal.Parse(dr[2].ToString(), CultureInfo.InvariantCulture)
                         ));
             }

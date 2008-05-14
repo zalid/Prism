@@ -17,40 +17,45 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using StockTraderRI.Infrastructure.Interfaces;
-using System.Xml.Serialization;
-using System.Xml;
-using StockTraderRI.Infrastructure.Models;
+using System.Globalization;
 using System.Xml.Linq;
+using StockTraderRI.Infrastructure.Interfaces;
+using StockTraderRI.Infrastructure.Models;
 
 namespace StockTraderRI.Modules.News.Services
 {
     public class NewsFeedService : INewsFeedService
     {
-        readonly Dictionary<string, NewsArticle> newsData = new Dictionary<string, NewsArticle>();
+        readonly Dictionary<string, List<NewsArticle>> newsData = new Dictionary<string, List<NewsArticle>>();
 
         public NewsFeedService()
         {
             var document = XDocument.Load("Data/News.xml");
             foreach (var newsItem in document.Descendants("NewsItem"))
             {
-                var newsArticle = new NewsArticle
-                                      {
-                                          Title = newsItem.Attribute("TickerSymbol").Value,
-                                          IconUri = newsItem.Attribute("IconUri") != null ? newsItem.Attribute("IconUri").Value : null,
-                                          Body = newsItem.Value,
-                                      };
-                newsData.Add(newsArticle.Title, newsArticle);
+                var tickerSymbol = newsItem.Attribute("TickerSymbol").Value;
+                if (newsData.ContainsKey(tickerSymbol) == false)
+                {
+                    newsData.Add(tickerSymbol, new List<NewsArticle>());
+                }
+                newsData[tickerSymbol].Add(new NewsArticle()
+                {
+                    PublishedDate = DateTime.Parse(newsItem.Attribute("PublishedDate").Value, CultureInfo.CurrentCulture),
+                    Title = newsItem.Element("Title").Value,
+                    Body = newsItem.Element("Body").Value,
+                    IconUri = newsItem.Attribute("IconUri") != null ? newsItem.Attribute("IconUri").Value : null
+                });
+
             }
         }
 
         #region INewsFeed Members
 
-        public NewsArticle GetNews(string tickerSymbol)
+        public IList<NewsArticle> GetNews(string tickerSymbol)
         {
-            return newsData[tickerSymbol];
+            List<NewsArticle> articles = new List<NewsArticle>();
+            newsData.TryGetValue(tickerSymbol, out articles);
+            return articles;
         }
 
         public event EventHandler<NewsFeedEventArgs> Updated = delegate { };

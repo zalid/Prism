@@ -34,18 +34,6 @@ namespace StockTraderRI.AcceptanceTests.Helpers
         public static NameValueCollection GetConfigSection(string name)
         {
             return (NameValueCollection)ConfigurationManager.GetSection(name) ?? null;
-        }
-
-        public static string GetTestInputData(string key)
-        {
-            ResxConfigHandler testInputHandler = new ResxConfigHandler(GetValue("TestDataInputFile"));
-            return testInputHandler.GetValue(key);
-        }
-
-        public static string GetControlId(string key)
-        {
-            ResxConfigHandler testInputHandler = new ResxConfigHandler(GetValue("ControlIdentifiersFile"));
-            return testInputHandler.GetValue(key);
-        }
+        }       
     }
 }

@@ -15,39 +15,13 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Controls;
-using Prism.Interfaces;
 using UIComposition.Modules.Employee.PresententationModels;
 
 namespace UIComposition.Modules.Employee.Tests.Mocks
 {
     class MockEmployeesDetailsView : Control, IEmployeesDetailsView
     {
-        IRegionManagerService regionManagerService;
-        public MockRegion TabRegion;
-
-        public MockEmployeesDetailsView()
-        {
-            regionManagerService = new MockRegionManagerService();
-            TabRegion = new MockRegion();
-            regionManagerService.Register(RegionNames.TabRegion, TabRegion);
-        }
-
-        private EmployeesDetailsPresentationModel _model;
-
-        public EmployeesDetailsPresentationModel Model
-        {
-            get { return _model; }
-            set { _model = value; }
-        }
-
-        public Prism.Interfaces.IRegionManagerService RegionManagerService
-        {
-            get { return regionManagerService; }
-        }
+        public EmployeesDetailsPresentationModel Model { get; set; }
     }
 }

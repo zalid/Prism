@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UIComposition.AcceptanceTests.Helpers;
 
 namespace UIComposition.AcceptanceTests.TestInfrastructure
 {
@@ -40,6 +41,18 @@ namespace UIComposition.AcceptanceTests.TestInfrastructure
             where T : IDataProvider<TEntity>, new()
         {
             return new T().GetDataForId(id);
+        }
+
+        public static string GetTestInputData(string key)
+        {
+            ResxConfigHandler testInputHandler = new ResxConfigHandler(ConfigHandler.GetValue("TestDataInputFile"));
+            return testInputHandler.GetValue(key);
+        }
+
+        public static string GetControlId(string key)
+        {
+            ResxConfigHandler testInputHandler = new ResxConfigHandler(ConfigHandler.GetValue("ControlIdentifiersFile"));
+            return testInputHandler.GetValue(key);
         }
     }
 }

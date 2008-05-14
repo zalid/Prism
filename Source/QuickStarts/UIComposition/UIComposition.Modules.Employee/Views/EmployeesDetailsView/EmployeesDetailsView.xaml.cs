@@ -15,10 +15,10 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+
 namespace UIComposition.Modules.Employee
 {
     using System.Windows.Controls;
-using Prism;
     using UIComposition.Modules.Employee.PresententationModels;
 
     /// <summary>
@@ -37,15 +37,18 @@ using Prism;
             set { this.DataContext = value; }
         }
 
-
-        public Prism.Interfaces.IRegionManagerService RegionManagerService
-        {
-            get {  return RegionManager.GetRegionManagerServiceScope(this); } 
-        }
-
         private void Frame_NavigationFailed(object sender, System.Windows.Navigation.NavigationFailedEventArgs e)
         {
+            ErrorText.Visibility = System.Windows.Visibility.Visible;
+            ErrorText.Text = e.Exception.Message;
             e.Handled = true;
         }
+
+        private void Frame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        {
+            ErrorText.Visibility = System.Windows.Visibility.Hidden;
+            ErrorText.Text = string.Empty;
+        }
+
     }
 }

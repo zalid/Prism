@@ -49,8 +49,8 @@ namespace StockTraderRI.AcceptanceTests.TestInfrastructure
                 dr = ds.Tables[1].Rows[i];
                 market.Add(
                     new Market(
-                        dr[ConfigHandler.GetTestInputData("TickerSymbol")].ToString(), 
-                        decimal.Parse(dr[ConfigHandler.GetTestInputData("LastPrice")].ToString(), CultureInfo.InvariantCulture)));
+                        dr[TestDataInfrastructure.GetTestInputData("TickerSymbol")].ToString(), 
+                        decimal.Parse(dr[TestDataInfrastructure.GetTestInputData("LastPrice")].ToString(), CultureInfo.InvariantCulture)));
             }
 
             return market;

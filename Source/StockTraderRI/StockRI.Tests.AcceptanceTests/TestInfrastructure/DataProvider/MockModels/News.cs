@@ -29,26 +29,35 @@ namespace StockTraderRI.AcceptanceTests.TestInfrastructure.MockModels
     {
         private string symbol;
         private string iconUriPath;
-        private string text;
+        private string title;
+        private string body;
+        private DateTime publishedDate;
 
         public News() { }
 
         public News(string symbol)
-        {
-            this.symbol = symbol;
-        }
+            : this(symbol, String.Empty, String.Empty, String.Empty)
+        { }
 
-        public News(string symbol, string text)
-        {
-            this.symbol = symbol;
-            this.text = text;
-        }
+        public News(string symbol, string title)
+            : this(symbol, String.Empty, title, String.Empty)
+        { }
 
-        public News(string symbol, string iconUriPath, string text)
+        public News(string symbol, string title, string body)
+            : this(symbol, String.Empty, title, body)
+        { }
+
+        public News(string symbol, string iconUriPath, string title, string body)
+            : this(symbol, iconUriPath, DateTime.MinValue, title, body)
+        { }
+
+        public News(string symbol, string iconUriPath, DateTime publishedDate, string title, string body)
         {
             this.symbol = symbol;
             this.iconUriPath = iconUriPath;
-            this.text = text;
+            this.publishedDate = publishedDate;
+            this.title = title;
+            this.body = body;
         }
 
         [XmlAttribute("TickerSymbol")]
@@ -65,11 +74,24 @@ namespace StockTraderRI.AcceptanceTests.TestInfrastructure.MockModels
             set { this.iconUriPath = value; }
         }
 
-        [XmlElement("NewsItem")]
-        public string NewsItemText
+        [XmlElement("Title")]
+        public string Title
         {
-            get { return this.text; }
-            set { this.text = value; }
+            get { return this.title; }
+            set { this.title = value; }
+        }
+
+        [XmlElement("Body")]
+        public string Body
+        {
+            get { return this.body; }
+            set { this.body = value; }
+        }
+
+        public DateTime PublishedDate 
+        {
+            get { return this.publishedDate; }
+            set { this.publishedDate = value; }
         }
     }
 }

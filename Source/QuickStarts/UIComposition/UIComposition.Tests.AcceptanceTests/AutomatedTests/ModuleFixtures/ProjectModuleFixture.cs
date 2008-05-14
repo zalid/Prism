@@ -33,6 +33,7 @@ using UIComposition.AcceptanceTests.ApplicationObserver;
 using UIComposition.AcceptanceTests.Helpers;
 
 using System.Threading;
+using UIComposition.AcceptanceTests.TestInfrastructure;
 
 namespace UIComposition.AcceptanceTests
 {
@@ -48,7 +49,7 @@ namespace UIComposition.AcceptanceTests
             // If so, fail the test case.
             if (StateDiagnosis.IsFailed)
             {
-                Assert.Fail(ConfigHandler.GetTestInputData("ApplicationLoadFailure"));
+                Assert.Fail(TestDataInfrastructure.GetTestInputData("ApplicationLoadFailure"));
             }
 
             base.TestInitialize();

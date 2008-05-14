@@ -15,11 +15,10 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+
 namespace UIComposition.Modules.Employee
 {
-    using System.Windows;
     using System.Windows.Controls;
-    using Prism;
 
     /// <summary>
     /// Interaction logic for EmployeesView.xaml
@@ -33,13 +32,13 @@ namespace UIComposition.Modules.Employee
 
         public void SetHeader(IEmployeesListView employeesListView)
         {
-            this.HeaderPanel.Children.Add((UIElement)employeesListView);
+            this.HeaderPanel.Content = employeesListView;
         }
 
 
-        public Prism.Interfaces.IRegionManagerService RegionManagerService
+        public Prism.Interfaces.IRegionManager RegionManager
         {
-            get { return RegionManager.GetRegionManagerServiceScope(this); }
+            get { return Prism.Regions.RegionManager.GetRegionManager(this); }
         }
     }
 }

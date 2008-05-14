@@ -17,6 +17,7 @@
 
 using Microsoft.Practices.Unity;
 using Prism.Interfaces;
+using Prism.Regions;
 using Prism.UnityContainerAdapter;
 
 namespace StockTraderRI.Infrastructure.Tests.Mocks
@@ -38,9 +39,9 @@ namespace StockTraderRI.Infrastructure.Tests.Mocks
 
             container.RegisterInstance<IModuleEnumerator>(MockModuleEnumerator);
             container.RegisterType<IModuleLoaderService, MockModuleLoaderService>();
-            container.RegisterType<IRegionManagerService, MockRegionManagerService>();
 
             container.RegisterInstance<IShellView>(MockShellView);
+            container.RegisterType<IRegionManager, RegionManager>();
         }
     }
 }

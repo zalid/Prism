@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PositionSymbol" xml:space="preserve">
-    <value>FUND6</value>
+    <value>STOCK6</value>
   </data>
   <data name="PositionSymbol1" xml:space="preserve">
-    <value>FUND0</value>
+    <value>STOCK0</value>
   </data>
   <data name="PositionTableCost" xml:space="preserve">
     <value>Cost Basis</value>
@@ -154,10 +154,10 @@
     <value>LastPrice</value>
   </data>
   <data name="Symbol" xml:space="preserve">
-    <value>FUND0</value>
+    <value>STOCK0</value>
   </data>
   <data name="WatchListSymbol" xml:space="preserve">
-    <value>FUND7</value>
+    <value>STOCK7</value>
   </data>
   <data name="InvalidSymbol" xml:space="preserve">
     <value>ABC-XYZ</value>
@@ -167,10 +167,10 @@
     <value> </value>
   </data>
   <data name="LeadingBlankSpacePositionSymbol" xml:space="preserve">
-    <value>  FUND0</value>
+    <value>  STOCK0</value>
   </data>
   <data name="TrailingBlankSpacePositionSymbol" xml:space="preserve">
-    <value>FUND0  </value>
+    <value>STOCK0  </value>
   </data>
   <data name="SpecialCharacterSymbol" xml:space="preserve">
     <value>ƒund¥</value>
@@ -188,7 +188,7 @@
     <value>IconUri</value>
   </data>
   <data name="MarketTickerSymbol" xml:space="preserve">
-    <value>FUND1</value>
+    <value>STOCK1</value>
   </data>
   <data name="BuySellLimitPrice" xml:space="preserve">
     <value>102.5</value>
@@ -211,9 +211,12 @@
     <comment>display member</comment>
   </data>
   <data name="PositionSymbol3" xml:space="preserve">
-    <value>FUND3</value>
+    <value>STOCK3</value>
   </data>
   <data name="InvalidString" xml:space="preserve">
     <value>invalid</value>
+  </data>
+  <data name="PublishedDate" xml:space="preserve">
+    <value>PublishedDate</value>
   </data>
 </root>

@@ -1,0 +1,16 @@
+﻿<Window x:Class="EventAggregation.Shell"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://www.codeplex.com/prism"
+    Title="Shell">
+
+    <StackPanel Orientation="Horizontal">
+        <Border BorderThickness="5" BorderBrush="Blue">
+            <ItemsControl Name="LeftPanel" prism:RegionManager.RegionName="LeftRegion" />
+        </Border>
+        <Border BorderThickness="5" BorderBrush="Cyan">
+            <ItemsControl Name="RightPanel" prism:RegionManager.RegionName="RightRegion" />
+        </Border>
+
+    </StackPanel>
+</Window>

@@ -33,29 +33,9 @@ namespace StockTraderRI.Modules.Position.Tests.PresentationModels
     public class PositionSummaryFixture
     {
         [TestMethod]
-        public void ChangingHasNewsFiresPropertyChangeNotificationEvent()
-        {
-            PositionSummaryItem positionSummary = new PositionSummaryItem("FUND0", 49.99M, 50, 52.99M, false);
-
-            bool propertyChanged = false;
-            string lastPropertyChanged = string.Empty;
-            
-            positionSummary.PropertyChanged += delegate(object sender, PropertyChangedEventArgs e)
-                                                   {
-                                                       propertyChanged = true;
-                                                       lastPropertyChanged = e.PropertyName;
-                                                   };
-
-            positionSummary.HasNews = true;
-
-            Assert.IsTrue(propertyChanged);
-            Assert.AreEqual<string>("HasNews", lastPropertyChanged);
-        }
-
-        [TestMethod]
         public void ChangingCurrentPriceFiresPropertyChangeNotificationEvent()
         {
-            PositionSummaryItem positionSummary = new PositionSummaryItem("FUND0", 49.99M, 50, 52.99M, false);
+            PositionSummaryItem positionSummary = new PositionSummaryItem("FUND0", 49.99M, 50, 52.99M);
             
             bool currentPriceChanged = false;
             positionSummary.PropertyChanged += delegate(object sender, PropertyChangedEventArgs e)
@@ -72,7 +52,7 @@ namespace StockTraderRI.Modules.Position.Tests.PresentationModels
         [TestMethod]
         public void ChangingCostBasisFiresPropertyChangeNotificationEvent()
         {
-            PositionSummaryItem positionSummary = new PositionSummaryItem("FUND0", 49.99M, 50, 52.99M, false);
+            PositionSummaryItem positionSummary = new PositionSummaryItem("FUND0", 49.99M, 50, 52.99M);
 
             bool costBasisPropertyChanged = false;
             positionSummary.PropertyChanged += delegate(object sender, PropertyChangedEventArgs e)
@@ -89,7 +69,7 @@ namespace StockTraderRI.Modules.Position.Tests.PresentationModels
         [TestMethod]
         public void ChangingSharesFiresPropertyChangeNotificationEvent()
         {
-            PositionSummaryItem positionSummary = new PositionSummaryItem("FUND0", 49.99M, 50, 52.99M, false);
+            PositionSummaryItem positionSummary = new PositionSummaryItem("FUND0", 49.99M, 50, 52.99M);
 
             bool sharesPropertyChanged = false;
             positionSummary.PropertyChanged += delegate(object sender, PropertyChangedEventArgs e)
@@ -106,7 +86,7 @@ namespace StockTraderRI.Modules.Position.Tests.PresentationModels
         [TestMethod]
         public void ChangingSymbolPropertyChangeNotificationEvent()
         {
-            PositionSummaryItem positionSummary = new PositionSummaryItem("AAAA", 49.99M, 50, 52.99M, false);
+            PositionSummaryItem positionSummary = new PositionSummaryItem("AAAA", 49.99M, 50, 52.99M);
 
             bool propertyChanged = false;
             string lastPropertyChanged = string.Empty;
@@ -129,7 +109,7 @@ namespace StockTraderRI.Modules.Position.Tests.PresentationModels
             decimal lastPrice = 52.99M;
             long numShares = 50;
 
-            PositionSummaryItem positionSummary = new PositionSummaryItem("AAAA", 49.99M, numShares, lastPrice, false);
+            PositionSummaryItem positionSummary = new PositionSummaryItem("AAAA", 49.99M, numShares, lastPrice);
 
             Assert.AreEqual<decimal>(lastPrice * numShares, positionSummary.MarketValue);
         }
@@ -137,7 +117,7 @@ namespace StockTraderRI.Modules.Position.Tests.PresentationModels
         [TestMethod]
         public void PositionSummaryStoresCollectionsOfMarketHistoryValues()
         {
-            PositionSummaryItem positionSummary = new PositionSummaryItem("AAAA", 49.99M, 50, 52.99M, false);
+            PositionSummaryItem positionSummary = new PositionSummaryItem("AAAA", 49.99M, 50, 52.99M);
             positionSummary.PriceMarketHistory.Add(new MarketHistoryItem(new DateTime(1), 1.00m));
             positionSummary.PriceMarketHistory.Add(new MarketHistoryItem(new DateTime(2), 2.00m));
             positionSummary.PriceMarketHistory.Add(new MarketHistoryItem(new DateTime(3), 30.00m));
@@ -152,7 +132,7 @@ namespace StockTraderRI.Modules.Position.Tests.PresentationModels
             decimal lastPrice = 52.99M;
             long numShares = 1000;
 
-            PositionSummaryItem positionSummary = new PositionSummaryItem("AAAA", costBasis, numShares, lastPrice, false);
+            PositionSummaryItem positionSummary = new PositionSummaryItem("AAAA", costBasis, numShares, lastPrice);
 
             Assert.AreEqual<decimal>(105901.2002M, Math.Round(positionSummary.GainLossPercent, 4));
         }

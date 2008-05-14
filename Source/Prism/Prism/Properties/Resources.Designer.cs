@@ -70,6 +70,15 @@ namespace Prism.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot add dependency for unknown module {0}.
+        /// </summary>
+        internal static string DependencyForUnknownModule {
+            get {
+                return ResourceManager.GetString("DependencyForUnknownModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A module declared a dependency on another module which is not declared to be loaded. Missing module(s): {0}.
         /// </summary>
         internal static string DependencyOnMissingModule {
@@ -134,11 +143,38 @@ namespace Prism.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The provided String argument {0} must not be null or empty..
+        /// </summary>
+        internal static string StringCannotBeNullOrEmpty {
+            get {
+                return ResourceManager.GetString("StringCannotBeNullOrEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} not found.
         /// </summary>
         internal static string ValueNotFound {
             get {
                 return ResourceManager.GetString("ValueNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The region does not contain the view you are trying to remove.
+        /// </summary>
+        internal static string ViewToRemoveNotInRegion {
+            get {
+                return ResourceManager.GetString("ViewToRemoveNotInRegion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The region does not contain the view you are trying to show..
+        /// </summary>
+        internal static string ViewToShowNotInRegion {
+            get {
+                return ResourceManager.GetString("ViewToShowNotInRegion", resourceCulture);
             }
         }
     }

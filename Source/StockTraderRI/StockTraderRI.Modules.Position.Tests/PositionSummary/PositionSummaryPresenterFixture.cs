@@ -15,6 +15,7 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockTraderRI.Modules.Position.Tests.Mocks;
@@ -59,7 +60,7 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
             PositionSummaryPresenter presenter = CreatePresenter();
 
             Assert.AreEqual<IPositionSummaryView>(view, presenter.View);
-           
+
         }
 
         [TestMethod]
@@ -96,28 +97,11 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
             marketFeedService.SetPrice("FUND1", 20.00m);
             accountPositionService.AddPosition("FUND1", 15.00m, 100);
             PositionSummaryPresenter presenter = CreatePresenter();
-           
+
             //Update price in mock. Updates to real market feed may come in different form
             marketFeedService.UpdatePrice("FUND0", 50.00m, 12345678L);
 
             Assert.AreEqual<decimal>(50.00m, presenter.PresentationModel.GetPrice("FUND0"));
-        }
-
-        [TestMethod]
-        public void PresenterUpdatesPresentationModelWithNewsUpdate()
-        {
-            marketFeedService.SetPrice("FUND0", 30.00m);
-            accountPositionService.AddPosition("FUND0", 25.00m, 1000);
-            marketFeedService.SetPrice("FUND2", 30.00m);
-            accountPositionService.AddPosition("FUND2", 25.00m, 1000);
-
-            PositionSummaryPresenter presenter = CreatePresenter();
-
-            newsFeedService.UpdateNews("FUND0", "Widget 2008 Ships");
-            newsFeedService.UpdateNews("FUND2", "Company announces 4th quarter profits");
-
-            Assert.IsTrue(presenter.PresentationModel.HasNews("FUND0"));
-            Assert.IsFalse(presenter.PresentationModel.HasNews("FUND1"));
         }
 
         [TestMethod]
@@ -158,33 +142,6 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
         }
 
         [TestMethod]
-        public void NewsUpdatesPresenterPositionSummaryItemButCollectionDoesNot()
-        {
-            marketFeedService.SetPrice("FUND0", 20.00m);
-            accountPositionService.AddPosition("FUND0", 15.00m, 100);
-
-            PositionSummaryPresenter presenter = CreatePresenter();
-
-            bool presentationModelCollectionUpdated = false;
-            presenter.PresentationModel.Data.CollectionChanged += delegate
-              {
-                  presentationModelCollectionUpdated = true;
-              };
-
-            bool presentationModelItemUpdated = false;
-            presenter.PresentationModel.Data.First<PositionSummaryItem>(p => p.TickerSymbol == "FUND0").PropertyChanged += delegate
-               {
-                   presentationModelItemUpdated = true;
-               };
-
-            //Update price in mock. Updates to real market feed may come in different form
-            newsFeedService.UpdateNews("FUND0", "Prism Ships");
-
-            Assert.IsFalse(presentationModelCollectionUpdated);
-            Assert.IsTrue(presentationModelItemUpdated);
-        }
-
-        [TestMethod]
         public void AccountPositionModificationUpdatesPM()
         {
             marketFeedService.SetPrice("FUND0", 20.00m);
@@ -210,7 +167,7 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
         public void WhenPositionRowSelectedSymbolsTrendDataShowsInLineChart()
         {
             PositionSummaryPresenter presenter = CreatePresenter();
-            
+
             view.SelectFUND0Row();
 
             Assert.IsTrue(trendLinePresenter.TickerSymbolSelected);
@@ -227,15 +184,17 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
 
 
         }
-	
 
-        
+
+
 
         private PositionSummaryPresenter CreatePresenter()
         {
             return new PositionSummaryPresenter(view, accountPositionService
-                                                , marketFeedService, newsFeedService
-                                                , marketHistoryService, trendLinePresenter, ordersController);
+                                                , marketFeedService
+                                                , marketHistoryService, 
+                                                trendLinePresenter, 
+                                                ordersController);
         }
 
 

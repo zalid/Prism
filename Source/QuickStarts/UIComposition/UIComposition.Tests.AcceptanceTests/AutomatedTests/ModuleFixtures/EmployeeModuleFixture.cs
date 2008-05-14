@@ -42,7 +42,7 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
             // If so, fail the test case.
             if (StateDiagnosis.IsFailed)
             {
-                Assert.Fail(ConfigHandler.GetTestInputData("ApplicationLoadFailure"));
+                Assert.Fail(TestDataInfrastructure.GetTestInputData("ApplicationLoadFailure"));
             }
 
             base.TestInitialize();
@@ -75,20 +75,20 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
         public void ValidateEmployeeSelection()
         {
             //select first row (employee)
-            ListView list = window.Get<ListView>(ConfigHandler.GetControlId("EmployeesList"));
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("EmployeesList"));
             list.SelectEmployee(0);
 
             //validate details view
-            Tab empDetailsTab = window.Get<Tab>(ConfigHandler.GetControlId("DetailsTabControl"));
-            Assert.IsNotNull(empDetailsTab, ConfigHandler.GetTestInputData("EmpDetailsTabNotFound"));
+            Tab empDetailsTab = window.Get<Tab>(TestDataInfrastructure.GetControlId("DetailsTabControl"));
+            Assert.IsNotNull(empDetailsTab, TestDataInfrastructure.GetTestInputData("EmpDetailsTabNotFound"));
 
             //validate tab has three tab items, and their names are "General", "Location" and "Current Projects"
-            Assert.AreEqual(3, empDetailsTab.Pages.Count, ConfigHandler.GetTestInputData("EmpDetailsTabPagesCount"));
+            Assert.AreEqual(3, empDetailsTab.Pages.Count, TestDataInfrastructure.GetTestInputData("EmpDetailsTabPagesCount"));
             Assert.IsTrue(
-                (empDetailsTab.Pages[0].NameMatches(ConfigHandler.GetTestInputData("EmpDetailsTabGeneral")) &&
-                empDetailsTab.Pages[1].NameMatches(ConfigHandler.GetTestInputData("EmpDetailsTabLocation")) &&
-                empDetailsTab.Pages[2].NameMatches(ConfigHandler.GetTestInputData("EmpDetailsTabCurrentProjects"))), 
-                ConfigHandler.GetTestInputData("EmpDetailsTabPagesIncorrect"));
+                (empDetailsTab.Pages[0].NameMatches(TestDataInfrastructure.GetTestInputData("EmpDetailsTabGeneral")) &&
+                empDetailsTab.Pages[1].NameMatches(TestDataInfrastructure.GetTestInputData("EmpDetailsTabLocation")) &&
+                empDetailsTab.Pages[2].NameMatches(TestDataInfrastructure.GetTestInputData("EmpDetailsTabCurrentProjects"))), 
+                TestDataInfrastructure.GetTestInputData("EmpDetailsTabPagesIncorrect"));
 
             //validate controls in each of the tabs
             ValidateGeneralTabControls();
@@ -110,8 +110,8 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
         [TestMethod]
         public void ValidateEmployeeDetailsGeneralSection()
         {
-            ListView list = window.Get<ListView>(ConfigHandler.GetControlId("EmployeesList"));
-            list.SelectEmployee(ConfigHandler.GetTestInputData("Emp_1_FirstName"));
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("EmployeesList"));
+            list.SelectEmployee(TestDataInfrastructure.GetTestInputData("Emp_1_FirstName"));
 
             Employee emp = GetEmployeeId1();
 
@@ -132,8 +132,8 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
         [TestMethod]
         public void ValidateEmployeeDetailsLocationSection()
         {
-            ListView list = window.Get<ListView>(ConfigHandler.GetControlId("EmployeesList"));
-            list.SelectEmployee(ConfigHandler.GetTestInputData("Emp_1_FirstName"));
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("EmployeesList"));
+            list.SelectEmployee(TestDataInfrastructure.GetTestInputData("Emp_1_FirstName"));
 
             Employee emp = GetEmployeeId1();
 
@@ -154,8 +154,8 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
         [TestMethod]
         public void ValidateEmployeeDetailsCurrentProjectsSection()
         {
-            ListView list = window.Get<ListView>(ConfigHandler.GetControlId("EmployeesList"));
-            list.SelectEmployee(ConfigHandler.GetTestInputData("Emp_1_FirstName"));
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("EmployeesList"));
+            list.SelectEmployee(TestDataInfrastructure.GetTestInputData("Emp_1_FirstName"));
 
             Employee emp = GetEmployeeId1();
 
@@ -166,44 +166,44 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
 
         private void ValidateGeneralTabControls()
         {
-            Tab empDetailsTab = window.Get<Tab>(ConfigHandler.GetControlId("DetailsTabControl"));
+            Tab empDetailsTab = window.Get<Tab>(TestDataInfrastructure.GetControlId("DetailsTabControl"));
             empDetailsTab.Pages[0].Select();
 
             //check all Labels (TextBlocks)
-            SearchCriteria searchCriteria = SearchCriteria.ByText(ConfigHandler.GetTestInputData("FirstNameLabelText")).AndControlType(typeof(Label));
+            SearchCriteria searchCriteria = SearchCriteria.ByText(TestDataInfrastructure.GetTestInputData("FirstNameLabelText")).AndControlType(typeof(Label));
             Label firstNameLabel = window.Get<Label>(searchCriteria);
             Assert.IsNotNull(firstNameLabel);
 
-            searchCriteria = SearchCriteria.ByText(ConfigHandler.GetTestInputData("LastNameLabelText")).AndControlType(typeof(Label));
+            searchCriteria = SearchCriteria.ByText(TestDataInfrastructure.GetTestInputData("LastNameLabelText")).AndControlType(typeof(Label));
             Label lastNameLabel = window.Get<Label>(searchCriteria);
             Assert.IsNotNull(lastNameLabel);
 
-            searchCriteria = SearchCriteria.ByText(ConfigHandler.GetTestInputData("PhoneLabelText")).AndControlType(typeof(Label));
+            searchCriteria = SearchCriteria.ByText(TestDataInfrastructure.GetTestInputData("PhoneLabelText")).AndControlType(typeof(Label));
             Label phoneLabel = window.Get<Label>(searchCriteria);
             Assert.IsNotNull(phoneLabel);
 
-            searchCriteria = SearchCriteria.ByText(ConfigHandler.GetTestInputData("EmailLabelText")).AndControlType(typeof(Label));
+            searchCriteria = SearchCriteria.ByText(TestDataInfrastructure.GetTestInputData("EmailLabelText")).AndControlType(typeof(Label));
             Label emailLabel = window.Get<Label>(searchCriteria);
             Assert.IsNotNull(emailLabel);
 
             //check all Textboxes
-            TextBox firstName = window.Get<TextBox>(ConfigHandler.GetControlId("FirstNameTextBox"));
+            TextBox firstName = window.Get<TextBox>(TestDataInfrastructure.GetControlId("FirstNameTextBox"));
             Assert.IsNotNull(firstName);
 
-            TextBox lastName = window.Get<TextBox>(ConfigHandler.GetControlId("LastNameTextBox"));
+            TextBox lastName = window.Get<TextBox>(TestDataInfrastructure.GetControlId("LastNameTextBox"));
             Assert.IsNotNull(lastName);
 
-            TextBox phone = window.Get<TextBox>(ConfigHandler.GetControlId("PhoneTextBox"));
+            TextBox phone = window.Get<TextBox>(TestDataInfrastructure.GetControlId("PhoneTextBox"));
             Assert.IsNotNull(phone);
 
-            TextBox email = window.Get<TextBox>(ConfigHandler.GetControlId("EmailTextBox"));
+            TextBox email = window.Get<TextBox>(TestDataInfrastructure.GetControlId("EmailTextBox"));
             Assert.IsNotNull(email);
         }
 
         private void ValidateLocationTabControls()
         {
             //select the Location tab
-            Tab empDetailsTab = window.Get<Tab>(ConfigHandler.GetControlId("DetailsTabControl"));
+            Tab empDetailsTab = window.Get<Tab>(TestDataInfrastructure.GetControlId("DetailsTabControl"));
             empDetailsTab.Pages[1].Select();
 
             //TODO: validate display of frame
@@ -212,38 +212,38 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
         private void ValidateCurrentProjectsTabControls()
         {
             //select the "Current Projects" tab
-            Tab empDetailsTab = window.Get<Tab>(ConfigHandler.GetControlId("DetailsTabControl"));
+            Tab empDetailsTab = window.Get<Tab>(TestDataInfrastructure.GetControlId("DetailsTabControl"));
             empDetailsTab.Pages[2].Select();
 
-            SearchCriteria searchCriteria = SearchCriteria.ByText(ConfigHandler.GetTestInputData("PartOfFollowingProjectsLabel")).AndControlType(typeof(Label));
+            SearchCriteria searchCriteria = SearchCriteria.ByText(TestDataInfrastructure.GetTestInputData("PartOfFollowingProjectsLabel")).AndControlType(typeof(Label));
             Label projectsLabel = window.Get<Label>(searchCriteria);
             Assert.IsNotNull(projectsLabel);
 
-            ListView projectsList = window.Get<ListView>(ConfigHandler.GetControlId("CurrentProjectsList"));
+            ListView projectsList = window.Get<ListView>(TestDataInfrastructure.GetControlId("CurrentProjectsList"));
             Assert.IsNotNull(projectsList);
         }
 
         private void ValidateEmployeeDetailsGeneralTabData(Employee emp)
         {
-            Tab empDetailsTab = window.Get<Tab>(ConfigHandler.GetControlId("DetailsTabControl"));
+            Tab empDetailsTab = window.Get<Tab>(TestDataInfrastructure.GetControlId("DetailsTabControl"));
             empDetailsTab.Pages[0].Select();
 
-            TextBox firstName = window.Get<TextBox>(ConfigHandler.GetControlId("FirstNameTextBox"));
+            TextBox firstName = window.Get<TextBox>(TestDataInfrastructure.GetControlId("FirstNameTextBox"));
             Assert.AreEqual(firstName.Text, emp.FirstName);
 
-            TextBox lastName = window.Get<TextBox>(ConfigHandler.GetControlId("LastNameTextBox"));
+            TextBox lastName = window.Get<TextBox>(TestDataInfrastructure.GetControlId("LastNameTextBox"));
             Assert.AreEqual(lastName.Text, emp.LastName);
 
-            TextBox phone = window.Get<TextBox>(ConfigHandler.GetControlId("PhoneTextBox"));
+            TextBox phone = window.Get<TextBox>(TestDataInfrastructure.GetControlId("PhoneTextBox"));
             Assert.AreEqual(phone.Text, emp.Phone);
 
-            TextBox email = window.Get<TextBox>(ConfigHandler.GetControlId("EmailTextBox"));
+            TextBox email = window.Get<TextBox>(TestDataInfrastructure.GetControlId("EmailTextBox"));
             Assert.AreEqual(email.Text, emp.Email);
         }
 
         private void ValidateEmployeeDetailsLocationTabData(Employee emp)
         {
-            Tab empDetailsTab = window.Get<Tab>(ConfigHandler.GetControlId("DetailsTabControl"));
+            Tab empDetailsTab = window.Get<Tab>(TestDataInfrastructure.GetControlId("DetailsTabControl"));
             empDetailsTab.Pages[1].Select();
 
             //TODO: get handle of the frame in location taband validate
@@ -251,10 +251,10 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
 
         private void ValidateEmployeeDetailsCurrentProjectsTabData(Employee emp)
         {
-            Tab empDetailsTab = window.Get<Tab>(ConfigHandler.GetControlId("DetailsTabControl"));
+            Tab empDetailsTab = window.Get<Tab>(TestDataInfrastructure.GetControlId("DetailsTabControl"));
             empDetailsTab.Pages[2].Select();
 
-            ListView projectsList = window.Get<ListView>(ConfigHandler.GetControlId("CurrentProjectsList"));
+            ListView projectsList = window.Get<ListView>(TestDataInfrastructure.GetControlId("CurrentProjectsList"));
 
             //check if the list has two columns
             Assert.AreEqual(2, projectsList.Header.Columns.Count);
@@ -267,10 +267,10 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
         {
             Employee emp = new Employee(1)
             {
-                FirstName = ConfigHandler.GetTestInputData("Emp_1_FirstName"),
-                LastName = ConfigHandler.GetTestInputData("Emp_1_LastName"),
-                Phone = ConfigHandler.GetTestInputData("Emp_1_Phone"),
-                Email = ConfigHandler.GetTestInputData("Emp_1_Email")
+                FirstName = TestDataInfrastructure.GetTestInputData("Emp_1_FirstName"),
+                LastName = TestDataInfrastructure.GetTestInputData("Emp_1_LastName"),
+                Phone = TestDataInfrastructure.GetTestInputData("Emp_1_Phone"),
+                Email = TestDataInfrastructure.GetTestInputData("Emp_1_Email")
             };
 
             return emp;

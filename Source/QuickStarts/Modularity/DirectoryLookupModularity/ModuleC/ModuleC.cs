@@ -23,16 +23,16 @@ namespace ModuleC
     [Module(ModuleName = "ModuleC", StartupLoaded = false)]
     public class ModuleC : IModule
     {
-        private readonly IRegionManagerService _regionManagerService;
+        private readonly IRegionManager _regionManager;
 
-        public ModuleC(IRegionManagerService regionManagerService)
+        public ModuleC(IRegionManager regionManager)
         {
-            _regionManagerService = regionManagerService;
+            _regionManager = regionManager;
         }
 
         public void Initialize()
         {
-            _regionManagerService.GetRegion("MainRegion").Add(new DefaultViewC());
+            _regionManager.GetRegion("MainRegion").Add(new DefaultViewC());
         }
     }
 }

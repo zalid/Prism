@@ -40,20 +40,19 @@ namespace StockTraderRI.Modules.Position.PositionSummary
         public event EventHandler<DataEventArgs<string>> TickerSymbolSelected = delegate { };
 
         public PositionSummaryPresenter(IPositionSummaryView view, IAccountPositionService accountPositionService
-                                        , IMarketFeedService marketFeedSvc, INewsFeedService newsFeedSvc
+                                        , IMarketFeedService marketFeedSvc
                                         , IMarketHistoryService marketHistorySvc
                                         , ITrendLinePresenter trendLinePresenter
                                         , IOrdersController ordersController)
         {
             View = view;
             AccountPositionSvc = accountPositionService;
-            NewsFeedSvc = newsFeedSvc;
             MarketFeedSvc = marketFeedSvc;
             MarketHistorySvc = marketHistorySvc;
 
             PresentationModel = new PositionSummaryPresentationModel();
 
-            PopulatePresentationModel(AccountPositionSvc, MarketFeedSvc, newsFeedSvc, PresentationModel, MarketHistorySvc);
+            PopulatePresentationModel(AccountPositionSvc, MarketFeedSvc, PresentationModel, MarketHistorySvc);
             PresentationModel.BuyCommand = ordersController.BuyCommand;
             PresentationModel.SellCommand = ordersController.SellCommand;
 
@@ -71,7 +70,6 @@ namespace StockTraderRI.Modules.Position.PositionSummary
         private void InitializeEvents()
         {
             MarketFeedSvc.Updated += new EventHandler(marketFeed_Updated);
-            NewsFeedSvc.Updated += new EventHandler<NewsFeedEventArgs>(newsFeed_Updated);
             AccountPositionSvc.Updated += new EventHandler<AccountPositionModelEventArgs>(model_Updated);
             View.TickerSymbolSelected += new EventHandler<DataEventArgs<string>>(View_TickerSymbolSelected);
         }
@@ -95,15 +93,6 @@ namespace StockTraderRI.Modules.Position.PositionSummary
             }
         }
 
-        void newsFeed_Updated(object sender, NewsFeedEventArgs e)
-        {
-            PositionSummaryItem posit = PresentationModel.Data.First(p => p.TickerSymbol == e.TickerSymbol);
-            if (posit != null)
-            {
-                posit.HasNews = true;
-            }
-        }
-
         void marketFeed_Updated(object sender, EventArgs e)
         {
             foreach (var position in PresentationModel.Data)
@@ -112,11 +101,11 @@ namespace StockTraderRI.Modules.Position.PositionSummary
             }
         }
 
-        private static void PopulatePresentationModel(IAccountPositionService accountPositionService, IMarketFeedService marketFeed, INewsFeedService newsFeed, PositionSummaryPresentationModel presentationModel, IMarketHistoryService marketHistoryService)
+        private static void PopulatePresentationModel(IAccountPositionService accountPositionService, IMarketFeedService marketFeed, PositionSummaryPresentationModel presentationModel, IMarketHistoryService marketHistoryService)
         {
             foreach (AccountPosition pos in accountPositionService.GetAccountPositions())
             {
-                presentationModel.AddPosition(pos.TickerSymbol, pos.CostBasis, pos.Shares, marketFeed.GetPrice(pos.TickerSymbol), newsFeed.HasNews(pos.TickerSymbol), marketHistoryService.GetPriceHistory(pos.TickerSymbol));
+                presentationModel.AddPosition(pos.TickerSymbol, pos.CostBasis, pos.Shares, marketFeed.GetPrice(pos.TickerSymbol), marketHistoryService.GetPriceHistory(pos.TickerSymbol));
             }
         }
 

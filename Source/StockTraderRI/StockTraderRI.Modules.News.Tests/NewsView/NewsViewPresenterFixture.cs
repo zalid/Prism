@@ -16,16 +16,14 @@
 //===============================================================================
 
 using System;
-using System.Text;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Practices.Unity;
-using StockTraderRI.Modules.News.Tests.Mocks;
-using Prism.Interfaces;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.News.Article;
+using StockTraderRI.Modules.News.Controllers;
+using StockTraderRI.Modules.News.PresentationModels;
+using StockTraderRI.Modules.News.Tests.Mocks;
 
 namespace StockTraderRI.Modules.News.Tests
 {
@@ -36,7 +34,7 @@ namespace StockTraderRI.Modules.News.Tests
         public void CanInitPresenter()
         {
             MockArticleView view = new MockArticleView();
-            MockRegionManagerService regionManager = new MockRegionManagerService();
+            MockRegionManager regionManager = new MockRegionManager();
             MockNewsFeedService newsFeedService = new MockNewsFeedService();
 
             ArticlePresenter presenter = new ArticlePresenter(view, newsFeedService);
@@ -48,57 +46,101 @@ namespace StockTraderRI.Modules.News.Tests
         public void ShowNewsDoesNothingIfNewsFeedHasNoNews()
         {
             MockArticleView view = new MockArticleView();
-            MockRegionManagerService regionManager = new MockRegionManagerService();
+            MockRegionManager regionManager = new MockRegionManager();
             MockNewsFeedService newsFeedService = new MockNewsFeedService();
-            newsFeedService.NewsArticle = null;
+            newsFeedService.NewsArticles = null;
             ArticlePresenter presenter = new ArticlePresenter(view, newsFeedService);
+            presenter.Controller = new MockNewsController();
 
             presenter.SetTickerSymbol("InexistentNews");
 
-            Assert.AreEqual(0, regionManager.MockNewsRegion.Views.Count);
+            Assert.AreEqual(0, regionManager.MockNewsRegion.AddedViews.Count);
         }
 
         [TestMethod]
         public void ShowNewsPassesNewsContentToView()
         {
             MockArticleView view = new MockArticleView();
-            MockRegionManagerService regionManager = new MockRegionManagerService();
+            MockRegionManager regionManager = new MockRegionManager();
             MockNewsFeedService newsFeedService = new MockNewsFeedService();
-            newsFeedService.NewsArticle = new NewsArticle() { Title = "FUND0", Body = "My custom body text" };
+            newsFeedService.NewsArticles = new List<NewsArticle>() { new NewsArticle() { Title = "FUND0", Body = "My custom body text" } };
             ArticlePresenter presenter = new ArticlePresenter(view, newsFeedService);
+            presenter.Controller = new MockNewsController();
 
             presenter.SetTickerSymbol("FUND0");
 
-            Assert.AreEqual("My custom body text", view.Model.ArticleBody);
+            Assert.AreEqual("My custom body text", ((NewsArticle)view.Model.Articles.CurrentItem).Body);
         }
 
         [TestMethod]
         public void ViewContainsCorrectModelHeaderInfoAfterSetTickerSymbol()
         {
             var view = new MockArticleView();
-            var regionManager = new MockRegionManagerService();
+            var regionManager = new MockRegionManager();
             var newsFeedService = new MockNewsFeedService();
-            newsFeedService.NewsArticle = new NewsArticle() { Title = "MySymbol", IconUri = "MyPath" };
+            newsFeedService.NewsArticles = new List<NewsArticle>() { new NewsArticle() { Title = "MySymbol", IconUri = "MyPath" } };
             var presenter = new ArticlePresenter(view, newsFeedService);
+            presenter.Controller = new MockNewsController();
 
             presenter.SetTickerSymbol("MyTitle");
 
             Assert.IsNotNull(view.Model);
-            Assert.IsNotNull(view.Model.HeaderInfo);
-            Assert.AreEqual("MyPath", view.Model.HeaderInfo.IconUri);
-            Assert.AreEqual("MySymbol", view.Model.HeaderInfo.Title);
+            Assert.IsNotNull(view.Model.Articles);
+            Assert.AreEqual("MyPath", ((NewsArticle)view.Model.Articles.CurrentItem).IconUri);
+            Assert.AreEqual("MySymbol", ((NewsArticle)view.Model.Articles.CurrentItem).Title);
+        }
+
+        [TestMethod]
+        public void ArticlePresenterNotifiesControllerOnItemChange()
+        {
+            var view = new MockArticleView();
+            var regionManager = new MockRegionManager();
+            var newsFeedService = new MockNewsFeedService();
+            var mockController = new MockNewsController();
+            newsFeedService.NewsArticles = new List<NewsArticle>() { new NewsArticle() { Title = "MySymbol", IconUri = "MyPath" },
+                                                                     new NewsArticle() { Title = "OtherSymbol", IconUri = "OtherPath" }};
+            var presenter = new TestableArticlePresenter(view, newsFeedService);
+            presenter.Controller = mockController;
+            presenter.SetTickerSymbol("DoesNotMatter");
+
+            presenter.GetModel().Articles.MoveCurrentToNext();
+
+            Assert.IsTrue(mockController.CurrentItemWasCalled);
+        }
+
+        [TestMethod]
+        public void ArticlePresenterCallControllerToShowNewsReader()
+        {
+            var view = new MockArticleView();
+            var regionManager = new MockRegionManager();
+            var newsFeedService = new MockNewsFeedService();
+            var mockController = new MockNewsController();
+
+            var presenter = new ArticlePresenter(view, newsFeedService);
+            presenter.Controller = mockController;
+
+            view.RaiseShowNewsReaderEvent();
+
+            Assert.IsTrue(mockController.ShowNewsReaderCalled);
+
         }
 
 
-        class MockNewsFeedService : INewsFeedService
+
+        private class MockNewsFeedService : INewsFeedService
         {
-            public NewsArticle NewsArticle = new NewsArticle() { Title = "Title", IconUri = "IconUri", Body = "Body" };
+            public IList<NewsArticle> NewsArticles = new List<NewsArticle>()
+                                                         {
+                                                             new NewsArticle()
+                                                                 {Title = "Title", IconUri = "IconUri", Body = "Body", PublishedDate = DateTime.Now}
+                                                         };
+
 
             #region INewsFeedService Members
 
-            public NewsArticle GetNews(string tickerSymbol)
+            public IList<NewsArticle> GetNews(string tickerSymbol)
             {
-                return NewsArticle;
+                return NewsArticles;
             }
 
             public bool HasNews(string tickerSymbol)
@@ -106,9 +148,39 @@ namespace StockTraderRI.Modules.News.Tests
                 throw new NotImplementedException();
             }
 
-            public event EventHandler<NewsFeedEventArgs> Updated;
+            public event EventHandler<NewsFeedEventArgs> Updated = delegate { };
 
             #endregion
+        }
+    }
+
+    internal class MockNewsController : INewsController
+    {
+        public bool CurrentItemWasCalled = false;
+
+        public bool ShowNewsReaderCalled { get; private set; }
+
+        public void CurrentNewsArticleChanged(NewsArticle article)
+        {
+            CurrentItemWasCalled = true;
+        }
+
+        public void ShowNewsReader()
+        {
+            ShowNewsReaderCalled = true;
+        }
+    }
+
+    internal class TestableArticlePresenter : ArticlePresenter
+    {
+        public TestableArticlePresenter(IArticleView view, INewsFeedService service)
+            : base(view, service)
+        {
+        }
+
+        public ArticlePresentationModel GetModel()
+        {
+            return Model;
         }
     }
 }

@@ -31,6 +31,7 @@ using System.Windows.Shapes;
 using System.ComponentModel;
 using Prism;
 using Prism.Regions;
+using StockTraderRI.Infrastructure;
 using StockTraderRI.Modules.Position.PresentationModels;
 using StockTraderRI.Infrastructure.Models;
 using Prism.Utility;
@@ -51,11 +52,15 @@ namespace StockTraderRI.Modules.Position
 
         private void _positionTable_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            //TODO: Add Selected value binding to presentation model to remove code behind
             if (e.AddedItems.Count > 0)
             {
                 PositionSummaryItem currentPosition = e.AddedItems[0] as PositionSummaryItem;
                 if (currentPosition != null)
+                {
                     PositionSelected(this, new DataEventArgs<string>(currentPosition.TickerSymbol));
+                    StockTraderRICommands.ShowNewsCommand.Execute(currentPosition.TickerSymbol);
+                }
             }
         }
 

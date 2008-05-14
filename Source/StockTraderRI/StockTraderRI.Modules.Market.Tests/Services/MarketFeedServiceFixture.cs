@@ -16,12 +16,8 @@
 //===============================================================================
 
 using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.Market.Services;
 using StockTraderRI.Modules.Market.Tests.Properties;
 
@@ -35,26 +31,26 @@ namespace StockTraderRI.Modules.Market.Tests.Services
         public void CanGetPriceAndVolumeFromMarketFeed()
         {
             TestableMarketFeedService marketFeed = new TestableMarketFeedService();
-            marketFeed.TestUpdatePrice("FUND0", 40.00m, 1234);
+            marketFeed.TestUpdatePrice("STOCK0", 40.00m, 1234);
 
-            Assert.AreEqual<decimal>(40.00m, marketFeed.GetPrice("FUND0"));
-            Assert.AreEqual<long>(1234, marketFeed.GetVolume("FUND0"));
+            Assert.AreEqual<decimal>(40.00m, marketFeed.GetPrice("STOCK0"));
+            Assert.AreEqual<long>(1234, marketFeed.GetVolume("STOCK0"));
         }
-	
+
 
         [TestMethod]
         [DeploymentItem("Data/Market.xml", "Data")]
         public void ShouldFireUpdatedOnSinglePriceChange()
         {
             TestableMarketFeedService marketFeed = new TestableMarketFeedService();
-            
+
             bool updateFired = false;
             marketFeed.Updated += delegate
             {
                 updateFired = true;
             };
-            
-            marketFeed.TestUpdatePrice("FUND0", 30.00m, 1000);
+
+            marketFeed.TestUpdatePrice("STOCK0", 30.00m, 1000);
 
             Assert.IsTrue(updateFired);
         }
@@ -83,9 +79,9 @@ namespace StockTraderRI.Modules.Market.Tests.Services
         {
             MarketFeedService marketFeed = new MarketFeedService();
 
-            Assert.IsTrue(marketFeed.SymbolExists("FUND0"));
+            Assert.IsTrue(marketFeed.SymbolExists("STOCK0"));
             Assert.IsFalse(marketFeed.SymbolExists("NONEXISTANT"));
- 
+
         }
 
         [TestMethod]
@@ -94,9 +90,9 @@ namespace StockTraderRI.Modules.Market.Tests.Services
         {
             TestableMarketFeedService marketFeed = new TestableMarketFeedService();
 
-            decimal originalPrice = marketFeed.GetPrice("FUND0");
+            decimal originalPrice = marketFeed.GetPrice("STOCK0");
             marketFeed.InvokeUpdatePrices();
-            Assert.IsTrue(Math.Abs(marketFeed.GetPrice("FUND0") - originalPrice) <= 5);
+            Assert.IsTrue(Math.Abs(marketFeed.GetPrice("STOCK0") - originalPrice) <= 5);
         }
 
         [TestMethod]
@@ -113,14 +109,14 @@ namespace StockTraderRI.Modules.Market.Tests.Services
         }
 
 
-	    [TestMethod]
+        [TestMethod]
         public void MarketServiceReadsIntervalFromXml()
-	    {
-	        var xmlMarketData = System.Xml.Linq.XDocument.Parse(Resources.TestXmlMarketData);
-	        var marketFeed = new TestableMarketFeedService(xmlMarketData);
+        {
+            var xmlMarketData = System.Xml.Linq.XDocument.Parse(Resources.TestXmlMarketData);
+            var marketFeed = new TestableMarketFeedService(xmlMarketData);
 
-	        Assert.AreEqual<int>(5000, marketFeed.RefreshInterval);
-	    }
+            Assert.AreEqual<int>(5000, marketFeed.RefreshInterval);
+        }
 
 
         [TestMethod]
@@ -131,7 +127,7 @@ namespace StockTraderRI.Modules.Market.Tests.Services
             marketFeed.RefreshInterval = 500; // ms
 
             var delegateCallCompletedEvent = new System.Threading.ManualResetEvent(false);
-            
+
             bool updateCalled = false;
             marketFeed.Updated += delegate
             {
@@ -154,17 +150,19 @@ namespace StockTraderRI.Modules.Market.Tests.Services
             Assert.AreEqual<int>(10000, marketFeed.RefreshInterval);
         }
     }
-    
+
     class TestableMarketFeedService : MarketFeedService
     {
-        public TestableMarketFeedService() : base()
+        public TestableMarketFeedService()
+            : base()
         {
-            
+
         }
 
-        public TestableMarketFeedService(XDocument xmlDocument) : base (xmlDocument)
+        public TestableMarketFeedService(XDocument xmlDocument)
+            : base(xmlDocument)
         {
-            
+
         }
 
         public void TestUpdatePrice(string tickerSymbol, decimal price, long volume)

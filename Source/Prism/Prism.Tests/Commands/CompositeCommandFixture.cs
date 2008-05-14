@@ -16,12 +16,9 @@
 //===============================================================================
 
 using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+using System.Windows.Input;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Prism.Commands;
-using System.Windows.Input;
 
 namespace Prism.Tests.Commands
 {
@@ -270,7 +267,7 @@ namespace Prism.Tests.Commands
                                          };
             }
 
-            public bool HasCommand(ICommand command)
+            public new bool HasCommand(ICommand command)
             {
                 return base.HasCommand;
             }
@@ -279,7 +276,7 @@ namespace Prism.Tests.Commands
             {
                 get
                 {
-                    return base.GetCanExecuteChangedDelegateCount();
+                    return base.CanExecuteChangedDelegateCount;
                 }
             }
         }

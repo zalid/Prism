@@ -107,10 +107,10 @@ namespace StockTraderRI.AcceptanceTests.Test.AutomatedTests.ModuleFixtures
             //    need to force an invoke
             //  
 
-            Assert.IsNotNull(window.AutomationElement.SearchInRawTreeByName(ConfigHandler.GetTestInputData("DefaultCompositeTrendView")));
+            Assert.IsNotNull(window.AutomationElement.SearchInRawTreeByName(TestDataInfrastructure.GetTestInputData("DefaultCompositeTrendView")));
             
             List<MarketHistoryItem> history = testDataInfrastructure.GetData<MarketHistoryDataProvider, MarketHistoryItem>();
-            List<MarketHistoryItem> defaultItems = history.FindAll(i => i.TickerSymbol.Equals(ConfigHandler.GetTestInputData("DefaultCompositeTrendView")));
+            List<MarketHistoryItem> defaultItems = history.FindAll(i => i.TickerSymbol.Equals(TestDataInfrastructure.GetTestInputData("DefaultCompositeTrendView")));
             
             Assert.IsTrue(ValidateXAxisDataRange(defaultItems));
             Assert.IsTrue(ValidateYAxisDataRange(defaultItems));
@@ -138,7 +138,7 @@ namespace StockTraderRI.AcceptanceTests.Test.AutomatedTests.ModuleFixtures
             //    - Validate the data range and Get the Min Max date value in our Test time span match the displayed time span
             //    
 
-            ListView list = window.Get<ListView>(ConfigHandler.GetControlId("PositionTableId"));
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             string selectedSymbol;
             List<MarketHistoryItem> history = testDataInfrastructure.GetData<MarketHistoryDataProvider, MarketHistoryItem>();
 

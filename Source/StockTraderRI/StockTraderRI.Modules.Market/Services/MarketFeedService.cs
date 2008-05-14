@@ -57,7 +57,7 @@ namespace StockTraderRI.Modules.Market.Services
             var refreshRateAttribute = marketItemsElement.Attribute("RefreshRate");
             if (refreshRateAttribute != null)
             {
-                RefreshInterval = CalculateRefreshIntervalMillisecondsFromSeconds(int.Parse(refreshRateAttribute.Value));
+                RefreshInterval = CalculateRefreshIntervalMillisecondsFromSeconds(int.Parse(refreshRateAttribute.Value, CultureInfo.InvariantCulture));
             }
         }
 

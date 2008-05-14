@@ -44,14 +44,20 @@ namespace StockTraderRI.Modules.News.Article
             InitializeComponent();
         }
 
-        #region IArticleView Members
-
-
         public ArticlePresentationModel Model
         {
             set { DataContext = value; }
         }
 
-        #endregion
+        public event EventHandler<EventArgs> ShowNewsReader;
+
+        private void articlesView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                e.Handled = true;
+                ShowNewsReader(sender, EventArgs.Empty);
+            }
+        }
     }
 }

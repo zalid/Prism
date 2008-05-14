@@ -16,74 +16,63 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Prism.Interfaces;
+using System.ComponentModel;
 using System.Windows;
+using Prism.Interfaces;
+using System.Collections.ObjectModel;
 
 namespace UIComposition.Modules.Employee.Tests.Mocks
 {
     public class MockRegion : IRegion
     {
         public bool ShowCalled;
-        private IList<UIElement> views = new List<UIElement>();
-        private Dictionary<string, UIElement> namedViews = new Dictionary<string, UIElement>();
+        public int ViewsCount;
+        public string NamedViewAdded;
+        public IRegionManager AddReturnValue;
 
-        public void Add(UIElement view)
+        public IRegionManager Add(object view)
         {
-            views.Add(view);
-        }
-
-        public void Remove(UIElement view)
-        {
-            views.Remove(view);
-
-            string viewName = GetNameFromView(view);
-
-            if (viewName != null)
-            {
-                namedViews.Remove(viewName);
-            }
-        }
-
-        private string GetNameFromView(UIElement view)
-        {
-            if (!namedViews.ContainsValue(view))
-                return null;
-
-            foreach (var key in namedViews.Keys)
-            {
-                if (namedViews[key] == view)
-                {
-                    return key;
-                }
-            }
+            ViewsCount++;
             return null;
         }
 
-        public IList<UIElement> Views
+        public void Remove(object view)
         {
-            get { return views; }
+            ViewsCount--;
         }
 
-        public void Show(UIElement view)
+        public ICollectionView Views
+        {
+            get { return null; }
+        }
+
+        public void Show(object view)
         {
             ShowCalled = true;
         }
 
-        public void Add(UIElement view, string name)
+        public IRegionManager Add(object view, string name)
         {
-            Add(view);
-            namedViews.Add(name, view);
+            ViewsCount++;
+            NamedViewAdded = name;
+            return null;
         }
 
-        public UIElement GetView(string name)
+        public object GetView(string name)
         {
-            if (namedViews.ContainsKey(name))
-                return namedViews[name];
+            if (NamedViewAdded == name)
+                return new UIElement();
 
             return null;
+        }
+
+        public IRegionManager RegionManager { get; set; }
+
+        public IRegionManager Add(object view, string name, bool createRegionManagerScope)
+        {
+            ViewsCount++;
+            NamedViewAdded = name;
+            return AddReturnValue;
         }
     }
 }

@@ -32,7 +32,12 @@ namespace Modularity.AcceptanceTests.TestInfrastructure
         public DataProviderBase()
         {
             xmlSerializer = new XmlSerializer(typeof(List<TEntity>));
-            xmlReader = new XmlTextReader(GetDataFilePath());
+            
+            string dataFilePath = GetDataFilePath();
+            if (String.Empty != dataFilePath)
+            {
+                xmlReader = new XmlTextReader(dataFilePath);
+            }
         }
 
         public virtual List<TEntity> GetData()

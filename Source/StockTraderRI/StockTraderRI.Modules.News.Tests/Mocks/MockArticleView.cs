@@ -30,5 +30,11 @@ namespace StockTraderRI.Modules.News.Tests.Mocks
     public class MockArticleView : UIElement, IArticleView
     {
         public ArticlePresentationModel Model { get; set; }
+        public event EventHandler<EventArgs> ShowNewsReader = delegate { };
+
+        public void RaiseShowNewsReaderEvent()
+        {
+            ShowNewsReader(this, EventArgs.Empty);
+        }
     }
 }

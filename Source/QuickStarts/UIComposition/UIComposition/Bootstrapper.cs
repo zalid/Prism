@@ -20,15 +20,10 @@ namespace UIComposition
     using System;
     using System.Windows.Controls;
     using Microsoft.Practices.Unity;
-    using Prism;
     using Prism.Interfaces;
     using Prism.Regions;
-    using Prism.Services;
-    using Prism.UnityContainerAdapter;
     using UIComposition.Modules.Employee;
     using UIComposition.Modules.Project;
-    using UIComposition.Infrastructure.Controls;
-    using UIComposition.Infrastructure.Regions;
 
     internal class Bootstrapper : IDisposable
     {
@@ -43,7 +38,7 @@ namespace UIComposition
         public void Initialize()
         {
             this.InitializeContainer();
-            this.RegisterRegions();
+            this.RegisterRegionAdapters();
             this.InitializeShell();
             this.InitializeModules();
         }
@@ -52,25 +47,25 @@ namespace UIComposition
         {
             this.container = new UnityContainer();
             this.container.RegisterInstance<IUnityContainer>(this.container);
-            PrismContainerProvider.Provider = new UnityPrismContainer(this.container);
         }
 
-        private void RegisterRegions()
+        private void RegisterRegionAdapters()
         {
-            this.container.RegisterType<IRegion<DeckPanel>, DeckRegion>();
-            this.container.RegisterType<IRegion<Panel>, PanelRegion>();
-            this.container.RegisterType<IRegion<ItemsControl>, ItemsControlRegion>();
+            RegionAdapterMappings mappings = new RegionAdapterMappings();
+            mappings.RegisterMapping(typeof(ItemsControl), new ItemsControlRegionAdapter());
+            mappings.RegisterMapping(typeof(ContentControl), new ContentControlRegionAdapter());
+
+            this.container.RegisterInstance<RegionAdapterMappings>(mappings);
         }
 
         private void InitializeShell()
         {
+            this.container.RegisterType<IRegionManager, RegionManager>(new ContainerControlledLifetimeManager());
             Shell shell = this.container.Resolve<Shell>();
-
-            IRegionManagerService rms = RegionManager.GetRegionManagerServiceScope(shell);
-            this.container.RegisterInstance<IRegionManagerService>(rms);
 
             if (shell != null)
             {
+                RegionManager.SetRegionManager(shell, container.Resolve<IRegionManager>());
                 shell.Show();
             }
         }

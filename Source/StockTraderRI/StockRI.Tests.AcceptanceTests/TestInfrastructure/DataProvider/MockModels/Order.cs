@@ -102,9 +102,9 @@ namespace StockTraderRI.AcceptanceTests.TestInfrastructure
         {
             get 
             {
-                if (this.timeInForce == ConfigHandler.GetTestInputData("TimeInForceEndOfDay"))
+                if (this.timeInForce == TestDataInfrastructure.GetTestInputData("TimeInForceEndOfDay"))
                 {
-                    return ConfigHandler.GetTestInputData("FormattedTimeInForceEndOfDay");
+                    return TestDataInfrastructure.GetTestInputData("FormattedTimeInForceEndOfDay");
                 }
                 else
                 {

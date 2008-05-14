@@ -29,7 +29,7 @@ namespace Prism.Tests.Mocks
             set { _section.Modules = new ModuleConfigurationElementCollection(value); }
         }
 
-        public override ModulesConfigurationSection GetModuleConfigurationSection()
+        public override ModulesConfigurationSection RetrieveModuleConfigurationSection()
         {
             return _section;
         }

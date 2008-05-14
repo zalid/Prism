@@ -76,7 +76,7 @@
     <Compile Include="Mocks\MockNewsFeedService.cs" />
     <Compile Include="Mocks\MockPositionSummaryView.cs" />
     <Compile Include="Mocks\MockTrendLinePresenter.cs" />
-    <Compile Include="Mocks\MockRegionManagerService.cs" />
+    <Compile Include="Mocks\MockRegionManager.cs" />
     <Compile Include="Mocks\MockUnityContainer.cs" />
     <Compile Include="PositionModuleFixture.cs" />
     <Compile Include="PresentationModels\OrderDetailsPresentationModelFixture.cs" />

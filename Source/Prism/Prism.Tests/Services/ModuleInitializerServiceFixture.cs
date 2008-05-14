@@ -299,12 +299,11 @@ namespace Prism.Tests.Services
             {
             }
 
-
-            public IDictionary<string, Assembly> LoadedAssemblies
+            public new IDictionary<string, Assembly> LoadedAssemblies
             {
                 get
                 {
-                    return base.loadedAssemblies;
+                    return base.LoadedAssemblies;
                 }
             }
         }

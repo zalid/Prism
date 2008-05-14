@@ -66,5 +66,10 @@ namespace StockTraderRI.Modules.Watch.WatchList
         }
 
         #endregion
+
+        private void Path_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("I am here");
+        }
     }
 }

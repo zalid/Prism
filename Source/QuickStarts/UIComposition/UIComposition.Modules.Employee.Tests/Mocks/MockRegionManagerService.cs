@@ -17,17 +17,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Windows;
 using Prism.Interfaces;
 
 namespace UIComposition.Modules.Employee.Tests.Mocks
 {
-    public class MockRegionManagerService : IRegionManagerService
+    public class MockRegionManagerService : IRegionManager
     {
         public Dictionary<string, IRegion> Regions = new Dictionary<string, IRegion>();
 
-        #region IRegionManagerService Members
+        #region IRegionManager Members
 
         public void Register(string regionName, IRegion region)
         {
@@ -44,11 +43,20 @@ namespace UIComposition.Modules.Employee.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public void SetRegion(System.Windows.DependencyObject containerElement, string regionName)
+        public IRegionManager CreateRegionManager()
         {
             throw new NotImplementedException();
         }
 
+        public void CreateRegion(DependencyObject element, string regionName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Unregister(string regionName)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

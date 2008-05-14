@@ -15,16 +15,12 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Practices.Unity;
-using UIComposition.Modules.Project.Tests.Mocks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Prism.Interfaces;
 using UIComposition.Infrastructure;
 using UIComposition.Modules.Project.Services;
-using Prism.Interfaces;
+using UIComposition.Modules.Project.Tests.Mocks;
 
 namespace UIComposition.Modules.Project.Tests
 {
@@ -33,13 +29,13 @@ namespace UIComposition.Modules.Project.Tests
     {
 
         MockUnityContainer container;
-        MockRegionManagerService regionManagerService;
+        MockRegionManager regionManager;
 
         [TestInitialize]
         public void SetUp()
         {
             container = new MockUnityContainer();
-            regionManagerService = new MockRegionManagerService();
+            regionManager = new MockRegionManager();
         }
         [TestMethod]
         public void RegisterViewsAndServices()
@@ -49,7 +45,7 @@ namespace UIComposition.Modules.Project.Tests
             module.InvokeRegisterViewsAndServices();
 
             Assert.AreEqual(typeof(ProjectService), container.Types[typeof(IProjectService)]);
-            Assert.AreEqual(typeof(ProjectsListView), container.Types[typeof(IProjectsListView)]); 
+            Assert.AreEqual(typeof(ProjectsListView), container.Types[typeof(IProjectsListView)]);
             Assert.AreEqual(typeof(ProjectsListPresenter), container.Types[typeof(IProjectsListPresenter)]);
         }
 
@@ -57,10 +53,10 @@ namespace UIComposition.Modules.Project.Tests
         public void InitializeShouldCallRegisterAndViewServices()
         {
             container.RegisterInstance<IUnityContainer>(container);
-            container.RegisterInstance<IRegionManagerService>(regionManagerService);
+            container.RegisterInstance<IRegionManager>(regionManager);
             MockRegion mainToolbar = new MockRegion();
 
-            regionManagerService.Register(RegionNames.MainToolBar, mainToolbar);
+            regionManager.Register(RegionNames.MainToolBar, mainToolbar);
 
             ProjectModule module = CreateProjectModule();
 
@@ -73,13 +69,13 @@ namespace UIComposition.Modules.Project.Tests
 
         private ProjectModule CreateProjectModule()
         {
-            ProjectModule module = new ProjectModule(container, regionManagerService);
+            ProjectModule module = new ProjectModule(container, regionManager);
             return module;
         }
 
         private TestableProjectModule CreateTestableProjectModule()
         {
-            TestableProjectModule module = new TestableProjectModule(container, regionManagerService);
+            TestableProjectModule module = new TestableProjectModule(container, regionManager);
             return module;
         }
 
@@ -87,8 +83,8 @@ namespace UIComposition.Modules.Project.Tests
 
     class TestableProjectModule : ProjectModule
     {
-        public TestableProjectModule(IUnityContainer container, IRegionManagerService regionManagerService)
-            : base(container, regionManagerService)
+        public TestableProjectModule(IUnityContainer container, IRegionManager regionManager)
+            : base(container, regionManager)
         {
 
         }

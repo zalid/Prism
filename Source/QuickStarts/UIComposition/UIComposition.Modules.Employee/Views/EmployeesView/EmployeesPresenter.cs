@@ -32,7 +32,7 @@ namespace UIComposition.Modules.Employee
         private IEmployeesController employeeController;
 
         public EmployeesPresenter(
-            IEmployeesView view, 
+            IEmployeesView view,
             IEmployeesListPresenter listPresenter,
             IEmployeesController employeeController)
         {
@@ -48,7 +48,7 @@ namespace UIComposition.Modules.Employee
 
         private void OnEmployeeSelected(object sender, DataEventArgs<BusinessEntities.Employee> e)
         {
-            employeeController.OnEmployeeSelected(View, e.Value);
+            employeeController.OnEmployeeSelected(View.RegionManager, e.Value);
         }
     }
 }

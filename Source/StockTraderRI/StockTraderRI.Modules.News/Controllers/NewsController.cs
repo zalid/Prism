@@ -15,17 +15,12 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Prism.Commands;
-using StockTraderRI.Infrastructure;
-using Prism.Interfaces;
-using Microsoft.Practices.Unity;
 using System.Windows;
+using Prism.Commands;
+using Prism.Interfaces;
+using StockTraderRI.Infrastructure;
+using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.News.Article;
-using System.Globalization;
 
 namespace StockTraderRI.Modules.News.Controllers
 {
@@ -33,31 +28,45 @@ namespace StockTraderRI.Modules.News.Controllers
     {
         private const string ViewNameKey = "News.{0}";
 
-        private IRegionManagerService regionManagerService;
-        private IUnityContainer container;
+        private IRegionManager regionManager;
+        //private IUnityContainer container;
+        private IArticlePresenter articlePresenter;
+        private INewsReaderPresenter readerPresenter;
 
-        public NewsController(IRegionManagerService regionManagerService, IUnityContainer container, StockTraderRICommandProxy commands)
+        public NewsController(IRegionManager regionManagerService, IArticlePresenter articlePresenter, StockTraderRICommandProxy commands)
         {
-            this.regionManagerService = regionManagerService;
-            this.container = container;
+            this.regionManager = regionManagerService;
+            //this.container = container;
+            this.articlePresenter = articlePresenter;
+            this.articlePresenter.Controller = this;
+            
+            this.regionManager.GetRegion("NewsRegion").Add((UIElement)articlePresenter.View);
             commands.ShowNewsCommand.RegisterCommand(new DelegateCommand<string>(ShowNews));
+        }
+
+        public NewsController(IRegionManager regionManagerService, 
+                                IArticlePresenter articlePresenter, 
+                                StockTraderRICommandProxy commands, 
+                                INewsReaderPresenter readerPresenter) :
+            this(regionManagerService, articlePresenter, commands)
+        {
+            this.readerPresenter = readerPresenter;
         }
 
         public void ShowNews(string companySymbol)
         {
-            IRegion newsRegion = regionManagerService.GetRegion("ResearchArticlesRegion");
-            string viewName = String.Format(CultureInfo.InvariantCulture, ViewNameKey, companySymbol);
+            articlePresenter.SetTickerSymbol(companySymbol);
+        }
 
-            UIElement view = newsRegion.GetView(viewName);
-            if (view != null)
-            {
-                newsRegion.Show(view);
-                return;
-            }
+        public void CurrentNewsArticleChanged(NewsArticle article)
+        {
+            //throw new NotImplementedException();
+            this.readerPresenter.SetNewsArticle(article);
+        }
 
-            IArticlePresenter presenter = container.Resolve<IArticlePresenter>();
-            presenter.SetTickerSymbol(companySymbol);
-            newsRegion.Add((UIElement)presenter.View, viewName);
+        public void ShowNewsReader()
+        {
+            readerPresenter.Show();
         }
     }
 }

@@ -42,15 +42,15 @@ namespace Modularity.AcceptanceTests.TestInfrastructure
 
             XDocument xDoc = XDocument.Load(fileName);
             IEnumerable<XElement> modulesSection = xDoc.Descendants(TestDataInfrastructure.GetTestInputData("ModuleSectionName"));
-            XAttribute allowsDelayLoading;
+            XAttribute startupLoaded;
 
             if (null != modulesSection)
             {
                 foreach (XElement moduleElement in modulesSection)
                 {
                     module = new Module(moduleElement.Attribute(TestDataInfrastructure.GetTestInputData("ModuleNameAttribute")).Value);
-                    allowsDelayLoading = moduleElement.Attribute(TestDataInfrastructure.GetTestInputData("AllowsDelayLoadingAttribute"));
-                    module.AllowsDelayLoading = (null == allowsDelayLoading) ? false : allowsDelayLoading.Value.Equals("true");
+                    startupLoaded = moduleElement.Attribute(TestDataInfrastructure.GetTestInputData("StartupLoadingAttributeConfigDriven"));
+                    module.AllowsDelayLoading = (null == startupLoaded) ? false : startupLoaded.Value.Equals("false");
 
                     foreach (XElement dependency in moduleElement.Descendants(TestDataInfrastructure.GetTestInputData("DependenciesNode"))
                         .Descendants(TestDataInfrastructure.GetTestInputData("DependencyNode")))

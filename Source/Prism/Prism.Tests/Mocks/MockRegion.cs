@@ -16,59 +16,101 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Data;
 using Prism.Interfaces;
-using System.Windows;
 
 namespace Prism.Tests.Mocks
 {
-    class MockRegion : IRegion, IRegionAdapter
+    class MockRegion : IRegion
     {
-        public UIElement ShowArgumentView;
-
-        public DependencyObject InitializedControl;
-
-        private IList<UIElement> views = new List<UIElement>();
-
-        #region IRegion Members
-
-        public void Add(UIElement view)
-        {
-            views.Add(view);
-        }
-
-        public void Remove(UIElement view)
+        public IRegionManager Add(object view)
         {
             throw new NotImplementedException();
         }
 
-        public IList<UIElement> Views
-        {
-            get { return views; }
-        }
-
-        public void Show(UIElement view)
-        {
-            ShowArgumentView = view;
-        }
-
-        public void Add(UIElement view, string name)
+        public void Remove(object view)
         {
             throw new NotImplementedException();
         }
 
-        public UIElement GetView(string name)
+        public ICollectionView Views
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public void Show(object view)
         {
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        void IRegionAdapter.Initialize(DependencyObject obj)
+        public IRegionManager Add(object view, string name)
         {
-            InitializedControl = obj;
+            throw new NotImplementedException();
         }
+
+        public IRegionManager Add(object view, string name, bool createRegionManagerScope)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetView(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRegionManager RegionManager { get; set; }
+
+    }
+
+    // TODO: Rename this to MockRegion after finishing the implementation of the Adapters
+    class NewMockRegion : IRegion
+    {
+        public Collection<object> UnderlyingCollection = new Collection<object>();
+        private ICollectionView _collectionView;
+
+        public NewMockRegion()
+        {
+            _collectionView = new CollectionView(UnderlyingCollection);
+        }
+
+        public IRegionManager Add(object view)
+        {
+            UnderlyingCollection.Add(view);
+            return null;
+        }
+
+        public void Remove(object view)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollectionView Views
+        {
+            get { return _collectionView; }
+        }
+
+        public void Show(object view)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRegionManager Add(object view, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRegionManager Add(object view, string name, bool createRegionManagerScope)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetView(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRegionManager RegionManager { get; set; }
     }
 }

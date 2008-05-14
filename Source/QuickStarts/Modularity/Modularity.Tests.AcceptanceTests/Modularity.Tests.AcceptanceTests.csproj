@@ -98,6 +98,7 @@
       <DependentUpon>TestDataInput.resx</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="TestInfrastructure\DataProvider\DirectoryLookupModuleDataProvider\DirectoryLookupModuleDataProvider.cs" />
     <Compile Include="TestInfrastructure\DataProvider\DataProviderBase.cs" />
     <Compile Include="TestInfrastructure\DataProvider\IDataProvider.cs" />
     <Compile Include="TestInfrastructure\DataProvider\MockModels\Module.cs" />
@@ -129,4 +130,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PreBuildEvent>$(FrameworkDir)\..\v3.5\msbuild.exe "$(SolutionDir)\ConfigurationModularity\ConfigurationModularity.sln"
+$(FrameworkDir)\..\v3.5\msbuild.exe "$(SolutionDir)\DirectoryLookupModularity\DirectoryLookupModularity.sln"</PreBuildEvent>
+  </PropertyGroup>
 </Project>

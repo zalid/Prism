@@ -23,6 +23,7 @@ using System.Reflection;
 using Prism.Exceptions;
 using Prism.Interfaces;
 using Prism.Interfaces.Logging;
+using Prism.Properties;
 
 namespace Prism.Services
 {
@@ -32,7 +33,7 @@ namespace Prism.Services
     public class ModuleLoaderService : IModuleLoaderService
     {
         private readonly IDictionary<string, Type> initializedModules = new Dictionary<string, Type>();
-        protected readonly IDictionary<string, Assembly> loadedAssemblies = new Dictionary<string, Assembly>();
+        private readonly IDictionary<string, Assembly> loadedAssemblies = new Dictionary<string, Assembly>();
 
         private readonly IPrismContainer _prismContainer;
         private readonly IPrismLogger _logger;
@@ -54,17 +55,19 @@ namespace Prism.Services
             _logger = logger;
         }
 
-
-        public void Initialize(ModuleInfo[] moduleInfoList)
+        protected IDictionary<string, Assembly> LoadedAssemblies
         {
-            List<ModuleInfo> modules = GetModulesLoadOrder(moduleInfoList);
+            get { return loadedAssemblies; }
+        }
+
+        public void Initialize(ModuleInfo[] moduleInfos)
+        {
+            List<ModuleInfo> modules = GetModulesLoadOrder(moduleInfos);
 
             IEnumerable<ModuleInfo> newModules = LoadAssembliesAndTypes(modules);
 
             foreach (ModuleInfo moduleInfo in newModules)
             {
-                Assembly assembly = loadedAssemblies[Path.GetFileName(moduleInfo.AssemblyFile)];
-
                 Type type = initializedModules[moduleInfo.ModuleType];
 
                 try
@@ -133,7 +136,8 @@ namespace Prism.Services
         private Assembly LoadAssembly(string assemblyFile)
         {
             if (String.IsNullOrEmpty(assemblyFile))
-                throw new ArgumentException("assemblyFile");
+                throw new ArgumentException(
+                    (string.Format(CultureInfo.CurrentCulture, Resources.StringCannotBeNullOrEmpty, "assemblyFile")));
 
             assemblyFile = GetModulePath(assemblyFile);
 

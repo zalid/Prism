@@ -18,10 +18,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using System.Text;
 using StockTraderRI.AcceptanceTests.TestInfrastructure.MockModels;
 using System.Data;
 using StockTraderRI.AcceptanceTests.Helpers;
+using System.Globalization;
 
 namespace StockTraderRI.AcceptanceTests.TestInfrastructure.DataProvider.ModuleDataProviders
 {
@@ -36,23 +38,23 @@ namespace StockTraderRI.AcceptanceTests.TestInfrastructure.DataProvider.ModuleDa
             return ConfigHandler.GetValue("NewsDataFile");
         }
 
-        public override List<News> GetData()
+        public override List<News> GetDataForId(string id)
         {
-            DataSet ds = new DataSet();
-            ds.ReadXml(GetDataFilePath());
-            DataRow dr = null;
-
             List<News> news = new List<News>();
-            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+
+            XDocument xDoc = XDocument.Load(GetDataFilePath());
+            foreach (XElement newsItem in xDoc.Descendants("NewsItems").Descendants("NewsItem")
+                .Where(newsItem => newsItem.Attribute(TestDataInfrastructure.GetTestInputData("TickerSymbol")).Value.Equals(id)))
             {
-                dr = ds.Tables[0].Rows[i];
                 news.Add(
                     new News(
-                            dr[ConfigHandler.GetTestInputData("TickerSymbol")].ToString(), 
-                            dr[ConfigHandler.GetTestInputData("IconUri")].ToString(),
-                            dr[2].ToString()
-                            )
-                        );
+                        id,
+                        newsItem.Attribute(TestDataInfrastructure.GetTestInputData("IconUri")).Value,
+                        DateTime.Parse(newsItem.Attribute(TestDataInfrastructure.GetTestInputData("PublishedDate")).Value, CultureInfo.InvariantCulture),
+                        newsItem.Elements("Title").ToList<XElement>()[0].Value,
+                        newsItem.Elements("Body").ToList<XElement>()[0].Value
+                        )
+                    );
             }
 
             return news;

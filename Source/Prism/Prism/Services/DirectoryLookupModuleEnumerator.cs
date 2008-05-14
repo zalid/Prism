@@ -18,10 +18,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using Prism.Interfaces;
+using Prism.Properties;
 
 namespace Prism.Services
 {
@@ -33,7 +35,7 @@ namespace Prism.Services
         public DirectoryLookupModuleEnumerator(string path)
         {
             if (String.IsNullOrEmpty(path))
-                throw new ArgumentException("path");
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.StringCannotBeNullOrEmpty, "path"));
 
             this.path = path;
         }
@@ -71,10 +73,13 @@ namespace Prism.Services
 
                     Type loaderType = typeof(InnerModuleInfoLoader);
 
-                    var loader =
-                        (InnerModuleInfoLoader)childDomain.CreateInstanceFrom(loaderType.Assembly.Location, loaderType.FullName).Unwrap();
-                    loader.LoadAssemblies(loadedAssemblies);
-                    _modules = loader.GetModuleInfos(path);
+                    if (loaderType.Assembly != null)
+                    {
+                        var loader =
+                            (InnerModuleInfoLoader)childDomain.CreateInstanceFrom(loaderType.Assembly.Location, loaderType.FullName).Unwrap();
+                        loader.LoadAssemblies(loadedAssemblies);
+                        _modules = loader.GetModuleInfos(path);
+                    }
                 }
                 finally
                 {

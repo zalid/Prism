@@ -21,18 +21,18 @@ namespace ModuleB
 {
     public class ModuleB : IModule
     {
-        private readonly IRegionManagerService _regionManagerService;
+        private readonly IRegionManager _regionManager;
         private readonly DefaultViewB _defaultViewB;
 
-        public ModuleB(IRegionManagerService regionManagerService, DefaultViewB defaultViewB)
+        public ModuleB(IRegionManager regionManager, DefaultViewB defaultViewB)
         {
             _defaultViewB = defaultViewB;
-            _regionManagerService = regionManagerService;
+            _regionManager = regionManager;
         }
 
         public void Initialize()
         {
-            _regionManagerService.GetRegion("MainRegion").Add(_defaultViewB);
+            _regionManager.GetRegion("MainRegion").Add(_defaultViewB);
         }
     }
 }

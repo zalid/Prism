@@ -20,19 +20,19 @@ using Prism.Interfaces;
 
 namespace ModuleD
 {
-    [Module(ModuleName = "ModuleD", DependsOn = new[] {"ModuleB"})]
+    [Module(ModuleName = "ModuleD", DependsOn = new[] { "ModuleB" })]
     public class ModuleD : IModule
     {
-        private readonly IRegionManagerService _regionManagerService;
+        private readonly IRegionManager _regionManager;
 
-        public ModuleD(IRegionManagerService regionManagerService)
+        public ModuleD(IRegionManager regionManager)
         {
-            _regionManagerService = regionManagerService;
+            _regionManager = regionManager;
         }
 
         public void Initialize()
         {
-            _regionManagerService.GetRegion("MainRegion").Add(new DefaultViewD());
+            _regionManager.GetRegion("MainRegion").Add(new DefaultViewD());
         }
     }
 }

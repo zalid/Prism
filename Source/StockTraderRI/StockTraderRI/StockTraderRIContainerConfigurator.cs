@@ -22,6 +22,10 @@ using Prism.Regions;
 using Prism.Services;
 using Prism.UnityContainerAdapter;
 using StockTraderRI.Infrastructure;
+using StockTraderRI.Modules.Market;
+using StockTraderRI.Modules.News;
+using StockTraderRI.Modules.Position;
+using StockTraderRI.Modules.Watch;
 
 namespace StockTraderRI
 {
@@ -33,12 +37,21 @@ namespace StockTraderRI
             container.RegisterType<IPrismContainer, UnityPrismContainer>(new ContainerControlledLifetimeManager());
 
             container.RegisterType<IModuleLoaderService, ModuleLoaderService>();
-            container.RegisterType<IModuleEnumerator, StockTraderRIModuleEnumerator>();
             container.RegisterType<IShellView, Shell>();
+            container.RegisterType<IRegionManager, RegionManager>(new ContainerControlledLifetimeManager());
 
-            // Register regions
-            container.RegisterType<IRegion<Panel>, PanelRegion>();
-            container.RegisterType<IRegion<ItemsControl>, ItemsControlRegion>();
+            StaticModuleEnumerator moduleEnumerator = new StaticModuleEnumerator();
+            moduleEnumerator.AddModule(typeof(NewsModule));
+            moduleEnumerator.AddModule(typeof(MarketModule));
+            moduleEnumerator.AddModule(typeof(WatchModule), new[] { "MarketModule" });
+            moduleEnumerator.AddModule(typeof(PositionModule), new[] { "MarketModule", "NewsModule" });
+            container.RegisterInstance<IModuleEnumerator>(moduleEnumerator);
+
+            RegionAdapterMappings mappings = new RegionAdapterMappings();
+            mappings.RegisterMapping(typeof(ItemsControl), new ItemsControlRegionAdapter());
+            mappings.RegisterMapping(typeof(ContentControl), new ContentControlRegionAdapter());
+
+            container.RegisterInstance<RegionAdapterMappings>(mappings);
         }
     }
 }

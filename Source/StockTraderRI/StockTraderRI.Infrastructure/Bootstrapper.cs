@@ -15,10 +15,12 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using System.Windows;
 using Microsoft.Practices.Unity;
 using Prism;
 using Prism.Interfaces;
 using Prism.Interfaces.Logging;
+using Prism.Regions;
 
 namespace StockTraderRI.Infrastructure
 {
@@ -47,7 +49,6 @@ namespace StockTraderRI.Infrastructure
             Container = unityContainer;
 
             configurator.Configure(Container);
-            PrismContainerProvider.Provider = Container.Resolve<IPrismContainer>();
         }
 
         protected void InitializeModules()
@@ -60,7 +61,7 @@ namespace StockTraderRI.Infrastructure
         {
             ShellPresenter shellPresenter = Container.Resolve<ShellPresenter>();
 
-            Container.RegisterInstance<IRegionManagerService>(shellPresenter.View.RegionManagerService);
+            RegionManager.SetRegionManager((DependencyObject)shellPresenter.View, Container.Resolve<IRegionManager>());
 
             shellPresenter.View.ShowView();
         }

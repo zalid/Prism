@@ -26,17 +26,17 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
 {
     public class MockNewsFeedService : INewsFeedService
     {
-        Dictionary<string, string> newsData = new Dictionary<string, string>();
+        readonly Dictionary<string, List<NewsArticle>> newsData = new Dictionary<string, List<NewsArticle>>();
 
-        internal void UpdateNews(string tickerSymbol, string headline)
+        internal void UpdateNews(string tickerSymbol, NewsArticle newsArticle)
         {
-            newsData.Add(tickerSymbol, headline);
-            Updated(this, new NewsFeedEventArgs(tickerSymbol,headline));
+            newsData.Add(tickerSymbol, new List<NewsArticle>() {newsArticle});
+            Updated(this, new NewsFeedEventArgs(tickerSymbol,newsArticle.Title));
         }
 
         #region INewsFeedService Members
 
-        public NewsArticle GetNews(string tickerSymbol)
+        public IList<NewsArticle> GetNews(string tickerSymbol)
         {
             throw new NotImplementedException();
         }

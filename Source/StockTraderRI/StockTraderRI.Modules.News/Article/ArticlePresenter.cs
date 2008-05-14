@@ -17,16 +17,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using Microsoft.Practices.Unity;
-using Prism.Interfaces;
-using System.Windows;
-using Prism.Utility;
-using StockTraderRI.Infrastructure;
+using System.Windows.Data;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Infrastructure.Models;
+using StockTraderRI.Modules.News.Controllers;
 using StockTraderRI.Modules.News.PresentationModels;
 
 namespace StockTraderRI.Modules.News.Article
@@ -34,31 +28,64 @@ namespace StockTraderRI.Modules.News.Article
 
     public class ArticlePresenter : IArticlePresenter
     {
+
         public ArticlePresenter(IArticleView view, INewsFeedService newsFeedService)
         {
+            Model = new ArticlePresentationModel();
             View = view;
+            View.Model = Model;
             NewsFeedService = newsFeedService;
+            View.ShowNewsReader += View_ShowNewsReader;
+        }
+
+        void View_ShowNewsReader(object sender, EventArgs e)
+        {
+            this.Controller.ShowNewsReader();
+        }
+
+        void Articles_CurrentChanged(object sender, EventArgs e)
+        {
+
+            if (Model.Articles == null)
+            {
+                Controller.CurrentNewsArticleChanged(null);
+            }
+            else
+            {
+                Controller.CurrentNewsArticleChanged((NewsArticle)Model.Articles.CurrentItem);
+            }
+
+
         }
 
         public IArticleView View { get; set; }
+
         INewsFeedService NewsFeedService { get; set; }
+
+        public INewsController Controller { get; set; }
 
         public void SetTickerSymbol(string companySymbol)
         {
-            NewsArticle newsArticle = NewsFeedService.GetNews(companySymbol);
-            if (newsArticle != null)
+            if (Model.Articles != null)
             {
-                ExtendedHeader extendedHeader = new ExtendedHeader();
-                extendedHeader.Title = newsArticle.Title;
-                extendedHeader.IconUri = newsArticle.IconUri;
-                extendedHeader.ToolTip = string.Format(CultureInfo.InvariantCulture, Properties.Resources.LastestStockNewsTooltip, newsArticle.Title);
-                ArticlePresentationModel articlePresentationModel = new ArticlePresentationModel();
-                articlePresentationModel.ArticleBody = newsArticle.Body;
-                articlePresentationModel.HeaderInfo = extendedHeader;
+                Model.Articles.CurrentChanged -= Articles_CurrentChanged;
+            }
 
-                View.Model = articlePresentationModel;
-                
+            IList<NewsArticle> newsArticles = NewsFeedService.GetNews(companySymbol);
+
+            if (newsArticles == null)
+            {
+                Model.Articles = null;
+                Articles_CurrentChanged(null, null);
+            }
+            else
+            {
+                Model.Articles = CollectionViewSource.GetDefaultView(newsArticles);
+                Model.Articles.CurrentChanged += Articles_CurrentChanged;
+                Articles_CurrentChanged(null, null);
             }
         }
+
+        protected ArticlePresentationModel Model { get; set; }
     }
 }

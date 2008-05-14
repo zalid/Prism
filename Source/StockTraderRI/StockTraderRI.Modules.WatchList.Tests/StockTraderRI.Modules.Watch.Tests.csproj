@@ -62,7 +62,7 @@
     <Compile Include="Mocks\MockUnityContainer.cs" />
     <Compile Include="Mocks\MockWatchListService.cs" />
     <Compile Include="Mocks\MockWatchListView.cs" />
-    <Compile Include="Mocks\MockRegionManagerService.cs" />
+    <Compile Include="Mocks\MockRegionManager.cs" />
     <Compile Include="Mocks\MockUnityResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WatchModuleFixture.cs" />

@@ -54,19 +54,33 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IActiveAware.cs" />
+    <Compile Include="IEventAggregator.cs" />
     <Compile Include="IModule.cs" />
     <Compile Include="IModuleEnumerator.cs" />
     <Compile Include="IModuleLoaderService.cs" />
     <Compile Include="IPrismContainer.cs" />
     <Compile Include="IRegion.cs" />
     <Compile Include="IRegionAdapter.cs" />
-    <Compile Include="IRegionManagerService.cs" />
-    <Compile Include="IRegionManagerServiceScopeProvider.cs" />
+    <Compile Include="IRegionManager.cs" />
+    <Compile Include="IRegionManagerScopeProvider.cs" />
     <Compile Include="Logging\Category.cs" />
     <Compile Include="Logging\IPrismLogger.cs" />
     <Compile Include="Logging\Priority.cs" />
     <Compile Include="ModuleInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThreadOption.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

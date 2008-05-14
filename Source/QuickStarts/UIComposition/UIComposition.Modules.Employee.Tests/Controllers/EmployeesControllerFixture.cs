@@ -15,13 +15,9 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UIComposition.Modules.Employee.Controllers;
-using Microsoft.Practices.Unity;
 using UIComposition.Modules.Employee.Tests.Mocks;
 using UIComposition.Modules.Project;
 
@@ -52,39 +48,75 @@ namespace UIComposition.Modules.Employee.Tests.Controllers
             container.RegisterType<IEmployeesDetailsPresenter, MockEmployeesDetailsPresenter>();
             container.RegisterType<IProjectsListPresenter, MockProjectsListPresenter>();
 
-            MockEmployeesView employeesView = new MockEmployeesView();
+            var regionManager = new MockRegionManagerService();
+            var detailsRegion = new MockRegion();
+            regionManager.Register(RegionNames.DetailsRegion, detailsRegion);
+            var scopedRegionManager = new MockRegionManagerService();
+            scopedRegionManager.Register(RegionNames.TabRegion, new MockRegion());
+            detailsRegion.AddReturnValue = scopedRegionManager;
+
             BusinessEntities.Employee employee1 = new BusinessEntities.Employee(10) { LastName = "Mock1", FirstName = "Employee1" };
             BusinessEntities.Employee employee2 = new BusinessEntities.Employee(11) { LastName = "Mock2", FirstName = "Employee2" };
 
             EmployeesController controller = new EmployeesController(container);
 
-            Assert.AreEqual<int>(0, employeesView.DetailsRegion.Views.Count);
+            Assert.AreEqual<int>(0, detailsRegion.ViewsCount);
 
-            controller.OnEmployeeSelected(employeesView, employee1);
-            controller.OnEmployeeSelected(employeesView, employee2);
+            controller.OnEmployeeSelected(regionManager, employee1);
+            controller.OnEmployeeSelected(regionManager, employee2);
 
-            Assert.AreEqual<int>(2, employeesView.DetailsRegion.Views.Count);
+            Assert.AreEqual<int>(2, detailsRegion.ViewsCount);
         }
 
         [TestMethod]
-        public void ControllerNotAddsViewWhenShowDetailsIfIsAlreadyAddedPresent()
+        public void ControllerDoesNotAddViewWhenShowDetailsIfIsAlreadyPresent()
         {
             container.RegisterType<IEmployeesDetailsPresenter, MockEmployeesDetailsPresenter>();
             container.RegisterType<IProjectsListPresenter, MockProjectsListPresenter>();
 
-            MockEmployeesView employeesView = new MockEmployeesView();
+            var regionManager = new MockRegionManagerService();
+            var detailsRegion = new MockRegion();
+            regionManager.Register(RegionNames.DetailsRegion, detailsRegion);
+            var scopedRegionManager = new MockRegionManagerService();
+            scopedRegionManager.Register(RegionNames.TabRegion, new MockRegion());
+            detailsRegion.AddReturnValue = scopedRegionManager;
+
             BusinessEntities.Employee employee = new UIComposition.Modules.Employee.BusinessEntities.Employee(10) { LastName = "Con", FirstName = "Aaron" };
 
             EmployeesController controller = new EmployeesController(container);
 
-            Assert.AreEqual<int>(0, employeesView.DetailsRegion.Views.Count);
+            Assert.AreEqual<int>(0, detailsRegion.ViewsCount);
 
-            controller.OnEmployeeSelected(employeesView, employee);
-            controller.OnEmployeeSelected(employeesView, employee);
+            controller.OnEmployeeSelected(regionManager, employee);
+            controller.OnEmployeeSelected(regionManager, employee);
 
-            Assert.AreEqual<int>(1, employeesView.DetailsRegion.Views.Count);
-            Assert.IsTrue(employeesView.DetailsRegion.ShowCalled);
+            Assert.AreEqual<int>(1, detailsRegion.ViewsCount);
+            Assert.IsTrue(detailsRegion.ShowCalled);
         }
+
+        [TestMethod]
+        public void ShowTheNewlyAddedViewInTheDetailsRegion()
+        {
+            container.RegisterType<IEmployeesDetailsPresenter, MockEmployeesDetailsPresenter>();
+            container.RegisterType<IProjectsListPresenter, MockProjectsListPresenter>();
+
+            var regionManager = new MockRegionManagerService();
+            var detailsRegion = new MockRegion();
+            regionManager.Register(RegionNames.DetailsRegion, detailsRegion);
+            var scopedRegionManager = new MockRegionManagerService();
+            scopedRegionManager.Register(RegionNames.TabRegion, new MockRegion());
+            detailsRegion.AddReturnValue = scopedRegionManager;
+
+            BusinessEntities.Employee employee1 = new BusinessEntities.Employee(10) { LastName = "Mock1", FirstName = "Employee1" };
+
+            EmployeesController controller = new EmployeesController(container);
+
+            controller.OnEmployeeSelected(regionManager, employee1);
+
+            Assert.AreEqual<int>(1, detailsRegion.ViewsCount);
+            Assert.IsTrue(detailsRegion.ShowCalled);
+        }
+
 
         private IEmployeesController CreateController()
         {

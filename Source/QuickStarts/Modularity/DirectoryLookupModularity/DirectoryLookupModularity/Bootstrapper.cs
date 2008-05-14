@@ -17,7 +17,6 @@
 
 using System.Windows.Controls;
 using Microsoft.Practices.Unity;
-using Prism;
 using Prism.Interfaces;
 using Prism.Interfaces.Logging;
 using Prism.Regions;
@@ -34,7 +33,7 @@ namespace DirectoryLookupModularity
         {
             InitializeContainer();
             RegisterGlobalServices();
-            RegisterRegions();
+            RegisterRegionAdapters();
             ShowShell();
             InitializeModules();
         }
@@ -45,7 +44,6 @@ namespace DirectoryLookupModularity
             container.RegisterInstance<IUnityContainer>(container);
             container.RegisterType<IPrismContainer, UnityPrismContainer>(new ContainerControlledLifetimeManager());
             container.RegisterInstance<IPrismLogger>(new ModularityLogger());
-            PrismContainerProvider.Provider = container.Resolve<IPrismContainer>();
         }
 
         private void RegisterGlobalServices()
@@ -53,17 +51,23 @@ namespace DirectoryLookupModularity
             container.RegisterType<IModuleLoaderService, ModuleLoaderService>(new ContainerControlledLifetimeManager());
         }
 
-        private void RegisterRegions()
+        private void RegisterRegionAdapters()
         {
-            container.RegisterType<IRegion<Panel>, PanelRegion>();
+            RegionAdapterMappings mappings = new RegionAdapterMappings();
+            mappings.RegisterMapping(typeof(ItemsControl), new ItemsControlRegionAdapter());
+            mappings.RegisterMapping(typeof(ContentControl), new ContentControlRegionAdapter());
+
+            this.container.RegisterInstance<RegionAdapterMappings>(mappings);
         }
+
 
         private void ShowShell()
         {
+            this.container.RegisterType<IRegionManager, RegionManager>(new ContainerControlledLifetimeManager());
+
             Shell shell = new Shell();
 
-            IRegionManagerService regionManagerService = RegionManager.GetRegionManagerServiceScope(shell);
-            container.RegisterInstance<IRegionManagerService>(regionManagerService);
+            RegionManager.SetRegionManager(shell, container.Resolve<IRegionManager>());
 
             shell.Show();
         }

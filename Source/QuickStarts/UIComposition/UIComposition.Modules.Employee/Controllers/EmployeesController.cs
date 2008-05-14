@@ -18,7 +18,6 @@
 
 using Microsoft.Practices.Unity;
 using Prism.Interfaces;
-using System.Windows;
 using UIComposition.Modules.Project;
 namespace UIComposition.Modules.Employee.Controllers
 {
@@ -31,22 +30,23 @@ namespace UIComposition.Modules.Employee.Controllers
             this.container = container;
         }
 
-        public virtual void OnEmployeeSelected(IEmployeesView employeesView, BusinessEntities.Employee employee)
+        public virtual void OnEmployeeSelected(IRegionManager regionManager, BusinessEntities.Employee employee)
         {
-            IRegion detailsRegion = employeesView.RegionManagerService.GetRegion(RegionNames.DetailsRegion);
-            UIElement existingView = detailsRegion.GetView(employee.EmployeeId.ToString());
-            
+            IRegion detailsRegion = regionManager.GetRegion(RegionNames.DetailsRegion);
+            object existingView = detailsRegion.GetView(employee.EmployeeId.ToString());
+
             if (existingView == null)
             {
                 IProjectsListPresenter projectsListPresenter = this.container.Resolve<IProjectsListPresenter>();
                 projectsListPresenter.SetProjects(employee.EmployeeId);
-                
+
                 IEmployeesDetailsPresenter detailsPresenter = this.container.Resolve<IEmployeesDetailsPresenter>();
                 detailsPresenter.SetSelectedEmployee(employee);
-                IRegion region = detailsPresenter.View.RegionManagerService.GetRegion(RegionNames.TabRegion);
-                region.Add((UIElement)projectsListPresenter.View, "CurrentProjectsView");
 
-                detailsRegion.Add((UIElement)detailsPresenter.View, employee.EmployeeId.ToString());
+                IRegionManager detailsRegionManager = detailsRegion.Add(detailsPresenter.View, employee.EmployeeId.ToString(), true);
+                IRegion region = detailsRegionManager.GetRegion(RegionNames.TabRegion);
+                region.Add(projectsListPresenter.View, "CurrentProjectsView");
+                detailsRegion.Show(detailsPresenter.View);
             }
             else
             {

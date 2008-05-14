@@ -15,16 +15,12 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Practices.Unity;
-using UIComposition.Modules.Employee.Tests.Mocks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Prism.Interfaces;
-using UIComposition.Modules.Employee.Services;
 using UIComposition.Modules.Employee.Controllers;
+using UIComposition.Modules.Employee.Services;
+using UIComposition.Modules.Employee.Tests.Mocks;
 
 namespace UIComposition.Modules.Employee.Tests
 {
@@ -40,7 +36,7 @@ namespace UIComposition.Modules.Employee.Tests
             container = new MockUnityContainer();
             regionManagerService = new MockRegionManagerService();
         }
-             
+
         [TestMethod]
         public void RegisterViewsAndServices()
         {
@@ -77,20 +73,20 @@ namespace UIComposition.Modules.Employee.Tests
         public void InitializeShouldAddEmployeesViewToRegion()
         {
             container.RegisterInstance<IUnityContainer>(container);
-            container.RegisterInstance<IRegionManagerService>(regionManagerService);
+            container.RegisterInstance<IRegionManager>(regionManagerService);
             MockRegion mainRegion = new MockRegion();
             MockRegion mainToolbar = new MockRegion();
 
             regionManagerService.Register(RegionNames.MainRegion, mainRegion);
             regionManagerService.Register(RegionNames.MainToolBar, mainToolbar);
-            
+
             EmployeeModule module = CreateModule();
 
-            Assert.AreEqual(0, mainRegion.Views.Count);
+            Assert.AreEqual(0, mainRegion.ViewsCount);
 
             module.Initialize();
 
-            Assert.AreEqual(1, mainRegion.Views.Count);
+            Assert.AreEqual(1, mainRegion.ViewsCount);
         }
 
         private TestableEmployeeModule CreateTestableModule()
@@ -108,8 +104,8 @@ namespace UIComposition.Modules.Employee.Tests
 
     class TestableEmployeeModule : EmployeeModule
     {
-        public TestableEmployeeModule(IUnityContainer container, IRegionManagerService regionManagerService)
-            : base(container, regionManagerService)
+        public TestableEmployeeModule(IUnityContainer container, IRegionManager regionManager)
+            : base(container, regionManager)
         {
 
         }

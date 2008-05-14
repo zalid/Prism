@@ -16,11 +16,14 @@
 //===============================================================================
 
 using System;
+using StockTraderRI.Modules.News.Controllers;
+
 namespace StockTraderRI.Modules.News.Article
 {
     public interface IArticlePresenter
     {
         void SetTickerSymbol(string companySymbol);
         IArticleView View { get; }
+        INewsController Controller { get; set; }
     }
 }

@@ -27,12 +27,12 @@ namespace StockTraderRI.Modules.Watch
     public class WatchModule : IModule
     {
         private readonly IUnityContainer _container;
-        private readonly IRegionManagerService _regionManagerService;
+        private readonly IRegionManager _regionManagerService;
 
-        public WatchModule(IUnityContainer container, IRegionManagerService regionManagerService)
+        public WatchModule(IUnityContainer container, IRegionManager regionManager)
         {
             _container = container;
-            _regionManagerService = regionManagerService;
+            _regionManagerService = regionManager;
         }
 
         #region IModule Members
@@ -42,7 +42,7 @@ namespace StockTraderRI.Modules.Watch
             RegisterViewsAndServices();
 
             IWatchListPresenter watchListPresenter = _container.Resolve<IWatchListPresenter>();
-            _regionManagerService.GetRegion("CollapsibleRegion").Add((UIElement)watchListPresenter.View);
+            _regionManagerService.GetRegion("WatchRegion").Add((UIElement)watchListPresenter.View);
             IAddWatchPresenter addWatchPresenter = _container.Resolve<IAddWatchPresenter>();
             _regionManagerService.GetRegion("MainToolbarRegion").Add((UIElement)addWatchPresenter.View);
         }

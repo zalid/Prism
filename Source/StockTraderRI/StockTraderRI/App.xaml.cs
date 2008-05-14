@@ -33,9 +33,19 @@ namespace StockTraderRI
     {
         public App()
         {
+
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
             IPrismLogger logger = new EntLibPrismLogger();
             Bootstrapper bootStrapper = new Bootstrapper(logger);
             bootStrapper.Initialize(new StockTraderRIContainerConfigurator());
+            this.ShutdownMode = ShutdownMode.OnMainWindowClose;
+
         }
+ 
     }
 }

@@ -50,7 +50,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             // If so, fail the test case.
             if (StateDiagnosis.IsFailed)
             {
-                Assert.Fail(ConfigHandler.GetTestInputData("ApplicationLoadFailure"));
+                Assert.Fail(TestDataInfrastructure.GetTestInputData("ApplicationLoadFailure"));
             }
 
             base.TestInitialize();
@@ -80,16 +80,16 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             //Button pinImage = window.Get<Button>("HeaderAutoHideButton");
             //pinImage.Click();
 
-            TextBox addWatchTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("WatchListAddTextBox"));
+            TextBox addWatchTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("WatchListAddTextBox"));
             addWatchTextBox.Text = symbol;
 
-            Button addWatchListButton = window.Get<Button>(ConfigHandler.GetControlId("WatchListAddButton"));
+            Button addWatchListButton = window.Get<Button>(TestDataInfrastructure.GetControlId("WatchListAddButton"));
             addWatchListButton.Click();
         }
 
         private void LaunchBuySellPanelFromPositionTable(BuySellEnum buySell, string symbol)
         {
-            ListView list = window.Get<ListView>(ConfigHandler.GetControlId("PositionTableId"));
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
 
             switch (buySell)
             {
@@ -117,27 +117,27 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             UIItem buySellListTab = window.GetCollapsibleRegionHeader("BuySellListHeader");
             buySellListTab.Hover();
 
-            TextBox symbolTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("BuySellSymbolTextBox"));
+            TextBox symbolTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("BuySellSymbolTextBox"));
             Assert.IsNotNull(symbolTextBox);
 
-            RadioButton buyRadButton = window.Get<RadioButton>(ConfigHandler.GetControlId("BuyRadio"));
+            RadioButton buyRadButton = window.Get<RadioButton>(TestDataInfrastructure.GetControlId("BuyRadio"));
             Assert.IsNotNull(buyRadButton);
-            RadioButton sellRadButton = window.Get<RadioButton>(ConfigHandler.GetControlId("SellRadio"));
+            RadioButton sellRadButton = window.Get<RadioButton>(TestDataInfrastructure.GetControlId("SellRadio"));
             Assert.IsNotNull(sellRadButton);
 
             //check if Order type combobox is present
-            WPFComboBox orderTypeComboBox = window.Get<WPFComboBox>(ConfigHandler.GetControlId("BuySellOrderTypeCombo"));
+            WPFComboBox orderTypeComboBox = window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("BuySellOrderTypeCombo"));
             Assert.IsNotNull(orderTypeComboBox);
 
             //check if shares textbox is present
-            TextBox shareTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("BuySellSharesTextBox"));
+            TextBox shareTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("BuySellSharesTextBox"));
             Assert.IsNotNull(shareTextBox);
 
             //check if limit / stop price  textbox is present            
-            TextBox limitStopPriceTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("BuySellStopLimitPriceTextBox"));
+            TextBox limitStopPriceTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("BuySellStopLimitPriceTextBox"));
             Assert.IsNotNull(limitStopPriceTextBox);
 
-            WPFComboBox timeInForceComboBox = window.Get<WPFComboBox>(ConfigHandler.GetControlId("BuySellTimeInForceCombo"));
+            WPFComboBox timeInForceComboBox = window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("BuySellTimeInForceCombo"));
             Assert.IsNotNull(timeInForceComboBox);
 
             switch (buySell)
@@ -150,23 +150,23 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
                     break;
             }
 
-            //Button buyLastButton = window.Get<Button>(ConfigHandler.GetControlId("BuySellBuyLastButton"));
+            //Button buyLastButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellBuyLastButton"));
             //Assert.IsNotNull(buyLastButton);
 
-            //Button sellLastButton = window.Get<Button>(ConfigHandler.GetControlId("BuySellSellLastButton"));
+            //Button sellLastButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSellLastButton"));
             //Assert.IsNotNull(sellLastButton);
 
-            Button submitButton = window.Get<Button>(ConfigHandler.GetControlId("BuySellSubmitButton"));
+            Button submitButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
             Assert.IsNotNull(submitButton);
 
-            Button cancelButton = window.Get<Button>(ConfigHandler.GetControlId("BuySellCancelButton"));
+            Button cancelButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellCancelButton"));
             Assert.IsNotNull(cancelButton);
 
             //check if Submit All and Cancel All buttons are present
-            Button submitAllButton = window.Get<Button>(ConfigHandler.GetControlId("BuySellSubmitAllButton"));
+            Button submitAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
             Assert.IsNotNull(submitAllButton);
 
-            Button cancelAllButton = window.Get<Button>(ConfigHandler.GetControlId("BuySellCancelAllButton"));
+            Button cancelAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellCancelAllButton"));
             Assert.IsNotNull(cancelAllButton);
         }
 
@@ -176,29 +176,35 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             UIItem buySellListTab = window.GetCollapsibleRegionHeader("BuySellListHeader");
             buySellListTab.Hover();
 
-            TextBox symbolTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("BuySellSymbolTextBox"));
+            TextBox symbolTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("BuySellSymbolTextBox"));
             Assert.AreEqual(model.Symbol, symbolTextBox.Text);
 
-            WPFComboBox orderTypeComboBox = window.Get<WPFComboBox>(ConfigHandler.GetControlId("BuySellOrderTypeCombo"));
-            Assert.AreEqual(model.OrderType, orderTypeComboBox.SelectedItemText);
+            if (String.Empty != model.OrderType)
+            {
+                WPFComboBox orderTypeComboBox = window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("BuySellOrderTypeCombo"));
+                Assert.AreEqual(model.OrderType, orderTypeComboBox.SelectedItem.Text);
+            }
 
-            TextBox shareTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("BuySellSharesTextBox"));
+            TextBox shareTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("BuySellSharesTextBox"));
             Assert.AreEqual(model.NumberOfShares.ToString(), shareTextBox.Text);
 
-            TextBox limitStopPriceTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("BuySellStopLimitPriceTextBox"));
+            TextBox limitStopPriceTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("BuySellStopLimitPriceTextBox"));
             Assert.AreEqual(model.LimitStopPrice.ToString(), limitStopPriceTextBox.Text);
 
-            WPFComboBox timeInForceComboBox = window.Get<WPFComboBox>(ConfigHandler.GetControlId("BuySellTimeInForceCombo"));
-            Assert.AreEqual(timeInForceComboBox.SelectedItemText, model.FormattedTimeInForce);
+            if (String.Empty != model.TimeInForce)
+            {
+                WPFComboBox timeInForceComboBox = window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("BuySellTimeInForceCombo"));
+                Assert.AreEqual(timeInForceComboBox.SelectedItem.Text, model.FormattedTimeInForce);
+            }
 
             switch (model.TransactionType)
             {
                 case "Buy":
-                    RadioButton buyRadButton = window.Get<RadioButton>(ConfigHandler.GetControlId("BuyRadio"));
+                    RadioButton buyRadButton = window.Get<RadioButton>(TestDataInfrastructure.GetControlId("BuyRadio"));
                     Assert.IsTrue(buyRadButton.IsSelected);
                     break;
                 case "Sell":
-                    RadioButton sellRadButton = window.Get<RadioButton>(ConfigHandler.GetControlId("SellRadio"));
+                    RadioButton sellRadButton = window.Get<RadioButton>(TestDataInfrastructure.GetControlId("SellRadio"));
                     Assert.IsTrue(sellRadButton.IsSelected);
                     break;
             }
@@ -208,32 +214,32 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         {
             //select the collapsible panel first
             UIItem buySellListTab = window.GetCollapsibleRegionHeader("BuySellListHeader");
-            buySellListTab.Click();
-
+            buySellListTab.Click();         
+           
             //enter data in model into the Buy Sell panel controls
-            TextBox symbolTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("BuySellSymbolTextBox"));
+            TextBox symbolTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("BuySellSymbolTextBox"));            
             symbolTextBox.Text = model.Symbol;
 
-            WPFComboBox orderTypeComboBox = window.Get<WPFComboBox>(ConfigHandler.GetControlId("BuySellOrderTypeCombo"));
+            WPFComboBox orderTypeComboBox = window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("BuySellOrderTypeCombo"));
             orderTypeComboBox.Select(model.OrderType);
 
-            TextBox shareTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("BuySellSharesTextBox"));
+            TextBox shareTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("BuySellSharesTextBox"));
             shareTextBox.Text = model.NumberOfShares.ToString();
 
-            TextBox limitStopPriceTextBox = window.Get<TextBox>(ConfigHandler.GetControlId("BuySellStopLimitPriceTextBox"));
+            TextBox limitStopPriceTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("BuySellStopLimitPriceTextBox"));
             limitStopPriceTextBox.Text = model.LimitStopPrice.ToString();
 
-            WPFComboBox timeInForceComboBox = window.Get<WPFComboBox>(ConfigHandler.GetControlId("BuySellTimeInForceCombo"));
+            WPFComboBox timeInForceComboBox = window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("BuySellTimeInForceCombo"));
             timeInForceComboBox.Select(model.FormattedTimeInForce);
 
             switch (model.TransactionType)
             {
                 case "Buy":
-                    RadioButton buyRadButton = window.Get<RadioButton>(ConfigHandler.GetControlId("BuyRadio"));
+                    RadioButton buyRadButton = window.Get<RadioButton>(TestDataInfrastructure.GetControlId("BuyRadio"));
                     buyRadButton.Select();
                     break;
                 case "Sell":
-                    RadioButton sellRadButton = window.Get<RadioButton>(ConfigHandler.GetControlId("SellRadio"));
+                    RadioButton sellRadButton = window.Get<RadioButton>(TestDataInfrastructure.GetControlId("SellRadio"));
                     sellRadButton.Select();
                     break;
             }

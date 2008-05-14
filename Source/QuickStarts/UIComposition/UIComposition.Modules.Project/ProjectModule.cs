@@ -19,18 +19,17 @@ namespace UIComposition.Modules.Project
 {
     using Microsoft.Practices.Unity;
     using Prism.Interfaces;
-    using UIComposition.Infrastructure;
     using UIComposition.Modules.Project.Services;
 
     public class ProjectModule : IModule
     {
         private IUnityContainer container;
-        private IRegionManagerService regionManagerService;
+        private IRegionManager regionManager;
 
-        public ProjectModule(IUnityContainer container, IRegionManagerService regionManagerService)
+        public ProjectModule(IUnityContainer container, IRegionManager regionManager)
         {
             this.container = container;
-            this.regionManagerService = regionManagerService;
+            this.regionManager = regionManager;
         }
 
         public void Initialize()

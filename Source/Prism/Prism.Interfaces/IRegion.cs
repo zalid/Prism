@@ -15,36 +15,27 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
+using System.ComponentModel;
 
 namespace Prism.Interfaces
 {
     public interface IRegion
     {
-        IList<UIElement> Views { get; }
-        void Add(UIElement view);
-        void Add(UIElement view, string name);
-        void Remove(UIElement view);
-        void Show(UIElement view);
+        ICollectionView Views { get; }
+        IRegionManager Add(object view);
+        IRegionManager Add(object view, string name);
+        IRegionManager Add(object view, string name, bool createRegionManagerScope);
+        void Remove(object view);
+        void Show(object view);
         /// <summary>
         /// Returns the view instance that was added to the region using a specific name.
         /// </summary>
         /// <param name="name">The name used when adding the view to the region</param>
         /// <returns>Returns the named view or <see langword="null"/> if the view with <paramref name="name"/> does not exist.</returns>
-        UIElement GetView(string name);
+        object GetView(string name);
 
         //event EventHandler<RegionViewEventArgs> ViewActivated;
         //event EventHandler<RegionViewEventArgs> ViewDeactivated;
-
-
-    }
-
-    public interface IRegion<T> : IRegion, IRegionAdapter
-    {
-       
+        IRegionManager RegionManager { set; }
     }
 }

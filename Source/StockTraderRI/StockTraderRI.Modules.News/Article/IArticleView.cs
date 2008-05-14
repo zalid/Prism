@@ -27,5 +27,6 @@ namespace StockTraderRI.Modules.News.Article
     public interface IArticleView
     {
         ArticlePresentationModel Model { set; }
+        event EventHandler<EventArgs> ShowNewsReader;
     }
 }

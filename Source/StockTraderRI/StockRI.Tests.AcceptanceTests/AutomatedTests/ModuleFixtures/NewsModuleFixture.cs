@@ -30,6 +30,8 @@ using StockTraderRI.AcceptanceTests.TestInfrastructure;
 using StockTraderRI.AcceptanceTests.Helpers;
 using StockTraderRI.AcceptanceTests.TestInfrastructure.MockModels;
 using StockTraderRI.AcceptanceTests.TestInfrastructure.DataProvider.ModuleDataProviders;
+using Core.UIItems.ListBoxItems;
+
 
 namespace StockTraderRI.AcceptanceTests.AutomatedTests
 {
@@ -70,180 +72,240 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         /// code should be created.
         /// </summary>
         [TestMethod]
-        public void SelectedSymbolNewsButtonClick()
+        public void SelectedSymbolNewsDisplay()
         {
-            Button button = window.Get<Button>(SearchCriteria.ByAutomationId(ConfigHandler.GetTestInputData("Symbol")).AndControlType(typeof(Button)));
-            Tab tab = window.Get<Tab>(ConfigHandler.GetControlId("ShellTabControl"));
+            //get handle of the Position Table and click on each of the rows one after the other
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            string symbol;
+            List<News> news;
+            ListBox articlesView;
+            Label articleTitle;
+            Label articlePublishedDate;
 
-            Assert.IsTrue((tab == null) ? true : (0 == tab.Pages.Count));
+            foreach (ListViewRow symbolRow in list.Rows)
+            {                
+                symbolRow.Click();
+                symbol = symbolRow.Cells[TestDataInfrastructure.GetTestInputData("PositionTableSymbol")].Text;
 
-            // Clicking the button should add a new FUND0 Tab
-            button.Click();
+                news = testDataInfrastructure.GetDataForId<NewsDataProvider, News>(symbol);
+                articlesView = window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
+                
+                if (null != news)
+                {
+                    Assert.AreEqual<int>(news.Count, articlesView.Items.Count);
+                }
+                else
+                {
+                    Assert.AreEqual<int>(0, articlesView.Items.Count);
+                }
 
-            tab = window.Get<Tab>(ConfigHandler.GetControlId("ShellTabControl"));
+                foreach (News newsItem in news)
+                {
+                    articleTitle = (Label)window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("ArticleTitle"))
+                                                            .AndByText(newsItem.Title)
+                                                            .AndControlType(typeof(Label)));
 
-            Assert.AreEqual(1, tab.Pages.Count);
+                    Assert.IsNotNull(articleTitle);
 
-            //The following code should be the correct way to walk the raw tree,   
-            //but the search never returns when the name is not found (instead of returning null)
-            //TreeWalker walker = new TreeWalker(new PropertyCondition(AutomationElement.NameProperty, "FUND0"));
-            //AutomationElement elementNode = walker.GetFirstChild(((UIItem)tab.Pages[0]).AutomationElement);
-            //Assert.IsNotNull(elementNode);
+                    articlePublishedDate = (Label)window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("ArticlePublishedDate"))
+                                                            .AndByText(newsItem.PublishedDate.ToString())
+                                                            .AndControlType(typeof(Label)));
 
-            ////Using UI Automation framework to search for an element with name "FUND0"
-            ////Not being able to search using White when using WPF templates
-            AutomationElement element = (((UIItem)tab.Pages[0]).AutomationElement).SearchInRawTreeByName(ConfigHandler.GetTestInputData("Symbol"));
-            Assert.IsNotNull(element);
+                    Assert.IsNotNull(articlePublishedDate);
+                }
+            }
         }
 
         /// <summary>
-        /// Check on repeated click of a particular symbol's news button should not
-        /// add a tab every click.
+        /// Check on repeated click of a particular symbol in the position table  should not
+        /// add listitems every click.
         ///
         /// Repro Steps:
         /// 1. Launch the StockTraderRI
-        /// 2. Get the news button of a particular symbol
-        /// 3. Click on the news button.
-        /// 4. Check the new tab is added to the tab control.
-        /// 5. Click on the news button.
-        /// 6. Check the new tab is not added.
+        /// 2. Get a particular row of the position table of a particular symbol
+        /// 3. Click on the particular position table's row.
+        /// 4. Check the new list box is added with the news articles.
+        /// 5. Click on the particular position table's row.
+        /// 6. Check the new news articles are not added.
         /// 
         /// Expected Result:
-        /// Only for the first click new tab should be added for a particular symbol.
+        /// Only for the first click new news articles should be added for a particular symbol.
         /// </summary>
         [TestMethod]
-        public void SelectedSymbolRepeatedNewsButtonClick()
+        public void SelectedSymbolRepeatedPositionRowClick()
         {
-            Button button = window.Get<Button>(SearchCriteria.ByAutomationId(ConfigHandler.GetTestInputData("Symbol")).AndControlType(typeof(Button)));
-            Tab tab = window.Get<Tab>(ConfigHandler.GetControlId("ShellTabControl"));
+             //get handle of the Position Table 
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            string symbol;
+            List<News> news;
+            ListBox articlesView;
 
-            // Clicking the button should add a new FUND0 Tab
-            button.Click();
+            //click the particular symbol of the Position table
+            ListViewRow symbolRow = list.Rows.Find(row => row.Cells[TestDataInfrastructure.GetTestInputData("PositionTableSymbol")].Text.Equals(TestDataInfrastructure.GetTestInputData("Symbol")));
+            symbolRow.Click();
 
-            //Adding sleep to verify whether this is the cause for random test failure on build server
-            System.Threading.Thread.Sleep(1000);
+            //Get the news item for a particular symbol
+            symbol = TestDataInfrastructure.GetTestInputData("Symbol");           
+            news = testDataInfrastructure.GetDataForId<NewsDataProvider, News>(symbol);
 
-            tab = window.Get<Tab>(ConfigHandler.GetControlId("ShellTabControl"));
-            Assert.AreEqual(1, tab.Pages.Count);
+            //Get the handler of the News Article View displayed
+            articlesView = window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
 
-            // Clicking the same button should not add a new FUND0 Tab
-            button.Click();
+            //Get the number of news items for the particular symbol
+            int newsCount = news.Count;
+            Assert.AreEqual(newsCount, articlesView.Items.Count);
 
-            tab = window.Get<Tab>(ConfigHandler.GetControlId("ShellTabControl"));
-            Assert.AreEqual(1, tab.Pages.Count);
+            //click the particular symbol of the Position table
+            symbolRow.Click();
+
+            //Get the handler of the News Article View displayed
+            articlesView = window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
+
+            Assert.AreEqual(newsCount, articlesView.Items.Count);
         }
 
         /// <summary>
-        /// On click of a symbol news button, tab control should focus on that appropriate 
-        /// tab
+        /// On click of a particular symbol in the position table, the news articles corresponding to the 
+        /// selected symbol should be displayed.
         /// 
         /// Repro Steps:
         /// 1. Launch the StockTraderRI
-        /// 2. Get the news button of a symbols
-        /// 3. Click on the symbol1 news button.
-        /// 4. Check the new tab is added to the tab control and selected tab is matching the 
-        /// name of that symbol.
-        /// 5. Click on the symbol2 news button.
-        /// 6. Check the new tab is added to the tab control and selected tab is matching the 
-        /// name of that symbol.
+        /// 2. Get a particular symbol from the position table
+        /// 3. Click on the symbol row.
+        /// 4. Check the news articles are displayed corresponding to the selected symbol.
+        /// 5. Click on the symbol2 row.
+        /// 6. Check the news articles are displayed corresponding to the newly selected symbol.
         /// 
         /// Expected Result:
-        /// Symbol's news button click should bring focus to the appropriate tab.
+        /// Particular Symbol click in the position table should display news articles corresponding
+        /// to the selected symbol.
         /// </summary>
         [TestMethod]
-        public void ClickingSymbolBringsFocusToAppropriateTabInNewsRegion()
-        {
-            Button firstNewsButton = window.Get<Button>(SearchCriteria.ByAutomationId(ConfigHandler.GetTestInputData("Symbol")).AndControlType(typeof(Button)));
-            Button secondNewsButton = window.Get<Button>(SearchCriteria.ByAutomationId(ConfigHandler.GetTestInputData("PositionSymbol")).AndControlType(typeof(Button)));
-            Tab tab = window.Get<Tab>(ConfigHandler.GetControlId("ShellTabControl"));
+        public void ClickingSymbolDisplaysNewsArticlesCorrespondingly()
+        {            
+            //get handle of the Position Table 
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            string symbol;
+            List<News> news;
+            ListBox articlesView;
 
-            Assert.AreEqual(0, tab.Pages.Count);
+            //click the particular symbol of the Position table
+            ListViewRow symbolRow = list.Rows.Find(row => row.Cells[TestDataInfrastructure.GetTestInputData("PositionTableSymbol")].Text.Equals(TestDataInfrastructure.GetTestInputData("Symbol")));
+            symbolRow.Click();
 
-            // Clicking the button should add a new FUND0 Tab
-            firstNewsButton.Click();
+            //Get the news item for a particular symbol
+            symbol = TestDataInfrastructure.GetTestInputData("Symbol");
+            news = testDataInfrastructure.GetDataForId<NewsDataProvider, News>(symbol);
 
-            tab = window.Get<Tab>(ConfigHandler.GetControlId("ShellTabControl"));
-            Assert.AreEqual(1, tab.Pages.Count);
-            Assert.IsTrue(tab.SelectedTab.NameMatches(ConfigHandler.GetTestInputData("Symbol")));
+            //Get the handler of the News Article View displayed
+            articlesView = window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
 
-            // Clicking the news button should add a new FUND6 Tab
-            secondNewsButton.Click();
+            Assert.AreEqual(news.Count,articlesView.Items.Count);
 
-            tab = window.Get<Tab>(ConfigHandler.GetControlId("ShellTabControl"));
-            Assert.AreEqual(2, tab.Pages.Count);
-            Assert.IsTrue(tab.SelectedTab.NameMatches(ConfigHandler.GetTestInputData("PositionSymbol")));
+            //click on the position symbol STOCK6
+            symbolRow = list.Rows.Find(row => row.Cells[TestDataInfrastructure.GetTestInputData("PositionTableSymbol")].Text.Equals(TestDataInfrastructure.GetTestInputData("PositionSymbol")));
+            symbolRow.Click();
+
+            //Get the news item for a particular symbol
+            symbol = TestDataInfrastructure.GetTestInputData("PositionSymbol");
+            news = testDataInfrastructure.GetDataForId<NewsDataProvider, News>(symbol);
+
+            //Get the handler of the News Article View displayed
+            articlesView = window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
+
+            Assert.AreEqual(news.Count, articlesView.Items.Count);
+
         }
 
         /// <summary>
-        /// On clicking of a symbol's news button,whose tab is already shown, 
-        /// should bring focus on that appropriate tab
+        /// Repeated clicks on already shown symbol in the position table, should display the  
+        /// news articles for the recently selected symbol.
         /// 
         /// Repro Steps:
         /// 1. Launch the StockTraderRI
-        /// 2. Get the news button of a symbols
-        /// 3. Click on the symbols news button.
-        /// 4. Check the selected tab should match the appropriate symbol
+        /// 2. Get a particular symbol row in the position table.
+        /// 3. Click on the symbols row STOCK0.
+        /// 4. Click on a different symbol in the position table.
+        /// 5. CLick on the symbol row STOCK0 again.
+        /// 6. The news articles should be displayed corresponding to the recenlty selected symbol.
         /// 
         /// Expected Result:
-        /// On clicking of a symbol's news button,whose tab is already shown, 
-        /// should bring focus on that appropriate tab
+        /// Repeated clicks on already shown symbol in the position table, should display the  
+        /// news articles for the recently selected symbol.
         /// </summary>
         [TestMethod]
-        public void ClickingAlreadyShownSymbolBringsFocusToAppropriateTabInNewsRegion()
+        public void ClickingAlreadyShownSymbolDisplaysNewsArticlesCorrespondingly()
         {
-            Button firstNewsButton = window.Get<Button>(SearchCriteria.ByAutomationId(ConfigHandler.GetTestInputData("Symbol")).AndControlType(typeof(Button)));
-            Button secondNewsButton = window.Get<Button>(SearchCriteria.ByAutomationId(ConfigHandler.GetTestInputData("PositionSymbol")).AndControlType(typeof(Button)));
+            //get handle of the Position Table 
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            string symbol;
+            List<News> news;
+            ListBox articlesView;
 
-            // Clicking the button should add a new FUND0 Tab
-            firstNewsButton.Click();
+            //click the particular symbol of the Position table STOCK0
+            ListViewRow symbolRow = list.Rows.Find(row => row.Cells[TestDataInfrastructure.GetTestInputData("PositionTableSymbol")].Text.Equals(TestDataInfrastructure.GetTestInputData("Symbol")));
+            symbolRow.Click();
 
-            // Clicking the news button should add a new FUND6 Tab
-            secondNewsButton.Click();
+            //click on the position symbol STOCK6
+            ListViewRow secondSymbolRow  = list.Rows.Find(row => row.Cells[TestDataInfrastructure.GetTestInputData("PositionTableSymbol")].Text.Equals(TestDataInfrastructure.GetTestInputData("PositionSymbol")));
+            secondSymbolRow.Click();
 
-            Tab tab = window.Get<Tab>(ConfigHandler.GetControlId("ShellTabControl"));
-            Assert.IsFalse(tab.SelectedTab.NameMatches(ConfigHandler.GetTestInputData("Symbol")));
+            //click the particular symbol of the Position table STOCK0            
+            symbolRow.Click();
 
-            // Clicking the FUND0 button again should give focus to the FUND0 Tab
-            firstNewsButton.Click();
+            //Get the news item for a particular symbol
+            symbol = TestDataInfrastructure.GetTestInputData("Symbol");
+            news = testDataInfrastructure.GetDataForId<NewsDataProvider, News>(symbol);
 
-            tab = window.Get<Tab>(ConfigHandler.GetControlId("ShellTabControl"));
-            Assert.AreEqual(2, tab.Pages.Count);
-            Assert.IsTrue(tab.SelectedTab.NameMatches(ConfigHandler.GetTestInputData("Symbol")));
+            //Get the handler of the News Article View displayed
+            articlesView = window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
+
+            Assert.AreEqual(news.Count, articlesView.Items.Count);
         }
 
         /// <summary>
-        /// Check if the News tab of the selected Symbol displays news message from the News Data XML file
+        /// Check if the News Reader window of the selected Symbol displays news message from the News Data XML file
         /// 
         /// Repro steps:
         /// 1. Launch the StockTrader RI application
-        /// 2. Click on the News button for a symbol
-        /// 3. Check if a news tab page is added with the News text display
-        /// 4. Click on yet another News button for a symbol
-        /// 5. Check if a second news tab page is added with the display of the corresponding News text
+        /// 2. Click on the particular position row for a symbol
+        /// 3. Check if news article(s) are displayed for the particular symbol
+        /// 4. Click on a news article item.
+        /// 5. Check if the News Reader window of the selected Symbol displays news message from the News Data XML file
         /// 
         /// Expected Result:
-        /// The news tab pages are added, with the corresponding News text display.
+        /// The news reader window is displayed, with the corresponding News text display.
         /// </summary>
         [TestMethod]
-        public void NewsTabDisplaysNewsTextOfSelectedSymbol()
+        public void DisplayedNewsDoubleClick()
         {
-            Button firstNewsButton = window.Get<Button>(SearchCriteria.ByAutomationId(ConfigHandler.GetTestInputData("Symbol")).AndControlType(typeof(Button)));
-            Button secondNewsButton = window.Get<Button>(SearchCriteria.ByAutomationId(ConfigHandler.GetTestInputData("PositionSymbol")).AndControlType(typeof(Button)));
-            Tab tab = window.Get<Tab>(ConfigHandler.GetControlId("ShellTabControl"));
+            //Get the handle of the Position table
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
 
-            // Clicking the button should add a new FUND0 Tab which displays the News Text for FUND0
-            firstNewsButton.Click();
+            //Click on the particular symbol row
+            list.Rows.Find(row => row.Cells[TestDataInfrastructure.GetTestInputData("PositionTableSymbol")].Text.Equals(TestDataInfrastructure.GetTestInputData("Symbol"))).Click();
 
-            List<News> news = testDataInfrastructure.GetData<NewsDataProvider, News>();
-            string newsTextForSymbol = news.Find(n => n.TickerSymbol.Equals(ConfigHandler.GetTestInputData("Symbol"))).NewsItemText;
+            //Get the news item for the particular symbol row
+            List<News> news = testDataInfrastructure.GetDataForId<NewsDataProvider, News>(TestDataInfrastructure.GetTestInputData("Symbol"));
 
-            Assert.IsNotNull(window.AutomationElement.SearchInRawTreeByName(newsTextForSymbol));
+            //Get the handle of the articles view
+            ListBox articlesView = window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
+            
+            //Double click the first news article item
+            articlesView.Items[0].DoubleClick();
 
-            // Clicking the news button should add a new FUND6 Tab which displays the News Text for FUND6
-            secondNewsButton.Click();
-            newsTextForSymbol = news.Find(n => n.TickerSymbol.Equals(ConfigHandler.GetTestInputData("PositionSymbol"))).NewsItemText;
+            //Get the handle of the News Reader window
+            Window newsWindow = app.GetWindows().Find(newsArticleWindow => newsArticleWindow.Title.Equals("News Reader"));
+            Assert.IsNotNull(newsWindow);
 
-            Assert.IsNotNull(window.AutomationElement.SearchInRawTreeByName(newsTextForSymbol));
+            //Geth the Body,Title and Published Date from the News Reader window
+            string body = newsWindow.Get<TextBox>(TestDataInfrastructure.GetControlId("ArticleBody")).Text;
+            string title = newsWindow.Get<Label>(TestDataInfrastructure.GetControlId("ArticleTitle")).Text;
+            DateTime publishedDate = Convert.ToDateTime(newsWindow.Get<Label>(TestDataInfrastructure.GetControlId("ArticlePublishedDate")).Text);
+
+            Assert.AreEqual(body,news[0].Body);
+            Assert.AreEqual(title, news[0].Title);
+            Assert.AreEqual(publishedDate, news[0].PublishedDate);           
         }
     }
 }

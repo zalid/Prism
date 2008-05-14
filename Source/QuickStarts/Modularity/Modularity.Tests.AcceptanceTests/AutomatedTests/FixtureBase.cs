@@ -37,6 +37,8 @@ namespace Modularity.AcceptanceTests
 
         public void TestInitialize()
         {
+            SetupWhiteConfigParameters();
+
             // Instantiate and initiate the diagnosis process. Diagnosis steps are included
             // to identify the successful launch of the application window without any unexpected
             // exceptions.

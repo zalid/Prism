@@ -44,20 +44,11 @@ namespace StockTraderRI.Modules.Position.PresentationModels
             return FindTickerItem(ticker).Shares;
         }
 
-        public void AddPosition(string ticker, decimal costBasis, long quantity, decimal currentPrice, bool hasNews, MarketHistoryCollection priceHistoryCollection)
+        public void AddPosition(string ticker, decimal costBasis, long quantity, decimal currentPrice, MarketHistoryCollection priceHistoryCollection)
         {
-            PositionSummaryItem position = new PositionSummaryItem(ticker, costBasis, quantity, currentPrice, hasNews);
+            PositionSummaryItem position = new PositionSummaryItem(ticker, costBasis, quantity, currentPrice);
             position.PriceMarketHistory = priceHistoryCollection;
             this.Data.Add(position);
-        }
-
-        public bool HasNews(string ticker)
-        {
-            PositionSummaryItem item = FindTickerItemSafe(ticker);
-            if (item != null)
-                return item.HasNews;
-
-            return false;
         }
 
         private PositionSummaryItem FindTickerItemSafe(string ticker)

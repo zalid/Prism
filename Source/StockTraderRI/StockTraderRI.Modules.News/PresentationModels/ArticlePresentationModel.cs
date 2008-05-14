@@ -15,14 +15,44 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using System;
+using System.Collections.Generic;
+using System.Windows.Controls;
+using Prism.Commands;
 using Prism.Utility;
 using StockTraderRI.Infrastructure;
+using System.ComponentModel;
+using StockTraderRI.Infrastructure.Models;
+using System.Windows.Data;
+using System.Windows.Input;
 
 namespace StockTraderRI.Modules.News.PresentationModels
 {
-    public class ArticlePresentationModel : IHeaderInfoProvider<ExtendedHeader>
+    public class ArticlePresentationModel : INotifyPropertyChanged
     {
-        public string ArticleBody { get; set; }
-        public ExtendedHeader HeaderInfo { get; set; }
+        private ICollectionView _articles;
+        
+        public ArticlePresentationModel()
+        {
+        }
+        
+        public ICollectionView Articles
+        {
+            get { return _articles; }
+            set
+            {
+                if (_articles != value)
+                {
+                    _articles = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("Articles"));
+                }
+            }
+        }
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+
+        #endregion    
     }
 }

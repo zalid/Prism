@@ -46,7 +46,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
             // If so, fail the test case.
             if (StateDiagnosis.IsFailed)
             {
-                Assert.Fail(ConfigHandler.GetTestInputData("ApplicationLoadFailure"));
+                Assert.Fail(TestDataInfrastructure.GetTestInputData("ApplicationLoadFailure"));
             }
 
             base.TestInitialize();
@@ -75,7 +75,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         [TestMethod]
         public void ApplicationLaunch()
         {
-            ListView list = window.Get<ListView>(ConfigHandler.GetControlId("PositionTableId"));
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             Assert.IsNotNull(list);
 
             //read number of account positions from the AccountPosition.xml data file
@@ -83,9 +83,10 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
 
             Assert.AreEqual(positionRowCount, list.Rows.Count);
 
-            SearchCriteria searchCriteria = SearchCriteria.ByText(ConfigHandler.GetControlId("NewsButtonName")).AndControlType(typeof(Button));
-            Button button = window.Get<Button>(searchCriteria);
-            Assert.IsNotNull(button);
+            // News button is no longer on grid
+            //SearchCriteria searchCriteria = SearchCriteria.ByText(TestDataInfrastructure.GetControlId("NewsButtonName")).AndControlType(typeof(Button));
+            //Button button = window.Get<Button>(searchCriteria);
+            //Assert.IsNotNull(button);
 
             //pie chart and line chart could not be automated
         }

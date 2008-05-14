@@ -47,23 +47,27 @@ namespace Prism.Services
             {
                 _modules = new List<ModuleInfo>();
 
-                ModulesConfigurationSection section = _store.GetModuleConfigurationSection();
+                ModulesConfigurationSection section = _store.RetrieveModuleConfigurationSection();
 
-                foreach (ModuleConfigurationElement element in section.Modules)
+                if (section != null)
                 {
-                    IList<string> dependencies = new List<string>();
-
-                    if (element.Dependencies.Count > 0)
+                    foreach (ModuleConfigurationElement element in section.Modules)
                     {
-                        foreach (ModuleDependencyConfigurationElement dependency in element.Dependencies)
-                        {
-                            dependencies.Add(dependency.ModuleName);
-                        }
-                    }
+                        IList<string> dependencies = new List<string>();
 
-                    ModuleInfo moduleInfo = new ModuleInfo(element.AssemblyFile, element.ModuleType, element.ModuleName,
-                                                           element.StartupLoaded, dependencies.ToArray());
-                    _modules.Add(moduleInfo);
+                        if (element.Dependencies.Count > 0)
+                        {
+                            foreach (ModuleDependencyConfigurationElement dependency in element.Dependencies)
+                            {
+                                dependencies.Add(dependency.ModuleName);
+                            }
+                        }
+
+                        ModuleInfo moduleInfo = new ModuleInfo(element.AssemblyFile, element.ModuleType,
+                                                               element.ModuleName,
+                                                               element.StartupLoaded, dependencies.ToArray());
+                        _modules.Add(moduleInfo);
+                    }
                 }
             }
         }

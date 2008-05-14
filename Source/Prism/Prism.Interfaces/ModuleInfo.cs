@@ -15,6 +15,8 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using Prism.Interfaces.Properties;
+
 namespace Prism.Interfaces
 {
     using System;
@@ -31,10 +33,10 @@ namespace Prism.Interfaces
         public ModuleInfo(string assemblyFile, string moduleType, string moduleName, bool startupLoaded, params string[] dependsOn)
         {
             if (string.IsNullOrEmpty(assemblyFile))
-                throw new ArgumentException("assemblyFile");
+                throw new ArgumentException(Resources.StringCannotNullOrBeEmpty, "assemblyFile");
 
             if (string.IsNullOrEmpty(moduleType))
-                throw new ArgumentException("moduleType");
+                throw new ArgumentException(Resources.StringCannotNullOrBeEmpty, "moduleType");
 
             AssemblyFile = assemblyFile;
             ModuleType = moduleType;
@@ -43,10 +45,10 @@ namespace Prism.Interfaces
             DependsOn = dependsOn ?? new string[] { };
         }
 
-        public string AssemblyFile { get; protected set; }
-        public string ModuleType { get; protected set; }
-        public string ModuleName { get; protected set; }
-        public string[] DependsOn { get; protected set; }
+        public string AssemblyFile { get; private set; }
+        public string ModuleType { get; private set; }
+        public string ModuleName { get; private set; }
+        public string[] DependsOn { get; private set; }
         public bool StartupLoaded { get; set; }
     }
 }

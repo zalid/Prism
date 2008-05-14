@@ -26,7 +26,6 @@ using StockTraderRI.Modules.Position.Tests.Mocks;
 using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.Position.Orders;
 using StockTraderRI.Infrastructure;
-using StockTraderRI.Modules.Position.Tests.Mocks;
 using System.Windows.Input;
 using StockTraderRI.Infrastructure.Interfaces;
 using Prism.Commands;

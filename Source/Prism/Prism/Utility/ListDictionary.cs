@@ -25,7 +25,7 @@ namespace Prism.Utility
     /// </summary>
     /// <typeparam name="TKey">The key to use for lists.</typeparam>
     /// <typeparam name="TValue">The type of the value held by lists.</typeparam>
-    public class ListDictionary<TKey, TValue> : IDictionary<TKey, List<TValue>>
+    public sealed class ListDictionary<TKey, TValue> : IDictionary<TKey, List<TValue>>
     {
         Dictionary<TKey, List<TValue>> innerValues = new Dictionary<TKey, List<TValue>>();
 

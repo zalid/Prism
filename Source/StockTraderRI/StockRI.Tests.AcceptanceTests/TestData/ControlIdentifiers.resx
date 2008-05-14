@@ -117,91 +117,97 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PositionTableId">
+  <data name="PositionTableId" xml:space="preserve">
     <value>_positionTable</value>
   </data>
-  <data name="NewsButtonName">
+  <data name="NewsButtonName" xml:space="preserve">
     <value>News</value>
   </data>
-  <data name="ShellTabControl">
-    <value>ResearchArticlesTab</value>
+  <data name="NewsArticlesView" xml:space="preserve">
+    <value>articlesView</value>
   </data>
-  <data name="WatchListAddButton">
+  <data name="WatchListAddButton" xml:space="preserve">
     <value>AddWatchButton</value>
   </data>
-  <data name="WatchListAddTextBox">
+  <data name="WatchListAddTextBox" xml:space="preserve">
     <value>AddWatchTextBox</value>
   </data>
-  <data name="WatchListHeader">
+  <data name="WatchListHeader" xml:space="preserve">
     <value>Watch List</value>
   </data>
-  <data name="WatchListCloseButton">
+  <data name="WatchListCloseButton" xml:space="preserve">
     <value>WatchListCloseButton</value>
   </data>
-  <data name="WatchListHideButton">
+  <data name="WatchListHideButton" xml:space="preserve">
     <value>WatchListAutoHideButton</value>
   </data>
-  <data name="WatchListView">
+  <data name="WatchListView" xml:space="preserve">
     <value>watchListListView</value>
   </data>
-  <data name="CollapsibleRegion">
+  <data name="CollapsibleRegion" xml:space="preserve">
     <value>CollapsibleTab</value>
   </data>
-  <data name="BuySellSymbolTextBox">
+  <data name="BuySellSymbolTextBox" xml:space="preserve">
     <value>TickerSymbolTextBox</value>
   </data>
-  <data name="BuySellListHeader">
+  <data name="BuySellListHeader" xml:space="preserve">
     <value>Buy/Sell</value>
   </data>
-  <data name="BuyRadio">
+  <data name="BuyRadio" xml:space="preserve">
     <value>BuyRadio</value>
   </data>
-  <data name="SellRadio">
+  <data name="SellRadio" xml:space="preserve">
     <value>SellRadio</value>
   </data>
-  <data name="BuySellOrderTypeCombo">
+  <data name="BuySellOrderTypeCombo" xml:space="preserve">
     <value>OrderTypeCombo</value>
   </data>
-  <data name="BuySellSharesTextBox">
+  <data name="BuySellSharesTextBox" xml:space="preserve">
     <value>SharesTextBox</value>
   </data>
-  <data name="BuySellStopLimitPriceTextBox">
+  <data name="BuySellStopLimitPriceTextBox" xml:space="preserve">
     <value>StopLimitPriceTextBox</value>
   </data>
-  <data name="BuySellTimeInForceCombo">
+  <data name="BuySellTimeInForceCombo" xml:space="preserve">
     <value>TimeInForceCombo</value>
   </data>
-  <data name="BuySellTimeInForceCombo">
-    <value>TimeInForceCombo</value>
-  </data>
-  <data name="BuySellBuyLastButton">
+  <data name="BuySellBuyLastButton" xml:space="preserve">
     <value>BuyLastButton</value>
   </data>
-  <data name="BuySellSellLastButton">
+  <data name="BuySellSellLastButton" xml:space="preserve">
     <value>SellLastButton</value>
   </data>
-  <data name="BuySellSubmitButton">
+  <data name="BuySellSubmitButton" xml:space="preserve">
     <value>SubmitButton</value>
   </data>
-  <data name="BuySellCancelButton">
+  <data name="BuySellCancelButton" xml:space="preserve">
     <value>CancelButton</value>
   </data>
-  <data name="BuySellSubmitAllButton">
+  <data name="BuySellSubmitAllButton" xml:space="preserve">
     <value>SubmitAllToolbarButton</value>
   </data>
-  <data name="BuySellCancelAllButton">
+  <data name="BuySellCancelAllButton" xml:space="preserve">
     <value>CancelAllToolbarButton</value>
   </data>
-  <data name="ToolbarSubmitAllButton">
+  <data name="ToolbarSubmitAllButton" xml:space="preserve">
     <value>SubmitAllToolbarButton</value>
   </data>
-  <data name="ToolbarCancelAllButton">
+  <data name="ToolbarCancelAllButton" xml:space="preserve">
     <value>CancelAllToolbarButton</value>
   </data>
-  <data name="ToolbarSubmitButton">
+  <data name="ToolbarSubmitButton" xml:space="preserve">
     <value>SubmitToolbarButton</value>
   </data>
-  <data name="ToolbarCancelButton">
+  <data name="ToolbarCancelButton" xml:space="preserve">
     <value>CancelToolbarButton</value>
+  </data>
+  <data name="ArticleBody" xml:space="preserve">
+    <value>ArticleBody</value>
+  </data>
+  <data name="ArticlePublishedDate" xml:space="preserve">
+    <value>ArticlePublishedDate</value>
+  </data>
+  <data name="ArticleTitle" xml:space="preserve">
+    <value>ArticleTitle</value>
   </data>
 </root>

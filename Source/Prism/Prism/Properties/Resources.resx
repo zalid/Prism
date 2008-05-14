@@ -120,6 +120,9 @@
   <data name="DelegateCommandDelegatesCannotBeNull" xml:space="preserve">
     <value>Both the executeMethod and the canExecuteMethod delegates cannot be null.</value>
   </data>
+  <data name="DependencyForUnknownModule" xml:space="preserve">
+    <value>Cannot add dependency for unknown module {0}</value>
+  </data>
   <data name="DependencyOnMissingModule" xml:space="preserve">
     <value>A module declared a dependency on another module which is not declared to be loaded. Missing module(s): {0}</value>
   </data>
@@ -142,7 +145,16 @@
   <data name="RegionViewNameExistsException" xml:space="preserve">
     <value>View with name '{0}' already exists in the region.</value>
   </data>
+  <data name="StringCannotBeNullOrEmpty" xml:space="preserve">
+    <value>The provided String argument {0} must not be null or empty.</value>
+  </data>
   <data name="ValueNotFound" xml:space="preserve">
     <value>{0} not found</value>
+  </data>
+  <data name="ViewToRemoveNotInRegion" xml:space="preserve">
+    <value>The region does not contain the view you are trying to remove</value>
+  </data>
+  <data name="ViewToShowNotInRegion" xml:space="preserve">
+    <value>The region does not contain the view you are trying to show.</value>
   </data>
 </root>

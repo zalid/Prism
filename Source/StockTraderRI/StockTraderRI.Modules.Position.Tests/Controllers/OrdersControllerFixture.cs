@@ -16,22 +16,16 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Windows.Input;
-using Prism.Interfaces;
-using StockTraderRI.Infrastructure.Models;
-using StockTraderRI.Modules.Position.Controllers;
-using StockTraderRI.Infrastructure;
 using Microsoft.Practices.Unity;
-using StockTraderRI.Modules.Position.Tests.Orders;
-using StockTraderRI.Modules.Position.Tests.Mocks;
-using Prism.Services;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Prism.Interfaces;
+using StockTraderRI.Infrastructure;
+using StockTraderRI.Modules.Position.Controllers;
 using StockTraderRI.Modules.Position.Interfaces;
 using StockTraderRI.Modules.Position.Orders;
 using StockTraderRI.Modules.Position.Tests.Mocks;
+using StockTraderRI.Modules.Position.Tests.Orders;
 
 namespace StockTraderRI.Modules.Position.Tests.Controllers
 {
@@ -42,7 +36,7 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
         public void BuyAndSellCommandsInvokeController()
         {
             IUnityContainer container = new UnityContainer();
-            var regionManager = new MockRegionManagerService();
+            var regionManager = new MockRegionManager();
             container.RegisterType<IOrdersPresenter, MockOrdersPresenter>();
             container.RegisterType<IOrderCompositePresenter, MockOrderCompositePresenter>();
 
@@ -65,7 +59,7 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
         public void ControllerAddsViewIfNotPresent()
         {
             IUnityContainer container = new UnityContainer();
-            var regionManager = new MockRegionManagerService();
+            var regionManager = new MockRegionManager();
             container.RegisterType<IOrdersPresenter, MockOrdersPresenter>();
             container.RegisterType<IOrderCompositePresenter, MockOrderCompositePresenter>();
 
@@ -73,18 +67,18 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
             regionManager.Register("OrdersRegion", new MockRegion());
             regionManager.Register("CollapsibleRegion", collapsibleRegion);
 
-            var controller = new TestableOrdersController(regionManager, container) ;
+            var controller = new TestableOrdersController(regionManager, container);
 
-            Assert.AreEqual<int>(0, collapsibleRegion.Views.Count);
+            Assert.AreEqual<int>(0, collapsibleRegion.AddedViews.Count);
             controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
-            Assert.AreEqual<int>(1, collapsibleRegion.Views.Count);
+            Assert.AreEqual<int>(1, collapsibleRegion.AddedViews.Count);
         }
 
         [TestMethod]
         public void ControllerAddsANewOrderOnStartOrder()
         {
             IUnityContainer container = new UnityContainer();
-            var regionManager = new MockRegionManagerService();
+            var regionManager = new MockRegionManager();
             container.RegisterType<IOrdersPresenter, MockOrdersPresenter>();
             container.RegisterType<IOrderCompositePresenter, MockOrderCompositePresenter>();
 
@@ -94,17 +88,37 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
 
             var controller = new TestableOrdersController(regionManager, container);
 
-            Assert.AreEqual<int>(0, ordersRegion.Views.Count);
+            Assert.AreEqual<int>(0, ordersRegion.AddedViews.Count);
             controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
-            Assert.AreEqual<int>(1, ordersRegion.Views.Count);
+            Assert.AreEqual<int>(1, ordersRegion.AddedViews.Count);
         }
+
+        [TestMethod]
+        public void NewOrderIsShownOrder()
+        {
+            IUnityContainer container = new UnityContainer();
+            var regionManager = new MockRegionManager();
+            container.RegisterType<IOrdersPresenter, MockOrdersPresenter>();
+            container.RegisterType<IOrderCompositePresenter, MockOrderCompositePresenter>();
+
+            var ordersRegion = new MockRegion();
+            regionManager.Register("OrdersRegion", ordersRegion);
+            regionManager.Register("CollapsibleRegion", new MockRegion());
+
+            var controller = new TestableOrdersController(regionManager, container);
+
+            Assert.AreEqual<int>(0, ordersRegion.AddedViews.Count);
+            controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
+            Assert.AreSame(ordersRegion.SelectedItem, ordersRegion.AddedViews[0]);
+        }
+
 
 
         [TestMethod]
         public void OnCloseViewRequestedTheControllerRemovesTheViewFromTheRegionAndDisposesThePresenter()
         {
             IUnityContainer container = new UnityContainer();
-            var regionManager = new MockRegionManagerService();
+            var regionManager = new MockRegionManager();
             container.RegisterType<IOrdersPresenter, MockOrdersPresenter>();
             var presenter = new MockOrderCompositePresenter();
             container.RegisterInstance<IOrderCompositePresenter>(presenter);
@@ -116,10 +130,10 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
             var controller = new TestableOrdersController(regionManager, container);
             controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
 
-            Assert.AreEqual(1, ordersRegion.Views.Count);
+            Assert.AreEqual(1, ordersRegion.AddedViews.Count);
             presenter.RaiseCloseViewRequested();
 
-            Assert.AreEqual(0, ordersRegion.Views.Count);
+            Assert.AreEqual(0, ordersRegion.AddedViews.Count);
             Assert.IsTrue(presenter.DisposeCalled);
         }
 
@@ -128,7 +142,7 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
         public void StartOrderCreatesCompositePresnterAndPassesCorrectInitInfo()
         {
             IUnityContainer container = new UnityContainer();
-            var regionManager = new MockRegionManagerService();
+            var regionManager = new MockRegionManager();
             container.RegisterType<IOrdersPresenter, MockOrdersPresenter>();
             var presenter = new MockOrderCompositePresenter();
             container.RegisterInstance<IOrderCompositePresenter>(presenter);
@@ -148,7 +162,7 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
     internal class TestableOrdersController : OrdersController
     {
 
-        public TestableOrdersController(IRegionManagerService regionManager, IUnityContainer container)
+        public TestableOrdersController(IRegionManager regionManager, IUnityContainer container)
             : base(regionManager, container)
         {
         }
@@ -212,6 +226,6 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
         }
     }
 
-  
+
 }
 

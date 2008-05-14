@@ -23,16 +23,16 @@ namespace ModuleA
     [Module(ModuleName = "ModuleA", DependsOn = new[] { "ModuleD" })]
     public class ModuleA : IModule
     {
-        private readonly IRegionManagerService _regionManagerService;
+        private readonly IRegionManager _regionManager;
 
-        public ModuleA(IRegionManagerService regionManagerService)
+        public ModuleA(IRegionManager regionManager)
         {
-            _regionManagerService = regionManagerService;
+            _regionManager = regionManager;
         }
 
         public void Initialize()
         {
-            _regionManagerService.GetRegion("MainRegion").Add(new DefaultViewA());
+            _regionManager.GetRegion("MainRegion").Add(new DefaultViewA());
         }
     }
 }

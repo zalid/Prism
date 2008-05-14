@@ -1,0 +1,11 @@
+﻿<UserControl x:Class="ModuleB.ActivityView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Width="200">
+    <Border BorderBrush="Brown" BorderThickness="2">
+        <StackPanel Name="ContentPanel">
+            <Label Name="ActivityLabel" Margin="10,10,10,0" VerticalAlignment="Top"></Label>
+        </StackPanel>
+
+    </Border>
+</UserControl>

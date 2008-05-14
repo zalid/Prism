@@ -50,36 +50,36 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
 
         /// <summary>
         /// The current account position view should have symbol details with 6 columns 
-        /// (Symbol, Shares, Last, Cost Basis, Market Value, Gain Loss %) and a News button column
+        /// (Symbol, Shares, Last, Cost Basis, Market Value, Gain Loss %) 
         /// 
         /// Repro Steps:
         /// 1. Launch the Stock Trader application
         /// 2. Check for the following columns: 
-        /// (Symbol, Shares, Last, Cost Basis, Market Value, Gain Loss %) and a News button column
+        /// (Symbol, Shares, Last, Cost Basis, Market Value, Gain Loss %) 
         /// 
         /// Expected Result:
-        /// Account Position Table should have 7 columns and the column names should be as follows:
-        /// Symbol, Shares, Last, Cost Basis, Market Value, Gain Loss %, News
+        /// Account Position Table should have 6 columns and the column names should be as follows:
+        /// Symbol, Shares, Last, Cost Basis, Market Value, Gain Loss %
         /// </summary>
         [TestMethod]
         public void AccountPositionTableColumns()
         {
-            ListView list = window.Get<ListView>(ConfigHandler.GetControlId("PositionTableId"));
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             ListViewHeader listHeader = list.Header;
 
-            Assert.AreEqual(7, listHeader.Columns.Count);
+            Assert.AreEqual(6, listHeader.Columns.Count);
 
             //The Columns in the Position Table are partly coming from two different XML files and 
             //the rest are computed columns. the only place where the column names are defined is the 
             //PositionView XAML file, hence the hard-coding.
 
-            Assert.AreEqual(ConfigHandler.GetTestInputData("PositionTableSymbol"), listHeader.Columns[0].Name);
-            Assert.AreEqual(ConfigHandler.GetTestInputData("PositionTableShares"), listHeader.Columns[1].Name);
-            Assert.AreEqual(ConfigHandler.GetTestInputData("PositionTableLast"), listHeader.Columns[2].Name);
-            Assert.AreEqual(ConfigHandler.GetTestInputData("PositionTableCost"), listHeader.Columns[3].Name);
-            Assert.AreEqual(ConfigHandler.GetTestInputData("PositionTableMarketValue"), listHeader.Columns[4].Name);
-            Assert.AreEqual(ConfigHandler.GetTestInputData("PositionTableGainLoss"), listHeader.Columns[5].Name);
-            Assert.AreEqual(ConfigHandler.GetTestInputData("PositionTableHeaderNews"), listHeader.Columns[6].Name);
+            Assert.AreEqual(TestDataInfrastructure.GetTestInputData("PositionTableSymbol"), listHeader.Columns[0].Name);
+            Assert.AreEqual(TestDataInfrastructure.GetTestInputData("PositionTableShares"), listHeader.Columns[1].Name);
+            Assert.AreEqual(TestDataInfrastructure.GetTestInputData("PositionTableLast"), listHeader.Columns[2].Name);
+            Assert.AreEqual(TestDataInfrastructure.GetTestInputData("PositionTableCost"), listHeader.Columns[3].Name);
+            Assert.AreEqual(TestDataInfrastructure.GetTestInputData("PositionTableMarketValue"), listHeader.Columns[4].Name);
+            Assert.AreEqual(TestDataInfrastructure.GetTestInputData("PositionTableGainLoss"), listHeader.Columns[5].Name);
+            
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         [TestMethod]
         public void AccountPositionTableRowCount()
         {
-            ListView list = window.Get<ListView>(ConfigHandler.GetControlId("PositionTableId"));
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             //read number of account positions from the AccountPosition.xml data file
             int positionRowCount = testDataInfrastructure.GetCount<AccountPositionDataProvider, AccountPosition>();
 
@@ -111,28 +111,73 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         /// 2. Check the derived data (like Market Value and Gain Loss %) of symbols displayed in the account position table.
         /// 
         /// Expected Result:
-        /// Market Value = shares * currentPrice
-        /// Gain Loss % = (CurrentPrice*Shares - CostBasis) * 100 / CostBasis
+        /// Market Value = shares * lastPrice
+        /// Gain Loss % = (lastPrice * Shares - CostBasis) * 100 / CostBasis
         /// </summary>
         [TestMethod]
         public void AccountPositionDerivedData()
         {
-            ListView list = window.Get<ListView>(ConfigHandler.GetControlId("PositionTableId"));
+            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            ListViewRow listRow = null;
             string symbol;
-            AccountPosition p;
-            Market m;
-            List<AccountPosition> position = testDataInfrastructure.GetData<AccountPositionDataProvider, AccountPosition>();
-            List<Market> market = testDataInfrastructure.GetData<MarketDataProvider, Market>();
+           
+            int count = 0;
+            int numberOfRetries = 3;
+
+            string share;
+            string lastPrice;
+            string marketPrice;
+            string gainLoss;
+            string costBasis;
+
+            bool isMarketPriceMatching = false;
+            bool isGainLossMatching = false;
 
             //test driven by the number of rows displayed in the Account Position table in the UI
             for (int i = 0; i < list.Rows.Count; i++)
             {
-                symbol = list.Rows[i].Cells[ConfigHandler.GetTestInputData("PositionTableSymbol")].Text;
-                p = position.Find(ap => ap.TickerSymbol.Equals(symbol));
-                m = market.Find(ma => ma.TickerSymbol.Equals(symbol));
+                listRow = list.Rows[i];
+                symbol = listRow.Cells[TestDataInfrastructure.GetTestInputData("PositionTableSymbol")].Text;
+               
+                while (count < numberOfRetries)
+                {
+                    //input columns
+                    share = listRow.Cells[TestDataInfrastructure.GetTestInputData("PositionTableShares")].Text;
+                    lastPrice = listRow.Cells[TestDataInfrastructure.GetTestInputData("PositionTableLast")].Text;
+                    costBasis = listRow.Cells[TestDataInfrastructure.GetTestInputData("PositionTableCost")].Text;
+                    
+                    //computed columns
+                    marketPrice = listRow.Cells[TestDataInfrastructure.GetTestInputData("PositionTableMarketValue")].Text;
+                    gainLoss = listRow.Cells[TestDataInfrastructure.GetTestInputData("PositionTableGainLoss")].Text;
 
-                Assert.AreEqual(list.Rows[i].Cells[ConfigHandler.GetTestInputData("PositionTableMarketValue")].Text, (p.Shares * m.LastPrice).ToString());
-                Assert.AreEqual(list.Rows[i].Cells[ConfigHandler.GetTestInputData("PositionTableGainLoss")].Text, Math.Round((m.LastPrice * p.Shares - p.CostBasis) / p.CostBasis * 100, 2).ToString());
+                    if (!isMarketPriceMatching)
+                    {
+                        if (Convert.ToDouble(marketPrice).ToString("0.00")
+                            .Equals((Convert.ToDouble(share) * Convert.ToDouble(lastPrice)).ToString("0.00")))
+                        {
+                            isMarketPriceMatching = true;
+                        }
+                    }
+
+                    if (!isGainLossMatching)
+                    {
+                        if (Convert.ToDouble(gainLoss).ToString("0.00")
+                            .Equals(Math.Round((Convert.ToDouble(lastPrice) * Convert.ToDouble(share) - Convert.ToDouble(costBasis)) / Convert.ToDouble(costBasis) * 100, 2).ToString("0.00")))
+                        {
+                            isGainLossMatching = true;
+                        }
+                    }
+
+                    if (isMarketPriceMatching && isGainLossMatching)
+                    {
+                        break;
+                    }
+
+                    count++;
+                }
+
+                //if either the Market Price or the Gain-Loss value does not match, then the test case fails
+                Assert.IsTrue(isMarketPriceMatching && isGainLossMatching, String.Format("Computed Value for {0} is not correct", symbol));
             }
         }
     }

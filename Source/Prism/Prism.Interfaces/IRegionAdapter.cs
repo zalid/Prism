@@ -15,16 +15,12 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 
 namespace Prism.Interfaces
 {
     public interface IRegionAdapter
     {
-        void Initialize(DependencyObject obj);
+        IRegion Initialize(DependencyObject obj);
     }
 }

@@ -126,15 +126,8 @@ namespace Prism.Tests
         public static string GenerateDynamicModule(string assemblyName, string moduleName, params string[] dependencies)
         {
             string assemblyFile = assemblyName + ".dll";
-            if (!Directory.Exists(assemblyName))
-            {
-                Directory.CreateDirectory(assemblyName);
-            }
             string outpath = Path.Combine(assemblyName, assemblyFile);
-            if (File.Exists(outpath))
-            {
-                File.Delete(outpath);
-            }
+            CreateOutput(outpath);
 
             // Create temporary module.
             string moduleCode = moduleTemplate.Replace("#className#", assemblyName);

@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using StockTraderRI.AcceptanceTests.Helpers;
 
 namespace StockTraderRI.AcceptanceTests.TestInfrastructure
 {
@@ -40,6 +41,17 @@ namespace StockTraderRI.AcceptanceTests.TestInfrastructure
             where T : IDataProvider<TEntity>, new()
         {
             return new T().GetDataForId(id);
+        }
+        public static string GetTestInputData(string key)
+        {
+            ResxConfigHandler testInputHandler = new ResxConfigHandler(ConfigHandler.GetValue("TestDataInputFile"));
+            return testInputHandler.GetValue(key);
+        }
+
+        public static string GetControlId(string key)
+        {
+            ResxConfigHandler testInputHandler = new ResxConfigHandler(ConfigHandler.GetValue("ControlIdentifiersFile"));
+            return testInputHandler.GetValue(key);
         }
     }
 }

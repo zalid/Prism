@@ -15,21 +15,15 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Prism.Interfaces;
-using StockTraderRI.Infrastructure.Interfaces;
-using StockTraderRI.Infrastructure.Models;
-using Prism;
 using System.Windows;
 using Microsoft.Practices.Unity;
+using Prism.Interfaces;
+using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Modules.Position.Controllers;
-using StockTraderRI.Modules.Position.Services;
 using StockTraderRI.Modules.Position.Interfaces;
 using StockTraderRI.Modules.Position.Orders;
 using StockTraderRI.Modules.Position.PositionSummary;
+using StockTraderRI.Modules.Position.Services;
 
 namespace StockTraderRI.Modules.Position
 {
@@ -37,12 +31,12 @@ namespace StockTraderRI.Modules.Position
     {
         private IUnityContainer _container;
         private IOrdersController _ordersController;
-        private IRegionManagerService _regionManagerService;
+        private IRegionManager _regionManagerService;
 
-        public PositionModule(IUnityContainer container, IRegionManagerService regionManagerService)
+        public PositionModule(IUnityContainer container, IRegionManager regionManager)
         {
             _container = container;
-            _regionManagerService = regionManagerService;
+            _regionManagerService = regionManager;
         }
 
         #region IModule Members
@@ -58,7 +52,7 @@ namespace StockTraderRI.Modules.Position
             _ordersController = _container.Resolve<IOrdersController>();
 
             IRegion mainToolbarRegion = _regionManagerService.GetRegion("MainToolbarRegion");
-            mainToolbarRegion.Add(new OrdersToolbar());
+            mainToolbarRegion.Add(new OrdersToolBar());
         }
 
         protected void RegisterViewsAndServices()
@@ -75,7 +69,7 @@ namespace StockTraderRI.Modules.Position
             _container.RegisterType<IOrderCompositePresenter, OrderCompositePresenter>();
             _container.RegisterType<IOrdersController, OrdersController>();
             _container.RegisterType<IOrdersService, XmlOrdersService>();
-            
+
         }
 
         #endregion

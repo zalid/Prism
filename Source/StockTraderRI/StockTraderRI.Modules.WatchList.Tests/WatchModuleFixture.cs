@@ -18,7 +18,6 @@
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Prism.Interfaces;
-using Prism.Services;
 using StockTraderRI.Modules.Watch;
 using StockTraderRI.Modules.Watch.AddWatch;
 using StockTraderRI.Modules.Watch.Services;
@@ -35,7 +34,7 @@ namespace StockTraderRI.Modules.WatchList.Tests
         {
             var container = new MockUnityContainer();
 
-            var module = new TestableWatchModule(container, new RegionManagerService());
+            var module = new TestableWatchModule(container, new MockRegionManager());
 
             module.InvokeRegisterViewsAndServices();
 
@@ -51,27 +50,27 @@ namespace StockTraderRI.Modules.WatchList.Tests
         {
             var toolbarRegion = new MockRegion();
             var collapsibleRegion = new MockRegion();
-            var regionManager = new RegionManagerService();
+            var regionManager = new MockRegionManager();
             var container = new MockUnityResolver();
             container.Bag.Add(typeof(IAddWatchPresenter), new MockAddWatchPresenter());
             container.Bag.Add(typeof(IWatchListPresenter), new MockWatchListPresenter());
             IModule module = new WatchModule(container, regionManager);
-            regionManager.Register("CollapsibleRegion", collapsibleRegion);
+            regionManager.Register("WatchRegion", collapsibleRegion);
             regionManager.Register("MainToolbarRegion", toolbarRegion);
 
-            Assert.AreEqual(0, toolbarRegion.Views.Count);
-            Assert.AreEqual(0, collapsibleRegion.Views.Count);
+            Assert.AreEqual(0, toolbarRegion.AddedViews.Count);
+            Assert.AreEqual(0, collapsibleRegion.AddedViews.Count);
 
             module.Initialize();
 
-            Assert.AreEqual(1, toolbarRegion.Views.Count);
-            Assert.AreEqual(1, collapsibleRegion.Views.Count);
+            Assert.AreEqual(1, toolbarRegion.AddedViews.Count);
+            Assert.AreEqual(1, collapsibleRegion.AddedViews.Count);
         }
 
         internal class TestableWatchModule : WatchModule
         {
-            public TestableWatchModule(IUnityContainer container, IRegionManagerService regionManagerService)
-                : base(container, regionManagerService)
+            public TestableWatchModule(IUnityContainer container, IRegionManager regionManager)
+                : base(container, regionManager)
             {
             }
 

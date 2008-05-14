@@ -21,7 +21,7 @@ namespace StockTraderRI.Infrastructure.Tests.Mocks
 {
     public class MockModuleLoaderService : IModuleLoaderService
     {
-        public void Initialize(ModuleInfo[] modules)
+        public void Initialize(ModuleInfo[] moduleInfos)
         {
         }
     }

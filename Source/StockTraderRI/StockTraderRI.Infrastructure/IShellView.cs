@@ -15,15 +15,10 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Prism.Interfaces;
 
 namespace StockTraderRI.Infrastructure
 {
-    public interface IShellView : IRegionManagerServiceScopeProvider
+    public interface IShellView
     {
         void ShowView();
     }

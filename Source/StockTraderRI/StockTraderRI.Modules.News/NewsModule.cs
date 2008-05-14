@@ -53,6 +53,8 @@ namespace StockTraderRI.Modules.News
             _container.RegisterType<INewsController, NewsController>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IArticleView, ArticleView>();
             _container.RegisterType<IArticlePresenter, ArticlePresenter>();
+            _container.RegisterType<INewsReaderView, NewsReader>();
+            _container.RegisterType<INewsReaderPresenter, NewsReaderPresenter>();
         }
 
 

@@ -66,33 +66,30 @@ namespace Modularity.AcceptanceTests.AutomatedTests
         /// Check if the modules are loaded in the correct order
         /// Check if the button is displayed
         /// </summary>
-        [Ignore]
         [TestMethod]
         public void ApplicationLaunch()
         {
-            //TODO: instead of reading from the config file, the modules should be read from directory lookup
-            List<Module> lm = null; // TODO: perform Directory Sweep
+            // perform Directory Sweep and get all the participating modules
+            List<Module> lm = testDataInfrastructure.GetData<DirectoryLookupModuleDataProvider, Module>();
             List<Module> sortedList = lm.SortModulesInLoadOrder();
+            Label moduleContent;
 
-            Label module1Content = window.Get<Label>(
-                SearchCriteria
-                    .ByText(TestDataInfrastructure.GetTestInputData(sortedList[0].ModuleName + TestDataInfrastructure.GetTestInputData("ContentString")))
-                    .AndControlType(typeof(Label)));
-            Assert.IsNotNull(module1Content);
+            foreach (Module m in sortedList)
+            {
+                moduleContent = window.Get<Label>(
+                                   SearchCriteria
+                                       .ByText(TestDataInfrastructure.GetTestInputData(m.ModuleName + TestDataInfrastructure.GetTestInputData("ContentString")))
+                                       .AndControlType(typeof(Label)));
 
-            Label module2Content = window.Get<Label>(
-                SearchCriteria
-                    .ByText(TestDataInfrastructure.GetTestInputData(sortedList[1].ModuleName + TestDataInfrastructure.GetTestInputData("ContentString")))
-                    .AndControlType(typeof(Label)));
-            Assert.IsNotNull(module2Content);
-
-            Label module3Content = window.Get<Label>(
-                SearchCriteria
-                    .ByText(TestDataInfrastructure.GetTestInputData(sortedList[2].ModuleName + TestDataInfrastructure.GetTestInputData("ContentString")))
-                    .AndControlType(typeof(Label)));
-            Assert.IsNotNull(module3Content);
-
-            //TODO: Check if the order of loading is proper
+                if (m.AllowsDelayLoading)
+                {
+                    Assert.IsNull(moduleContent);
+                }
+                else
+                {
+                    Assert.IsNotNull(moduleContent);
+                }
+            }
         }
     }
 }

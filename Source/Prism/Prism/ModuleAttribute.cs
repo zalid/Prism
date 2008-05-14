@@ -20,7 +20,7 @@ using System;
 namespace Prism
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class ModuleAttribute : Attribute
+    public sealed class ModuleAttribute : Attribute
     {
         private bool _startupLoaded = true;
 
