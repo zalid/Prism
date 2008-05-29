@@ -18,10 +18,13 @@
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Prism.Interfaces;
+using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Modules.News.Article;
 using StockTraderRI.Modules.News.Controllers;
+using StockTraderRI.Modules.News.Tests.Controllers;
 using StockTraderRI.Modules.News.Tests.Mocks;
+using StockTraderRI.Modules.News.Services;
 
 namespace StockTraderRI.Modules.News.Tests
 {
@@ -32,23 +35,34 @@ namespace StockTraderRI.Modules.News.Tests
     public class NewsModuleFixture
     {
         [TestMethod]
-        [DeploymentItem("Data/News.xml", "Data")]
         public void NewsModuleRegistersNewsViewAndNewsFeedService()
         {
-            IUnityContainer container = new UnityContainer();
-            container.RegisterType<IRegionManager, MockRegionManager>();
-            container.RegisterInstance<IUnityContainer>(container);
+            var container = new MockUnityContainer();
             TestableNewsModule newsModule = new TestableNewsModule(container);
 
             newsModule.InvokeRegisterViewsAndServices();
 
-            Assert.IsNotNull(container.Resolve<IArticleView>());
-            Assert.IsNotNull(container.Resolve<INewsFeedService>());
-            Assert.IsNotNull(container.Resolve<INewsController>());
-            Assert.IsNotNull(container.Resolve<IArticlePresenter>());
-            Assert.IsNotNull(container.Resolve<INewsReaderPresenter>());
-            Assert.IsNotNull(container.Resolve<INewsReaderView>());
+            Assert.AreEqual(typeof(ArticleView), container.Types[typeof (IArticleView)]);
+            Assert.AreEqual(typeof(NewsFeedService), container.Types[typeof(INewsFeedService)]);
+            Assert.AreEqual(typeof(NewsController), container.Types[typeof(INewsController)]);
+            Assert.AreEqual(typeof(ArticlePresenter), container.Types[typeof(IArticlePresenter)]);
+            Assert.AreEqual(typeof(NewsReaderPresenter), container.Types[typeof(INewsReaderPresenter)]);
+            Assert.AreEqual(typeof(NewsReader), container.Types[typeof(INewsReaderView)]);
         }
+
+        [TestMethod]
+        public void InitCallsRunOnNewsController()
+        {
+            MockUnityResolver container = new MockUnityResolver();
+            var controller = new MockNewsController();
+            container.Bag.Add(typeof(INewsController), controller);
+            var newsModule = new NewsModule(container);
+
+            newsModule.Initialize();
+
+            Assert.IsTrue(controller.RunCalled);
+        }
+	
 
         internal class TestableNewsModule : NewsModule
         {

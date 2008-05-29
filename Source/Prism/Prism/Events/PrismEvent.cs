@@ -26,7 +26,7 @@ namespace Prism.Events
 {
     public class PrismEvent<TPayload>
     {
-        readonly List<PrismEventSubscription<TPayload>> _subscriptions = new List<PrismEventSubscription<TPayload>>();
+        readonly List<PrismEventSubscription> _subscriptions = new List<PrismEventSubscription>();
         private readonly object _lockObject = new object();
 
         protected virtual Dispatcher UIDispatcher { get { return Application.Current.Dispatcher; } }
@@ -67,15 +67,15 @@ namespace Prism.Events
         public virtual SubscriptionToken Subscribe(Action<TPayload> action, ThreadOption threadOption, bool keepSubscriberReferenceAlive, Predicate<TPayload> filter)
         {
             SubscriptionToken token = new SubscriptionToken();
-            PrismEventSubscription<TPayload> subscription = null;
+            PrismEventSubscription subscription = null;
 
             if (keepSubscriberReferenceAlive)
             {
-                subscription = new PrismEventSubscription<TPayload> { Action = action, Filter = filter, ThreadOption = threadOption, SubscriptionToken = token };
+                subscription = new PrismEventSubscription { Action = action, Filter = filter, ThreadOption = threadOption, SubscriptionToken = token };
             }
             else
             {
-                subscription = new WeakReferencedPrismEventSubscription<TPayload> { Action = action, Filter = filter, ThreadOption = threadOption, SubscriptionToken = token };
+                subscription = new WeakReferencedPrismEventSubscription { Action = action, Filter = filter, ThreadOption = threadOption, SubscriptionToken = token };
             }
 
             lock (_lockObject)
@@ -85,15 +85,15 @@ namespace Prism.Events
             return token;
         }
 
-        private List<PrismEventSubscription<TPayload>> PruneAndCloneList()
+        private List<PrismEventSubscription> PruneAndCloneList()
         {
-            List<PrismEventSubscription<TPayload>> returnList = new List<PrismEventSubscription<TPayload>>();
+            List<PrismEventSubscription> returnList = new List<PrismEventSubscription>();
 
             lock (_lockObject)
             {
                 for (var i = _subscriptions.Count - 1; i >= 0; i--)
                 {
-                    PrismEventSubscription<TPayload> listItem =
+                    PrismEventSubscription listItem =
                         _subscriptions[i].ToPrismEventSubscription();
 
                     if (listItem == null)
@@ -113,7 +113,7 @@ namespace Prism.Events
 
         public virtual void Fire(TPayload payload)
         {
-            List<PrismEventSubscription<TPayload>> list = PruneAndCloneList();
+            List<PrismEventSubscription> list = PruneAndCloneList();
 
             foreach (var subscription in list.Where(evt => evt.ThreadOption == ThreadOption.PublisherThread))
             {
@@ -148,7 +148,7 @@ namespace Prism.Events
         {
             lock (_lockObject)
             {
-                PrismEventSubscription<TPayload> prismEvent = _subscriptions.FirstOrDefault(evt => evt.Action == subscriber);
+                PrismEventSubscription prismEvent = _subscriptions.FirstOrDefault(evt => evt.Action == subscriber);
                 if (prismEvent != null)
                 {
                     _subscriptions.Remove(prismEvent);
@@ -165,7 +165,7 @@ namespace Prism.Events
         {
             lock (_lockObject)
             {
-                PrismEventSubscription<TPayload> item = _subscriptions.FirstOrDefault(evt => evt.SubscriptionToken == token);
+                PrismEventSubscription item = _subscriptions.FirstOrDefault(evt => evt.SubscriptionToken == token);
                 if (item != null)
                 {
                     _subscriptions.Remove(item);
@@ -183,7 +183,7 @@ namespace Prism.Events
         {
             lock (_lockObject)
             {
-                PrismEventSubscription<TPayload> prismEvent = _subscriptions.FirstOrDefault(evt => evt.Action == actionEvent);
+                PrismEventSubscription prismEvent = _subscriptions.FirstOrDefault(evt => evt.Action == actionEvent);
                 return prismEvent != null;
             }
         }
@@ -197,12 +197,12 @@ namespace Prism.Events
         {
             lock (_lockObject)
             {
-                PrismEventSubscription<TPayload> prismEvent = _subscriptions.FirstOrDefault(evt => evt.SubscriptionToken == token);
+                PrismEventSubscription prismEvent = _subscriptions.FirstOrDefault(evt => evt.SubscriptionToken == token);
                 return prismEvent != null;
             }
         }
 
-        private class PrismEventSubscription<TPayload>
+        private class PrismEventSubscription
         {
             public PrismEventSubscription()
             {
@@ -214,13 +214,13 @@ namespace Prism.Events
             public ThreadOption ThreadOption { get; set; }
             public SubscriptionToken SubscriptionToken { get; set; }
 
-            public virtual PrismEventSubscription<TPayload> ToPrismEventSubscription()
+            public virtual PrismEventSubscription ToPrismEventSubscription()
             {
                 return this;
             }
         }
 
-        private class WeakReferencedPrismEventSubscription<TPayload> : PrismEventSubscription<TPayload>
+        private class WeakReferencedPrismEventSubscription : PrismEventSubscription
         {
             private WeakDelegate<Action<TPayload>> _action;
             private WeakDelegate<Predicate<TPayload>> _filter;
@@ -237,13 +237,13 @@ namespace Prism.Events
                 set { _filter = new WeakDelegate<Predicate<TPayload>>(value); }
             }
 
-            public override PrismEventSubscription<TPayload> ToPrismEventSubscription()
+            public override PrismEventSubscription ToPrismEventSubscription()
             {
                 Action<TPayload> action = this.Action;
                 Predicate<TPayload> filter = this.Filter;
                 if (action != null && filter != null)
                 {
-                    return new PrismEventSubscription<TPayload>() { Action = action, Filter = filter, ThreadOption = this.ThreadOption, SubscriptionToken = this.SubscriptionToken };
+                    return new PrismEventSubscription() { Action = action, Filter = filter, ThreadOption = this.ThreadOption, SubscriptionToken = this.SubscriptionToken };
                 }
                 return null;
             }

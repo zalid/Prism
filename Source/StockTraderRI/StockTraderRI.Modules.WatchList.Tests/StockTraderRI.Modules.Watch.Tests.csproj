@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="AddWatch\AddWatchPresenterFixture.cs" />
     <Compile Include="Mocks\MockAddWatchView.cs" />
+    <Compile Include="Mocks\MockEventAggregator.cs" />
     <Compile Include="Mocks\MockMarketFeedService.cs" />
     <Compile Include="Mocks\MockUnityContainer.cs" />
     <Compile Include="Mocks\MockWatchListService.cs" />

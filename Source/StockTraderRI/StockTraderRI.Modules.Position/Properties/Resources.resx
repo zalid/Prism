@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="AccountPositions" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\data\accountpositions.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="InvalidSharesRange" xml:space="preserve">
     <value>Shares must be greather than 0</value>
   </data>
@@ -131,6 +135,9 @@
   </data>
   <data name="OrderType_Stop" xml:space="preserve">
     <value>Stop</value>
+  </data>
+  <data name="StringCannotBeNullOrEmpty" xml:space="preserve">
+    <value>The provided String argument {0} must not be null or empty.</value>
   </data>
   <data name="TimeInForce_EndOfDay" xml:space="preserve">
     <value>End of day</value>

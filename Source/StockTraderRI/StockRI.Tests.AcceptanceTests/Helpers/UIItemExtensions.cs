@@ -23,6 +23,8 @@ using Core.UIItems;
 using System.Windows.Automation;
 using Core.UIItems.TabItems;
 using StockTraderRI.AcceptanceTests.TestInfrastructure;
+using Core.UIItems.WindowItems;
+using Core.UIItems.Finders;
 
 namespace StockTraderRI.AcceptanceTests.Helpers
 {
@@ -34,13 +36,20 @@ namespace StockTraderRI.AcceptanceTests.Helpers
             System.Threading.Thread.Sleep(1000);
         }
 
+        /// <summary>
+        /// Finds out whether an object exists in the raw tree with the name or automation id.
+        /// </summary>
+        /// <param name="rootElement"></param>
+        /// <param name="name">Either name or automation id of the control</param>
+        /// <returns></returns>
         public static AutomationElement SearchInRawTreeByName(this AutomationElement rootElement, string name)
         {
             AutomationElement elementNode = TreeWalker.RawViewWalker.GetFirstChild(rootElement);
 
             while (elementNode != null)
             {
-                if (name.Equals(elementNode.Current.Name, StringComparison.InvariantCultureIgnoreCase))
+                if (name.Equals(elementNode.Current.Name, StringComparison.InvariantCultureIgnoreCase)
+                    ||(name.Equals(elementNode.Current.AutomationId, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     return elementNode;
                 }
@@ -53,6 +62,58 @@ namespace StockTraderRI.AcceptanceTests.Helpers
             }
             return null;
         }
+
+        #region Overloaded TryGet methods
+
+        public static TItem TryGet<TItem>(this Window wind) where TItem : UIItem
+        {
+            try
+            {
+                return wind.Get<TItem>();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static TItem TryGet<TItem>(this Window wind, SearchCriteria searchCriteria) where TItem : UIItem
+        {
+            try
+            {
+                return wind.Get<TItem>(searchCriteria);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static IUIItem TryGet(this Window wind, SearchCriteria searchCriteria)
+        {
+            try
+            {
+                return wind.Get(searchCriteria);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static TItem TryGet<TItem>(this Window wind, string primaryIdentification) where TItem : UIItem
+        {
+            try
+            {
+                return wind.Get<TItem>(primaryIdentification);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        #endregion
 
         public static UIItem GetWatchListRegionHeader(this UIItemContainer rootElement)
         {

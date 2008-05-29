@@ -43,7 +43,9 @@ namespace StockTraderRI.Modules.News
         public void Initialize()
         {
             RegisterViewsAndServices();
-            _container.Resolve<INewsController>();
+            INewsController controller = _container.Resolve<INewsController>();
+            controller.Run();
+
         }
         #endregion
 

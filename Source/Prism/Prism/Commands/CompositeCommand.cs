@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -44,7 +43,7 @@ namespace Prism.Commands
         /// Adds commands to the collection and signs up for the CanExecuteChanged events.
         /// </summary>
         /// <param name="command"></param>
-        virtual public void RegisterCommand(ICommand command)
+        public virtual void RegisterCommand(ICommand command)
         {
             if (!registeredCommands.Contains(command))
             {
@@ -59,7 +58,7 @@ namespace Prism.Commands
         /// Removes command from the collection and removes itself from the CanExecuteChanged events.
         /// </summary>
         /// <param name="command"></param>
-        virtual public void UnregisterCommand(ICommand command)
+        public virtual void UnregisterCommand(ICommand command)
         {
             registeredCommands.Remove(command);
             command.CanExecuteChanged -= RegisteredCommand_CanExecuteChanged;
@@ -69,21 +68,10 @@ namespace Prism.Commands
         /// <summary>
         /// Re-raises OnCanExecuteChanged.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void RegisteredCommand_CanExecuteChanged(object sender, EventArgs e)
+        private void RegisteredCommand_CanExecuteChanged(object sender, EventArgs e)
         {
             OnCanExecuteChanged(sender, e);
         }
-
-        /// <summary>
-        /// Returns true if there are any registered commands.
-        /// </summary>
-        protected bool HasCommand
-        {
-            get { return (registeredCommands.Count != 0); }
-        }
-
 
         /// <summary>
         /// Handles firing of the CanExecuteChanged event.
@@ -103,18 +91,11 @@ namespace Prism.Commands
             CanExecuteChanged(sender, e);
         }
 
-        public void ClearExecuteChangedDelegates()
-        {
-            CanExecuteChanged = delegate { };
-        }
-
-        #region ICommand Members
-
         /// <summary>
-        /// Forwards CanExecute to registered commands.
+        /// Forwards CanExecute to the registered commands and returns true if all the commands can be executed.
         /// </summary>
-        /// <param name="parameter"></param>
-        /// <returns></returns>
+        ///<param name="parameter">Data used by the command.  If the command does not require data to be passed, this object can be set to null.</param>
+        /// <returns>true if all the registered commands can be executed; otherwise, false.</returns>
         public bool CanExecute(object parameter)
         {
             bool hasEnabledCommandsThatShouldBeExecuted = false;
@@ -134,6 +115,9 @@ namespace Prism.Commands
             return hasEnabledCommandsThatShouldBeExecuted;
         }
 
+        ///<summary>
+        ///Occurs when any of the registered commands raise <seealso cref="CanExecuteChanged"/>.
+        ///</summary>
         public event EventHandler CanExecuteChanged = delegate { };
 
 
@@ -162,18 +146,6 @@ namespace Prism.Commands
         protected virtual bool ShouldExecute(ICommand command)
         {
             return true;
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Returns the delegate count for CanExecutChanged event
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks>This is added for testing only and is not intended to be used from outside code.</remarks>
-        protected int CanExecuteChangedDelegateCount
-        {
-            get { return CanExecuteChanged.GetInvocationList().Count(); }
         }
     }
 }

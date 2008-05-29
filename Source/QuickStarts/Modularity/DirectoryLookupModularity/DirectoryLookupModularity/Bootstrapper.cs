@@ -15,71 +15,27 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System.Windows.Controls;
-using Microsoft.Practices.Unity;
+using System.Windows;
 using Prism.Interfaces;
-using Prism.Interfaces.Logging;
-using Prism.Regions;
 using Prism.Services;
 using Prism.UnityContainerAdapter;
 
 namespace DirectoryLookupModularity
 {
-    public class Bootstrapper
+    public class Bootstrapper : UnityPrismBootstrapper
     {
-        IUnityContainer container;
-
-        public void Initialize()
+        protected override DependencyObject CreateShell()
         {
-            InitializeContainer();
-            RegisterGlobalServices();
-            RegisterRegionAdapters();
-            ShowShell();
-            InitializeModules();
-        }
-
-        private void InitializeContainer()
-        {
-            container = new UnityContainer();
-            container.RegisterInstance<IUnityContainer>(container);
-            container.RegisterType<IPrismContainer, UnityPrismContainer>(new ContainerControlledLifetimeManager());
-            container.RegisterInstance<IPrismLogger>(new ModularityLogger());
-        }
-
-        private void RegisterGlobalServices()
-        {
-            container.RegisterType<IModuleLoaderService, ModuleLoaderService>(new ContainerControlledLifetimeManager());
-        }
-
-        private void RegisterRegionAdapters()
-        {
-            RegionAdapterMappings mappings = new RegionAdapterMappings();
-            mappings.RegisterMapping(typeof(ItemsControl), new ItemsControlRegionAdapter());
-            mappings.RegisterMapping(typeof(ContentControl), new ContentControlRegionAdapter());
-
-            this.container.RegisterInstance<RegionAdapterMappings>(mappings);
-        }
-
-
-        private void ShowShell()
-        {
-            this.container.RegisterType<IRegionManager, RegionManager>(new ContainerControlledLifetimeManager());
-
-            Shell shell = new Shell();
-
-            RegionManager.SetRegionManager(shell, container.Resolve<IRegionManager>());
+            Shell shell = Container.Resolve<Shell>();
 
             shell.Show();
+
+            return shell;
         }
 
-        private void InitializeModules()
+        protected override IModuleEnumerator GetModuleEnumerator()
         {
-            container.RegisterInstance<IModuleEnumerator>(new DirectoryLookupModuleEnumerator(@".\Modules"));
-
-            IModuleEnumerator enumerator = container.Resolve<IModuleEnumerator>();
-            IModuleLoaderService loaderService = container.Resolve<IModuleLoaderService>();
-
-            loaderService.Initialize(enumerator.GetStartupLoadedModules());
+            return new DirectoryLookupModuleEnumerator(@".\Modules");
         }
     }
 }

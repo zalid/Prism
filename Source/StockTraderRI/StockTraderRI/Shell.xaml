@@ -6,7 +6,7 @@
     xmlns:Controls="clr-namespace:StockTraderRI.Controls"
     Title="Shell" Height="760" Width="1024">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type inf:ExtendedHeader}">
+         <DataTemplate DataType="{x:Type inf:ExtendedHeader}">
             <StackPanel Orientation="Horizontal" ToolTip="{Binding Path=ToolTip}">
                 <Image Source="{Binding Path=IconUri}" Width="16" Height="16" />
                 <TextBlock Text="{Binding Path=Title}" />
@@ -29,13 +29,12 @@
             <ColumnDefinition Width="0.645*"/>
             <ColumnDefinition Width="0.028*"/>
             <ColumnDefinition Width="0.245*"/>
-            <ColumnDefinition Width="0.339*"/>
+            <ColumnDefinition Width="0.043*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="1" FontFamily="Franklin Gothic" FontSize="60" FontWeight="Normal" Foreground="#FF77B6EB" TextAlignment="Left" TextWrapping="Wrap" RenderTransformOrigin="0.482,-1.197"><Run FontSize="50" Foreground="#FF98C61F" Text="CFI "/><Run FontSize="50" Text="STOCK TRADER"/></TextBlock>
@@ -46,24 +45,18 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-        <StackPanel Grid.Row="1" Grid.RowSpan="3" Grid.Column="3">
+        <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="3">
             <Controls:TearOffItemsControl x:Name="TearOffControl" 
                                           prism:RegionManager.RegionName="WatchRegion" 
                                           HeaderBackground="#FF77B6EB" 
                                           HeaderButtonBackground="#FF77B6EB" 
                                           HeaderButtonRollOverBackground="#7F77B6EB" 
-                                          HeaderText="WATCHLIST" 
+                                          HeaderText="WATCH LIST" 
                                           HeaderTextStyle="{StaticResource TearOffControlHeaderTextStyle}"
                                           WindowHeight="400" WindowWidth="300" />
           <ItemsControl Margin="0,20,0,0" prism:RegionManager.RegionName="NewsRegion" />
         </StackPanel>
-        <TextBlock Margin="0,10,0,10" Grid.Row="2" Grid.Column="1" FontFamily="Franklin Gothic" FontSize="20" FontWeight="Normal" Foreground="#FF77B6EB" Text="POSITION" TextAlignment="Left" TextWrapping="Wrap" RenderTransformOrigin="0.482,-1.197"/>
-        <ItemsControl Grid.Row="3" Grid.Column="1" prism:RegionManager.RegionName="MainRegion" />
-        <!--<StackPanel Grid.Row="2" Grid.Column="0">
-            <Grid prism:RegionManager.Region="MainRegion"></Grid>
-            <TabControl Name="ResearchArticlesTab" prism:RegionManager.Region="ResearchArticlesRegion" ItemContainerStyle="{StaticResource HeaderStyle}" />
-        </StackPanel>-->
-        <Controls:CollapsibleTabControl x:Name="CollapsibleTab" Grid.Row="1" Grid.RowSpan="3" Grid.Column="4" prism:RegionManager.RegionName="CollapsibleRegion" ItemContainerStyle="{StaticResource HeaderStyle}"/>
+        <TabControl x:Name="PositionBuySellTab" VerticalAlignment="Top" Margin="0,10,0,0" Style="{StaticResource ShellTabControlStyle}" ItemContainerStyle="{StaticResource ShellTabItemStyle}" SelectedIndex="0"  Grid.Row="2" Grid.Column="1" prism:RegionManager.RegionName="MainRegion" />
     </Grid>
 
 </Window>

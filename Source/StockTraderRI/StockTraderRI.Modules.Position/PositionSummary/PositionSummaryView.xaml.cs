@@ -16,26 +16,12 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using StockTraderRI.Infrastructure.Interfaces;
-using StockTraderRI.Infrastructure.Models;
-using StockTraderRI.Infrastructure.PresentationModels;
-using StockTraderRI.Modules.Position;
-using System.Collections.ObjectModel;
-using StockTraderRI.Modules.Position.PresentationModels;
 using Prism.Utility;
+using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Modules.Position.Interfaces;
+using StockTraderRI.Modules.Position.PresentationModels;
 
 namespace StockTraderRI.Modules.Position.PositionSummary
 {
@@ -50,13 +36,7 @@ namespace StockTraderRI.Modules.Position.PositionSummary
         {
             InitializeComponent();
 
-            positionGrid.PositionSelected += new EventHandler<DataEventArgs<string>>(positionGrid_PositionSelected);
-        }
-
-
-        private void positionGrid_NewsClicked(object sender, DataEventArgs<string> e)
-        {
-            NewsRequested(this, e);
+            positionGrid.PositionSelected += positionGrid_PositionSelected;
         }
 
         void positionGrid_PositionSelected(object sender, DataEventArgs<string> e)
@@ -64,9 +44,11 @@ namespace StockTraderRI.Modules.Position.PositionSummary
             TickerSymbolSelected(this, e);
         }
 
+        public string HeaderInfo
+        {
+            get { return "POSITION"; }
+        }
         #region IPositionSummaryView Members
-
-        public event EventHandler<DataEventArgs<string>> NewsRequested = delegate { };
 
         public event EventHandler<DataEventArgs<string>> TickerSymbolSelected = delegate { };
 

@@ -15,16 +15,18 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
+using System.Collections.Generic;
 using Prism.Interfaces.Logging;
 
 namespace Prism.UnityContainerAdapter.Tests.Mocks
 {
     internal class MockPrismLogger : IPrismLogger
     {
+        public IList<string> Messages = new List<string>();
+
         public void Log(string message, Category category, Priority priority)
         {
-            throw new NotImplementedException();
+            Messages.Add(message);
         }
     }
 }

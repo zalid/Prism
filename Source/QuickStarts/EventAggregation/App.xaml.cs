@@ -15,11 +15,6 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
 using System.Windows;
 
 namespace EventAggregation
@@ -32,7 +27,7 @@ namespace EventAggregation
         public App()
         {
             var bootstrapper = new Bootstrapper();
-            bootstrapper.Initialize();
+            bootstrapper.Run();
         }
     }
 }

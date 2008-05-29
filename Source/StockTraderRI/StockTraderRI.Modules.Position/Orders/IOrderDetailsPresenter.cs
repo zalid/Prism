@@ -29,5 +29,6 @@ namespace StockTraderRI.Modules.Position.Orders
         event EventHandler CloseViewRequested;
         IOrderDetailsView View { get; set; }
         TransactionInfo TransactionInfo { set; }
+        OrderDetailsPresentationModel Model { get; set; }
     }
 }

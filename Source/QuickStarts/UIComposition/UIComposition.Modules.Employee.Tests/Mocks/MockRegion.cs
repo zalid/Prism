@@ -25,7 +25,7 @@ namespace UIComposition.Modules.Employee.Tests.Mocks
 {
     public class MockRegion : IRegion
     {
-        public bool ShowCalled;
+        public bool ActivateCalled;
         public int ViewsCount;
         public string NamedViewAdded;
         public IRegionManager AddReturnValue;
@@ -46,9 +46,9 @@ namespace UIComposition.Modules.Employee.Tests.Mocks
             get { return null; }
         }
 
-        public void Show(object view)
+        public void Activate(object view)
         {
-            ShowCalled = true;
+            ActivateCalled = true;
         }
 
         public IRegionManager Add(object view, string name)

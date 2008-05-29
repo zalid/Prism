@@ -16,47 +16,49 @@
 //===============================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StockTraderRI.Modules.Position.Tests.Mocks;
+using Prism.Events;
+using Prism.Interfaces;
+using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Models;
-using StockTraderRI.Modules.Position.PresentationModels;
-using StockTraderRI.Modules.Position.PositionSummary;
 using StockTraderRI.Modules.Position.Interfaces;
+using StockTraderRI.Modules.Position.PositionSummary;
+using StockTraderRI.Modules.Position.PresentationModels;
+using StockTraderRI.Modules.Position.Tests.Mocks;
 
 
 namespace StockTraderRI.Modules.Position.Tests.PositionSummary
 {
-    /// <summary>
-    /// Summary description for UnitTest1
-    /// </summary>
     [TestClass]
     public class PositionSummaryPresenterFixture
     {
         MockPositionSummaryView view;
         MockAccountPositionService accountPositionService;
-        MockNewsFeedService newsFeedService;
         MockMarketFeedService marketFeedService;
         MockMarketHistoryService marketHistoryService;
         MockTrendLinePresenter trendLinePresenter;
         MockOrdersController ordersController;
-
+        MockEventAggregator eventAggregator;
 
         [TestInitialize]
         public void SetUp()
         {
             view = new MockPositionSummaryView();
             accountPositionService = new MockAccountPositionService();
-            newsFeedService = new MockNewsFeedService();
             marketFeedService = new MockMarketFeedService();
             marketHistoryService = new MockMarketHistoryService();
             trendLinePresenter = new MockTrendLinePresenter();
             ordersController = new MockOrdersController();
+            this.eventAggregator = new MockEventAggregator();
         }
 
         [TestMethod]
         public void CanInitPresenter()
         {
+            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(new MockMarketPricesUpdatedEvent());
+
             PositionSummaryPresenter presenter = CreatePresenter();
 
             Assert.AreEqual<IPositionSummaryView>(view, presenter.View);
@@ -66,6 +68,8 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
         [TestMethod]
         public void PresenterGeneratesPresentationModelFromPositionModelMarketAndNewsFeeds()
         {
+            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(new MockMarketPricesUpdatedEvent());
+
             accountPositionService.AddPosition(new AccountPosition("FUND0", 300m, 1000));
             accountPositionService.AddPosition(new AccountPosition("FUND1", 200m, 100));
             marketFeedService.SetPrice("FUND0", 30.00m);
@@ -83,6 +87,8 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
         [TestMethod]
         public void CanSetPresentationModelIntoView()
         {
+            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(new MockMarketPricesUpdatedEvent());
+
             PositionSummaryPresenter presenter = CreatePresenter();
 
             Assert.AreSame(presenter.PresentationModel, view.Model);
@@ -92,14 +98,22 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
         [TestMethod]
         public void PresenterUpdatesPresentationModelwithMarketUpdates()
         {
+            var marketPricesUpdatedEvent = new MockMarketPricesUpdatedEvent();
+            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(marketPricesUpdatedEvent);
+
             marketFeedService.SetPrice("FUND0", 30.00m);
             accountPositionService.AddPosition("FUND0", 25.00m, 1000);
             marketFeedService.SetPrice("FUND1", 20.00m);
             accountPositionService.AddPosition("FUND1", 15.00m, 100);
             PositionSummaryPresenter presenter = CreatePresenter();
 
-            //Update price in mock. Updates to real market feed may come in different form
-            marketFeedService.UpdatePrice("FUND0", 50.00m, 12345678L);
+            var updatedPriceList = new Dictionary<string, decimal> { { "FUND0", 50.00m } };
+
+            Assert.IsNotNull(marketPricesUpdatedEvent.SubscribeArgumentAction);
+            Assert.AreEqual(ThreadOption.UIThread, marketPricesUpdatedEvent.SubscribeArgumentThreadOption);
+
+
+            marketPricesUpdatedEvent.SubscribeArgumentAction(updatedPriceList);
 
             Assert.AreEqual<decimal>(50.00m, presenter.PresentationModel.GetPrice("FUND0"));
         }
@@ -107,6 +121,9 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
         [TestMethod]
         public void MarketUpdatesPresenterPositionUpdatesButCollectionDoesNot()
         {
+            var marketPricesUpdatedEvent = new MockMarketPricesUpdatedEvent();
+            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(marketPricesUpdatedEvent);
+
             marketFeedService.SetPrice("FUND1", 20.00m);
             accountPositionService.AddPosition("FUND1", 15.00m, 100);
 
@@ -119,13 +136,12 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
               };
 
             bool presentationModelItemUpdated = false;
-            presenter.PresentationModel.Data.First<PositionSummaryItem>(p => p.TickerSymbol == "FUND1").PropertyChanged += delegate
+            presenter.PresentationModel.Data.First(p => p.TickerSymbol == "FUND1").PropertyChanged += delegate
                {
                    presentationModelItemUpdated = true;
                };
 
-            //Update price in mock. Updates to real market feed may come in different form
-            marketFeedService.UpdatePrice("FUND1", 50.00m, 12345678L);
+            marketPricesUpdatedEvent.SubscribeArgumentAction(new Dictionary<string, decimal> { { "FUND1", 50m } });
 
             Assert.IsFalse(presentationModelCollectionUpdated);
             Assert.IsTrue(presentationModelItemUpdated);
@@ -134,6 +150,7 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
         [TestMethod]
         public void PresenterPopulatesSummaryCollectionWithMarketHistory()
         {
+            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(new MockMarketPricesUpdatedEvent());
             marketFeedService.SetPrice("FUND1", 20.00m);
             accountPositionService.AddPosition("FUND1", 15.00m, 100);
             PositionSummaryPresenter presenter = CreatePresenter();
@@ -144,6 +161,7 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
         [TestMethod]
         public void AccountPositionModificationUpdatesPM()
         {
+            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(new MockMarketPricesUpdatedEvent());
             marketFeedService.SetPrice("FUND0", 20.00m);
             accountPositionService.AddPosition("FUND0", 150.00m, 100);
             PositionSummaryPresenter presenter = CreatePresenter();
@@ -166,6 +184,8 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
         [TestMethod]
         public void WhenPositionRowSelectedSymbolsTrendDataShowsInLineChart()
         {
+            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(new MockMarketPricesUpdatedEvent());
+            eventAggregator.AddMapping<TickerSymbolSelectedEvent>(new MockTickerSymbolSelectedEvent());
             PositionSummaryPresenter presenter = CreatePresenter();
 
             view.SelectFUND0Row();
@@ -175,29 +195,68 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
         }
 
         [TestMethod]
+        public void TickerSymbolSelectedFiresEvent()
+        {
+            var tickerSymbolSelectedEvent = new MockTickerSymbolSelectedEvent();
+            eventAggregator.AddMapping<TickerSymbolSelectedEvent>(tickerSymbolSelectedEvent);
+            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(new MockMarketPricesUpdatedEvent());
+            PositionSummaryPresenter presenter = CreatePresenter();
+
+            view.SelectFUND0Row();
+
+            Assert.IsTrue(tickerSymbolSelectedEvent.FireCalled);
+            Assert.AreEqual("FUND0", tickerSymbolSelectedEvent.FireArgumentPayload);
+        }
+
+        [TestMethod]
         public void ControllerCommandsSetIntoPresentationModel()
         {
+            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(new MockMarketPricesUpdatedEvent());
             PositionSummaryPresenter presenter = CreatePresenter();
 
             Assert.AreSame(presenter.PresentationModel.BuyCommand, ordersController.BuyCommand);
             Assert.AreSame(presenter.PresentationModel.SellCommand, ordersController.SellCommand);
-
-
         }
-
-
-
 
         private PositionSummaryPresenter CreatePresenter()
         {
             return new PositionSummaryPresenter(view, accountPositionService
                                                 , marketFeedService
-                                                , marketHistoryService, 
-                                                trendLinePresenter, 
-                                                ordersController);
+                                                , marketHistoryService
+                                                , trendLinePresenter
+                                                , ordersController
+                                                , eventAggregator);
         }
 
 
+    }
+
+    internal class MockTickerSymbolSelectedEvent : TickerSymbolSelectedEvent
+    {
+        public bool FireCalled;
+        public string FireArgumentPayload;
+
+
+        public override void Fire(string payload)
+        {
+            FireCalled = true;
+            FireArgumentPayload = payload;
+        }
+    }
+
+    internal class MockMarketPricesUpdatedEvent : MarketPricesUpdatedEvent
+    {
+        public Action<IDictionary<string, decimal>> SubscribeArgumentAction;
+        public Predicate<IDictionary<string, decimal>> SubscribeArgumentFilter;
+        public ThreadOption SubscribeArgumentThreadOption;
+
+        public override SubscriptionToken Subscribe(Action<IDictionary<string, decimal>> action, ThreadOption threadOption, bool keepSubscriberReferenceAlive, Predicate<IDictionary<string, decimal>> filter)
+        {
+            SubscribeArgumentAction = action;
+            SubscribeArgumentFilter = filter;
+            SubscribeArgumentThreadOption = threadOption;
+            return null;
+        }
     }
 }
 

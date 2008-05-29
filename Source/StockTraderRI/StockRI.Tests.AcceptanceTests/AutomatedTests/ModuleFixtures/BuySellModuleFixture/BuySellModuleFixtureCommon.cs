@@ -89,6 +89,10 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
 
         private void LaunchBuySellPanelFromPositionTable(BuySellEnum buySell, string symbol)
         {
+            //first select the Position Tab
+            Tab positionBuySellTab = window.Get<Tab>("PositionBuySellTab");
+            positionBuySellTab.Pages.Find(p => p.NameMatches("POSITION")).Select();
+
             ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
 
             switch (buySell)
@@ -113,9 +117,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         //validate if the screen has all the required controls and default values
         private void ValidateBuySellPanelControls(BuySellEnum buySell)
         {
-            //select the collapsible panel first
-            UIItem buySellListTab = window.GetCollapsibleRegionHeader("BuySellListHeader");
-            buySellListTab.Hover();
+            SelectBuySellTabPage();
 
             TextBox symbolTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("BuySellSymbolTextBox"));
             Assert.IsNotNull(symbolTextBox);
@@ -172,9 +174,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
 
         private void ValidateBuySellPanelData(Order model)
         {
-            //select the collapsible panel first
-            UIItem buySellListTab = window.GetCollapsibleRegionHeader("BuySellListHeader");
-            buySellListTab.Hover();
+            SelectBuySellTabPage();
 
             TextBox symbolTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("BuySellSymbolTextBox"));
             Assert.AreEqual(model.Symbol, symbolTextBox.Text);
@@ -212,39 +212,124 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
 
         private void PopulateBuySellPanelWithData(Order model)
         {
-            //select the collapsible panel first
-            UIItem buySellListTab = window.GetCollapsibleRegionHeader("BuySellListHeader");
-            buySellListTab.Click();         
-           
-            //enter data in model into the Buy Sell panel controls
-            TextBox symbolTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("BuySellSymbolTextBox"));            
-            symbolTextBox.Text = model.Symbol;
+            SelectBuySellTabPage();
 
-            WPFComboBox orderTypeComboBox = window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("BuySellOrderTypeCombo"));
-            orderTypeComboBox.Select(model.OrderType);
+            ListBox listBox = window.Get<ListBox>(TestDataInfrastructure.GetControlId("OrdersListBox"));
+            int listItemsCount = listBox.Items.Count;
+            GroupBox buySellSymbolGroup = null;
 
-            TextBox shareTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("BuySellSharesTextBox"));
-            shareTextBox.Text = model.NumberOfShares.ToString();
-
-            TextBox limitStopPriceTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("BuySellStopLimitPriceTextBox"));
-            limitStopPriceTextBox.Text = model.LimitStopPrice.ToString();
-
-            WPFComboBox timeInForceComboBox = window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("BuySellTimeInForceCombo"));
-            timeInForceComboBox.Select(model.FormattedTimeInForce);
-
-            switch (model.TransactionType)
+            //collapse all the CompositeExpander except the last one which is supposedly the latest
+            if (listItemsCount > 1)
             {
-                case "Buy":
-                    RadioButton buyRadButton = window.Get<RadioButton>(TestDataInfrastructure.GetControlId("BuyRadio"));
-                    buyRadButton.Select();
-                    break;
-                case "Sell":
-                    RadioButton sellRadButton = window.Get<RadioButton>(TestDataInfrastructure.GetControlId("SellRadio"));
-                    sellRadButton.Select();
-                    break;
+                int groupboxTracker = 0;               
+
+                for (int i = 0; i < listItemsCount; i++)
+                {
+                    if (null != listBox.Items[i])
+                    {
+                        buySellSymbolGroup = window.TryGet<GroupBox>(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("CompositeExpander"))
+                                                                                    .AndControlType(typeof(GroupBox))
+                                                                                    .AndIndex(i));
+
+                        if (null != buySellSymbolGroup)
+                        {
+                            groupboxTracker = i;
+                            buySellSymbolGroup.DoubleClick();
+                        }
+                    }
+                }
+
+                buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("CompositeExpander"))
+                                                                                .AndControlType(typeof(GroupBox))
+                                                                                .AndIndex(groupboxTracker));
+                buySellSymbolGroup.DoubleClick();
+            }
+
+            if (buySellSymbolGroup != null)
+            {
+                AutomationElement symbolTextBox = buySellSymbolGroup.AutomationElement.SearchInRawTreeByName(TestDataInfrastructure.GetControlId("BuySellSymbolTextBox"));  
+                SetTextBoxValue(symbolTextBox, model.Symbol);
+
+                AutomationElement orderTypeComboBox = buySellSymbolGroup.AutomationElement.SearchInRawTreeByName(TestDataInfrastructure.GetControlId("BuySellOrderTypeCombo"));
+                SelectItemInComboBox(orderTypeComboBox, model.OrderType);
+
+                AutomationElement shareTextBox = buySellSymbolGroup.AutomationElement.SearchInRawTreeByName(TestDataInfrastructure.GetControlId("BuySellSharesTextBox"));
+                SetTextBoxValue(shareTextBox, model.NumberOfShares.ToString());
+
+                AutomationElement limitStopPriceTextBox = buySellSymbolGroup.AutomationElement.SearchInRawTreeByName(TestDataInfrastructure.GetControlId("BuySellStopLimitPriceTextBox"));
+                SetTextBoxValue(limitStopPriceTextBox, model.LimitStopPrice.ToString());
+
+                AutomationElement timeInForceComboBox = buySellSymbolGroup.AutomationElement.SearchInRawTreeByName(TestDataInfrastructure.GetControlId("BuySellTimeInForceCombo"));
+                SelectItemInComboBox(timeInForceComboBox, model.FormattedTimeInForce);
+
+                switch (model.TransactionType)
+                {
+                    case "Buy":
+                        string buyRadioControlName = TestDataInfrastructure.GetControlId("BuyRadio");
+                        AutomationElement buyRadioButtonElement = buySellSymbolGroup.AutomationElement.SearchInRawTreeByName(buyRadioControlName);
+                        SelectRadioButton(buyRadioButtonElement, buyRadioControlName);
+                        break;
+                    case "Sell":
+                        string sellRadioControlName = TestDataInfrastructure.GetControlId("SellRadio");
+                        AutomationElement sellRadioButtonElement = buySellSymbolGroup.AutomationElement.SearchInRawTreeByName(sellRadioControlName);
+                        SelectRadioButton(sellRadioButtonElement, sellRadioControlName);
+                        break;
+                }
             }
         }
-        
+
+        private void SelectItemInComboBox(AutomationElement element, String selectedItemName)
+        {            
+            // Get the mapped item name.
+            String itemName = TestDataInfrastructure.GetControlId(selectedItemName);
+
+            // Set focus to ensure that the object is selected.
+            element.SetFocus();
+
+            // Expand the ComboBox using ExpandCollapsePattern.
+            ExpandCollapsePattern expandPattern = element.GetCurrentPattern(ExpandCollapsePattern.Pattern) as ExpandCollapsePattern;
+            expandPattern.Expand();
+
+            // get the desired automation element
+            PropertyCondition itemNameCondition = new PropertyCondition(AutomationElement.NameProperty, itemName);
+            PropertyCondition itemTypeCondition = new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.ListItem);
+            AndCondition itemCondition = new AndCondition(itemNameCondition, itemTypeCondition);
+
+            AutomationElement item = element.FindFirst(TreeScope.Descendants, itemCondition);
+            if (item != null)
+            {
+                // select combo box item
+                ((SelectionItemPattern)item.GetCurrentPattern(SelectionItemPattern.Pattern)).Select();
+            }
+        }
+
+        private void SetTextBoxValue(AutomationElement element, string value)
+        {
+            ValuePattern valuePattern = element.GetCurrentPattern(ValuePattern.Pattern) as ValuePattern;
+            valuePattern.SetValue(value);
+        }
+
+        private void SelectRadioButton(AutomationElement element, string controlName)
+        {
+            SelectionItemPattern itemPattern = element.GetCurrentPattern(SelectionItemPattern.Pattern) as SelectionItemPattern;
+            itemPattern.Select();
+        }
+
+        private void SelectBuySellTabPage()
+        {
+            Tab positionBuySellTab = window.Get<Tab>(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("PositionBuySellTab"))
+                                                                   .AndControlType(typeof(Tab)));                                                                            
+            positionBuySellTab.Pages.Find(p => p.NameMatches(TestDataInfrastructure.GetTestInputData("BuySellTab"))).Select();
+        }
+
+        // TODO: Required a single method to toggle between tabs.
+        private void SelectPositionTabPage()
+        {
+            Tab positionBuySellTab = window.Get<Tab>(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("PositionBuySellTab"))
+                                                                   .AndControlType(typeof(Tab)));
+            positionBuySellTab.Pages.Find(p => p.NameMatches(TestDataInfrastructure.GetTestInputData("PositionTab"))).Select();
+        }
+
         #endregion
     }
 }

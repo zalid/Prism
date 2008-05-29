@@ -61,6 +61,15 @@ namespace Prism.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ContentControl&apos;s Content property must not be set when also used with Prism Regions..
+        /// </summary>
+        internal static string ContentControlHasContentException {
+            get {
+                return ResourceManager.GetString("ContentControlHasContentException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Both the executeMethod and the canExecuteMethod delegates cannot be null..
         /// </summary>
         internal static string DelegateCommandDelegatesCannotBeNull {
@@ -107,6 +116,24 @@ namespace Prism.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ItemsControl&apos;s ItemsSource property must not be set when also used with Prism Regions..
+        /// </summary>
+        internal static string ItemsControlHasItemsSourceException {
+            get {
+                return ResourceManager.GetString("ItemsControlHasItemsSourceException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mapping with the given type is already registered: {0}.
+        /// </summary>
+        internal static string MappingExistsException {
+            get {
+                return ResourceManager.GetString("MappingExistsException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Assembly file {0} was not found..
         /// </summary>
         internal static string ModuleNotFound {
@@ -130,6 +157,15 @@ namespace Prism.Properties {
         internal static string RegionNameExistsException {
             get {
                 return ResourceManager.GetString("RegionNameExistsException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View already exists in region..
+        /// </summary>
+        internal static string RegionViewExistsException {
+            get {
+                return ResourceManager.GetString("RegionViewExistsException", resourceCulture);
             }
         }
         

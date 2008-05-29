@@ -135,5 +135,8 @@ namespace StockTraderRI.Modules.Position.PresentationModels
         {
             errors.Clear();
         }
+
+        public ICommand SubmitCommand { get; set; }
+        public ICommand CancelCommand { get; set; }
     }
 }

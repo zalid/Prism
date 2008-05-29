@@ -78,23 +78,23 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
             get { throw new NotImplementedException(); }
         }
 
-        public void Show(object view)
+        public void Activate(object view)
         {
             SelectedItem = view;
         }
 
-        public IRegionManager Add(object view, string name)
+        public IRegionManager Add(object view, string viewName)
         {
             Add(view);
             return null;
         }
 
-        public object GetView(string name)
+        public object GetView(string viewName)
         {
             return null;
         }
 
-        public IRegionManager Add(object view, string name, bool createRegionManagerScope)
+        public IRegionManager Add(object view, string viewName, bool createRegionManagerScope)
         {
             throw new NotImplementedException();
         }

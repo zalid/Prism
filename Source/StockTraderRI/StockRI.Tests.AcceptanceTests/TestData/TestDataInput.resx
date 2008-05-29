@@ -219,4 +219,10 @@
   <data name="PublishedDate" xml:space="preserve">
     <value>PublishedDate</value>
   </data>
+  <data name="PositionTab" xml:space="preserve">
+    <value>POSITION</value>
+  </data>
+  <data name="BuySellTab" xml:space="preserve">
+    <value>BUY &amp; SELL</value>
+  </data>
 </root>

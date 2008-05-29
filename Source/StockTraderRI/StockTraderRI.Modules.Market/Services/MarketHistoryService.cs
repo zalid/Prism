@@ -25,6 +25,7 @@ using StockTraderRI.Infrastructure.PresentationModels;
 using System.Xml.Serialization;
 using System.Xml;
 using System.Globalization;
+using StockTraderRI.Modules.Market.Properties;
 
 namespace StockTraderRI.Modules.Market.Services
 {
@@ -41,7 +42,7 @@ namespace StockTraderRI.Modules.Market.Services
 
         private void InitializeMarketHistory()
         {
-            var document = XDocument.Load("Data/MarketHistory.xml");
+            var document = XDocument.Parse(Resources.MarketHistory);
             foreach (var marketHistoryItemElement in document.Descendants("MarketHistoryItem"))
             {
                 var item = new MarketHistoryItem

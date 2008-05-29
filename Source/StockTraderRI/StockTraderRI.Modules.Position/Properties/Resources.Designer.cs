@@ -61,6 +61,28 @@ namespace StockTraderRI.Modules.Position.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///&lt;ArrayOfAccountPosition xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+        ///  &lt;AccountPosition&gt;
+        ///    &lt;TickerSymbol&gt;STOCK0&lt;/TickerSymbol&gt;
+        ///    &lt;CostBasis&gt;280.99&lt;/CostBasis&gt;
+        ///    &lt;Shares&gt;10&lt;/Shares&gt;
+        ///  &lt;/AccountPosition&gt;
+        ///  &lt;AccountPosition&gt;
+        ///    &lt;TickerSymbol&gt;STOCK2&lt;/TickerSymbol&gt;
+        ///    &lt;CostBasis&gt;1900.22&lt;/CostBasis&gt;
+        ///    &lt;Shares&gt;100&lt;/Shares&gt;
+        ///  &lt;/AccountPosition&gt;
+        ///  &lt;AccountPosition&gt;
+        ///    &lt;TickerSymbol&gt;STOCK3&lt;/TickerSymb [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string AccountPositions {
+            get {
+                return ResourceManager.GetString("AccountPositions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shares must be greather than 0.
         /// </summary>
         internal static string InvalidSharesRange {
@@ -102,6 +124,15 @@ namespace StockTraderRI.Modules.Position.Properties {
         internal static string OrderType_Stop {
             get {
                 return ResourceManager.GetString("OrderType_Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided String argument {0} must not be null or empty..
+        /// </summary>
+        internal static string StringCannotBeNullOrEmpty {
+            get {
+                return ResourceManager.GetString("StringCannotBeNullOrEmpty", resourceCulture);
             }
         }
         

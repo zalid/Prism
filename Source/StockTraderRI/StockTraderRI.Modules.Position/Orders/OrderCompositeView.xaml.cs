@@ -48,12 +48,14 @@ namespace StockTraderRI.Modules.Position.Orders
 
         public void SetDetailView(UIElement detailView)
         {
-            DetailArea.Children.Add(detailView);
+            CompositeExpander.Content = detailView;
+            //DetailArea.Children.Add(detailView);
         }
 
         public void SetCommandView(UIElement commandView)
         {
-            CommandArea.Children.Add(commandView);
+            CompositeExpander.Header = commandView;
+            //CommandArea.Children.Add(commandView);
         }
 
 

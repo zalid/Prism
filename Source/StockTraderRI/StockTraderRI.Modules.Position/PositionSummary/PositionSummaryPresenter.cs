@@ -18,20 +18,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Prism.Interfaces;
+using Prism.Utility;
+using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Infrastructure.Models;
-using StockTraderRI.Infrastructure.PresentationModels;
-using Prism.Services;
-using StockTraderRI.Infrastructure;
-using Prism.Interfaces;
-using System.Windows;
-using System.Windows.Controls;
-using Microsoft.Practices.Unity;
-using StockTraderRI.Modules.Position.PresentationModels;
-using Prism.Utility;
-using StockTraderRI.Modules.Position.Interfaces;
 using StockTraderRI.Modules.Position.Controllers;
+using StockTraderRI.Modules.Position.Interfaces;
+using StockTraderRI.Modules.Position.PresentationModels;
 
 namespace StockTraderRI.Modules.Position.PositionSummary
 {
@@ -43,16 +37,17 @@ namespace StockTraderRI.Modules.Position.PositionSummary
                                         , IMarketFeedService marketFeedSvc
                                         , IMarketHistoryService marketHistorySvc
                                         , ITrendLinePresenter trendLinePresenter
-                                        , IOrdersController ordersController)
+                                        , IOrdersController ordersController
+                                        , IEventAggregator eventAggregator)
         {
             View = view;
             AccountPositionSvc = accountPositionService;
-            MarketFeedSvc = marketFeedSvc;
             MarketHistorySvc = marketHistorySvc;
+            EventAggregator = eventAggregator;
 
             PresentationModel = new PositionSummaryPresentationModel();
 
-            PopulatePresentationModel(AccountPositionSvc, MarketFeedSvc, PresentationModel, MarketHistorySvc);
+            PopulatePresentationModel(AccountPositionSvc, marketFeedSvc, PresentationModel, MarketHistorySvc);
             PresentationModel.BuyCommand = ordersController.BuyCommand;
             PresentationModel.SellCommand = ordersController.SellCommand;
 
@@ -62,21 +57,24 @@ namespace StockTraderRI.Modules.Position.PositionSummary
 
             //Initially show the FAKEINDEX
             trendLinePresenter.OnTickerSymbolSelected("FAKEINDEX");
-            
+
+            eventAggregator.Get<MarketPricesUpdatedEvent>().Subscribe(MarketPricesUpdated, ThreadOption.UIThread);
+
             InitializeEvents();
 
         }
 
         private void InitializeEvents()
         {
-            MarketFeedSvc.Updated += new EventHandler(marketFeed_Updated);
-            AccountPositionSvc.Updated += new EventHandler<AccountPositionModelEventArgs>(model_Updated);
-            View.TickerSymbolSelected += new EventHandler<DataEventArgs<string>>(View_TickerSymbolSelected);
+            AccountPositionSvc.Updated += model_Updated;
+            View.TickerSymbolSelected += View_TickerSymbolSelected;
         }
 
         void View_TickerSymbolSelected(object sender, DataEventArgs<string> e)
         {
             _trendLinePresenter.OnTickerSymbolSelected(e.Value);
+
+            EventAggregator.Get<TickerSymbolSelectedEvent>().Fire(e.Value);
         }
 
         void model_Updated(object sender, AccountPositionModelEventArgs e)
@@ -93,11 +91,14 @@ namespace StockTraderRI.Modules.Position.PositionSummary
             }
         }
 
-        void marketFeed_Updated(object sender, EventArgs e)
+        private void MarketPricesUpdated(IDictionary<string, decimal> priceList)
         {
-            foreach (var position in PresentationModel.Data)
+            foreach (PositionSummaryItem position in PresentationModel.Data)
             {
-                position.CurrentPrice = MarketFeedSvc.GetPrice(position.TickerSymbol);
+                if (priceList.ContainsKey(position.TickerSymbol))
+                {
+                    position.CurrentPrice = priceList[position.TickerSymbol];
+                }
             }
         }
 
@@ -109,12 +110,11 @@ namespace StockTraderRI.Modules.Position.PositionSummary
             }
         }
 
-        private IMarketFeedService MarketFeedSvc { get; set; }
-        private INewsFeedService NewsFeedSvc { get; set; }
         private IAccountPositionService AccountPositionSvc { get; set; }
         public PositionSummaryPresentationModel PresentationModel { get; private set; }
         private IMarketHistoryService MarketHistorySvc { get; set; }
+        private IEventAggregator EventAggregator { get; set; }
         public IPositionSummaryView View { get; set; }
-        private ITrendLinePresenter _trendLinePresenter;
+        private readonly ITrendLinePresenter _trendLinePresenter;
     }
 }

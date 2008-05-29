@@ -16,9 +16,12 @@
 //===============================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using StockTraderRI.Infrastructure;
 using StockTraderRI.Modules.Market.Services;
+using StockTraderRI.Modules.Market.Tests.Mocks;
 using StockTraderRI.Modules.Market.Tests.Properties;
 
 namespace StockTraderRI.Modules.Market.Tests.Services
@@ -27,142 +30,152 @@ namespace StockTraderRI.Modules.Market.Tests.Services
     public class MarketFeedServiceFixture
     {
         [TestMethod]
-        [DeploymentItem("Data/Market.xml", "Data")]
         public void CanGetPriceAndVolumeFromMarketFeed()
         {
-            TestableMarketFeedService marketFeed = new TestableMarketFeedService();
-            marketFeed.TestUpdatePrice("STOCK0", 40.00m, 1234);
+            using (var marketFeed = new TestableMarketFeedService(new MockPriceUpdatedEventAggregator()))
+            {
+                marketFeed.TestUpdatePrice("STOCK0", 40.00m, 1234);
 
-            Assert.AreEqual<decimal>(40.00m, marketFeed.GetPrice("STOCK0"));
-            Assert.AreEqual<long>(1234, marketFeed.GetVolume("STOCK0"));
+                Assert.AreEqual<decimal>(40.00m, marketFeed.GetPrice("STOCK0"));
+                Assert.AreEqual<long>(1234, marketFeed.GetVolume("STOCK0"));
+            }
         }
 
-
         [TestMethod]
-        [DeploymentItem("Data/Market.xml", "Data")]
         public void ShouldFireUpdatedOnSinglePriceChange()
         {
-            TestableMarketFeedService marketFeed = new TestableMarketFeedService();
+            var eventAggregator = new MockPriceUpdatedEventAggregator();
 
-            bool updateFired = false;
-            marketFeed.Updated += delegate
+            using (TestableMarketFeedService marketFeed = new TestableMarketFeedService(eventAggregator))
             {
-                updateFired = true;
-            };
+                marketFeed.TestUpdatePrice("STOCK0", 30.00m, 1000);
+            }
 
-            marketFeed.TestUpdatePrice("STOCK0", 30.00m, 1000);
-
-            Assert.IsTrue(updateFired);
+            Assert.IsTrue(eventAggregator.MockMarketPriceUpdatedEvent.FireCalled);
         }
 
         [TestMethod]
-        [DeploymentItem("Data/Market.xml", "Data")]
         public void GetPriceOfNonExistingSymbolThrows()
         {
-            MarketFeedService marketFeed = new MarketFeedService();
-
-            try
+            using (var marketFeed = new MarketFeedService(new MockPriceUpdatedEventAggregator()))
             {
-                marketFeed.GetPrice("NONEXISTANT");
-                Assert.Fail("No exception thrown");
-            }
-            catch (Exception ex)
-            {
-                Assert.IsInstanceOfType(ex, typeof(ArgumentException));
-                Assert.IsTrue(ex.Message.Contains("Symbol does not exist in market feed."));
+                try
+                {
+                    marketFeed.GetPrice("NONEXISTANT");
+                    Assert.Fail("No exception thrown");
+                }
+                catch (Exception ex)
+                {
+                    Assert.IsInstanceOfType(ex, typeof(ArgumentException));
+                    Assert.IsTrue(ex.Message.Contains("Symbol does not exist in market feed."));
+                }
             }
         }
 
         [TestMethod]
-        [DeploymentItem("Data/Market.xml", "Data")]
         public void SymbolExistsWorksAsExpected()
         {
-            MarketFeedService marketFeed = new MarketFeedService();
-
-            Assert.IsTrue(marketFeed.SymbolExists("STOCK0"));
-            Assert.IsFalse(marketFeed.SymbolExists("NONEXISTANT"));
-
+            using (var marketFeed = new MarketFeedService(new MockPriceUpdatedEventAggregator()))
+            {
+                Assert.IsTrue(marketFeed.SymbolExists("STOCK0"));
+                Assert.IsFalse(marketFeed.SymbolExists("NONEXISTANT"));
+            }
         }
 
         [TestMethod]
-        [DeploymentItem("Data/Market.xml", "Data")]
         public void ShouldUpdatePricesWithin5Points()
         {
-            TestableMarketFeedService marketFeed = new TestableMarketFeedService();
-
-            decimal originalPrice = marketFeed.GetPrice("STOCK0");
-            marketFeed.InvokeUpdatePrices();
-            Assert.IsTrue(Math.Abs(marketFeed.GetPrice("STOCK0") - originalPrice) <= 5);
+            using (var marketFeed = new TestableMarketFeedService(new MockPriceUpdatedEventAggregator()))
+            {
+                decimal originalPrice = marketFeed.GetPrice("STOCK0");
+                marketFeed.InvokeUpdatePrices();
+                Assert.IsTrue(Math.Abs(marketFeed.GetPrice("STOCK0") - originalPrice) <= 5);
+            }
         }
 
         [TestMethod]
-        [DeploymentItem("Data/Market.xml", "Data")]
         public void ShouldFireUpdatedAfterUpdatingPrices()
         {
-            var marketFeed = new TestableMarketFeedService();
-            bool updateCalled = false;
+            var eventAggregator = new MockPriceUpdatedEventAggregator();
 
-            marketFeed.Updated += delegate { updateCalled = true; };
-
-            marketFeed.InvokeUpdatePrices();
-            Assert.IsTrue(updateCalled);
+            using (var marketFeed = new TestableMarketFeedService(eventAggregator))
+            {
+                marketFeed.InvokeUpdatePrices();
+            }
+            Assert.IsTrue(eventAggregator.MockMarketPriceUpdatedEvent.FireCalled);
         }
 
 
         [TestMethod]
         public void MarketServiceReadsIntervalFromXml()
         {
-            var xmlMarketData = System.Xml.Linq.XDocument.Parse(Resources.TestXmlMarketData);
-            var marketFeed = new TestableMarketFeedService(xmlMarketData);
-
-            Assert.AreEqual<int>(5000, marketFeed.RefreshInterval);
+            var xmlMarketData = XDocument.Parse(Resources.TestXmlMarketData);
+            using (var marketFeed = new TestableMarketFeedService(xmlMarketData, new MockPriceUpdatedEventAggregator()))
+            {
+                Assert.AreEqual<int>(5000, marketFeed.RefreshInterval);
+            }
         }
-
 
         [TestMethod]
-        [DeploymentItem("Data/Market.xml", "Data")]
         public void UpdateShouldFireWithinRefreshInterval()
         {
-            var marketFeed = new TestableMarketFeedService();
-            marketFeed.RefreshInterval = 500; // ms
+            var eventAggregator = new MockPriceUpdatedEventAggregator();
 
-            var delegateCallCompletedEvent = new System.Threading.ManualResetEvent(false);
-
-            bool updateCalled = false;
-            marketFeed.Updated += delegate
+            using (var marketFeed = new TestableMarketFeedService(eventAggregator))
             {
-                updateCalled = true;
-                delegateCallCompletedEvent.Set();
-            };
+                marketFeed.RefreshInterval = 500; // ms
 
-            delegateCallCompletedEvent.WaitOne(5000, true); // Wait up to 5 seconds
-            Assert.IsTrue(updateCalled);
+                var callCompletedEvent = new System.Threading.ManualResetEvent(false);
+
+                eventAggregator.MockMarketPriceUpdatedEvent.FireCalledEvent +=
+                        delegate { callCompletedEvent.Set(); };
+
+                callCompletedEvent.WaitOne(5000, true); // Wait up to 5 seconds
+            }
+            Assert.IsTrue(eventAggregator.MockMarketPriceUpdatedEvent.FireCalled);
         }
-
 
         [TestMethod]
         public void RefreshIntervalDefaultsTo10SecondsWhenNotSpecified()
         {
-            var xmlMarketData = System.Xml.Linq.XDocument.Parse(Resources.TestXmlMarketData);
+            var xmlMarketData = XDocument.Parse(Resources.TestXmlMarketData);
             xmlMarketData.Element("MarketItems").Attribute("RefreshRate").Remove();
-            var marketFeed = new TestableMarketFeedService(xmlMarketData);
 
-            Assert.AreEqual<int>(10000, marketFeed.RefreshInterval);
+            using (var marketFeed = new TestableMarketFeedService(xmlMarketData, new MockPriceUpdatedEventAggregator()))
+            {
+                Assert.AreEqual<int>(10000, marketFeed.RefreshInterval);
+            }
         }
+
+        [TestMethod]
+        public void FiredEventContainsTheUpdatedPriceList()
+        {
+            var eventAgregator = new MockPriceUpdatedEventAggregator();
+            var marketFeed = new TestableMarketFeedService(eventAgregator);
+            Assert.IsTrue(marketFeed.SymbolExists("STOCK0"));
+
+            marketFeed.InvokeUpdatePrices();
+
+            Assert.IsTrue(eventAgregator.MockMarketPriceUpdatedEvent.FireCalled);
+            var payload = eventAgregator.MockMarketPriceUpdatedEvent.FireArgumentPayload;
+            Assert.IsNotNull(payload);
+            Assert.IsTrue(payload.ContainsKey("STOCK0"));
+            Assert.AreEqual(marketFeed.GetPrice("STOCK0"), payload["STOCK0"]);
+        }
+
     }
 
     class TestableMarketFeedService : MarketFeedService
     {
-        public TestableMarketFeedService()
-            : base()
+        public TestableMarketFeedService(MockPriceUpdatedEventAggregator eventAggregator)
+            : base(eventAggregator)
         {
 
         }
 
-        public TestableMarketFeedService(XDocument xmlDocument)
-            : base(xmlDocument)
+        public TestableMarketFeedService(XDocument xmlDocument, MockPriceUpdatedEventAggregator eventAggregator)
+            : base(xmlDocument, eventAggregator)
         {
-
         }
 
         public void TestUpdatePrice(string tickerSymbol, decimal price, long volume)
@@ -173,6 +186,37 @@ namespace StockTraderRI.Modules.Market.Tests.Services
         public void InvokeUpdatePrices()
         {
             base.UpdatePrices();
+        }
+    }
+
+
+
+    class MockPriceUpdatedEventAggregator : MockEventAggregator
+    {
+        public MockMarketPricesUpdatedEvent MockMarketPriceUpdatedEvent = new MockMarketPricesUpdatedEvent();
+        public MockPriceUpdatedEventAggregator()
+        {
+            AddMapping<MarketPricesUpdatedEvent>(MockMarketPriceUpdatedEvent);
+        }
+
+        public class MockMarketPricesUpdatedEvent : MarketPricesUpdatedEvent
+        {
+            public bool FireCalled;
+            public IDictionary<string, decimal> FireArgumentPayload;
+            public EventHandler FireCalledEvent;
+
+            private void OnFireCalledEvent(object sender, EventArgs args)
+            {
+                if (FireCalledEvent != null)
+                    FireCalledEvent(sender, args);
+            }
+
+            public override void Fire(IDictionary<string, decimal> payload)
+            {
+                FireCalled = true;
+                FireArgumentPayload = payload;
+                OnFireCalledEvent(this, EventArgs.Empty);
+            }
         }
     }
 }

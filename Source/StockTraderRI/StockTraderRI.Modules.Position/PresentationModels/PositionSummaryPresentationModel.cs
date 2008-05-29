@@ -16,14 +16,10 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using StockTraderRI.Infrastructure.Interfaces;
-using System.Collections.Specialized;
 using System.Collections.ObjectModel;
-using StockTraderRI.Infrastructure.PresentationModels;
+using System.Linq;
 using Prism.Commands;
+using StockTraderRI.Infrastructure.PresentationModels;
 
 namespace StockTraderRI.Modules.Position.PresentationModels
 {
@@ -59,9 +55,9 @@ namespace StockTraderRI.Modules.Position.PresentationModels
         private PositionSummaryItem FindTickerItem(string ticker)
         {
             PositionSummaryItem item = FindTickerItemSafe(ticker);
-            if (item == null) 
+            if (item == null)
             {
-                throw new ArgumentOutOfRangeException(ticker);
+                throw new ArgumentOutOfRangeException("ticker");
             }
 
             return item;
@@ -72,5 +68,5 @@ namespace StockTraderRI.Modules.Position.PresentationModels
         public DelegateCommand<string> SellCommand { get; set; }
     }
 
-   
+
 }

@@ -68,6 +68,9 @@ namespace StockTraderRI.Modules.Position.Orders
             submitCommand.IsActive = view.IsActive;
             cancelCommand.IsActive = view.IsActive;
 
+            Model.SubmitCommand = submitCommand;
+            Model.CancelCommand = cancelCommand;
+
             Model.PropertyChanged += Model_OnPropertyChangedEvent;
             view.IsActiveChanged += view_IsActiveChanged;
 

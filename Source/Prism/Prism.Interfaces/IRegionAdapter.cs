@@ -21,6 +21,6 @@ namespace Prism.Interfaces
 {
     public interface IRegionAdapter
     {
-        IRegion Initialize(DependencyObject obj);
+        IRegion Initialize(DependencyObject controlToWrap);
     }
 }

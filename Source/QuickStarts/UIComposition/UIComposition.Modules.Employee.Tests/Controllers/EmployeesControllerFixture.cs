@@ -91,7 +91,7 @@ namespace UIComposition.Modules.Employee.Tests.Controllers
             controller.OnEmployeeSelected(regionManager, employee);
 
             Assert.AreEqual<int>(1, detailsRegion.ViewsCount);
-            Assert.IsTrue(detailsRegion.ShowCalled);
+            Assert.IsTrue(detailsRegion.ActivateCalled);
         }
 
         [TestMethod]
@@ -114,7 +114,7 @@ namespace UIComposition.Modules.Employee.Tests.Controllers
             controller.OnEmployeeSelected(regionManager, employee1);
 
             Assert.AreEqual<int>(1, detailsRegion.ViewsCount);
-            Assert.IsTrue(detailsRegion.ShowCalled);
+            Assert.IsTrue(detailsRegion.ActivateCalled);
         }
 
 

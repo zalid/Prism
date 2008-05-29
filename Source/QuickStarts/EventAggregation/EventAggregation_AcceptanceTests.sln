@@ -1,12 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBroker.Tests.AcceptanceTests", "EventBroker.Tests.AcceptanceTests\EventBroker.Tests.AcceptanceTests.csproj", "{AA066C31-9DEB-4EA4-A265-818211A8066F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9A3B26CF-7324-4BA1-AB3D-566FC98B8E75}"
 	ProjectSection(SolutionItems) = preProject
 		EventBroker_AcceptanceTests.testrunconfig = EventBroker_AcceptanceTests.testrunconfig
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventAggregation.Tests.AcceptanceTests", "EventAggregation.Tests.AcceptanceTests\EventAggregation.Tests.AcceptanceTests.csproj", "{AA066C31-9DEB-4EA4-A265-818211A8066F}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution

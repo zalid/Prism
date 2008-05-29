@@ -21,6 +21,7 @@ using System.Globalization;
 using System.Xml.Linq;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Infrastructure.Models;
+using StockTraderRI.Modules.News.Properties;
 
 namespace StockTraderRI.Modules.News.Services
 {
@@ -30,7 +31,7 @@ namespace StockTraderRI.Modules.News.Services
 
         public NewsFeedService()
         {
-            var document = XDocument.Load("Data/News.xml");
+            var document = XDocument.Parse(Resources.News);
             foreach (var newsItem in document.Descendants("NewsItem"))
             {
                 var tickerSymbol = newsItem.Attribute("TickerSymbol").Value;

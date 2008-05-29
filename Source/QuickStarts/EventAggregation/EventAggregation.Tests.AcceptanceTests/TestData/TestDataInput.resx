@@ -117,13 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActivityLabelText" xml:space="preserve">
+    <value>Activity for: </value>
+  </data>
+  <data name="AnotherCustomer" xml:space="preserve">
+    <value>Customer2</value>
+  </data>
+  <data name="AnotherFund" xml:space="preserve">
+    <value>FundB</value>
+  </data>
   <data name="ApplicationLoadFailure" xml:space="preserve">
     <value>Failing the test cases as the application failed to load</value>
+  </data>
+  <data name="Customer0" xml:space="preserve">
+    <value>Customer1</value>
+  </data>
+  <data name="Customer1" xml:space="preserve">
+    <value>Customer2</value>
   </data>
   <data name="Customer1ActivityLabelText" xml:space="preserve">
     <value>Activity for: Customer1</value>
   </data>
   <data name="Customer2ActivityLabelText" xml:space="preserve">
     <value>Activity for: Customer2</value>
+  </data>
+  <data name="DefaultCustomer" xml:space="preserve">
+    <value>Customer1</value>
+  </data>
+  <data name="DefaultFund" xml:space="preserve">
+    <value>FundA</value>
+  </data>
+  <data name="Fund0" xml:space="preserve">
+    <value>FundA</value>
+  </data>
+  <data name="Fund1" xml:space="preserve">
+    <value>FundB</value>
   </data>
 </root>

@@ -16,13 +16,14 @@
 //===============================================================================
 
 using System;
-using System.Windows;
+using System.Globalization;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Interfaces;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Modules.Position.Interfaces;
 using StockTraderRI.Modules.Position.Orders;
+using StockTraderRI.Modules.Position.Properties;
 
 namespace StockTraderRI.Modules.Position.Controllers
 {
@@ -56,18 +57,18 @@ namespace StockTraderRI.Modules.Position.Controllers
         {
             if (String.IsNullOrEmpty(tickerSymbol))
             {
-                throw new ArgumentException("Ticker Symbol must be a string");
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.StringCannotBeNullOrEmpty, "tickerSymbol"));
             }
 
-            IRegion region = _regionManager.GetRegion("CollapsibleRegion");
+            IRegion region = _regionManager.GetRegion("MainRegion");
 
             //Make Sure OrdersView is in CollapsibleRegion
             if (region.GetView("OrdersView") == null)
             {
                 var ordersPresenter = _container.Resolve<IOrdersPresenter>();
                 _ordersView = ordersPresenter.View;
-                region.Add((UIElement)_ordersView, "OrdersView");
-                region.Show(_ordersView);
+                region.Add(_ordersView, "OrdersView");
+                region.Activate(_ordersView);
             }
 
             IRegion ordersRegion = _regionManager.GetRegion(ORDERS_REGION);
@@ -76,7 +77,7 @@ namespace StockTraderRI.Modules.Position.Controllers
             orderCompositePresenter.SetTransactionInfo(tickerSymbol, transactionType);
             orderCompositePresenter.CloseViewRequested += delegate
             {
-                ordersRegion.Remove((UIElement)orderCompositePresenter.View);
+                ordersRegion.Remove(orderCompositePresenter.View);
                 IDisposable disposablePresenter = orderCompositePresenter as IDisposable;
                 if (disposablePresenter != null)
                 {
@@ -84,8 +85,8 @@ namespace StockTraderRI.Modules.Position.Controllers
                 }
             };
 
-            ordersRegion.Add((UIElement)orderCompositePresenter.View);
-            ordersRegion.Show(orderCompositePresenter.View);
+            ordersRegion.Add(orderCompositePresenter.View);
+            ordersRegion.Activate(orderCompositePresenter.View);
         }
 
         #region IOrdersController Members

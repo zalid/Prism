@@ -15,21 +15,17 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using Prism.Utility;
 
 namespace StockTraderRI.Modules.Watch.PresentationModels
 {
     public class WatchListPresentationModel : INotifyPropertyChanged, IHeaderInfoProvider<string>
     {
-        private IList<WatchItem> _watchListItems;
+        private ObservableCollection<WatchItem> _watchListItems;
 
-        public IList<WatchItem> WatchListItems
+        public ObservableCollection<WatchItem> WatchListItems
         {
             get { return _watchListItems; }
             set

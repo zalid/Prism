@@ -118,13 +118,13 @@ namespace Prism.Tests.Regions
             Assert.IsFalse(view.IsActive);
 
             region.Add(view);
-            region.Show(view);
+            region.Activate(view);
 
             Assert.IsTrue(view.IsActive);
 
             var view2 = new object();
             region.Add(view2);
-            region.Show(view2);
+            region.Activate(view2);
 
             Assert.IsFalse(view.IsActive);
 
@@ -132,7 +132,7 @@ namespace Prism.Tests.Regions
 
             Assert.IsTrue(view.IsActive);
 
-            region.Show(view2);
+            region.Activate(view2);
 
             Assert.AreSame(view2, tabControl.SelectedItem);
         }
@@ -146,7 +146,7 @@ namespace Prism.Tests.Regions
             object nonAddedView = new object();
 
             Assert.AreEqual(0, region.Views.Cast<object>().Count());
-            region.Show(nonAddedView);
+            region.Activate(nonAddedView);
             Assert.AreEqual(1, region.Views.Cast<object>().Count());
         }
 
@@ -428,7 +428,7 @@ namespace Prism.Tests.Regions
 
             Assert.IsFalse(viewShowedCalled);
 
-            region.Show(model);
+            region.Activate(model);
 
             Assert.IsTrue(viewShowedCalled);
         }
@@ -447,10 +447,34 @@ namespace Prism.Tests.Regions
 
             Assert.IsNull((viewShowed));
 
-            region.Show((model));
+            region.Activate((model));
 
             Assert.AreSame(model, viewShowed);
         }
+
+        [TestMethod]
+        public void AddingSameViewTwiceThrows()
+        {
+            object view = new object();
+            IRegion region = new SimpleRegion();
+            region.Add(view);
+
+            try
+            {
+                region.Add(view); 
+                Assert.Fail();
+            }
+            catch(InvalidOperationException ex)
+            {
+                Assert.AreEqual("View already exists in region.", ex.Message);
+            }
+            catch
+            {
+                Assert.Fail();                
+            }
+
+        }
+	
 
         class MockActiveAwareView : IActiveAware
         {

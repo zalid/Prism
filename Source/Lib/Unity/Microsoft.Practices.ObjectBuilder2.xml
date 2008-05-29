@@ -495,79 +495,6 @@
             <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
             <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination. </param>
         </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException">
-            <summary>
-            Represents an invalid combination of dependency injection attributes were used.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException.#ctor(System.Type,System.String)">
-            <summary>
-            Initialize a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException"/> class with the <see cref="P:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException.Type"/> and member name.
-            </summary>
-            <param name="type">The <see cref="P:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException.Type"/> of object with the invalid attribute.</param>
-            <param name="memberName">The member name of <paramref name="type"/> with the invalid attribute.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException.#ctor">
-            <summary>
-            Create a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException"/> class with uninitialized values.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException.#ctor(System.String)">
-            <summary>
-            Create a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException"/> class with a string message.
-            </summary>
-            <remarks>The string passed here is ignored, use the 
-            <see cref="M:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException.#ctor(System.Type,System.String)"/> constructor instead.
-            </remarks>
-            <param name="message">Some random string.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException.#ctor(System.String,System.Exception)">
-            <summary>
-            Create a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException"/> class with a string message
-            and the given inner exception.
-            </summary>
-            <remarks>The string passed here is ignored, use the 
-            <see cref="M:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException.#ctor(System.Type,System.String)"/> constructor instead.
-            </remarks>
-            <param name="message">Some random string.</param>
-            <param name="innerException">Some other exception.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException"/> class with serialized data.
-            </summary>
-            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
-            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination. </param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            When overridden in a derived class, sets the <see cref="T:System.Runtime.Serialization.SerializationInfo"></see> with information about the exception.
-            </summary>
-            
-            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"></see> that contains contextual information about the source or destination. </param>
-            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"></see> that holds the serialized object data about the exception being thrown. </param>
-            <exception cref="T:System.ArgumentNullException">The info parameter is a null reference (Nothing in Visual Basic). </exception><filterpriority>2</filterpriority><PermissionSet><IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Read="*AllFiles*" PathDiscovery="*AllFiles*" /><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="SerializationFormatter" /></PermissionSet>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException.Type">
-            <summary>
-            Type containing the member with the invalid attributes.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException.MemberName">
-            <summary>
-            Name of the member with the invalid attributes.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.InvalidAttributeException.Message">
-            <summary>
-            Gets a message that describes the current exception.
-            </summary>
-            
-            <returns>
-            The error message that explains the reason for the exception, or an empty string("").
-            </returns>
-            <filterpriority>1</filterpriority>
-        </member>
         <member name="T:Microsoft.Practices.ObjectBuilder2.IRecoveryStack">
             <summary>
             Data structure that stores the set of <see cref="T:Microsoft.Practices.ObjectBuilder2.IRequiresRecovery"/>
@@ -638,12 +565,17 @@
         </member>
         <member name="P:Microsoft.Practices.ObjectBuilder2.Properties.Resources.BuildFailedException">
             <summary>
-              Looks up a localized string similar to The current build operation failed on strategy type {0}, index {1} for build key {2}.
+              Looks up a localized string similar to The current build operation (build key {2}) failed: {3} (Strategy type {0}, index {1}).
+            </summary>
+        </member>
+        <member name="P:Microsoft.Practices.ObjectBuilder2.Properties.Resources.CannotConstructInterface">
+            <summary>
+              Looks up a localized string similar to The current type, {0}, is an interface and cannot be constructed. Are you missing a type mapping?.
             </summary>
         </member>
         <member name="P:Microsoft.Practices.ObjectBuilder2.Properties.Resources.CannotExtractTypeFromBuildKey">
             <summary>
-              Looks up a localized string similar to Cannot extract type from build key {0}.
+              Looks up a localized string similar to Cannot extract type from build key {0}..
             </summary>
         </member>
         <member name="P:Microsoft.Practices.ObjectBuilder2.Properties.Resources.CannotInjectMethodWithOutParam">
@@ -656,9 +588,9 @@
               Looks up a localized string similar to The method {1} on type {0} is marked for injection, but it is an open generic method. Injection cannot be performed..
             </summary>
         </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.Properties.Resources.DefaultCreationPolicyCannotCreate">
+        <member name="P:Microsoft.Practices.ObjectBuilder2.Properties.Resources.ConstructorParameterResolutionFailed">
             <summary>
-              Looks up a localized string similar to Default creation policy cannot create for unknown build key {0}..
+              Looks up a localized string similar to The parameter {0} could not be resolved when attempting to call constructor {1}..
             </summary>
         </member>
         <member name="P:Microsoft.Practices.ObjectBuilder2.Properties.Resources.KeyAlreadyPresent">
@@ -666,9 +598,14 @@
               Looks up a localized string similar to An item with the given key is already present in the dictionary..
             </summary>
         </member>
+        <member name="P:Microsoft.Practices.ObjectBuilder2.Properties.Resources.MethodParameterResolutionFailed">
+            <summary>
+              Looks up a localized string similar to The value for parameter &quot;{1}&quot; of method {0} could not be resolved. .
+            </summary>
+        </member>
         <member name="P:Microsoft.Practices.ObjectBuilder2.Properties.Resources.MissingDependency">
             <summary>
-              Looks up a localized string similar to Could not resolve dependency for build key {0}.
+              Looks up a localized string similar to Could not resolve dependency for build key {0}..
             </summary>
         </member>
         <member name="P:Microsoft.Practices.ObjectBuilder2.Properties.Resources.MultipleInjectionConstructors">
@@ -691,19 +628,14 @@
               Looks up a localized string similar to The type {0} does not have an accessible constructor..
             </summary>
         </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.Properties.Resources.NoCreationPolicy">
+        <member name="P:Microsoft.Practices.ObjectBuilder2.Properties.Resources.PropertyValueResolutionFailed">
             <summary>
-              Looks up a localized string similar to Could not find creation policy for build key {0}..
+              Looks up a localized string similar to The value for the property &quot;{0}&quot; could not be resolved..
             </summary>
         </member>
         <member name="P:Microsoft.Practices.ObjectBuilder2.Properties.Resources.ProvidedStringArgMustNotBeEmpty">
             <summary>
               Looks up a localized string similar to The provided string argument must not be empty..
-            </summary>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.Properties.Resources.UnknownNotPresentBehavior">
-            <summary>
-              Looks up a localized string similar to Unknown NotPresentBehavior {0}.
             </summary>
         </member>
         <member name="T:Microsoft.Practices.ObjectBuilder2.RecoveryStack">
@@ -1116,6 +1048,24 @@
             <param name="context">The <see cref="T:Microsoft.Practices.ObjectBuilder2.IBuilderContext"/> currently being
             used for the build of this object.</param>
         </member>
+        <member name="M:Microsoft.Practices.ObjectBuilder2.DynamicMethodConstructorStrategy.ThrowForResolutionFailed(System.Exception,System.String,System.String,Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
+            <summary>
+            A helper method used by the generated IL to throw an exception if a parameter
+            fails to resolve.
+            </summary>
+            <param name="inner">Inner exception to throw.</param>
+            <param name="parameterName">Name of the parameter that was attempted to be resolved.</param>
+            <param name="constructorSignature">String describing which constructor we were calling.</param>
+            <param name="context">Current build context.</param>
+        </member>
+        <member name="M:Microsoft.Practices.ObjectBuilder2.DynamicMethodConstructorStrategy.ThrowForAttemptingToConstructInterface(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
+            <summary>
+            A helper method used by the generated IL to throw an exception if
+            no existing object is present, but the user is attempting to build
+            an interface (usually due to the lack of a type mapping).
+            </summary>
+            <param name="context"></param>
+        </member>
         <member name="T:Microsoft.Practices.ObjectBuilder2.DynamicBuildPlanGenerationContext">
             <summary>
             This object tracks the current state of the build plan generation,
@@ -1280,6 +1230,15 @@
             </summary>
             <param name="context">Context of the build operation.</param>
         </member>
+        <member name="M:Microsoft.Practices.ObjectBuilder2.DynamicMethodCallStrategy.ThrowOnParameterResolveFailed(System.Exception,System.String,System.String)">
+            <summary>
+            A helper method used by the generated IL to throw an exception
+            when an injection method parameter could not be resolved.
+            </summary>
+            <param name="inner">Exception that provides the failure info.</param>
+            <param name="methodName">Name of the method that was going to be called.</param>
+            <param name="parameterName">Parameter that failed to resolve.</param>
+        </member>
         <member name="T:Microsoft.Practices.ObjectBuilder2.DynamicMethodPropertySetterStrategy">
             <summary>
             A <see cref="T:Microsoft.Practices.ObjectBuilder2.BuilderStrategy"/> that generates IL to resolve properties
@@ -1291,6 +1250,14 @@
             Called during the chain of responsibility for a build operation.
             </summary>
             <param name="context">The context for the operation.</param>
+        </member>
+        <member name="M:Microsoft.Practices.ObjectBuilder2.DynamicMethodPropertySetterStrategy.ThrowOnFailedPropertyValueResolution(System.Exception,System.String)">
+            <summary>
+            A helper method called by the generated IL to throw an exception if a property's
+            value cannot be resolved.
+            </summary>
+            <param name="inner">The actual exception that caused the resolution to fail.</param>
+            <param name="propertyName">Name of the property that didn't resolve.</param>
         </member>
         <member name="T:Microsoft.Practices.ObjectBuilder2.IMethodSelectorPolicy">
             <summary>
@@ -1539,300 +1506,6 @@
             </summary>
             <param name="context">Current build context.</param>
             <returns>The value for the dependency.</returns>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.ActivatorCreationPolicy">
-            <summary>
-            Represents a creation policy based on <see cref="M:System.Activator.CreateInstance(System.Type,System.Object[])"/>
-            </summary>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.ICreationPolicy">
-            <summary>
-            Represents a policy for <see cref="T:Microsoft.Practices.ObjectBuilder2.CreationStrategy"/>.
-            </summary>d
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ICreationPolicy.Create(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Object)">
-            <summary>
-            Create the object for the given <paramref name="context"/> and <paramref name="buildKey"/>.
-            </summary>
-            <param name="context">The builder context.</param>
-            <param name="buildKey">The key for the object being built.</param>
-            <returns>The created object.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ICreationPolicy.GetConstructor(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Object)">
-            <summary>
-            Gets the constructor to be used to create the object.
-            </summary>
-            <param name="context">The builder context.</param>
-            <param name="buildKey">The key for the object being built.</param>
-            <returns>The constructor to use; returns null if no suitable constructor can be found.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ICreationPolicy.GetParameters(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Reflection.ConstructorInfo)">
-            <summary>
-            Gets the parameter values to be passed to the constructor.
-            </summary>
-            <param name="context">The builder context.</param>
-            <param name="constructor">The constructor that will be used.</param>
-            <returns>An array of parameters to pass to the constructor.</returns>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.ICreationPolicy.SupportsReflection">
-            <summary>
-            Determines if the policy supports reflection.
-            </summary>
-            <value>
-            true if the policy supports reflection; otherwise, false.
-            </value>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ActivatorCreationPolicy.#ctor(Microsoft.Practices.ObjectBuilder2.IParameter[])">
-            <summary>
-            Initalize a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.ActivatorCreationPolicy"/> class with an array of <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> instances.
-            </summary>
-            <param name="parameters">An array of <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> instances.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ActivatorCreationPolicy.#ctor(System.Collections.Generic.IEnumerable{Microsoft.Practices.ObjectBuilder2.IParameter})">
-            <summary>
-            Initalize a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.ActivatorCreationPolicy"/> class with a collection of <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> instances.
-            </summary>
-            <param name="parameters">A collection of <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> instances.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ActivatorCreationPolicy.Create(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Object)">
-            <summary>
-            Create the object for the given <paramref name="context"/> and <paramref name="buildKey"/>.
-            </summary>
-            <param name="context">The builder context.</param>
-            <param name="buildKey">The key for the object being built.</param>
-            <returns>The created object.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ActivatorCreationPolicy.GetConstructor(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Object)">
-            <summary>
-            Gets the constructor to be used to create the object.
-            </summary>
-            <param name="context">The builder context.</param>
-            <param name="buildKey">The key for the object being built.</param>
-            <returns>The constructor to use; returns null if no suitable constructor can be found.</returns>
-            <exception cref="T:System.NotImplementedException">
-            Does not support getting a constructor.
-            </exception>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ActivatorCreationPolicy.GetParameters(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Reflection.ConstructorInfo)">
-            <summary>
-            Gets the parameter values to be passed to the constructor.
-            </summary>
-            <param name="context">The builder context.</param>
-            <param name="constructor">The constructor that will be used.</param>
-            <returns>An array of parameters to pass to the constructor.</returns>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.ActivatorCreationPolicy.SupportsReflection">
-            <summary>
-            Determines if the policy supports reflection.
-            </summary>
-            <value>
-            Returns false.
-            </value>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.ConstructorCreationPolicy">
-            <summary>
-            A creation policy where the constructor to choose is derived from the parameters
-            provided by the user.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ConstructorCreationPolicy.#ctor(System.Reflection.ConstructorInfo,Microsoft.Practices.ObjectBuilder2.IParameter[])">
-            <summary>
-            Initalize a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.ActivatorCreationPolicy"/> class with a <see cref="T:System.Reflection.ConstructorInfo"/> and an array of <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> instances.
-            </summary>
-            <param name="constructor">The <see cref="T:System.Reflection.ConstructorInfo"/> to use to create the object.</param>
-            <param name="parameters">An array of <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> instances.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ConstructorCreationPolicy.#ctor(System.Reflection.ConstructorInfo,System.Collections.Generic.IEnumerable{Microsoft.Practices.ObjectBuilder2.IParameter})">
-            <summary>
-            Initalize a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.ActivatorCreationPolicy"/> class with a <see cref="T:System.Reflection.ConstructorInfo"/> and a collection of <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> instances.
-            </summary>
-            <param name="constructor">The <see cref="T:System.Reflection.ConstructorInfo"/> to use to create the object.</param>
-            <param name="parameters">A collection of <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> instances.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ConstructorCreationPolicy.Create(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Object)">
-            <summary>
-            Create the object for the given <paramref name="context"/> and <paramref name="buildKey"/>.
-            </summary>
-            <param name="context">The builder context.</param>
-            <param name="buildKey">The key for the object being built.</param>
-            <returns>The created object.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ConstructorCreationPolicy.GetConstructor(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Object)">
-            <summary>
-            Gets the constructor to be used to create the object.
-            </summary>
-            <param name="context">The builder context.</param>
-            <param name="buildKey">The key for the object being built.</param>
-            <returns>The constructor to use; returns null if no suitable constructor can be found.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ConstructorCreationPolicy.GetParameters(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Reflection.ConstructorInfo)">
-            <summary>
-            Gets the parameter values to be passed to the constructor.
-            </summary>
-            <param name="context">The builder context.</param>
-            <param name="constructor">The constructor that will be used.</param>
-            <returns>An array of parameters to pass to the constructor.</returns>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.ConstructorCreationPolicy.SupportsReflection">
-            <summary>
-            Determines if the policy supports reflection.
-            </summary>
-            <value>
-            Returns true.
-            </value>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.ConstructorReflectionStrategy`2">
-            <summary>
-            Strategy that performs injection of constructor policies.
-            </summary>
-            <typeparam name="TInjectionConstructorAttribute">The <see cref="T:System.Type"/> of attribute to look for in the constructor.</typeparam>
-            <typeparam name="TDefaultInjectionAttribute">The <see cref="T:System.Type"/> of the default constructor attribute.</typeparam>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.ReflectionStrategy`2">
-            <summary>
-            Represents a generic strategy for all injection attribute processors.
-            </summary>
-            <typeparam name="TMemberInfo">The <see cref="T:System.Type"/> of member to reflect.</typeparam>
-            <typeparam name="TDefaultInjectionAttribute">The <see cref="T:System.Type"/> of attribute for the member.</typeparam>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ReflectionStrategy`2.AddParametersToPolicy(Microsoft.Practices.ObjectBuilder2.IBuilderContext,Microsoft.Practices.ObjectBuilder2.IMemberInfo{`0},System.Collections.Generic.IEnumerable{Microsoft.Practices.ObjectBuilder2.IParameter})">
-            <summary>
-            Adds <paramref name="parameters"/> to the appropriate policy.
-            </summary>
-            <param name="context">The build context.</param>
-            <param name="member">The member that's being reflected over.</param>
-            <param name="parameters">The parameters used to satisfy the member call.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ReflectionStrategy`2.PreBuildUp(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Called during the chain of responsibility for a build operation. The
-            PreBuildUp method is called when the chain is being executed in the
-            forward direction.
-            </summary>
-            <param name="context">Context of the build operation.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ReflectionStrategy`2.GetMembers(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Retrieves the list of members to iterate looking for 
-            injection attributes, such as properties and constructor 
-            parameters.
-            </summary>
-            <param name="context">The build context.</param>
-            <returns>
-            An enumerable wrapper around the <see cref="T:Microsoft.Practices.ObjectBuilder2.IMemberInfo`1"/> interfaces that
-            represent the members to be inspected for reflection.
-            </returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ReflectionStrategy`2.MemberRequiresProcessing(Microsoft.Practices.ObjectBuilder2.IMemberInfo{`0})">
-            <summary>
-            Determine whether a member should be processed. 
-            </summary>
-            <param name="member">The member to determine processing.</param>
-            <returns>true if the member needs processing; otherwise, false.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ConstructorReflectionStrategy`2.AddParametersToPolicy(Microsoft.Practices.ObjectBuilder2.IBuilderContext,Microsoft.Practices.ObjectBuilder2.IMemberInfo{System.Reflection.ConstructorInfo},System.Collections.Generic.IEnumerable{Microsoft.Practices.ObjectBuilder2.IParameter})">
-            <summary>
-            Adds <paramref name="parameters"/> to the appropriate policy.
-            </summary>
-            <param name="context">The build context.</param>
-            <param name="member">The member that's being reflected over.</param>
-            <param name="parameters">The parameters used to satisfy the constructor.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ConstructorReflectionStrategy`2.GetMembers(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Retrieves the list of constructors to iterate looking for injection attributes.
-            </summary>
-            <param name="context">The build context.</param>
-            <returns>
-            An enumerable wrapper around the <see cref="T:Microsoft.Practices.ObjectBuilder2.IMemberInfo`1"/> interfaces that
-            represent the members to be inspected for reflection.
-            </returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ConstructorReflectionStrategy`2.MemberRequiresProcessing(Microsoft.Practices.ObjectBuilder2.IMemberInfo{System.Reflection.ConstructorInfo})">
-            <summary>
-            Determine whether a constructor should be processed. 
-            </summary>
-            <param name="member">The member to determine processing.</param>
-            <returns>Always returns true.</returns>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.CreationStrategy">
-            <summary>
-            Represents a strategy which creates objects.
-            </summary>
-            <remarks>
-            <para>This strategy looks for policies in the context registered under the interface type
-            <see cref="T:Microsoft.Practices.ObjectBuilder2.ICreationPolicy"/>. If it cannot find a policy on how to create the object,
-            it will select the first constructor that returns from reflection, and re-runs the chain
-            to create all the objects required to fulfill the constructor's parameters.</para>
-            <para>If the Build method is passed an object via the existing parameter, then it
-            will do nothing (since the object already exists). This allows this strategy to be
-            in the chain when running dependency injection on existing objects, without fear that
-            it will attempt to re-create the object.</para>
-            </remarks>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.CreationStrategy.PreBuildUp(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Called during the chain of responsibility for a build operation.
-            </summary>
-            <param name="context">The context for the operation.</param>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.DefaultCreationPolicy">
-            <summary>
-            Default creation policy which selects the first public constructor
-            of an object, using the builder to resolve/create any parameters the
-            constructor requires.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.DefaultCreationPolicy.Create(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Object)">
-            <summary>
-            Create the object for the given <paramref name="context"/> and <paramref name="buildKey"/>.
-            </summary>
-            <param name="context">The builder context.</param>
-            <param name="buildKey">The key for the object being built.</param>
-            <returns>The created object.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.DefaultCreationPolicy.GetBuildKeyFromType(System.Type)">
-            <summary>
-            Gets the build key from the type.
-            </summary>
-            <param name="type">The <see cref="T:System.Type"/> of object to be built.</param>
-            <returns>The build key for the object being built.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.DefaultCreationPolicy.GetConstructor(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Object)">
-            <summary>
-            Gets the constructor to be used to create the object.
-            </summary>
-            <param name="context">The builder context.</param>
-            <param name="buildKey">The key for the object being built.</param>
-            <returns>The constructor to use; returns null if no suitable constructor can be found.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.DefaultCreationPolicy.GetParameters(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Reflection.ConstructorInfo)">
-            <summary>
-            Gets the parameter values to be passed to the constructor.
-            </summary>
-            <param name="context">The builder context.</param>
-            <param name="constructor">The constructor that will be used.</param>
-            <returns>An array of parameters to pass to the constructor.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.DefaultCreationPolicy.GetTypeFromBuildKey(System.Object)">
-            <summary>
-            Gets the <see cref="T:System.Type"/> of object to build from the <paramref name="buildKey"/>.
-            </summary>
-            <param name="buildKey">The key of object to be built.</param>
-            <returns>The <see cref="T:System.Type"/> of object to be built.</returns>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.DefaultCreationPolicy.SupportsReflection">
-            <summary>
-            Determines if the policy supports reflection.
-            </summary>
-            <value>
-            Returns true.
-            </value>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.InjectionConstructorAttribute">
-            <summary>
-            Indicates which constructor on an object will be used for dependency injection.
-            </summary>
         </member>
         <member name="T:Microsoft.Practices.ObjectBuilder2.IPolicyList">
             <summary>
@@ -2660,6 +2333,19 @@
             The number of items in the locator.
             </value>
         </member>
+        <member name="T:Microsoft.Practices.ObjectBuilder2.ILifetimeFactoryPolicy">
+            <summary>
+            A builder policy used to create lifetime policy instances.
+            Used by the LifetimeStrategy when instantiating open
+            generic types.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Practices.ObjectBuilder2.ILifetimeFactoryPolicy.CreateLifetimePolicy">
+            <summary>
+            Create a new instance of <see cref="T:Microsoft.Practices.ObjectBuilder2.ILifetimePolicy"/>.
+            </summary>
+            <returns>The new instance.</returns>
+        </member>
         <member name="T:Microsoft.Practices.ObjectBuilder2.ILifetimePolicy">
             <summary>
             A <see cref="T:Microsoft.Practices.ObjectBuilder2.IBuilderPolicy"/> that controls how instances are
@@ -2764,702 +2450,6 @@
             <summary>
             Remove the given object from backing store.
             </summary>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.IMethodCallInfo">
-            <summary>
-            Encapsulates a method call.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.IMethodCallInfo.Execute(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Object,System.Object)">
-            <summary>
-            ExecuteBuildUp the method to be called.
-            </summary>
-            <param name="context">The current <see cref="T:Microsoft.Practices.ObjectBuilder2.IBuilderContext"/>.</param>
-            <param name="instance">The instance to use to execute the method.</param>
-            <param name="buildKey">The key for the object being built.</param>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.IMethodCallPolicy">
-            <summary>
-            Represents a policy for <see cref="T:Microsoft.Practices.ObjectBuilder2.MethodCallStrategy"/>.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.IMethodCallPolicy.Methods">
-            <summary>
-            Gets a collection of methods to be called on the object instance.
-            </summary>
-            <value>
-            A collection of methods to be called on the object instance.
-            </value>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.InjectionMethodAttribute">
-            <summary>
-            Indicateds the dependency injection should call a method during the build-up of an object.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.MethodCallPolicy">
-            <summary>
-            Represents a policy for <see cref="T:Microsoft.Practices.ObjectBuilder2.MethodCallStrategy"/>.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.MethodCallPolicy.Methods">
-            <summary>
-            Gets a collection of methods to be called on the object instance.
-            </summary>
-            <value>
-            A collection of methods to be called on the object instance.
-            </value>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.MethodCallStrategy">
-            <summary>
-            Represents a strategy to call method.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.MethodCallStrategy.PreBuildUp(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Called during the chain of responsibility for a build operation. Looks for a method call policy for the buildKey and uses it to call a method if found.
-            </summary>
-            <param name="context">The context for the operation.</param>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.MethodMemberInfo`1">
-            <summary>
-            Represents the member inforamation for a <see cref="T:System.Reflection.MethodBase"/>.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.IMemberInfo`1">
-            <summary>
-            Interface used by the <see cref="T:Microsoft.Practices.ObjectBuilder2.ReflectionStrategy`2"/> to encapsulate 
-            the information required from members that use the strategy. This interface is required because direct access to
-            the <see cref="P:Microsoft.Practices.ObjectBuilder2.IMemberInfo`1.MemberInfo"/> object may not give the desired results.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.IMemberInfo`1.GetCustomAttributes(System.Type,System.Boolean)">
-            <summary>
-            Gets the custom attributes of the member.
-            </summary>
-            <returns>An array of the custom attributes.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.IMemberInfo`1.GetParameters">
-            <summary>
-            Gets the parameters to be passed to the member.
-            </summary>
-            <returns>The parameters to be passed to the member.</returns>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.IMemberInfo`1.MemberInfo">
-            <summary>
-            Gets the original <see cref="P:Microsoft.Practices.ObjectBuilder2.IMemberInfo`1.MemberInfo"/>.
-            </summary>
-            <value>
-            The original <see cref="P:Microsoft.Practices.ObjectBuilder2.IMemberInfo`1.MemberInfo"/>.
-            </value>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.IMemberInfo`1.Name">
-            <summary>
-            Gets the name of the member.
-            </summary>
-            <value>
-            The name of the member.
-            </value>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.MethodMemberInfo`1.#ctor(`0)">
-            <summary>
-            Initialize a new instace of the <see cref="T:Microsoft.Practices.ObjectBuilder2.MethodMemberInfo`1"/> class with the method to wrap.
-            </summary>
-            <param name="memberInfo">
-            The method to wrap.
-            </param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.MethodMemberInfo`1.GetCustomAttributes(System.Type,System.Boolean)">
-            <summary>
-            Gets the custom attributes for the method.
-            </summary>
-            <param name="attributeType">The <see cref="T:System.Type"/> of the attributes to get from the method.</param>
-            <param name="inherit">true to get inherited attrubutes; otherwise, false.</param>
-            <returns>An array of the custom attributes.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.MethodMemberInfo`1.GetParameters">
-            <summary>
-            The parameters for the method.
-            </summary>
-            <returns>An array of <see cref="T:System.Reflection.ParameterInfo"/> objects.</returns>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.MethodMemberInfo`1.MemberInfo">
-            <summary>
-            Gets the wrapped method.
-            </summary>
-            <value>
-            The wrapped method.
-            </value>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.MethodMemberInfo`1.Name">
-            <summary>
-            Gets the name of the method.
-            </summary>
-            <value>
-            The name of the method.
-            </value>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.MethodReflectionStrategy`2">
-            <summary>
-            Strategy that performs injection of method policies.
-            </summary>
-            <typeparam name="TInjectionMethodAttribute">The <see cref="T:System.Type"/> of attribute to look for in the method.</typeparam>
-            <typeparam name="TDefaultParameterAttribute">The <see cref="T:System.Type"/> of the default parameter attribute.</typeparam>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.MethodReflectionStrategy`2.AddParametersToPolicy(Microsoft.Practices.ObjectBuilder2.IBuilderContext,Microsoft.Practices.ObjectBuilder2.IMemberInfo{System.Reflection.MethodInfo},System.Collections.Generic.IEnumerable{Microsoft.Practices.ObjectBuilder2.IParameter})">
-            <summary>
-            Adds <paramref name="parameters"/> to the appropriate policy.
-            </summary>
-            <param name="context">The build context.</param>
-            <param name="member">The member that's being reflected over.</param>
-            <param name="parameters">The parameters used to satisfy the method.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.MethodReflectionStrategy`2.GetMembers(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Retrieves the list of methods to iterate looking for injection attributes.
-            </summary>
-            <param name="context">The build context.</param>
-            <returns>
-            An enumerable wrapper around the <see cref="T:Microsoft.Practices.ObjectBuilder2.IMemberInfo`1"/> interfaces that
-            represent the members to be inspected for reflection.
-            </returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.MethodReflectionStrategy`2.MemberRequiresProcessing(Microsoft.Practices.ObjectBuilder2.IMemberInfo{System.Reflection.MethodInfo})">
-            <summary>
-            Determine whether a member should be processed. 
-            </summary>
-            <param name="member">The member to determine processing.</param>
-            <returns>true if the member needs processing; otherwise, false.</returns>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.NamedMethodCallInfo">
-            <summary>
-            Encapsulates a call to a named method.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.NamedMethodCallInfo.#ctor(System.String,Microsoft.Practices.ObjectBuilder2.IParameter[])">
-            <summary>
-            Initalize a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.NamedMethodCallInfo"/> class with an array of <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> instances.
-            </summary>
-            <param name="methodName">The name of the method to execute.</param>
-            <param name="parameters">An array of <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> instances.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.NamedMethodCallInfo.#ctor(System.String,System.Collections.Generic.IEnumerable{Microsoft.Practices.ObjectBuilder2.IParameter})">
-            <summary>
-            Initalize a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.NamedMethodCallInfo"/> class with a collection of <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> instances.
-            </summary>
-            <param name="methodName">The name of the method to execute.</param>
-            <param name="parameters">A collection of <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> instances.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.NamedMethodCallInfo.Execute(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Object,System.Object)">
-            <summary>
-            ExecuteBuildUp the method to be called.
-            </summary>
-            <param name="context">The current <see cref="T:Microsoft.Practices.ObjectBuilder2.IBuilderContext"/>.</param>
-            <param name="instance">The instance to use to execute the method.</param>
-            <param name="buildKey">The key for the object being built.</param>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.ReflectionMethodCallInfo">
-            <summary>
-            Encapsulates a reflection method call.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ReflectionMethodCallInfo.#ctor(System.Reflection.MethodInfo,Microsoft.Practices.ObjectBuilder2.IParameter[])">
-            <summary>
-            Initalize a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.ReflectionMethodCallInfo"/> class with an array of <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> instances.
-            </summary>
-            <param name="method">The method to execute.</param>
-            <param name="parameters">An array of <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> instances.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ReflectionMethodCallInfo.#ctor(System.Reflection.MethodInfo,System.Collections.Generic.IEnumerable{Microsoft.Practices.ObjectBuilder2.IParameter})">
-            <summary>
-            Initalize a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.NamedMethodCallInfo"/> class with a collection of <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> instances.
-            </summary>
-            <param name="method">The method to execute.</param>
-            <param name="parameters">A collection of <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> instances.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ReflectionMethodCallInfo.Execute(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Object,System.Object)">
-            <summary>
-            Execute the method to be called.
-            </summary>
-            <param name="context">The current <see cref="T:Microsoft.Practices.ObjectBuilder2.IBuilderContext"/>.</param>
-            <param name="instance">The instance to use to execute the method.</param>
-            <param name="buildKey">The key for the object being built.</param>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.ReflectionMethodCallInfo.Method">
-            <summary>
-            Gets the method to execute.
-            </summary>
-            <value>
-            The method to execute.
-            </value>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.ReflectionMethodCallInfo.Parameters">
-            <summary>
-            Gets the parameters used in the method call.
-            </summary>
-            <value>
-            The parameters used in the method call.
-            </value>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.DependencyAttribute">
-            <summary>
-            Attribute applied to properties and constructor parameters, to describe when the dependency
-            injection system should inject an object.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.ParameterAttribute">
-            <summary>
-            Indicates dependency injection members, whose value at 
-            build time will be determined by the <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> returned 
-            from the attribute <see cref="M:Microsoft.Practices.ObjectBuilder2.ParameterAttribute.CreateParameter(System.Type)"/> factory method.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ParameterAttribute.CreateParameter(System.Type)">
-            <summary>
-            Creates a parameter for use with various <see cref="T:Microsoft.Practices.ObjectBuilder2.IBuilderPolicy"/> implementations 
-            that can process <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/>s.
-            </summary>
-            <param name="annotatedMemberType">The type of the annotated member, such as a property or a 
-            constructor parameter.</param>
-            <returns>The parameter instance that knows how to retrieve a value for the dependency.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.DependencyAttribute.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.DependencyAttribute"/> class with a null build key.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.DependencyAttribute.#ctor(System.Object)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.DependencyAttribute"/> class with a build key.
-            </summary>
-            <param name="buildKey">The key of the object to build.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.DependencyAttribute.CreateParameter(System.Type)">
-            <summary>
-            Creates a parameter for use with various <see cref="T:Microsoft.Practices.ObjectBuilder2.IBuilderPolicy"/> implementations 
-            that can process <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/>s.
-            </summary>
-            <param name="annotatedMemberType">The type of the annotated member, such as a property or a 
-            constructor parameter.</param>
-            <returns>The parameter instance that knows how to retrieve a value for the dependency.</returns>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.DependencyAttribute.BuildKey">
-            <summary>
-            Gets the key of the object to be built.
-            </summary>
-            <value>
-            The key of the object to be built.
-            </value>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.DependencyAttribute.NotPresentBehavior">
-            <summary>
-            Gets or sets the behaviour when the dependecy can't be found.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.DependencyParameter">
-            <summary>
-            Parameter that performs value retrieval depending on dependency injection attributes.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.IParameter">
-            <summary>
-            Represents a single parameter used for constructor and method calls, and
-            property setting.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.IParameter.GetParameterType(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Gets the type of the parameter value.
-            </summary>
-            <param name="context">The build context.</param>
-            <returns>The parameter's type.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.IParameter.GetValue(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Gets the parameter value.
-            </summary>
-            <param name="context">The build context.</param>
-            <returns>The parameter's value.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.DependencyParameter.#ctor(System.Object,Microsoft.Practices.ObjectBuilder2.NotPresentBehavior)">
-            <summary>
-            Initialize a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.DependencyParameter"/> class with a build key and behavior.
-            </summary>
-            <param name="buildKey">The key of the object begin built.</param>
-            <param name="notPresentBehavior">One of the <see cref="P:Microsoft.Practices.ObjectBuilder2.DependencyParameter.NotPresentBehavior"/> values.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.DependencyParameter.GetParameterType(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Gets the type of the parameter value.
-            </summary>
-            <param name="context">The build context.</param>
-            <returns>The parameter's type.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.DependencyParameter.GetValue(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Gets the parameter value.
-            </summary>
-            <param name="context">The build context.</param>
-            <returns>The parameter's value.</returns>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.DependencyParameter.BuildKey">
-            <summary>
-            Gets the key for the object being built.
-            </summary>
-            <value>
-            The key for the object being built.
-            </value>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.DependencyParameter.NotPresentBehavior">
-            <summary>
-            Gets the behaviour for missing dependencies.
-            </summary>
-            <value>
-            One of the <see cref="P:Microsoft.Practices.ObjectBuilder2.DependencyParameter.NotPresentBehavior"/> values.
-            </value>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.KnownTypeParameter">
-            <summary>
-            An implementation helper class for <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> which can be used
-            when you know the type of the parameter value ahead of time.
-            </summary>
-        </member>
-        <member name="F:Microsoft.Practices.ObjectBuilder2.KnownTypeParameter.type">
-            <summary>
-            The parameter type.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.KnownTypeParameter.#ctor(System.Type)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.KnownTypeParameter"/> class
-            using the given type.
-            </summary>
-            <param name="type">The parameter type.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.KnownTypeParameter.GetParameterType(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Gets the type of the parameter value.
-            </summary>
-            <param name="context">The build context.</param>
-            <returns>The parameter's type.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.KnownTypeParameter.GetValue(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Gets the parameter value.
-            </summary>
-            <param name="context">The build context.</param>
-            <returns>The parameter's value.</returns>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.LookupParameter">
-            <summary>
-            Looks up the parameter value in the build context locator.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.LookupParameter.#ctor(System.Object)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.LookupParameter"/> class.
-            </summary>
-            <param name="key">The key to look the object up with.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.LookupParameter.GetParameterType(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Gets the type of the parameter value.
-            </summary>
-            <param name="context">The build context.</param>
-            <returns>The parameter's type.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.LookupParameter.GetValue(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Gets the parameter value.
-            </summary>
-            <param name="context">The build context.</param>
-            <returns>The parameter's value.</returns>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.ValueParameter`1">
-            <summary>
-            Implementation of <see cref="T:Microsoft.Practices.ObjectBuilder2.IParameter"/> which directly holds a value to
-            be used for the parameter.
-            </summary>
-            <typeparam name="TValue">The type of the parameter value.</typeparam>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ValueParameter`1.#ctor(`0)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.ValueParameter`1"/> class.
-            </summary>
-            <param name="value">The value for the parameter.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ValueParameter`1.GetValue(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Gets the parameter value.
-            </summary>
-            <param name="context">The build context.</param>
-            <returns>The parameter's value.</returns>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.ValueParameter">
-            <summary>
-            Represents a parameter which directly holds a value to
-            be used for the parameter.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ValueParameter.#ctor(System.Type,System.Object)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.ValueParameter"/> class.
-            </summary>
-            <param name="valueType">The type of the parameter value.</param>
-            <param name="value">The value for the parameter.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ValueParameter.GetValue(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Gets the parameter value.
-            </summary>
-            <param name="context">The build context.</param>
-            <returns>The parameter's value.</returns>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.IPropertySetterInfo">
-            <summary>
-            Encapsulates a property setter.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.IPropertySetterInfo.Set(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Object,System.Object)">
-            <summary>
-            Sets the value on the property.
-            </summary>
-            <param name="context">The current <see cref="T:Microsoft.Practices.ObjectBuilder2.IBuilderContext"/>.</param>
-            <param name="instance">The instance to use to execute the method.</param>
-            <param name="buildKey">The key for the object being built.</param>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.IPropertySetterPolicy">
-            <summary>
-            Represents a policy for <see cref="T:Microsoft.Practices.ObjectBuilder2.PropertySetterStrategy"/>.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.IPropertySetterPolicy.Properties">
-            <summary>
-            Gets a collection of properties to be called on the object instance.
-            </summary>
-            <value>
-            A collection of properties to be called on the object instance.
-            </value>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.NamedPropertySetterInfo">
-            <summary>
-            Encapsulates a call to a named property.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.NamedPropertySetterInfo.#ctor(System.String,Microsoft.Practices.ObjectBuilder2.IParameter)">
-            <summary>
-            Initialize a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.NamedPropertySetterInfo"/> class with the property name and the parameter value.
-            </summary>
-            <param name="propertyName">The property name.</param>
-            <param name="value">The paramer value.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.NamedPropertySetterInfo.Set(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Object,System.Object)">
-            <summary>
-            Sets the value on the property.
-            </summary>
-            <param name="context">The current <see cref="T:Microsoft.Practices.ObjectBuilder2.IBuilderContext"/>.</param>
-            <param name="instance">The instance to use to execute the method.</param>
-            <param name="buildKey">The key for the object being built.</param>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.PropertyMemberInfo">
-            <summary>
-            Represents the member inforamation for a <see cref="T:System.Reflection.PropertyInfo"/>.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.PropertyMemberInfo.#ctor(System.Reflection.PropertyInfo)">
-            <summary>
-            Initialize a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.PropertyMemberInfo"/> class with a <see cref="T:System.Reflection.PropertyInfo"/>.
-            </summary>
-            <param name="prop">The <see cref="T:System.Reflection.PropertyInfo"/> to initialize the class.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.PropertyMemberInfo.GetCustomAttributes(System.Type,System.Boolean)">
-            <summary>
-            Gets the custom attributes for the property.
-            </summary>
-            <param name="attributeType">The <see cref="T:System.Type"/> of the attributes to get from the property.</param>
-            <param name="inherit">true to get inherited attrubutes; otherwise, false.</param>
-            <returns>An array of the custom attributes.</returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.PropertyMemberInfo.GetParameters">
-            <summary>
-            The parameters for the property.
-            </summary>
-            <returns>An array of <see cref="T:System.Reflection.ParameterInfo"/> objects.</returns>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.PropertyMemberInfo.MemberInfo">
-            <summary>
-            Gets the <see cref="T:System.Reflection.PropertyInfo"/>.
-            </summary>
-            <value>
-            The <see cref="T:System.Reflection.PropertyInfo"/>.
-            </value>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.PropertyMemberInfo.Name">
-            <summary>
-            Gets the name of the property.
-            </summary>
-            <value>
-            The name of the poperty.
-            </value>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.PropertyReflectionStrategy`1">
-            <summary>
-            Strategy that performs injection of method policies.
-            </summary>
-            <typeparam name="TDefaultParameterAttribute">The <see cref="T:System.Type"/> of attribute to look for in the property.</typeparam>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.PropertyReflectionStrategy`1.AddParametersToPolicy(Microsoft.Practices.ObjectBuilder2.IBuilderContext,Microsoft.Practices.ObjectBuilder2.IMemberInfo{System.Reflection.PropertyInfo},System.Collections.Generic.IEnumerable{Microsoft.Practices.ObjectBuilder2.IParameter})">
-            <summary>
-            Adds <paramref name="parameters"/> to the appropriate policy.
-            </summary>
-            <param name="context">The build context.</param>
-            <param name="member">The member that's being reflected over.</param>
-            <param name="parameters">The parameters used to satisfy the method.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.PropertyReflectionStrategy`1.GetMembers(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Retrieves the list of properties to iterate looking for injection attributes.
-            </summary>
-            <param name="context">The build context.</param>
-            <returns>
-            An enumerable wrapper around the <see cref="T:Microsoft.Practices.ObjectBuilder2.IMemberInfo`1"/> interfaces that
-            represent the members to be inspected for reflection.
-            </returns>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.PropertyReflectionStrategy`1.MemberRequiresProcessing(Microsoft.Practices.ObjectBuilder2.IMemberInfo{System.Reflection.PropertyInfo})">
-            <summary>
-            Determine whether a member should be processed. 
-            </summary>
-            <param name="member">The member to determine processing.</param>
-            <returns>true if the member needs processing; otherwise, false.</returns>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.PropertySetterPolicy">
-            <summary>
-            Represents a policy for <see cref="T:Microsoft.Practices.ObjectBuilder2.PropertySetterStrategy"/>.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.PropertySetterPolicy.Properties">
-            <summary>
-            Gets a collection of properties to be called on the object instance.
-            </summary>
-            <value>
-            A collection of properties to be called on the object instance.
-            </value>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.PropertySetterStrategy">
-            <summary>
-            Implementation of <see cref="T:Microsoft.Practices.ObjectBuilder2.IBuilderStrategy"/> which sets property values.
-            </summary>
-            <remarks>
-            This strategy looks for policies in the context registered under the interface type
-            <see cref="T:Microsoft.Practices.ObjectBuilder2.IPropertySetterPolicy"/>, and sets the property values. If no policy is
-            found, the no property values are set.
-            </remarks>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.PropertySetterStrategy.PreBuildUp(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Called during the chain of responsibility for a build operation.  Looks for the <see cref="T:Microsoft.Practices.ObjectBuilder2.IPropertySetterPolicy"/> and
-            sets the value for the property if found.
-            </summary>
-            <param name="context">The context for the operation.</param>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.ReflectionPropertySetterInfo">
-            <summary>
-            Encapsulates a reflection property setting.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ReflectionPropertySetterInfo.#ctor(System.Reflection.PropertyInfo,Microsoft.Practices.ObjectBuilder2.IParameter)">
-            <summary>
-            Initialize a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.ReflectionPropertySetterInfo"/> class with a property and paramter value.
-            </summary>
-            <param name="property">The property to use to set the value.</param>
-            <param name="value">The value for the property.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.ReflectionPropertySetterInfo.Set(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Object,System.Object)">
-            <summary>
-            Sets the value on the property.
-            </summary>
-            <param name="context">The current <see cref="T:Microsoft.Practices.ObjectBuilder2.IBuilderContext"/>.</param>
-            <param name="instance">The instance to use to execute the method.</param>
-            <param name="buildKey">The key for the object being built.</param>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.ReflectionPropertySetterInfo.Property">
-            <summary>
-            Gets the property for the setter call.
-            </summary>
-            <value>
-            The property for the setter call.
-            </value>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.ReflectionPropertySetterInfo.Value">
-            <summary>
-            Gets the value for the property.
-            </summary>
-            <value>
-            The value for the property.
-            </value>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.ISingletonPolicy">
-            <summary>
-            Represents a policy for <see cref="T:Microsoft.Practices.ObjectBuilder2.SingletonStrategy"/>.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.ISingletonPolicy.IsSingleton">
-            <summary>
-            Determines if the object should be a singleton.
-            </summary>
-            <value>
-            true if the object should be a singleton; otherwise, false.
-            </value>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.SingletonPolicy">
-            <summary>
-            Represents a policy for <see cref="T:Microsoft.Practices.ObjectBuilder2.SingletonStrategy"/>.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.SingletonPolicy.#ctor(System.Boolean)">
-            <summary>
-            Initialize a new instance of the <see cref="T:Microsoft.Practices.ObjectBuilder2.SingletonPolicy"/> class with a 
-            value determiniting if the the object should be singleton or not.
-            </summary>
-            <param name="isSingleton">true if the object should be a singleton; otherwise, false.</param>
-        </member>
-        <member name="P:Microsoft.Practices.ObjectBuilder2.SingletonPolicy.IsSingleton">
-            <summary>
-            Determines if the object should be a singleton.
-            </summary>
-            <value>
-            true if the object should be a singleton; otherwise, false.
-            </value>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.SingletonStrategy">
-            <summary>
-            Implementation of <see cref="T:Microsoft.Practices.ObjectBuilder2.IBuilderStrategy"/> which allows objects to be
-            singletons.
-            </summary>
-            <remarks>
-            This strategy looks for policies in the context registered under the interface type
-            <see cref="T:Microsoft.Practices.ObjectBuilder2.ISingletonPolicy"/>. It uses the locator in the build context to rememeber
-            singleton objects, and the lifetime container contained in the locator to ensure they
-            are not garbage collected. Upon the second request for an object, it will short-circuit
-            the strategy chain and return the singleton instance (and will not re-inject the
-            object).
-            </remarks>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.SingletonStrategy.PreBuildUp(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Called during the chain of responsibility for a build operation. The
-            PreBuildUp method is called when the chain is being executed in the
-            forward direction.
-            </summary>
-            <param name="context">Context of the build operation.</param>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.SingletonStrategy.PostBuildUp(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
-            <summary>
-            Called during the chain of responsibility for a build operation. The
-            PostBuildUp method is called when the chain has finished the PreBuildUp
-            phase and executes in reverse order from the PreBuildUp calls.
-            </summary>
-            <param name="context">Context of the build operation.</param>
         </member>
         <member name="T:Microsoft.Practices.ObjectBuilder2.StagedStrategyChain`1">
             <summary>
@@ -3603,21 +2593,6 @@
             <param name="buildKey">original build key</param>
             <param name="newType">New type to put in new build key.</param>
             <returns>The new build key.</returns>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.DependencyResolver">
-            <summary>
-            Dependency resolver for resolving dependencies of objects being built.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.ObjectBuilder2.DependencyResolver.Resolve(Microsoft.Practices.ObjectBuilder2.IBuilderContext,System.Object,Microsoft.Practices.ObjectBuilder2.NotPresentBehavior)">
-            <summary>
-            Resolves a dependency.
-            </summary>
-            <param name="context">The <see cref="T:Microsoft.Practices.ObjectBuilder2.IBuilderContext"/> of the build operation.</param>
-            <param name="buildKey">The key for the object being built.</param>
-            <param name="behavior">Describes how to behave if the dependency is not found.</param>
-            <returns>The dependent object. If the object is not found, and notPresent
-            is set to <see cref="F:Microsoft.Practices.ObjectBuilder2.NotPresentBehavior.Null"/>, will return null.</returns>
         </member>
         <member name="T:Microsoft.Practices.ObjectBuilder2.Guard">
             <summary>
@@ -3843,26 +2818,6 @@
             Returns the name stored in this build key.
             </summary>
             <remarks>The name to use when building.</remarks>
-        </member>
-        <member name="T:Microsoft.Practices.ObjectBuilder2.NotPresentBehavior">
-            <summary>
-            Enumeration describing how to handle when a dependency is not present.
-            </summary>
-        </member>
-        <member name="F:Microsoft.Practices.ObjectBuilder2.NotPresentBehavior.Build">
-            <summary>
-            Create the object.
-            </summary>
-        </member>
-        <member name="F:Microsoft.Practices.ObjectBuilder2.NotPresentBehavior.Null">
-            <summary>
-            Return null. Do not build the object.
-            </summary>
-        </member>
-        <member name="F:Microsoft.Practices.ObjectBuilder2.NotPresentBehavior.Throw">
-            <summary>
-            Throw a dependency missing exception.
-            </summary>
         </member>
     </members>
 </doc>

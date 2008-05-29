@@ -8,4 +8,4 @@ Acceptance Tests are included in the StockTraderRI_AcceptanceTests.sln, but they
 on Thoughtworks' "White" UI Automation tool set.  
 
 The White project can be found here : http://www.codeplex.com/white
-and downloaded here : http://www.codeplex.com/white/Release/ProjectReleases.aspx?ReleaseId=11181
+and downloaded here : http://www.codeplex.com/white/Release/ProjectReleases.aspx?ReleaseId=12756

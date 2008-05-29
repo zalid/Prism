@@ -27,7 +27,7 @@ namespace DirectoryLookupModularity
         public App()
         {
             Bootstrapper bootstrapper = new Bootstrapper();
-            bootstrapper.Initialize();
+            bootstrapper.Run();
         }
     }
 }

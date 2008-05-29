@@ -132,4 +132,7 @@
   <data name="NullUnityContainerException" xml:space="preserve">
     <value>The IUnityContainer is required and cannot be null.</value>
   </data>
+  <data name="TypeMappingAlreadyRegistered" xml:space="preserve">
+    <value>Type '{0}' was already registered by the application. Skipping...</value>
+  </data>
 </root>

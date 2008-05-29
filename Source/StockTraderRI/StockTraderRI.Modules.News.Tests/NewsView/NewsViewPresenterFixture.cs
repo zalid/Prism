@@ -21,7 +21,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.News.Article;
-using StockTraderRI.Modules.News.Controllers;
 using StockTraderRI.Modules.News.PresentationModels;
 using StockTraderRI.Modules.News.Tests.Mocks;
 
@@ -151,23 +150,6 @@ namespace StockTraderRI.Modules.News.Tests
             public event EventHandler<NewsFeedEventArgs> Updated = delegate { };
 
             #endregion
-        }
-    }
-
-    internal class MockNewsController : INewsController
-    {
-        public bool CurrentItemWasCalled = false;
-
-        public bool ShowNewsReaderCalled { get; private set; }
-
-        public void CurrentNewsArticleChanged(NewsArticle article)
-        {
-            CurrentItemWasCalled = true;
-        }
-
-        public void ShowNewsReader()
-        {
-            ShowNewsReaderCalled = true;
         }
     }
 

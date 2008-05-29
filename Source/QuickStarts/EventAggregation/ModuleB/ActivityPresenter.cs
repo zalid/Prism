@@ -17,18 +17,20 @@
 
 using System.Diagnostics;
 using EventAggregation.Infrastructure;
+using ModuleB.Properties;
 using Prism.Interfaces;
+using System.Globalization;
 
 namespace ModuleB
 {
     public class ActivityPresenter
     {
         private string _customerID;
-        private IEventAggregator _EventAggregator;
+        private IEventAggregator eventAggregator;
 
-        public ActivityPresenter(IEventAggregator EventAggregator)
+        public ActivityPresenter(IEventAggregator eventAggregator)
         {
-            _EventAggregator = EventAggregator;
+            this.eventAggregator = eventAggregator;
         }
 
         void FundAddedEventHandler(FundOrder fundOrder)
@@ -45,9 +47,9 @@ namespace ModuleB
             set
             {
                 _customerID = value;
-                _EventAggregator.Get<FundAddedEvent>().Subscribe(FundAddedEventHandler, ThreadOption.PublisherThread, false, fundOrder => fundOrder.CustomerID == _customerID);
+                this.eventAggregator.Get<FundAddedEvent>().Subscribe(FundAddedEventHandler, ThreadOption.UIThread, false, fundOrder => fundOrder.CustomerID == _customerID);
 
-                View.Title = string.Format("Activity for: {0}", CustomerID);
+                View.Title = string.Format(CultureInfo.CurrentCulture, Resources.ActivityTitle, CustomerID);
             }
         }
     }

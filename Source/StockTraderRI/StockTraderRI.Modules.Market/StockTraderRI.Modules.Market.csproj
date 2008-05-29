@@ -68,8 +68,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Services\MarketFeedService.cs" />
-    <Compile Include="Services\MarketHistoryService.cs" />
+    <Compile Include="Services\MarketFeedService.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Services\MarketHistoryService.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="TrendLine\TrendLinePresenter.cs" />
     <Compile Include="TrendLine\TrendLineView.xaml.cs">
       <DependentUpon>TrendLineView.xaml</DependentUpon>
@@ -94,12 +98,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\Market.xml">
+    <EmbeddedResource Include="Data\Market.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\MarketHistory.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\MarketHistory.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Page Include="TrendLine\TrendLineView.xaml">
@@ -111,6 +115,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

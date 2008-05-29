@@ -27,7 +27,7 @@ namespace UIComposition
         public App()
         {
             Bootstrapper bootStrapper = new Bootstrapper();
-            bootStrapper.Initialize();
+            bootStrapper.Run();
         }
     }
 }

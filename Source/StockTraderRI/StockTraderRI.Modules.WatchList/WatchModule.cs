@@ -42,9 +42,9 @@ namespace StockTraderRI.Modules.Watch
             RegisterViewsAndServices();
 
             IWatchListPresenter watchListPresenter = _container.Resolve<IWatchListPresenter>();
-            _regionManagerService.GetRegion("WatchRegion").Add((UIElement)watchListPresenter.View);
+            _regionManagerService.GetRegion("WatchRegion").Add(watchListPresenter.View);
             IAddWatchPresenter addWatchPresenter = _container.Resolve<IAddWatchPresenter>();
-            _regionManagerService.GetRegion("MainToolbarRegion").Add((UIElement)addWatchPresenter.View);
+            _regionManagerService.GetRegion("MainToolbarRegion").Add(addWatchPresenter.View);
         }
 
         protected void RegisterViewsAndServices()

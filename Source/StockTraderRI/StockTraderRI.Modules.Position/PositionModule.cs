@@ -29,14 +29,13 @@ namespace StockTraderRI.Modules.Position
 {
     public class PositionModule : IModule
     {
-        private IUnityContainer _container;
-        private IOrdersController _ordersController;
-        private IRegionManager _regionManagerService;
+        private readonly IUnityContainer _container;
+        private readonly IRegionManager _regionManager;
 
         public PositionModule(IUnityContainer container, IRegionManager regionManager)
         {
             _container = container;
-            _regionManagerService = regionManager;
+            _regionManager = regionManager;
         }
 
         #region IModule Members
@@ -46,12 +45,10 @@ namespace StockTraderRI.Modules.Position
             RegisterViewsAndServices();
 
             IPositionSummaryPresenter presenter = _container.Resolve<IPositionSummaryPresenter>();
-            IRegion mainRegion = _regionManagerService.GetRegion("MainRegion");
-            mainRegion.Add((UIElement)presenter.View);
+            IRegion mainRegion = _regionManager.GetRegion("MainRegion");
+            mainRegion.Add(presenter.View);
 
-            _ordersController = _container.Resolve<IOrdersController>();
-
-            IRegion mainToolbarRegion = _regionManagerService.GetRegion("MainToolbarRegion");
+            IRegion mainToolbarRegion = _regionManager.GetRegion("MainToolbarRegion");
             mainToolbarRegion.Add(new OrdersToolBar());
         }
 
@@ -67,7 +64,7 @@ namespace StockTraderRI.Modules.Position
             _container.RegisterType<IOrderCommandsView, OrderCommandsView>();
             _container.RegisterType<IOrderCompositeView, OrderCompositeView>();
             _container.RegisterType<IOrderCompositePresenter, OrderCompositePresenter>();
-            _container.RegisterType<IOrdersController, OrdersController>();
+            _container.RegisterType<IOrdersController, OrdersController>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IOrdersService, XmlOrdersService>();
 
         }

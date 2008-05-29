@@ -28,5 +28,6 @@ namespace StockTraderRI.Modules.News.Controllers
         //It may be reasonable to have a Run method instead of relying on the constructor to start it up
         void CurrentNewsArticleChanged(NewsArticle article);
         void ShowNewsReader();
+        void Run();
     }
 }

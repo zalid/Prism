@@ -41,7 +41,7 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
             container.RegisterType<IOrderCompositePresenter, MockOrderCompositePresenter>();
 
             regionManager.Register("OrdersRegion", new MockRegion());
-            regionManager.Register("CollapsibleRegion", new MockRegion());
+            regionManager.Register("MainRegion", new MockRegion());
 
             var controller = new TestableOrdersController(regionManager, container);
             controller.BuyCommand.Execute("STOCK01");
@@ -65,7 +65,7 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
 
             var collapsibleRegion = new MockRegion();
             regionManager.Register("OrdersRegion", new MockRegion());
-            regionManager.Register("CollapsibleRegion", collapsibleRegion);
+            regionManager.Register("MainRegion", collapsibleRegion);
 
             var controller = new TestableOrdersController(regionManager, container);
 
@@ -84,7 +84,7 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
 
             var ordersRegion = new MockRegion();
             regionManager.Register("OrdersRegion", ordersRegion);
-            regionManager.Register("CollapsibleRegion", new MockRegion());
+            regionManager.Register("MainRegion", new MockRegion());
 
             var controller = new TestableOrdersController(regionManager, container);
 
@@ -103,7 +103,7 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
 
             var ordersRegion = new MockRegion();
             regionManager.Register("OrdersRegion", ordersRegion);
-            regionManager.Register("CollapsibleRegion", new MockRegion());
+            regionManager.Register("MainRegion", new MockRegion());
 
             var controller = new TestableOrdersController(regionManager, container);
 
@@ -125,7 +125,7 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
 
             var ordersRegion = new MockRegion();
             regionManager.Register("OrdersRegion", ordersRegion);
-            regionManager.Register("CollapsibleRegion", new MockRegion());
+            regionManager.Register("MainRegion", new MockRegion());
 
             var controller = new TestableOrdersController(regionManager, container);
             controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
@@ -148,7 +148,7 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
             container.RegisterInstance<IOrderCompositePresenter>(presenter);
 
             regionManager.Register("OrdersRegion", new MockRegion());
-            regionManager.Register("CollapsibleRegion", new MockRegion());
+            regionManager.Register("MainRegion", new MockRegion());
 
             var controller = new TestableOrdersController(regionManager, container);
             controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");

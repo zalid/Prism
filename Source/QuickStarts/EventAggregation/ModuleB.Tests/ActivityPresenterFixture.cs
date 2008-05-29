@@ -20,6 +20,7 @@ using EventAggregation.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModuleB.Tests.Mocks;
 using Prism.Events;
+using Prism.Interfaces;
 
 namespace ModuleB.Tests
 {
@@ -57,6 +58,7 @@ namespace ModuleB.Tests
             presenter.CustomerID = "ALFKI";
 
             Assert.IsTrue(mockEvent.SubscribeArgumentFilter(new FundOrder { CustomerID = "ALFKI" }));
+            Assert.AreEqual(ThreadOption.UIThread, mockEvent.ThreadOption);
             Assert.IsFalse(mockEvent.SubscribeArgumentFilter(new FundOrder { CustomerID = "FilteredOutCustomer" }));
         }
 
@@ -67,10 +69,12 @@ namespace ModuleB.Tests
     {
         public Action<FundOrder> SubscribeArgumentAction;
         public Predicate<FundOrder> SubscribeArgumentFilter;
+        public ThreadOption ThreadOption;
         public override SubscriptionToken Subscribe(Action<FundOrder> action, Prism.Interfaces.ThreadOption threadOption, bool keepSubscriberReferenceAlive, Predicate<FundOrder> filter)
         {
             SubscribeArgumentAction = action;
             SubscribeArgumentFilter = filter;
+            ThreadOption = threadOption;
             return null;
         }
     }

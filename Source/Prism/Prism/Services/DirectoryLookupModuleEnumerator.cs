@@ -24,6 +24,7 @@ using System.Linq;
 using System.Reflection;
 using Prism.Interfaces;
 using Prism.Properties;
+using System.Security.Policy;
 
 namespace Prism.Services
 {
@@ -62,7 +63,8 @@ namespace Prism.Services
         {
             if (_modules == null)
             {
-                AppDomain childDomain = AppDomain.CreateDomain("DiscoveryRegion");
+                AppDomain childDomain = BuildChildDomain(AppDomain.CurrentDomain);
+
                 try
                 {
                     List<string> loadedAssemblies = new List<string>();
@@ -86,6 +88,20 @@ namespace Prism.Services
                     AppDomain.Unload(childDomain);
                 }
             }
+        }
+
+        protected virtual AppDomain BuildChildDomain(AppDomain parentDomain)
+        {
+            // Need to grab the current AppDomain evidence and use it to construct the new AppDomain
+            // because in a ClickOnce execution environment, creating an AppDomain will by default pick
+            // up the partial trust environment of the AppLaunch.exe, which was the root executable. The 
+            // AppLaunch.exe does a create domain and applies the evidence from the ClickOnce manifests to 
+            // create the domain that the app is actually executing in. This will need to be Full Trust for 
+            // Prism apps.
+
+            Evidence evidence = new Evidence(parentDomain.Evidence);
+            AppDomainSetup setup = parentDomain.SetupInformation;
+            return AppDomain.CreateDomain("DiscoveryRegion", evidence, setup);
         }
 
         class InnerModuleInfoLoader : MarshalByRefObject

@@ -78,13 +78,41 @@ namespace Prism.Tests.Regions
             Assert.AreSame(specializedAdapter, returnedAdapter);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void RegisterAMappingThatAlreadyExistsThrows()
+        {
+            var regionAdapterMappings = new RegionAdapterMappings();
+            var regionAdapter = new MockRegionAdapter();
 
+            regionAdapterMappings.RegisterMapping(typeof(ItemsControl), regionAdapter);
+            regionAdapterMappings.RegisterMapping(typeof(ItemsControl), regionAdapter);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullControlThrows()
+        {
+            var regionAdapterMappings = new RegionAdapterMappings();
+            var regionAdapter = new MockRegionAdapter();
+
+            regionAdapterMappings.RegisterMapping(null, regionAdapter);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullAdapterThrows()
+        {
+            var regionAdapterMappings = new RegionAdapterMappings();
+
+            regionAdapterMappings.RegisterMapping(typeof(ItemsControl), null);
+        }
 
         class ItemsControlDescendant : ItemsControl { }
 
         class MockRegionAdapter : IRegionAdapter
         {
-            public IRegion Initialize(DependencyObject obj)
+            public IRegion Initialize(DependencyObject controlToWrap)
             {
                 throw new NotImplementedException();
             }

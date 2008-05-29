@@ -15,25 +15,31 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Prism.Interfaces;
+using Prism.Properties;
 
 namespace Prism.Regions
 {
     public class ContentControlRegionAdapter : IRegionAdapter
     {
-        public IRegion Initialize(DependencyObject obj)
+        public IRegion Initialize(DependencyObject controlToWrap)
         {
-            ContentControl control = obj as ContentControl;
+            ContentControl control = controlToWrap as ContentControl;
             IRegion region = null;
 
             if (control != null)
             {
+                if (control.Content != null || (BindingOperations.GetBinding(control, ContentControl.ContentProperty) != null))
+                    throw new InvalidOperationException(Resources.ContentControlHasContentException);
+
                 region = CreateRegion();
                 Binding binding = new Binding("CurrentItem");
                 binding.Source = region.Views;
+                
                 BindingOperations.SetBinding(control, ContentControl.ContentProperty, binding);
             }
             return region;

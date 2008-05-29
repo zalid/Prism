@@ -104,5 +104,14 @@ namespace Prism.UnityContainerAdapter.Properties {
                 return ResourceManager.GetString("NullUnityContainerException", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type &apos;{0}&apos; was already registered by the application. Skipping....
+        /// </summary>
+        internal static string TypeMappingAlreadyRegistered {
+            get {
+                return ResourceManager.GetString("TypeMappingAlreadyRegistered", resourceCulture);
+            }
+        }
     }
 }

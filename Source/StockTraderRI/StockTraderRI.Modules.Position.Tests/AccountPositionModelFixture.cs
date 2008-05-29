@@ -32,7 +32,6 @@ namespace StockTraderRI.Modules.Position.Tests
     public class AccountPositionModelFixture
     {
         [TestMethod]
-        [DeploymentItem("Data/AccountPositions.xml", "Data")]
         public void ShouldReturnDefaultPositions()
         {
             AccountPositionService model = new AccountPositionService();

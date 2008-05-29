@@ -83,22 +83,22 @@ namespace StockTraderRI.Modules.WatchList.Tests
             get { throw new NotImplementedException(); }
         }
 
-        public void Show(object view)
+        public void Activate(object view)
         {
             throw new NotImplementedException();
         }
 
-        public IRegionManager Add(object view, string name)
+        public IRegionManager Add(object view, string viewName)
         {
             throw new NotImplementedException();
         }
 
-        public object GetView(string name)
+        public object GetView(string viewName)
         {
             throw new NotImplementedException();
         }
 
-        public IRegionManager Add(object view, string name, bool createRegionManagerScope)
+        public IRegionManager Add(object view, string viewName, bool createRegionManagerScope)
         {
             throw new NotImplementedException();
         }

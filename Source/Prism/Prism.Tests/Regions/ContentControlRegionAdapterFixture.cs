@@ -15,7 +15,11 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Windows.Controls;
+using System.Windows.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Prism.Interfaces;
 using Prism.Regions;
@@ -46,6 +50,52 @@ namespace Prism.Tests.Regions
 
             region.Views.MoveCurrentTo(view2);
             Assert.AreSame(control.Content, view2);
+        }
+
+        [TestMethod]
+        public void ControlWithExistingContentThrows()
+        {
+            var control = new ContentControl() { Content = new object() };
+
+            IRegionAdapter adapter = new TestableContentControlRegionAdapter();
+
+            try
+            {
+                var region = (NewMockRegion)adapter.Initialize(control);
+                Assert.Fail();
+            }
+            catch (Exception ex)
+            {
+                Assert.IsInstanceOfType(ex, typeof(InvalidOperationException));
+                StringAssert.Contains(ex.Message, "ContentControl's Content property must not be set when also used with Prism Regions.");
+            }
+        }
+
+        [TestMethod]
+        public void ControlWithExistingBindingOnItemsSourceWithNullValueThrows()
+        {
+            var control = new ContentControl();
+            Binding binding = new Binding("ObjectContents");
+            binding.Source = new SimpleModel() { ObjectContents = null };
+            BindingOperations.SetBinding(control, ContentControl.ContentProperty, binding);
+
+            IRegionAdapter adapter = new TestableContentControlRegionAdapter();
+
+            try
+            {
+                var region = (NewMockRegion)adapter.Initialize(control);
+                Assert.Fail();
+            }
+            catch (Exception ex)
+            {
+                Assert.IsInstanceOfType(ex, typeof(InvalidOperationException));
+                StringAssert.Contains(ex.Message, "ContentControl's Content property must not be set when also used with Prism Regions.");
+            }
+        }
+
+        class SimpleModel
+        {
+            public Object ObjectContents { get; set; }
         }
 
     }

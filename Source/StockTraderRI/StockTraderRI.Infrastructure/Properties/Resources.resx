@@ -120,4 +120,10 @@
   <data name="CannotConvertFromTypeToEnum" xml:space="preserve">
     <value>Cannot convert from type {0} to enum type {1}.  The source value must be a string type.</value>
   </data>
+  <data name="CannotConvertParameterToIntegerException" xml:space="preserve">
+    <value>The parameter should be convertable to an integer.</value>
+  </data>
+  <data name="ValueNotDecimalException" xml:space="preserve">
+    <value>The TwoDecimalPlaceConverter only works with decimal values</value>
+  </data>
 </root>

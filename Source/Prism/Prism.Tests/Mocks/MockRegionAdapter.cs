@@ -27,10 +27,10 @@ namespace Prism.Tests.Mocks
         public object InitializeArgument;
         #region IRegionAdapter Members
 
-        public IRegion Initialize(DependencyObject obj)
+        public IRegion Initialize(DependencyObject controlToWrap)
         {
             InitializeCalled = true;
-            InitializeArgument = obj;
+            InitializeArgument = controlToWrap;
             return region;
         }
 

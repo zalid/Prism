@@ -28,18 +28,6 @@ namespace Prism.Tests.Commands
     [TestClass]
     public class CompositeCommandFixture
     {
-
-        [TestMethod]
-        public void ShouldRegisterCommand()
-        {
-            TestableCompositeCommand multiCommand = new TestableCompositeCommand();
-            TestCommand testCommand = new TestCommand();
-
-            Assert.IsFalse(multiCommand.HasCommand(testCommand));
-            multiCommand.RegisterCommand(new TestCommand());
-            Assert.IsTrue(multiCommand.HasCommand(testCommand));
-        }
-
         [TestMethod]
         public void RegisterACommandShouldRaiseCanExecuteEvent()
         {
@@ -238,22 +226,6 @@ namespace Prism.Tests.Commands
             Assert.IsFalse(multiCommand.CanExecute(null));
         }
 
-        [TestMethod]
-        public void ShouldResetCanExecuteDelegateList()
-        {
-            var multiCommand = new TestableCompositeCommand();
-            bool canExecuteCalled = false;
-
-            multiCommand.CanExecuteChanged += delegate
-                                                  {
-                                                      canExecuteCalled = true;
-                                                  };
-
-            Assert.IsTrue(multiCommand.DelegateCount > 1);  // expect at least default empty delegate + our delegate
-            multiCommand.ClearExecuteChangedDelegates();
-            Assert.AreEqual<int>(1, multiCommand.DelegateCount);  // expect default empty delegate
-        }
-
 
         internal class TestableCompositeCommand : CompositeCommand
         {
@@ -261,23 +233,7 @@ namespace Prism.Tests.Commands
 
             public TestableCompositeCommand()
             {
-                CanExecuteChanged += delegate
-                                         {
-                                             CanExecuteChangedRaised = true;
-                                         };
-            }
-
-            public new bool HasCommand(ICommand command)
-            {
-                return base.HasCommand;
-            }
-
-            public int DelegateCount
-            {
-                get
-                {
-                    return base.CanExecuteChangedDelegateCount;
-                }
+                CanExecuteChanged += ((sender, e) => CanExecuteChangedRaised = true);
             }
         }
 

@@ -16,46 +16,40 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Controls;
 using EventAggregation.Infrastructure;
-using Prism.Events;
 using Prism.Interfaces;
-using Prism.Utility;
 
 namespace ModuleA
 {
     public class AddFundPresenter
     {
-        private IEventAggregator _EventAggregator;
+        private IAddFundView _view;
+        private IEventAggregator eventAggregator;
 
-        public AddFundPresenter(IEventAggregator EventAggregator)
+        public AddFundPresenter(IEventAggregator eventAggregator)
         {
-            _EventAggregator = EventAggregator;
-            
+            this.eventAggregator = eventAggregator;
         }
 
         void AddFund(object sender, EventArgs e)
         {
-            var fundOrder = new FundOrder();
+            FundOrder fundOrder = new FundOrder();
             fundOrder.CustomerID = View.Customer;
             fundOrder.TickerSymbol = View.Fund;
 
-            _EventAggregator.Get<FundAddedEvent>().Fire(fundOrder);
+            if (!string.IsNullOrEmpty(fundOrder.CustomerID) && !string.IsNullOrEmpty(fundOrder.TickerSymbol))
+                eventAggregator.Get<FundAddedEvent>().Fire(fundOrder);
         }
 
-        private IAddFundView _view;
         public IAddFundView View
         {
             get { return _view; }
             set
             {
-                 _view = value;
-                 _view.AddFund += AddFund;
+                _view = value;
+                _view.AddFund += AddFund;
             }
         }
-        
+
     }
 }

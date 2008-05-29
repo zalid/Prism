@@ -63,10 +63,5 @@ namespace StockTraderRI.Modules.WatchList.Tests.Mocks
             SymbolExistsArgumentTickerSymbol = tickerSymbol;
             return MockSymbolExists;
         }
-
-        public void RaiseUpdated()
-        {
-            Updated(this, EventArgs.Empty);
-        }
     }
 }

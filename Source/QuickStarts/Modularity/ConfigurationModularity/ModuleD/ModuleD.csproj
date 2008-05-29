@@ -100,6 +100,6 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetDir)*.*" "$(SolutionDir)ConfigurationModularity\bin\Debug\Modules\" /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetDir)*.*" "$(SolutionDir)ConfigurationModularity\bin\$(ConfigurationName)\Modules\" /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>

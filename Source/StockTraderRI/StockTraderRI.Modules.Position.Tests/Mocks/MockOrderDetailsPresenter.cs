@@ -53,5 +53,12 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
         }
 
         public TransactionInfo TransactionInfo { get; set; }
+
+        #region IOrderDetailsPresenter Members
+
+
+        public OrderDetailsPresentationModel Model { get; set;}
+
+        #endregion
     }
 }

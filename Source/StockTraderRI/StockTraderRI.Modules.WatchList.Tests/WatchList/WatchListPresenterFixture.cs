@@ -18,17 +18,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StockTraderRI.Infrastructure.Interfaces;
-using StockTraderRI.Modules.WatchList.Tests.Mocks;
-using Microsoft.Practices.Unity;
-using Prism.Regions;
-using System.Windows.Controls;
+using Prism.Events;
 using Prism.Interfaces;
-using StockTraderRI.Modules.Watch.WatchList;
+using StockTraderRI.Infrastructure;
 using StockTraderRI.Modules.Watch;
-using System.Threading;
+using StockTraderRI.Modules.Watch.WatchList;
+using StockTraderRI.Modules.WatchList.Tests.Mocks;
 
 namespace StockTraderRI.Modules.WatchList.Tests.WatchList
 {
@@ -38,6 +34,7 @@ namespace StockTraderRI.Modules.WatchList.Tests.WatchList
         MockWatchListView view;
         MockWatchListService watchListService;
         MockMarketFeedService marketFeedService;
+        MockEventAggregator eventAggregator;
 
         [TestInitialize]
         public void SetUp()
@@ -45,11 +42,13 @@ namespace StockTraderRI.Modules.WatchList.Tests.WatchList
             view = new MockWatchListView();
             watchListService = new MockWatchListService();
             marketFeedService = new MockMarketFeedService();
+            eventAggregator = new MockEventAggregator();
         }
 
         [TestMethod]
         public void CanInitPresenter()
         {
+            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(new MockMarketPricesUpdatedEvent());
             WatchListPresenter presenter = CreatePresenter();
 
             Assert.AreEqual<IWatchListView>(view, presenter.View);
@@ -58,6 +57,8 @@ namespace StockTraderRI.Modules.WatchList.Tests.WatchList
         [TestMethod]
         public void ClickingOnTheRemoveMenuItemCallsTheRemoveSelectedItemMethod()
         {
+            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(new MockMarketPricesUpdatedEvent());
+
             watchListService.MockWatchList.Add("TEST");
             WatchListPresenter presenter = CreatePresenter();
 
@@ -71,6 +72,8 @@ namespace StockTraderRI.Modules.WatchList.Tests.WatchList
         [TestMethod]
         public void CanGetItemsFromWatchListServiceAndPutInView()
         {
+            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(new MockMarketPricesUpdatedEvent());
+
             watchListService.MockWatchList.Add("TESTFUND0");
             watchListService.MockWatchList.Add("TESTFUND1");
 
@@ -86,6 +89,8 @@ namespace StockTraderRI.Modules.WatchList.Tests.WatchList
         [TestMethod]
         public void PresenterObservesWatchListAndUpdatesView()
         {
+            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(new MockMarketPricesUpdatedEvent());
+
             watchListService.MockWatchList.Add("TESTFUND0");
 
             WatchListPresenter presenter = CreatePresenter();
@@ -102,6 +107,8 @@ namespace StockTraderRI.Modules.WatchList.Tests.WatchList
         [TestMethod]
         public void ViewGetsCurrentPriceForSymbolRetrievedFromMarketFeedService()
         {
+            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(new MockMarketPricesUpdatedEvent());
+
             watchListService.MockWatchList.Add("TESTFUND0");
             marketFeedService.SetPrice("TESTFUND0", 15.5m);
 
@@ -116,6 +123,8 @@ namespace StockTraderRI.Modules.WatchList.Tests.WatchList
         [TestMethod]
         public void IfPriceIsNotAvailableForSymbolSetsNullCurrentPriceInView()
         {
+            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(new MockMarketPricesUpdatedEvent());
+
             watchListService.MockWatchList.Add("NONEXISTING");
             marketFeedService.MockSymbolExists = false;
 
@@ -129,6 +138,9 @@ namespace StockTraderRI.Modules.WatchList.Tests.WatchList
         [TestMethod]
         public void PresenterObservesMarketFeedAndUpdatesView()
         {
+            var marketPricesUpdatedEvent = new MockMarketPricesUpdatedEvent();
+            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(marketPricesUpdatedEvent);
+
             marketFeedService.feedData.Add("TESTFUND0", 15.5m);
             watchListService.MockWatchList.Add("TESTFUND0");
 
@@ -136,36 +148,44 @@ namespace StockTraderRI.Modules.WatchList.Tests.WatchList
 
             Assert.AreEqual<decimal>(15.5m, view.Model.WatchListItems[0].CurrentPrice.Value);
 
-            marketFeedService.feedData["TESTFUND0"] = 25.3m;
-            marketFeedService.RaiseUpdated();
+            Assert.IsNotNull(marketPricesUpdatedEvent.SubscribeArgumentAction);
+            Assert.AreEqual(ThreadOption.UIThread, marketPricesUpdatedEvent.SubscribeArgumentThreadOption);
+
+            marketPricesUpdatedEvent.SubscribeArgumentAction(new Dictionary<string, decimal> { { "TESTFUND0", 25.3m } });
 
             Assert.AreEqual<decimal>(25.3m, view.Model.WatchListItems[0].CurrentPrice.Value);
         }
 
         [TestMethod]
-        public void MarketFeedUpdatedDoesNotUpdateViewIfWatchListCountIsZero()
-        {
-            WatchListPresenter presenter = CreatePresenter();
-            view.Model.WatchListItems = null;
-
-            marketFeedService.RaiseUpdated();
-
-            Assert.IsNull(view.Model.WatchListItems);
-        }
-
-        [TestMethod]
         public void PresentationModelShouldHaveHeaderInfoSet()
         {
+            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(new MockMarketPricesUpdatedEvent());
+
             WatchListPresenter presenter = CreatePresenter();
-            Assert.AreEqual("Watch List",view.Model.HeaderInfo);            
+            Assert.AreEqual("Watch List", view.Model.HeaderInfo);
         }
 
 
         private WatchListPresenter CreatePresenter()
         {
-            return new WatchListPresenter(view, watchListService, marketFeedService);
+            return new WatchListPresenter(view, watchListService, marketFeedService, eventAggregator);
         }
 
 
+    }
+
+    internal class MockMarketPricesUpdatedEvent : MarketPricesUpdatedEvent
+    {
+        public Action<IDictionary<string, decimal>> SubscribeArgumentAction;
+        public Predicate<IDictionary<string, decimal>> SubscribeArgumentFilter;
+        public ThreadOption SubscribeArgumentThreadOption;
+
+        public override SubscriptionToken Subscribe(Action<IDictionary<string, decimal>> action, ThreadOption threadOption, bool keepSubscriberReferenceAlive, Predicate<IDictionary<string, decimal>> filter)
+        {
+            SubscribeArgumentAction = action;
+            SubscribeArgumentFilter = filter;
+            SubscribeArgumentThreadOption = threadOption;
+            return null;
+        }
     }
 }

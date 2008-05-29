@@ -34,6 +34,11 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
             return this;
         }
 
+        public IUnityContainer RegisterType<TFrom, TTo>(LifetimeManager lifetimeManager) where TTo : TFrom
+        {
+            Types.Add(typeof(TFrom), typeof(TTo));
+            return this;
+        }
 
         #region IUnityContainer Members
 
@@ -173,11 +178,6 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
         }
 
         public IUnityContainer RegisterType<TFrom, TTo>(string name) where TTo : TFrom
-        {
-            throw new NotImplementedException();
-        }
-
-        public IUnityContainer RegisterType<TFrom, TTo>(LifetimeManager lifetimeManager) where TTo : TFrom
         {
             throw new NotImplementedException();
         }

@@ -69,6 +69,9 @@
     <Compile Include="Events\WeakDelegate.cs" />
     <Compile Include="Exceptions\CyclicDependencyFoundException.cs" />
     <Compile Include="Exceptions\ModuleLoadException.cs" />
+    <Compile Include="Logging\TextLogger.cs" />
+    <Compile Include="Logging\EmptyLogger.cs" />
+    <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="ModuleAttribute.cs" />
     <Compile Include="Regions\ContentControlRegionAdapter.cs" />
     <Compile Include="Regions\ItemsControlRegionAdapter.cs" />

@@ -76,6 +76,13 @@ namespace Prism.Tests.Services
             Assert.AreEqual(typeof(MockModule).FullName, modules[0].ModuleType);
         }
 
+        [TestMethod]
+        public void FluentInterfaceShouldReturnTheSameInstance()
+        {
+            var enumerator = new StaticModuleEnumerator();
+
+            Assert.AreSame(enumerator, enumerator.AddModule(typeof(MockModule)));
+        }
 
         class MockModule : IModule
         {

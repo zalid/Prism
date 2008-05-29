@@ -16,11 +16,14 @@
 //===============================================================================
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Windows.Controls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Prism.Interfaces;
 using Prism.Regions;
 using Prism.Tests.Mocks;
+using System.Windows.Data;
 
 namespace Prism.Tests.Regions
 {
@@ -65,6 +68,53 @@ namespace Prism.Tests.Regions
 
             Assert.AreEqual(true, tabControl.IsSynchronizedWithCurrentItem);
         }
+
+        [TestMethod]
+        public void ControlWithExistingItemSourceThrows()
+        {
+            TabControl tabControl = new TabControl(){ItemsSource = new List<string>()};
+
+            IRegionAdapter adapter = new TestableItemsControlRegionAdapter();
+
+            try
+            {
+                var region = (NewMockRegion)adapter.Initialize(tabControl);
+                Assert.Fail();   
+            }
+            catch (Exception ex)
+            {
+                Assert.IsInstanceOfType(ex, typeof(InvalidOperationException));
+                StringAssert.Contains(ex.Message, "ItemsControl's ItemsSource property must not be set when also used with Prism Regions.");
+            }
+        }
+
+        [TestMethod]
+        public void ControlWithExistingBindingOnItemsSourceWithNullValueThrows()
+        {
+            TabControl tabControl = new TabControl();
+            Binding binding = new Binding("Enumerable");
+            binding.Source = new SimpleModel() {Enumerable = null};
+            BindingOperations.SetBinding(tabControl, ItemsControl.ItemsSourceProperty, binding);
+
+            IRegionAdapter adapter = new TestableItemsControlRegionAdapter();
+
+            try
+            {
+                var region = (NewMockRegion)adapter.Initialize(tabControl);
+                Assert.Fail();
+            }
+            catch (Exception ex)
+            {
+                Assert.IsInstanceOfType(ex, typeof(InvalidOperationException));
+                StringAssert.Contains(ex.Message, "ItemsControl's ItemsSource property must not be set when also used with Prism Regions.");
+            }
+        }
+
+        class SimpleModel
+        {
+            public IEnumerable Enumerable { get; set; }
+        }
+	
 
     }
 

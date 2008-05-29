@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="AccountPositionModelFixture.cs" />
     <Compile Include="Controllers\OrdersControllerFixture.cs" />
+    <Compile Include="Mocks\MockEventAggregator.cs" />
     <Compile Include="Mocks\MockUnityResolver.cs" />
     <Compile Include="Orders\OrderCompositePresenterFixture.cs" />
     <Compile Include="Orders\OrderDetailsPresenterFixture.cs" />

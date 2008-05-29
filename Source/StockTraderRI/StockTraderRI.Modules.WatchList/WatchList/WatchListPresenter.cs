@@ -16,10 +16,11 @@
 //===============================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Threading;
+using Prism.Interfaces;
 using Prism.Utility;
+using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Modules.Watch.PresentationModels;
 using StockTraderRI.Modules.Watch.Properties;
@@ -29,54 +30,42 @@ namespace StockTraderRI.Modules.Watch.WatchList
 {
     public class WatchListPresenter : IWatchListPresenter
     {
-        WatchListPresentationModel _model = new WatchListPresentationModel();
+        readonly WatchListPresentationModel _model = new WatchListPresentationModel();
 
-        public WatchListPresenter(IWatchListView view, IWatchListService watchListService, IMarketFeedService marketFeedService)
+        public WatchListPresenter(IWatchListView view, IWatchListService watchListService, IMarketFeedService marketFeedService, IEventAggregator eventAggregator)
         {
             View = view;
             _model.HeaderInfo = Resources.WatchListTitle;
+            _model.WatchListItems = new ObservableCollection<WatchItem>();
             View.Model = _model;
 
             this.marketFeedService = marketFeedService;
-            this.marketFeedService.Updated += marketFeedService_Updated;
+
             this.watchList = watchListService.RetrieveWatchList();
             watchList.CollectionChanged += delegate { PopulateWatchItemsList(watchList); };
             PopulateWatchItemsList(watchList);
 
-            InitializeEvents();
-        }
-
-        void marketFeedService_Updated(object sender, EventArgs e)
-        {
-            if (watchList.Count > 0)
-            {
-                PopulateWatchItemsList(watchList);
-            }
-        }
-
-
-        private void InitializeEvents()
-        {
+            eventAggregator.Get<MarketPricesUpdatedEvent>().Subscribe(MarketPricesUpdated, ThreadOption.UIThread);
             View.OnRemoveMenuItemClicked += View_OnRemoveMenuItemClicked;
         }
 
-        void View_OnRemoveMenuItemClicked(object sender, DataEventArgs<string> e)
+        private void MarketPricesUpdated(IDictionary<string, decimal> updatedPriceList)
+        {
+            foreach (WatchItem watchItem in _model.WatchListItems)
+            {
+                if (updatedPriceList.ContainsKey(watchItem.TickerSymbol))
+                    watchItem.CurrentPrice = updatedPriceList[watchItem.TickerSymbol];
+            }
+        }
+
+        private void View_OnRemoveMenuItemClicked(object sender, DataEventArgs<string> e)
         {
             watchList.Remove(e.Value);
         }
 
         private void PopulateWatchItemsList(ObservableCollection<string> watchItemsList)
         {
-            Dispatcher dispatcher = ((UIElement)View).Dispatcher;
-            if (!dispatcher.CheckAccess())
-            {
-                dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                                       new Action<ObservableCollection<string>>(PopulateWatchItemsList),
-                                       watchList);
-                return;
-            }
-
-            ObservableCollection<WatchItem> watchItems = new ObservableCollection<WatchItem>();
+            _model.WatchListItems.Clear();
             foreach (string tickerSymbol in watchItemsList)
             {
                 decimal? currentPrice;
@@ -88,13 +77,12 @@ namespace StockTraderRI.Modules.Watch.WatchList
                 {
                     currentPrice = null;
                 }
-                watchItems.Add(new WatchItem(tickerSymbol, currentPrice));
+                _model.WatchListItems.Add(new WatchItem(tickerSymbol, currentPrice));
             }
-            _model.WatchListItems = watchItems;
         }
 
         public IWatchListView View { get; set; }
-        private IMarketFeedService marketFeedService;
-        private ObservableCollection<string> watchList;
+        private readonly IMarketFeedService marketFeedService;
+        private readonly ObservableCollection<string> watchList;
     }
 }

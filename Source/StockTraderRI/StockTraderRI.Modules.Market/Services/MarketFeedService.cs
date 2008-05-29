@@ -21,6 +21,8 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
+using Prism.Interfaces;
+using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Modules.Market.Properties;
 
@@ -28,19 +30,21 @@ namespace StockTraderRI.Modules.Market.Services
 {
     public class MarketFeedService : IMarketFeedService, IDisposable
     {
+        private IEventAggregator EventAggregator { get; set; }
         private readonly Dictionary<string, decimal> _priceList = new Dictionary<string, decimal>();
         private readonly Dictionary<string, long> _volumeList = new Dictionary<string, long>();
         static readonly Random randomGenerator = new Random(unchecked((int)DateTime.Now.Ticks));
         private Timer _timer;
         private int _refreshInterval = 10000;
 
-        public MarketFeedService()
-            : this(XDocument.Load("Data/Market.xml"))
+        public MarketFeedService(IEventAggregator eventAggregator)
+            : this(XDocument.Parse(Resources.Market), eventAggregator)
         {
         }
 
-        protected MarketFeedService(XDocument document)
+        protected MarketFeedService(XDocument document, IEventAggregator eventAggregator)
         {
+            EventAggregator = eventAggregator;
             _timer = new Timer(TimerTick);
 
             var marketItemsElement = document.Element("MarketItems");
@@ -60,8 +64,6 @@ namespace StockTraderRI.Modules.Market.Services
                 RefreshInterval = CalculateRefreshIntervalMillisecondsFromSeconds(int.Parse(refreshRateAttribute.Value, CultureInfo.InvariantCulture));
             }
         }
-
-        public event EventHandler Updated = delegate { };
 
         public int RefreshInterval
         {
@@ -100,17 +102,12 @@ namespace StockTraderRI.Modules.Market.Services
             return _priceList.ContainsKey(tickerSymbol);
         }
 
-
         protected void UpdatePrice(string tickerSymbol, decimal newPrice, long newVolume)
         {
             _priceList[tickerSymbol] = newPrice;
             _volumeList[tickerSymbol] = newVolume;
-            OnUpdated(this, EventArgs.Empty);
-        }
 
-        protected virtual void OnUpdated(object sender, EventArgs e)
-        {
-            Updated(sender, e);
+            OnMarketPricesUpdated();
         }
 
         protected void UpdatePrices()
@@ -121,7 +118,13 @@ namespace StockTraderRI.Modules.Market.Services
                 newValue += Convert.ToDecimal(randomGenerator.NextDouble() * 10f) - 5m;
                 _priceList[symbol] = newValue > 0 ? newValue : 0.1m;
             }
-            OnUpdated(this, EventArgs.Empty);
+            OnMarketPricesUpdated();
+        }
+
+        private void OnMarketPricesUpdated()
+        {
+            var clonedPriceList = new Dictionary<string, decimal>(_priceList);
+            EventAggregator.Get<MarketPricesUpdatedEvent>().Fire(clonedPriceList);
         }
 
         private static int CalculateRefreshIntervalMillisecondsFromSeconds(int seconds)

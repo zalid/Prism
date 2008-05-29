@@ -33,7 +33,7 @@ namespace EventBroker.AcceptanceTests
     /// </summary>
     [TestClass]
     [DeploymentItem(@".\bin\Debug")]
-    [DeploymentItem(@".\EventBroker.Tests.AcceptanceTests\bin\Debug")]
+    [DeploymentItem(@".\EventAggregation.Tests.AcceptanceTests\bin\Debug")]
     public class ShellFixture : FixtureBase
     {
         #region Additional test attributes

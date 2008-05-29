@@ -73,14 +73,14 @@ namespace Prism.Regions
             DependencyProperty.RegisterAttached("RegionManager", typeof(IRegionManager), typeof(RegionManager),
            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
 
-        public static IRegionManager GetRegionManager(DependencyObject obj)
+        public static IRegionManager GetRegionManager(DependencyObject dependencyObject)
         {
-            return (IRegionManager)obj.GetValue(RegionManagerProperty);
+            return (IRegionManager)dependencyObject.GetValue(RegionManagerProperty);
         }
 
-        public static void SetRegionManager(DependencyObject obj, IRegionManager value)
+        public static void SetRegionManager(DependencyObject dependencyObject, IRegionManager value)
         {
-            obj.SetValue(RegionManagerProperty, value);
+            dependencyObject.SetValue(RegionManagerProperty, value);
         }
 
         #endregion

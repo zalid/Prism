@@ -15,76 +15,36 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using System.Windows;
+
 namespace UIComposition
 {
-    using System;
-    using System.Windows.Controls;
-    using Microsoft.Practices.Unity;
+    using Modules.Employee;
+    using Modules.Project;
     using Prism.Interfaces;
-    using Prism.Regions;
-    using UIComposition.Modules.Employee;
-    using UIComposition.Modules.Project;
+    using Prism.UnityContainerAdapter;
 
-    internal class Bootstrapper : IDisposable
+    internal class Bootstrapper : UnityPrismBootstrapper
     {
-        private IUnityContainer container;
-
-        public void Dispose()
+        protected override DependencyObject CreateShell()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public void Initialize()
-        {
-            this.InitializeContainer();
-            this.RegisterRegionAdapters();
-            this.InitializeShell();
-            this.InitializeModules();
-        }
-
-        private void InitializeContainer()
-        {
-            this.container = new UnityContainer();
-            this.container.RegisterInstance<IUnityContainer>(this.container);
-        }
-
-        private void RegisterRegionAdapters()
-        {
-            RegionAdapterMappings mappings = new RegionAdapterMappings();
-            mappings.RegisterMapping(typeof(ItemsControl), new ItemsControlRegionAdapter());
-            mappings.RegisterMapping(typeof(ContentControl), new ContentControlRegionAdapter());
-
-            this.container.RegisterInstance<RegionAdapterMappings>(mappings);
-        }
-
-        private void InitializeShell()
-        {
-            this.container.RegisterType<IRegionManager, RegionManager>(new ContainerControlledLifetimeManager());
-            Shell shell = this.container.Resolve<Shell>();
+            Shell shell = this.Container.Resolve<Shell>();
 
             if (shell != null)
             {
-                RegionManager.SetRegionManager(shell, container.Resolve<IRegionManager>());
                 shell.Show();
             }
+
+            return shell;
         }
 
-        private void InitializeModules()
+        protected override void InitializeModules()
         {
-            IModule employeeModule = this.container.Resolve<EmployeeModule>();
+            IModule employeeModule = this.Container.Resolve<EmployeeModule>();
             employeeModule.Initialize();
 
-            IModule projectModule = this.container.Resolve<ProjectModule>();
+            IModule projectModule = this.Container.Resolve<ProjectModule>();
             projectModule.Initialize();
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                this.container.Dispose();
-            }
         }
     }
 }

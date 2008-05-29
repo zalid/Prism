@@ -17,10 +17,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using StockTraderRI.Infrastructure.Interfaces;
-using StockTraderRI.Infrastructure.Models;
 
 namespace StockTraderRI.Modules.Position.Tests.Mocks
 {
@@ -38,7 +35,6 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
         internal void UpdatePrice(string tickerSymbol, decimal newPrice, long volume)
         {
             feedData[tickerSymbol] = newPrice;
-            Updated(this, EventArgs.Empty);
         }
 
         #region IMarketFeedService Members
@@ -47,16 +43,13 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
         {
             if (feedData.ContainsKey(tickerSymbol))
                 return feedData[tickerSymbol];
-            else
-                return 0m;
+            return 0m;
         }
 
         public long GetVolume(string tickerSymbol)
         {
             throw new NotImplementedException();
         }
-
-        public event EventHandler Updated = delegate { };
 
         #endregion
 

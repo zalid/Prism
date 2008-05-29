@@ -68,5 +68,23 @@ namespace StockTraderRI.Infrastructure.Properties {
                 return ResourceManager.GetString("CannotConvertFromTypeToEnum", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The parameter should be convertable to an integer..
+        /// </summary>
+        internal static string CannotConvertParameterToIntegerException {
+            get {
+                return ResourceManager.GetString("CannotConvertParameterToIntegerException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The TwoDecimalPlaceConverter only works with decimal values.
+        /// </summary>
+        internal static string ValueNotDecimalException {
+            get {
+                return ResourceManager.GetString("ValueNotDecimalException", resourceCulture);
+            }
+        }
     }
 }

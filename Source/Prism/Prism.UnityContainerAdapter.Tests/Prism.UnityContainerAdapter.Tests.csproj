@@ -54,7 +54,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BootstrapperFixture.cs" />
+    <Compile Include="UnityContainerExtensionFixture.cs" />
+    <Compile Include="UnityPrismBootstrapperFixture.cs" />
     <Compile Include="Mocks\MockRegionManager.cs" />
     <Compile Include="Mocks\MockModuleLoaderService.cs" />
     <Compile Include="Mocks\MockPrismLogger.cs" />

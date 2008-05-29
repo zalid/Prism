@@ -24,6 +24,8 @@ using System.ComponentModel;
 using System.Xml.Serialization;
 using System.Xml;
 using StockTraderRI.Infrastructure.Models;
+using System.IO;
+using StockTraderRI.Modules.Position.Properties;
 
 namespace StockTraderRI.Modules.Position.Services
 {
@@ -49,7 +51,7 @@ namespace StockTraderRI.Modules.Position.Services
         private void InitializePositions()
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<AccountPosition>));
-            XmlTextReader xmlReader = new XmlTextReader("Data/AccountPositions.xml");
+            XmlTextReader xmlReader = new XmlTextReader(new StringReader(Resources.AccountPositions));
             try
             {
                 _positions = (List<AccountPosition>)xmlSerializer.Deserialize(xmlReader);

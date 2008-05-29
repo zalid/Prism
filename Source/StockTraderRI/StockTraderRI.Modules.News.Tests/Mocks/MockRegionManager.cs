@@ -88,25 +88,25 @@ namespace StockTraderRI.Modules.News.Tests.Mocks
             get { throw new NotImplementedException(); }
         }
 
-        public void Show(object view)
+        public void Activate(object view)
         {
             ShowArgumentView = view;
         }
 
-        public IRegionManager Add(object view, string name)
+        public IRegionManager Add(object view, string viewName)
         {
-            AddArgumentName = name;
+            AddArgumentName = viewName;
             Add(view);
             return null;
         }
 
-        public object GetView(string name)
+        public object GetView(string viewName)
         {
-            GetViewArgumentName = name;
+            GetViewArgumentName = viewName;
             return GetViewReturnValue;
         }
 
-        public IRegionManager Add(object view, string name, bool createRegionManagerScope)
+        public IRegionManager Add(object view, string viewName, bool createRegionManagerScope)
         {
             throw new NotImplementedException();
         }

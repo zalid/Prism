@@ -30,7 +30,6 @@ namespace StockTraderRI.Infrastructure
         public static ActiveAwareCompositeCommand CancelOrderCommand = new ActiveAwareCompositeCommand();
         public static CompositeCommand SubmitAllOrdersCommand = new CompositeCommand();
         public static CompositeCommand CancelAllOrdersCommand = new CompositeCommand();
-        public static CompositeCommand ShowNewsCommand = new CompositeCommand();
     }
 
     public class StockTraderRICommandProxy
@@ -54,10 +53,5 @@ namespace StockTraderRI.Infrastructure
         {
             get { return StockTraderRICommands.CancelAllOrdersCommand; }
         }
-
-        virtual public CompositeCommand ShowNewsCommand
-        {
-            get { return StockTraderRICommands.ShowNewsCommand; }
-        }
-    }    
+    }
 }

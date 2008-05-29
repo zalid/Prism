@@ -335,6 +335,15 @@
             <param name="injectionMembers">Objects containing the details on which members to inject and how.</param>
             <returns>This extension object.</returns>
         </member>
+        <member name="M:Microsoft.Practices.Unity.InjectedMembers.ClearExistingBuildPlan(System.Type,System.String)">
+            <summary>
+            Remove policies associated with building this type. This removes the
+            compiled build plan so that it can be rebuilt with the new settings
+            the next time this type is resolved.
+            </summary>
+            <param name="typeToInject">Type of object to clear the plan for.</param>
+            <param name="name">Name the object is being registered with.</param>
+        </member>
         <member name="T:Microsoft.Practices.Unity.InjectionConstructor">
             <summary>
             A class that holds the collection of information
@@ -1133,6 +1142,51 @@
             Remove the given object from backing store.
             </summary>
         </member>
+        <member name="T:Microsoft.Practices.Unity.LifetimeManagerFactory">
+            <summary>
+            An implementation of <see cref="T:Microsoft.Practices.ObjectBuilder2.ILifetimeFactoryPolicy"/> that
+            creates instances of the type of the given Lifetime Manager
+            by resolving them through the container.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Practices.Unity.LifetimeManagerFactory.#ctor(Microsoft.Practices.Unity.ExtensionContext,System.Type)">
+            <summary>
+            Create a new <see cref="T:Microsoft.Practices.Unity.LifetimeManagerFactory"/> that will
+            return instances of the given type, creating them by
+            resolving through the container.
+            </summary>
+            <param name="containerContext">Container to resolve with.</param>
+            <param name="lifetimeType">Type of LifetimeManager to create.</param>
+        </member>
+        <member name="M:Microsoft.Practices.Unity.LifetimeManagerFactory.CreateLifetimePolicy">
+            <summary>
+            Create a new instance of <see cref="T:Microsoft.Practices.ObjectBuilder2.ILifetimePolicy"/>.
+            </summary>
+            <returns>The new instance.</returns>
+        </member>
+        <member name="T:Microsoft.Practices.Unity.TransientLifetimeManager">
+            <summary>
+            An <see cref="T:Microsoft.Practices.Unity.LifetimeManager"/> implementation that does nothing,
+            thus ensuring that instances are created new every time.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Practices.Unity.TransientLifetimeManager.GetValue">
+            <summary>
+            Retrieve a value from the backing store associated with this Lifetime policy.
+            </summary>
+            <returns>the object desired, or null if no such object is currently stored.</returns>
+        </member>
+        <member name="M:Microsoft.Practices.Unity.TransientLifetimeManager.SetValue(System.Object)">
+            <summary>
+            Stores the given value into backing store for retrieval later.
+            </summary>
+            <param name="newValue">The object being stored.</param>
+        </member>
+        <member name="M:Microsoft.Practices.Unity.TransientLifetimeManager.RemoveValue">
+            <summary>
+            Remove the given object from backing store.
+            </summary>
+        </member>
         <member name="T:Microsoft.Practices.Unity.ObjectBuilder.DefaultUnityConstructorSelectorPolicy">
             <summary>
             An implementation of <see cref="T:Microsoft.Practices.ObjectBuilder2.IConstructorSelectorPolicy"/> that is
@@ -1238,19 +1292,15 @@
             the specified parameters.
             </summary>
         </member>
-        <member name="T:Microsoft.Practices.Unity.ObjectBuilder.SpecifiedMemberSelectorPolicy">
+        <member name="M:Microsoft.Practices.Unity.ObjectBuilder.SpecifiedConstructorSelectorPolicy.#ctor(System.Reflection.ConstructorInfo,Microsoft.Practices.Unity.InjectionParameterValue[])">
             <summary>
-            Helper base class for implementing selector policies that need to
-            set up dependency resolver policies.
+            Create an instance of <see cref="T:Microsoft.Practices.Unity.ObjectBuilder.SpecifiedConstructorSelectorPolicy"/> that
+            will return the given constructor, being passed the given injection values
+            as parameters.
             </summary>
-        </member>
-        <member name="M:Microsoft.Practices.Unity.ObjectBuilder.SpecifiedMemberSelectorPolicy.AddParameterResolvers(Microsoft.Practices.ObjectBuilder2.IPolicyList,System.Collections.Generic.IEnumerable{Microsoft.Practices.Unity.InjectionParameterValue},Microsoft.Practices.ObjectBuilder2.SelectedMemberWithParameters)">
-            <summary>
-            Add dependency resolvers to the policy set.
-            </summary>
-            <param name="policies">PolicyList to add the resolvers to.</param>
-            <param name="parameterValues">Objects supplying the dependency resolvers.</param>
-            <param name="result">Result object to store the keys in.</param>
+            <param name="ctor">The constructor to call.</param>
+            <param name="parameterValues">Set of <see cref="T:Microsoft.Practices.Unity.InjectionParameterValue"/> objects
+            that describes how to obtain the values for the constructor parameters.</param>
         </member>
         <member name="M:Microsoft.Practices.Unity.ObjectBuilder.SpecifiedConstructorSelectorPolicy.SelectConstructor(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
             <summary>
@@ -1259,12 +1309,57 @@
             <param name="context">Current build context</param>
             <returns>The chosen constructor.</returns>
         </member>
+        <member name="T:Microsoft.Practices.Unity.ObjectBuilder.SpecifiedMemberSelectorHelper">
+            <summary>
+            Helper class for implementing selector policies that need to
+            set up dependency resolver policies.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Practices.Unity.ObjectBuilder.SpecifiedMemberSelectorHelper.AddParameterResolvers(Microsoft.Practices.ObjectBuilder2.IPolicyList,System.Collections.Generic.IEnumerable{Microsoft.Practices.Unity.InjectionParameterValue},Microsoft.Practices.ObjectBuilder2.SelectedMemberWithParameters)">
+            <summary>
+            Add dependency resolvers to the policy set.
+            </summary>
+            <param name="policies">PolicyList to add the resolvers to.</param>
+            <param name="parameterValues">Objects supplying the dependency resolvers.</param>
+            <param name="result">Result object to store the keys in.</param>
+        </member>
+        <member name="T:Microsoft.Practices.Unity.ObjectBuilder.SpecifiedMethodsSelectorPolicy">
+            <summary>
+            A <see cref="T:Microsoft.Practices.ObjectBuilder2.IMethodSelectorPolicy"/> implementation that calls the specific
+            methods with the given parameters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Practices.Unity.ObjectBuilder.SpecifiedMethodsSelectorPolicy.AddMethodAndParameters(System.Reflection.MethodInfo,System.Collections.Generic.IEnumerable{Microsoft.Practices.Unity.InjectionParameterValue})">
+            <summary>
+            Add the given method and parameter collection to the list of methods
+            that will be returned when the selector's <see cref="M:Microsoft.Practices.ObjectBuilder2.IMethodSelectorPolicy.SelectMethods(Microsoft.Practices.ObjectBuilder2.IBuilderContext)"/>
+            method is called.
+            </summary>
+            <param name="method">Method to call.</param>
+            <param name="parameters">sequence of <see cref="T:Microsoft.Practices.Unity.InjectionParameterValue"/> objects
+            that describe how to create the method parameter values.</param>
+        </member>
         <member name="M:Microsoft.Practices.Unity.ObjectBuilder.SpecifiedMethodsSelectorPolicy.SelectMethods(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
             <summary>
             Return the sequence of methods to call while building the target object.
             </summary>
             <param name="context">Current build context.</param>
             <returns>Sequence of methods to call.</returns>
+        </member>
+        <member name="T:Microsoft.Practices.Unity.ObjectBuilder.SpecifiedPropertiesSelectorPolicy">
+            <summary>
+            An implemnetation of <see cref="T:Microsoft.Practices.ObjectBuilder2.IPropertySelectorPolicy"/> which returns
+            the set of specific properties that the selector was configured with.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Practices.Unity.ObjectBuilder.SpecifiedPropertiesSelectorPolicy.AddPropertyAndValue(System.Reflection.PropertyInfo,Microsoft.Practices.Unity.InjectionParameterValue)">
+            <summary>
+            Add a property that will be par of the set returned when the 
+            <see cref="M:Microsoft.Practices.Unity.ObjectBuilder.SpecifiedPropertiesSelectorPolicy.SelectProperties(Microsoft.Practices.ObjectBuilder2.IBuilderContext)"/> is called.
+            </summary>
+            <param name="property">The property to set.</param>
+            <param name="value"><see cref="T:Microsoft.Practices.Unity.InjectionParameterValue"/> object describing
+            how to create the value to inject.</param>
         </member>
         <member name="M:Microsoft.Practices.Unity.ObjectBuilder.SpecifiedPropertiesSelectorPolicy.SelectProperties(Microsoft.Practices.ObjectBuilder2.IBuilderContext)">
             <summary>
@@ -2052,7 +2147,7 @@
         </member>
         <member name="P:Microsoft.Practices.Unity.Properties.Resources.ResolutionFailed">
             <summary>
-              Looks up a localized string similar to Resolution of the dependency failed, type = &quot;{0}&quot;, name = &quot;{1}&quot;. See the InnerException for more details..
+              Looks up a localized string similar to Resolution of the dependency failed, type = &quot;{0}&quot;, name = &quot;{1}&quot;. Exception message is: {2}.
             </summary>
         </member>
         <member name="P:Microsoft.Practices.Unity.Properties.Resources.TypesAreNotAssignable">

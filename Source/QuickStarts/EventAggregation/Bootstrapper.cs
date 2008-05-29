@@ -15,65 +15,29 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System.Windows.Controls;
-using Microsoft.Practices.Unity;
-using Prism.Events;
-using Prism.Interfaces;
-using Prism.Regions;
+using System.Windows;
 using Prism.UnityContainerAdapter;
-using Prism;
 
 namespace EventAggregation
 {
-    public class Bootstrapper
+    public class Bootstrapper : UnityPrismBootstrapper
     {
-        IUnityContainer container;
-        internal void Initialize()
+        protected override DependencyObject CreateShell()
         {
-            InitializeContainer();
-            RegisterGlobalServices();
-            RegisterRegionAdapters();
-            ShowShell();
-            InitializeModules();
-        }
+            var shell = Container.Resolve<Shell>();
 
-        private void InitializeContainer()
-        {
-            container = new UnityContainer();
-            container.RegisterInstance<IUnityContainer>(container);
-            container.RegisterType<IPrismContainer, UnityPrismContainer>(new ContainerControlledLifetimeManager());
-        }
-
-        private void RegisterGlobalServices()
-        {
-            container.RegisterType<IRegionManager, RegionManager>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IEventAggregator, EventAggregator>(new ContainerControlledLifetimeManager());
-        }
-
-        private void RegisterRegionAdapters()
-        {
-            RegionAdapterMappings mappings = new RegionAdapterMappings();
-            mappings.RegisterMapping(typeof(ItemsControl), new ItemsControlRegionAdapter());
-            mappings.RegisterMapping(typeof(ContentControl), new ContentControlRegionAdapter());
-
-            this.container.RegisterInstance<RegionAdapterMappings>(mappings);
-        }
-
-        private void ShowShell()
-        {
-            var shell = container.Resolve<Shell>();
-            RegionManager.SetRegionManager(shell, container.Resolve<IRegionManager>());
             shell.Show();
+
+            return shell;
         }
 
-        private void InitializeModules()
+        protected override void InitializeModules()
         {
-            var moduleA = container.Resolve<ModuleA.ModuleA>();
-            var moduleB = container.Resolve<ModuleB.ModuleB>();
+            var moduleA = Container.Resolve<ModuleA.ModuleA>();
+            var moduleB = Container.Resolve<ModuleB.ModuleB>();
 
             moduleA.Initialize();
             moduleB.Initialize();
         }
-
     }
 }

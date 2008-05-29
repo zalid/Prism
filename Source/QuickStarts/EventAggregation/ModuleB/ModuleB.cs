@@ -15,12 +15,8 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Prism.Interfaces;
 using Microsoft.Practices.Unity;
+using Prism.Interfaces;
 
 namespace ModuleB
 {
@@ -33,8 +29,8 @@ namespace ModuleB
         }
         public void Initialize()
         {
-            var activityView1 = Container.Resolve<ActivityView>();
-            var activityView2 = Container.Resolve<ActivityView>();
+            ActivityView activityView1 = Container.Resolve<ActivityView>();
+            ActivityView activityView2 = Container.Resolve<ActivityView>();
 
             activityView1.CustomerId = "Customer1";
             activityView2.CustomerId = "Customer2";

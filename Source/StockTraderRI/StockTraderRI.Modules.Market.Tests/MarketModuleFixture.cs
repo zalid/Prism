@@ -15,15 +15,9 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Practices.Unity;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Modules.Market.Tests.Mocks;
-using Prism.Interfaces;
 
 namespace StockTraderRI.Modules.Market.Tests
 {
@@ -38,17 +32,15 @@ namespace StockTraderRI.Modules.Market.Tests
         [DeploymentItem("Data/MarketHistory.xml", "Data")]
         public void CanInitModule()
         {
-            IUnityContainer container = new UnityContainer();
+            var container = new MockUnityContainer();
             MarketModule module = new MarketModule(container);
 
             module.Initialize();
 
-            Assert.IsNotNull(container.Resolve<IMarketHistoryService>());
-            Assert.IsNotNull(container.Resolve<IMarketFeedService>());
-            Assert.IsNotNull(container.Resolve<ITrendLineView>());
-            Assert.IsNotNull(container.Resolve<ITrendLinePresenter>());
-
-
+            Assert.IsTrue(container.Types.ContainsKey(typeof(IMarketHistoryService)));
+            Assert.IsTrue(container.Types.ContainsKey(typeof(IMarketFeedService)));
+            Assert.IsTrue(container.Types.ContainsKey(typeof(ITrendLineView)));
+            Assert.IsTrue(container.Types.ContainsKey(typeof(ITrendLinePresenter)));
         }
     }
 }

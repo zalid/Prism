@@ -17,10 +17,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -48,8 +50,9 @@ namespace StockTraderRI.Modules.Position.Orders
 
         public string HeaderInfo
         {
-            get { return "Buy/Sell"; }
+            get { return "BUY & SELL"; }
         }
 
     }
+   
 }

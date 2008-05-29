@@ -3,10 +3,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Width="200">
     <StackPanel>
+        <Label>Customer:</Label>
         <ComboBox Name="CustomerCbx" Margin="5">
             <ComboBoxItem>Customer1</ComboBoxItem>
             <ComboBoxItem>Customer2</ComboBoxItem>
         </ComboBox>
+        <Label>Fund:</Label>
         <ComboBox Name="FundCbx" Margin="5">
             <ComboBoxItem>FundA</ComboBoxItem>
             <ComboBoxItem>FundB</ComboBoxItem>

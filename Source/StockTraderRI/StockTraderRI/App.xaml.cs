@@ -15,14 +15,8 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
 using System.Windows;
-using Prism.Interfaces.Logging;
-using StockTraderRI.Infrastructure;
+using Prism.UnityContainerAdapter;
 
 namespace StockTraderRI
 {
@@ -40,12 +34,11 @@ namespace StockTraderRI
         {
             base.OnStartup(e);
 
-            IPrismLogger logger = new EntLibPrismLogger();
-            Bootstrapper bootStrapper = new Bootstrapper(logger);
-            bootStrapper.Initialize(new StockTraderRIContainerConfigurator());
+            UnityPrismBootstrapper bootstrapper = new StockTraderRIBootstrapper();
+            bootstrapper.Run();
             this.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
         }
- 
+
     }
 }

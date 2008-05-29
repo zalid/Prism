@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Core.UIItems.ListBoxItems;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Windows.Automation;
 using Core;
@@ -90,12 +91,6 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             symbol = TestDataInfrastructure.GetTestInputData("Symbol");
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
 
-            //TODO: Dock the panel.
-
-            //Button collapsiblePinButton = window.Get<Button>("HeaderAutoHideButton");
-            //collapsiblePinButton.Click();
-            //buySellListTab = window.Get<ListView>(TestDataInfrastructure.GetControlId("buySellListTab"));
-
             Order model =
                new Order(symbol, 0,
                String.Empty, 0,
@@ -147,9 +142,9 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             // Validate if selected tab in Buy/Sell Panel disappears.
             // AND
             // Validate if the buy transactions were successful
-            Tab buySellSymbolTab = window.Get<Tab>(
-                SearchCriteria.ByText(BuySellEnum.Buy.ToString() + " " + symbol).AndControlType(typeof(Tab)));
-            Assert.IsNull(buySellSymbolTab);
+            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+                                                                                .AndControlType(typeof(GroupBox)));
+            Assert.IsNull(buySellSymbolGroup);
 
             //validate if the buy transaction was successful
             List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
@@ -193,13 +188,12 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             //give time for submit processing
             System.Threading.Thread.Sleep(2000);
 
-            // Validate if selected tab in Buy/Sell Panel disappears.
+            // Validate if the expander Buy/Sell Panel disappears.
             // AND
             // Validate if the sell transactions was successful 
-            //TODO: NEEDS TO BE UPDATED
-            Tab buySellSymbolTab = window.Get<Tab>(
-                SearchCriteria.ByText(BuySellEnum.Sell.ToString() + " " + symbol).AndControlType(typeof(Tab)));
-            Assert.IsNull(buySellSymbolTab);
+            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+                                                                                .AndControlType(typeof(GroupBox)));
+            Assert.IsNull(buySellSymbolGroup);
 
             //validate if the sell transaction was successful
             List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
@@ -244,11 +238,6 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             PopulateBuySellPanelWithData(model);
             /////////////////////////////////
 
-            //if the Buy/Sell collapsible panel is not pinned, then loss focus of it so as to enable rest of the screen
-            //to accept user input
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
-            list.Hover();
-
             /////////////////////////////////
             //Enter Share 2 Details
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, anotherSymbol);
@@ -269,15 +258,12 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             //give time for submit processing
             System.Threading.Thread.Sleep(2000);
 
-            // Validate if all tabs in Buy/Sell Panel disappears.
+            // Validate if all expander Buy/Sell Panels disappear.
             // AND
             // Validate if the buy transactions were successful
-            Tab buySellSymbolTab = window.Get<Tab>(
-                SearchCriteria.ByText(BuySellEnum.Buy.ToString() + " " + symbol).AndControlType(typeof(Tab)));
-            Tab buySellAnotherSymbolTab = window.Get<Tab>(
-                SearchCriteria.ByText(BuySellEnum.Buy.ToString() + " " + anotherSymbol).AndControlType(typeof(Tab)));
-            Assert.IsNull(buySellSymbolTab);
-            Assert.IsNull(buySellAnotherSymbolTab);
+            //SearchCriteria.ByAutomationId("Expander").AndControlType(typeof(GroupBox))
+            GroupBox buySellSymbolGroup = window.Get<GroupBox>("CompositeExpander");
+            Assert.IsNull(buySellSymbolGroup);
 
             //validate if the buy transactions were successful
             List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
@@ -326,11 +312,6 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             PopulateBuySellPanelWithData(model);
             /////////////////////////////////
 
-            //if the Buy/Sell collapsible panel is not pinned, then loss focus of it so as to enable rest of the screen
-            //to accept user input
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
-            list.Hover();
-
             /////////////////////////////////
             //Enter Share 2 Details
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, anotherSymbol);
@@ -350,15 +331,12 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             //give time for submit processing
             System.Threading.Thread.Sleep(2000);
 
-            // Validate if all tabs in Buy/Sell Panel disappears.
+            // Validate if expander Buy/Sell Panels disappear.
             // AND
             // Validate if the sell transactions were successful
-            Tab buySellSymbolTab = window.Get<Tab>(
-                SearchCriteria.ByText(BuySellEnum.Sell.ToString() + " " + symbol).AndControlType(typeof(Tab)));
-            Tab buySellAnotherSymbolTab = window.Get<Tab>(
-                SearchCriteria.ByText(BuySellEnum.Sell.ToString() + " " + anotherSymbol).AndControlType(typeof(Tab)));
-            Assert.IsNull(buySellSymbolTab);
-            Assert.IsNull(buySellAnotherSymbolTab);
+            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+                                                                                .AndControlType(typeof(GroupBox)));
+            Assert.IsNull(buySellSymbolGroup);
 
             List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsNotNull(orders.Find(o => o.Symbol.Equals(symbol) || o.Symbol.Equals(anotherSymbol)));
@@ -366,8 +344,6 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             // Validate the correctness of data.
             Assert.IsTrue(orders.Find(o => o.Symbol.Equals(symbol)).Equals(model));
             Assert.IsTrue(orders.Find(o => o.Symbol.Equals(anotherSymbol)).Equals(anotherModel));
-
-
         }
 
         /// <summary>
@@ -406,12 +382,12 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             //give time for cancel processing
             System.Threading.Thread.Sleep(2000);
 
-            // Validate if selected tab in Buy/Sell Panel disappears.
+            // Validate if expander Buy/Sell Panel disappears.
             // AND
             // Validate if the buy transaction did not proceed.
-            Tab buySellSymbolTab = window.Get<Tab>(
-                SearchCriteria.ByText(BuySellEnum.Buy.ToString() + " " + symbol).AndControlType(typeof(Tab)));
-            Assert.IsNull(buySellSymbolTab);
+            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+                                                                                .AndControlType(typeof(GroupBox)));
+            Assert.IsNull(buySellSymbolGroup);
 
             List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsNull(orders.Find(o => o.Symbol.Equals(symbol)));
@@ -455,11 +431,6 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             PopulateBuySellPanelWithData(model);
             /////////////////////////////////
 
-            //if the Buy/Sell collapsible panel is not pinned, then loss focus of it so as to enable rest of the screen
-            //to accept user input
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
-            list.Hover();
-
             /////////////////////////////////
             //Enter Share 2 Details
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, anotherSymbol);
@@ -479,15 +450,12 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             //give time for cancel processing
             System.Threading.Thread.Sleep(2000);
 
-            // Validate if all tabs in Buy/Sell Panel disappears.
+            // Validate if expander Buy/Sell Panels disappear.
             // AND
-            // Validate if the sell transactions were cancelled
-            Tab buySellSymbolTab = window.Get<Tab>(
-                SearchCriteria.ByText(BuySellEnum.Sell.ToString() + " " + symbol).AndControlType(typeof(Tab)));
-            Tab buySellAnotherSymbolTab = window.Get<Tab>(
-                SearchCriteria.ByText(BuySellEnum.Sell.ToString() + " " + anotherSymbol).AndControlType(typeof(Tab)));
-            Assert.IsNull(buySellSymbolTab);
-            Assert.IsNull(buySellAnotherSymbolTab);
+            // Validate if the buy transaction did not proceed.
+            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+                                                                                .AndControlType(typeof(GroupBox)));
+            Assert.IsNull(buySellSymbolGroup);
 
             List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsNull(orders.Find(o => o.Symbol.Equals(symbol) || o.Symbol.Equals(anotherSymbol)));
@@ -638,12 +606,12 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             //give time for submit processing
             System.Threading.Thread.Sleep(2000);
 
-            // Validate if all tabs in Buy/Sell Panel disappears.
+            // Validate if extender Buy/Sell Panel disappears.
             // AND
             // Validate if the buy transactions were successful
-            Tab buySellSymbolTab = window.Get<Tab>(
-                SearchCriteria.ByText(BuySellEnum.Buy.ToString() + " " + symbol).AndControlType(typeof(Tab)));
-            Assert.IsNull(buySellSymbolTab);
+            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+                                                                                .AndControlType(typeof(GroupBox)));
+            Assert.IsNull(buySellSymbolGroup);
 
             List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsTrue(orders.Find(o => o.Symbol.Equals(symbol)).Equals(model));
@@ -687,11 +655,6 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             PopulateBuySellPanelWithData(model);
             /////////////////////////////////
 
-            //if the Buy/Sell collapsible panel is not pinned, then loss focus of it so as to enable rest of the screen
-            //to accept user input
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
-            list.Hover();
-
             /////////////////////////////////
             //Enter Share 2 Details
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, anotherSymbol);
@@ -712,15 +675,12 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             //give time for submit processing
             System.Threading.Thread.Sleep(2000);
 
-            // Validate if all tabs in Buy/Sell Panel disappears.
+            // Validate if all expander Buy/Sell Panels disappear.
             // AND
             // Validate if the buy transactions were successful
-            Tab buySellSymbolTab = window.Get<Tab>(
-                SearchCriteria.ByText(BuySellEnum.Buy.ToString() + " " + symbol).AndControlType(typeof(Tab)));
-            Tab buySellAnotherSymbolTab = window.Get<Tab>(
-                SearchCriteria.ByText(BuySellEnum.Buy.ToString() + " " + anotherSymbol).AndControlType(typeof(Tab)));
-            Assert.IsNull(buySellSymbolTab);
-            Assert.IsNull(buySellAnotherSymbolTab);
+            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+                                                                                .AndControlType(typeof(GroupBox)));
+            Assert.IsNull(buySellSymbolGroup);
 
             List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsNotNull(orders.Find(o => o.Symbol.Equals(symbol)));
@@ -768,12 +728,12 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             //give time for cancel processing
             System.Threading.Thread.Sleep(2000);
 
-            // Validate if selected tab in Buy/Sell Panel disappears.
+            // Validate if expander Buy/Sell Panel disappears.
             // AND
             // Validate if the buy transaction did not proceed.
-            Tab buySellSymbolTab = window.Get<Tab>(
-                SearchCriteria.ByText(BuySellEnum.Buy.ToString() + " " + symbol).AndControlType(typeof(Tab)));
-            Assert.IsNull(buySellSymbolTab);
+            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+                                                                                .AndControlType(typeof(GroupBox)));
+            Assert.IsNull(buySellSymbolGroup);
 
             List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsNull(orders.Find(o => o.Symbol.Equals(symbol)));
@@ -816,11 +776,6 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             PopulateBuySellPanelWithData(model);
             /////////////////////////////////
 
-            //if the Buy/Sell collapsible panel is not pinned, then loss focus of it so as to enable rest of the screen
-            //to accept user input
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
-            list.Hover();
-
             /////////////////////////////////
             //Enter Share 2 Details
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, anotherSymbol);
@@ -844,12 +799,9 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             // Validate if all tabs in Buy/Sell Panel disappears.
             // AND
             // Validate if the sell transaction did not proceed.
-            Tab buySellSymbolTab = window.Get<Tab>(
-                SearchCriteria.ByText(BuySellEnum.Sell.ToString() + " " + symbol).AndControlType(typeof(Tab)));
-            Tab buySellAnotherSymbolTab = window.Get<Tab>(
-                SearchCriteria.ByText(BuySellEnum.Sell.ToString() + " " + anotherSymbol).AndControlType(typeof(Tab)));
-            Assert.IsNull(buySellSymbolTab);
-            Assert.IsNull(buySellAnotherSymbolTab);
+            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+                                                                                .AndControlType(typeof(GroupBox)));
+            Assert.IsNull(buySellSymbolGroup);
 
             List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsNull(orders.Find(o => o.Symbol.Equals(symbol) || o.Symbol.Equals(anotherSymbol)));

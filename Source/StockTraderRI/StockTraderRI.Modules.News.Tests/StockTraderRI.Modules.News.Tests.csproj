@@ -57,7 +57,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mocks\MockArticleView.cs" />
+    <Compile Include="Mocks\MockEventAggregator.cs" />
     <Compile Include="Mocks\MockRegionManager.cs" />
+    <Compile Include="Mocks\MockUnityContainer.cs" />
+    <Compile Include="Mocks\MockUnityResolver.cs" />
+    <Compile Include="Mocks\MockNewsController.cs" />
     <Compile Include="NewsView\NewsReaderPresenterFixture.cs" />
     <Compile Include="NewsView\NewsViewPresenterFixture.cs" />
     <Compile Include="Controllers\NewsControllerFixture.cs" />

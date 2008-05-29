@@ -41,7 +41,15 @@ namespace StockTraderRI.Modules.Position.Orders
         {
             InitializeComponent();
         }
+
+        public object Model
+        {
+            set
+            {
+                this.DataContext = value;
+            }
+        }
     }
 
-    
+
 }

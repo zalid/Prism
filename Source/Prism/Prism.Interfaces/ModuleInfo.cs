@@ -49,6 +49,6 @@ namespace Prism.Interfaces
         public string ModuleType { get; private set; }
         public string ModuleName { get; private set; }
         public string[] DependsOn { get; private set; }
-        public bool StartupLoaded { get; set; }
+        public bool StartupLoaded { get; private set; }
     }
 }

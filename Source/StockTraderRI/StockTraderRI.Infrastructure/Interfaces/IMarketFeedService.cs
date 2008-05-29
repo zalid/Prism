@@ -15,11 +15,6 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using StockTraderRI.Infrastructure.Models;
 
 namespace StockTraderRI.Infrastructure.Interfaces
 {
@@ -28,7 +23,5 @@ namespace StockTraderRI.Infrastructure.Interfaces
         decimal GetPrice(string tickerSymbol);
         long GetVolume(string tickerSymbol);
         bool SymbolExists(string tickerSymbol);
-
-        event EventHandler Updated;
     }
 }

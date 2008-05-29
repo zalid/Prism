@@ -25,6 +25,7 @@ namespace Prism.UnityContainerAdapter.Tests.Mocks
     {
         public Dictionary<Type, Type> Types = new Dictionary<Type, Type>();
         public Dictionary<Type, object> Instances = new Dictionary<Type, object>();
+        public readonly Dictionary<Type, object> ResolveBag = new Dictionary<Type, object>();
 
         public IUnityContainer RegisterType<TFrom, TTo>() where TTo : TFrom
         {
@@ -44,15 +45,30 @@ namespace Prism.UnityContainerAdapter.Tests.Mocks
             return this;
         }
 
+        public T Resolve<T>()
+        {
+            if (ResolveBag.ContainsKey(typeof(T)))
+                return (T)ResolveBag[typeof(T)];
+
+            throw new Exception();
+        }
+
+        public object Resolve(Type t)
+        {
+            if (ResolveBag.ContainsKey(t))
+                return ResolveBag[t];
+
+            throw new Exception();
+        }
+
+        public IUnityContainer AddNewExtension<TExtension>() where TExtension : UnityContainerExtension, new()
+        {
+            return this;
+        }
 
         #region IUnityContainer Members
 
         public IUnityContainer AddExtension(UnityContainerExtension extension)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IUnityContainer AddNewExtension<TExtension>() where TExtension : UnityContainerExtension, new()
         {
             throw new NotImplementedException();
         }
@@ -84,7 +100,7 @@ namespace Prism.UnityContainerAdapter.Tests.Mocks
 
         public TConfigurator Configure<TConfigurator>() where TConfigurator : IUnityContainerExtensionConfigurator
         {
-            throw new NotImplementedException();
+            return (TConfigurator)(object)null;
         }
 
         public IUnityContainer CreateChildContainer()
@@ -192,17 +208,7 @@ namespace Prism.UnityContainerAdapter.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public object Resolve(Type t)
-        {
-            throw new NotImplementedException();
-        }
-
         public T Resolve<T>(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public T Resolve<T>()
         {
             throw new NotImplementedException();
         }

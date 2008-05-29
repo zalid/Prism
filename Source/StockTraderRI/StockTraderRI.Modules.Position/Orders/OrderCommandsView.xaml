@@ -23,7 +23,7 @@
         </Style>
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-        <Button Name="SubmitButton" Command="{x:Static inf:StockTraderRICommands.SubmitOrderCommand}">Submit</Button>
-        <Button Name="CancelButton" Command="{x:Static inf:StockTraderRICommands.CancelOrderCommand}">Cancel</Button>
+        <Button Name="SubmitButton" Command="{Binding SubmitCommand}">Submit</Button>
+        <Button Name="CancelButton" Command="{Binding CancelCommand}">Cancel</Button>
     </StackPanel>
 </UserControl>

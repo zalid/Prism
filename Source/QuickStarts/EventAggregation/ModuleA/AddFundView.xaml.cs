@@ -63,12 +63,28 @@ namespace ModuleA
 
         public string Customer
         {
-            get { return ((ComboBoxItem)this.CustomerCbx.SelectedItem).Content.ToString(); }
+            get
+            {
+                ComboBoxItem selectedItem = this.CustomerCbx.SelectedItem as ComboBoxItem;
+                if (selectedItem == null)
+                    return string.Empty;
+                
+                return selectedItem.Content.ToString();
+
+
+            }
         }
 
         public string Fund
         {
-            get { return ((ComboBoxItem)this.FundCbx.SelectedItem).Content.ToString(); }
+            get
+            {
+                ComboBoxItem selectedItem = this.FundCbx.SelectedItem as ComboBoxItem;
+                if (selectedItem == null)
+                    return string.Empty;
+
+                return selectedItem.Content.ToString();
+            }
         }
 
         #endregion

@@ -15,8 +15,6 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System.Windows;
-using Prism.Commands;
 using Prism.Interfaces;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Models;
@@ -26,29 +24,30 @@ namespace StockTraderRI.Modules.News.Controllers
 {
     public class NewsController : INewsController
     {
-        private const string ViewNameKey = "News.{0}";
+        private readonly IRegionManager regionManager;
+        private readonly IArticlePresenter articlePresenter;
+        private readonly IEventAggregator eventAggregator;
+        private readonly INewsReaderPresenter readerPresenter;
 
-        private IRegionManager regionManager;
-        //private IUnityContainer container;
-        private IArticlePresenter articlePresenter;
-        private INewsReaderPresenter readerPresenter;
-
-        public NewsController(IRegionManager regionManagerService, IArticlePresenter articlePresenter, StockTraderRICommandProxy commands)
+        public NewsController(IRegionManager regionManagerService, IArticlePresenter articlePresenter, IEventAggregator eventAggregator)
         {
             this.regionManager = regionManagerService;
-            //this.container = container;
             this.articlePresenter = articlePresenter;
+            this.eventAggregator = eventAggregator;
             this.articlePresenter.Controller = this;
-            
-            this.regionManager.GetRegion("NewsRegion").Add((UIElement)articlePresenter.View);
-            commands.ShowNewsCommand.RegisterCommand(new DelegateCommand<string>(ShowNews));
         }
 
-        public NewsController(IRegionManager regionManagerService, 
-                                IArticlePresenter articlePresenter, 
-                                StockTraderRICommandProxy commands, 
+        public void Run()
+        {
+            this.regionManager.GetRegion("NewsRegion").Add(articlePresenter.View);
+            eventAggregator.Get<TickerSymbolSelectedEvent>().Subscribe(ShowNews, ThreadOption.UIThread);
+        }
+
+        public NewsController(IRegionManager regionManagerService,
+                                IArticlePresenter articlePresenter,
+                                IEventAggregator eventAggregator,
                                 INewsReaderPresenter readerPresenter) :
-            this(regionManagerService, articlePresenter, commands)
+            this(regionManagerService, articlePresenter, eventAggregator)
         {
             this.readerPresenter = readerPresenter;
         }
@@ -60,7 +59,6 @@ namespace StockTraderRI.Modules.News.Controllers
 
         public void CurrentNewsArticleChanged(NewsArticle article)
         {
-            //throw new NotImplementedException();
             this.readerPresenter.SetNewsArticle(article);
         }
 

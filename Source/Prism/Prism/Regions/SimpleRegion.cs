@@ -39,10 +39,10 @@ namespace Prism.Regions
 
         void Views_CurrentChanged(object sender, EventArgs e)
         {
-            foreach(object item in Views)
+            foreach (object item in Views)
             {
                 IActiveAware view = item as IActiveAware;
-                if (view!=null)
+                if (view != null)
                     view.IsActive = false;
             }
 
@@ -66,6 +66,10 @@ namespace Prism.Regions
             {
                 Regions.RegionManager.SetRegionManager(dependencyObject, regionManager);
             }
+
+            if (_innerCollection.Contains(view))
+                throw new InvalidOperationException(Resources.RegionViewExistsException);
+
             _innerCollection.Add(view);
         }
 
@@ -81,20 +85,20 @@ namespace Prism.Regions
             return this.RegionManager;
         }
 
-        public IRegionManager Add(object view, string name)
+        public IRegionManager Add(object view, string viewName)
         {
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentException(Resources.StringCannotBeNullOrEmpty, "name");
+            if (string.IsNullOrEmpty(viewName))
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.StringCannotBeNullOrEmpty, "viewName"));
 
-            InnerAdd(view, name, this.RegionManager);
+            InnerAdd(view, viewName, this.RegionManager);
             return this.RegionManager;
 
         }
 
-        public IRegionManager Add(object view, string name, bool createRegionManagerScope)
+        public IRegionManager Add(object view, string viewName, bool createRegionManagerScope)
         {
             IRegionManager regionManager = createRegionManagerScope ? this.RegionManager.CreateRegionManager() : this.RegionManager;
-            InnerAdd(view, name, regionManager);
+            InnerAdd(view, viewName, regionManager);
             return regionManager;
         }
 
@@ -127,7 +131,7 @@ namespace Prism.Regions
             return null;
         }
 
-        public void Show(object view)
+        public void Activate(object view)
         {
             if (!Views.Contains(view))
             {
@@ -136,14 +140,14 @@ namespace Prism.Regions
             Views.MoveCurrentTo(view);
         }
 
-        public object GetView(string name)
+        public object GetView(string viewName)
         {
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentException(Resources.StringCannotBeNullOrEmpty, "name");
+            if (string.IsNullOrEmpty(viewName))
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.StringCannotBeNullOrEmpty, "viewName"));
 
-            if (_namedViews.ContainsKey(name))
+            if (_namedViews.ContainsKey(viewName))
             {
-                return _namedViews[name];
+                return _namedViews[viewName];
             }
             return null;
         }

@@ -210,4 +210,13 @@
   <data name="ArticleTitle" xml:space="preserve">
     <value>ArticleTitle</value>
   </data>
+  <data name="CompositeExpander" xml:space="preserve">
+    <value>CompositeExpander</value>
+  </data>
+  <data name="OrdersListBox" xml:space="preserve">
+    <value>OrdersListBox</value>
+  </data>
+  <data name="PositionBuySellTab" xml:space="preserve">
+    <value>PositionBuySellTab</value>
+  </data>
 </root>

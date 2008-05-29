@@ -15,22 +15,42 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.ComponentModel;
 
 namespace StockTraderRI.Modules.Watch
 {
-    public class WatchItem
+    public class WatchItem : INotifyPropertyChanged
     {
+        private decimal? _currentPrice;
+
         public WatchItem(string tickerSymbol, decimal? currentPrice)
         {
             TickerSymbol = tickerSymbol;
             CurrentPrice = currentPrice;
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public string TickerSymbol { get; set; }
-        public decimal? CurrentPrice { get; set; }
+
+        public decimal? CurrentPrice
+        {
+            get { return _currentPrice; }
+            set
+            {
+                if (_currentPrice != value)
+                {
+                    _currentPrice = value;
+                    OnPropertyChanged("CurrentPrice");
+                }
+            }
+        }
+
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler Handler = PropertyChanged;
+            if (Handler != null) Handler(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

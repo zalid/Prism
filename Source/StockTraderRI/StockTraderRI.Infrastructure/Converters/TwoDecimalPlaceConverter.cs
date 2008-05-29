@@ -16,11 +16,9 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Data;
 using System.Globalization;
+using System.Windows.Data;
+using StockTraderRI.Infrastructure.Properties;
 
 namespace StockTraderRI.Infrastructure.Converters
 {
@@ -34,14 +32,16 @@ namespace StockTraderRI.Infrastructure.Converters
 
             if (value.GetType() != typeof(decimal))
             {
-                throw new ArgumentException("TwoDecimalPlaceConverter only works with decimal values");
+                throw new ArgumentException(Resources.ValueNotDecimalException, "value");
             }
 
-            try{
+            try
+            {
                 iNumDigits = int.Parse(parameter.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture);
             }
-            catch{
-                throw new ArgumentException("TwoDecimalPlaceConverter numDigits parameter should be convertable to an integer specifying number of digits to round to");
+            catch
+            {
+                throw new ArgumentException(Resources.CannotConvertParameterToIntegerException, "parameter");
             }
 
             return Math.Round((decimal)value, iNumDigits);

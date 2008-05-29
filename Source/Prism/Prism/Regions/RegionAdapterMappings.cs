@@ -17,7 +17,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Prism.Interfaces;
+using Prism.Properties;
 
 namespace Prism.Regions
 {
@@ -27,6 +29,22 @@ namespace Prism.Regions
 
         public void RegisterMapping(Type controlType, IRegionAdapter adapter)
         {
+            if (controlType == null)
+            {
+                throw new ArgumentNullException("controlType");
+            }
+
+            if (adapter == null)
+            {
+                throw new ArgumentNullException("adapter");
+            }
+
+            if (mappings.ContainsKey(controlType))
+            {
+                throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture,
+                                                                  Resources.MappingExistsException, controlType.Name));
+            }
+
             mappings.Add(controlType, adapter);
         }
 

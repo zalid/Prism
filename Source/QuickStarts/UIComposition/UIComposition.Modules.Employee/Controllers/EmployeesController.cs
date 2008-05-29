@@ -46,11 +46,11 @@ namespace UIComposition.Modules.Employee.Controllers
                 IRegionManager detailsRegionManager = detailsRegion.Add(detailsPresenter.View, employee.EmployeeId.ToString(), true);
                 IRegion region = detailsRegionManager.GetRegion(RegionNames.TabRegion);
                 region.Add(projectsListPresenter.View, "CurrentProjectsView");
-                detailsRegion.Show(detailsPresenter.View);
+                detailsRegion.Activate(detailsPresenter.View);
             }
             else
             {
-                detailsRegion.Show(existingView);
+                detailsRegion.Activate(existingView);
             }
         }
     }

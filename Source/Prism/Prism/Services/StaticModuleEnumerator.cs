@@ -40,13 +40,14 @@ namespace Prism.Services
             return _modules.Where(moduleInfo => moduleInfo.ModuleName == moduleName).ToArray();
         }
 
-        public void AddModule(Type moduleType, params string[] dependsOn)
+        public StaticModuleEnumerator AddModule(Type moduleType, params string[] dependsOn)
         {
             ModuleInfo moduleInfo = new ModuleInfo(moduleType.Assembly.Location
                                   , moduleType.FullName
                                   , moduleType.Name
                                   , dependsOn);
             _modules.Add(moduleInfo);
+            return this;
         }
     }
 }

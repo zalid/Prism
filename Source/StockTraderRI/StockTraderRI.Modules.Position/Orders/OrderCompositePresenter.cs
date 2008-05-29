@@ -35,6 +35,7 @@ namespace StockTraderRI.Modules.Position.Orders
             _orderDetailsPresenter = orderDetailsPresenter;
             _orderDetailsPresenter.CloseViewRequested += _orderPresenter_CloseViewRequested;
             _view = orderCompositeView;
+            orderCommandsView.Model = _orderDetailsPresenter.Model;
             _view.SetDetailView((UIElement)_orderDetailsPresenter.View);
             _view.SetCommandView(orderCommandsView);
             _view.IsActiveChanged += compositeView_IsActiveChanged;

@@ -21,6 +21,7 @@ using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Prism.Interfaces;
 using Prism.Services;
+using System.Security.Policy;
 
 namespace Prism.Tests.Services
 {
@@ -189,5 +190,29 @@ namespace Prism.Tests.Services
             Assert.IsNull(loadedAssembly);
         }
 
+        [TestMethod]
+        public void CreateChildAppDomainHasParentEvidenceAndSetup()
+        {
+            TestableDirectoryLookupModuleEnumerator enumerator = new TestableDirectoryLookupModuleEnumerator();
+            Evidence parentEvidence = new Evidence();
+            AppDomainSetup parentSetup = new AppDomainSetup();
+            parentSetup.ApplicationName = "Test Parent";
+            AppDomain parentAppDomain = AppDomain.CreateDomain("Parent", parentEvidence, parentSetup);
+            AppDomain childDomain = enumerator.BuildChildDomain(parentAppDomain);
+            Assert.AreEqual(parentEvidence.Count, childDomain.Evidence.Count);
+            Assert.AreEqual("Test Parent", childDomain.SetupInformation.ApplicationName);
+            Assert.AreNotEqual(AppDomain.CurrentDomain.Evidence.Count, childDomain.Evidence.Count);
+            Assert.AreNotEqual(AppDomain.CurrentDomain.SetupInformation.ApplicationName, childDomain.SetupInformation.ApplicationName);
+        }
+    }
+
+    public class TestableDirectoryLookupModuleEnumerator : DirectoryLookupModuleEnumerator
+    {
+        public TestableDirectoryLookupModuleEnumerator() : base("dummy") {}
+
+        public new AppDomain BuildChildDomain(AppDomain currentDomain)
+        {
+            return base.BuildChildDomain(currentDomain);
+        }
     }
 }

@@ -23,19 +23,17 @@ namespace Prism.Interfaces
     {
         ICollectionView Views { get; }
         IRegionManager Add(object view);
-        IRegionManager Add(object view, string name);
-        IRegionManager Add(object view, string name, bool createRegionManagerScope);
+        IRegionManager Add(object view, string viewName);
+        IRegionManager Add(object view, string viewName, bool createRegionManagerScope);
         void Remove(object view);
-        void Show(object view);
+        void Activate(object view);
         /// <summary>
-        /// Returns the view instance that was added to the region using a specific name.
+        /// Returns the view instance that was added to the region using a specific viewName.
         /// </summary>
-        /// <param name="name">The name used when adding the view to the region</param>
-        /// <returns>Returns the named view or <see langword="null"/> if the view with <paramref name="name"/> does not exist.</returns>
-        object GetView(string name);
+        /// <param name="viewName">The name used when adding the view to the region</param>
+        /// <returns>Returns the named view or <see langword="null"/> if the view with <paramref name="viewName"/> does not exist.</returns>
+        object GetView(string viewName);
 
-        //event EventHandler<RegionViewEventArgs> ViewActivated;
-        //event EventHandler<RegionViewEventArgs> ViewDeactivated;
         IRegionManager RegionManager { set; }
     }
 }

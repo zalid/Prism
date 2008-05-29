@@ -15,22 +15,29 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using Prism.Interfaces;
 using System.Windows.Controls.Primitives;
+using Prism.Interfaces;
+using Prism.Properties;
+using System.Windows.Data;
 
 namespace Prism.Regions
 {
     public class ItemsControlRegionAdapter : IRegionAdapter
     {
-        public IRegion Initialize(DependencyObject obj)
+        public IRegion Initialize(DependencyObject controlToWrap)
         {
-            ItemsControl control = obj as ItemsControl;
+            ItemsControl control = controlToWrap as ItemsControl;
             IRegion region = null;
 
             if (control != null)
             {
+                if (control.ItemsSource != null || (BindingOperations.GetBinding(control, ItemsControl.ItemsSourceProperty) != null))
+                    throw new InvalidOperationException(Resources.ItemsControlHasItemsSourceException);
+
                 Selector selector = control as Selector;
                 if (selector != null)
                     selector.IsSynchronizedWithCurrentItem = true;

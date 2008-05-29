@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.Windows;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Prism.Commands;
+using Prism.Events;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.News.Article;
@@ -37,7 +37,9 @@ namespace StockTraderRI.Modules.News.Tests.Controllers
         {
             var regionManagerService = new MockRegionManager();
             var presenter = new MockArticlePresenter();
-            var controller = new NewsController(regionManagerService, presenter, new MockStockTraderRICommandProxy());
+            var eventAggregator = new MockEventAggregator();
+            eventAggregator.AddMapping<TickerSymbolSelectedEvent>(new MockTickerSymbolSelectedEvent());
+            var controller = new NewsController(regionManagerService, presenter, eventAggregator);
 
             controller.ShowNews("Test");
 
@@ -45,46 +47,20 @@ namespace StockTraderRI.Modules.News.Tests.Controllers
             Assert.AreEqual("Test", presenter.SetTickerSymbolArgumentCompanySymbol);
         }
 
-
         [TestMethod]
-        [Ignore]
-        public void WhenViewWithSameNameExistsInRegionDoesNotCreatePresenter()
-        {
-            var regionManager = new MockRegionManager();
-            regionManager.MockNewsRegion.GetViewReturnValue = new MockArticleView();
-            var presenter = new MockArticlePresenter();
-            var controller = new NewsController(regionManager, presenter, new MockStockTraderRICommandProxy());
-
-            controller.ShowNews("EXISTING");
-
-            Assert.AreEqual("News.EXISTING", regionManager.MockNewsRegion.GetViewArgumentName);
-            Assert.IsNull(presenter.SetTickerSymbolArgumentCompanySymbol);
-        }
-
-        [TestMethod]
-        [Ignore]
-        public void WhenViewWithSameTitleExistsInRegionShowTheOldOneAgain()
-        {
-            var regionManager = new MockRegionManager();
-            UIElement view = new MockArticleView();
-            regionManager.MockNewsRegion.GetViewReturnValue = view;
-
-            var controller = new NewsController(regionManager, null, new MockStockTraderRICommandProxy());
-
-            controller.ShowNews("EXISTING");
-
-            Assert.AreSame(view, regionManager.MockNewsRegion.ShowArgumentView);
-        }
-
-        [TestMethod]
-        public void ControllerShowNewsWhenExecutingGlobalCommandInstance()
+        public void ControllerShowNewsWhenRasingGlobalEvent()
         {
             var presenter = new MockArticlePresenter();
-            var commands = new MockStockTraderRICommandProxy();
-            var controller = new NewsController(new MockRegionManager(), presenter, commands);
+            var eventAggregator = new MockEventAggregator();
+            var tickerSymbolSelectedEvent = new MockTickerSymbolSelectedEvent();
+            eventAggregator.AddMapping<TickerSymbolSelectedEvent>(tickerSymbolSelectedEvent);
+            var controller = new NewsController(new MockRegionManager(), presenter, eventAggregator);
+            
+            controller.Run();
 
-            commands.ShowNewsCommand.Execute("TEST_SYMBOL");
-            Assert.IsNotNull(presenter.SetTickerSymbolArgumentCompanySymbol);
+            Assert.IsNotNull(tickerSymbolSelectedEvent.SubscribeArgumentAction);
+
+            tickerSymbolSelectedEvent.SubscribeArgumentAction("TEST_SYMBOL");
             Assert.AreEqual("TEST_SYMBOL", presenter.SetTickerSymbolArgumentCompanySymbol);
         }
 
@@ -92,12 +68,13 @@ namespace StockTraderRI.Modules.News.Tests.Controllers
         public void ShouldNotifyReaderWhenCurrentNewsArticleChanges()
         {
             var presenter = new MockArticlePresenter();
-            var commands = new MockStockTraderRICommandProxy();
+            var eventAggregator = new MockEventAggregator();
+            eventAggregator.AddMapping<TickerSymbolSelectedEvent>(new MockTickerSymbolSelectedEvent());
             var newsReaderPresenter = new MockNewsReaderPresenter();
 
-            var controller = new NewsController(new MockRegionManager(), presenter, commands, newsReaderPresenter);
+            var controller = new NewsController(new MockRegionManager(), presenter, eventAggregator, newsReaderPresenter);
 
-            controller.CurrentNewsArticleChanged(new NewsArticle() {Title = "SomeTitle", Body = "Newsbody"});
+            controller.CurrentNewsArticleChanged(new NewsArticle() { Title = "SomeTitle", Body = "Newsbody" });
 
             Assert.IsTrue(newsReaderPresenter.SetNewsArticleCalled);
         }
@@ -106,10 +83,11 @@ namespace StockTraderRI.Modules.News.Tests.Controllers
         public void ControllerShowNewsViewWhenArticlePresenterReceivesEvent()
         {
             var presenter = new MockArticlePresenter();
-            var commands = new MockStockTraderRICommandProxy();
+            var eventAggregator = new MockEventAggregator();
+            eventAggregator.AddMapping<TickerSymbolSelectedEvent>(new MockTickerSymbolSelectedEvent());
             var newsReaderPresenter = new MockNewsReaderPresenter();
 
-            var controller = new NewsController(new MockRegionManager(), presenter, commands, newsReaderPresenter);
+            var controller = new NewsController(new MockRegionManager(), presenter, eventAggregator, newsReaderPresenter);
 
             controller.ShowNewsReader();
 
@@ -130,17 +108,8 @@ namespace StockTraderRI.Modules.News.Tests.Controllers
                 get { return MockArticleView; }
             }
 
-            public INewsController Controller { get; set;}
+            public INewsController Controller { get; set; }
 
-        }
-
-        class MockStockTraderRICommandProxy : StockTraderRICommandProxy
-        {
-            readonly CompositeCommand _showNewsCommand = new CompositeCommand();
-            public override CompositeCommand ShowNewsCommand
-            {
-                get { return _showNewsCommand; }
-            }
         }
 
         class MockArticlePresenterUnityContainer : IUnityContainer
@@ -351,17 +320,29 @@ namespace StockTraderRI.Modules.News.Tests.Controllers
             #endregion
 
         }
+
+        internal class MockTickerSymbolSelectedEvent : TickerSymbolSelectedEvent
+        {
+            public Action<string> SubscribeArgumentAction;
+            public Predicate<string> SubscribeArgumentFilter;
+            public override SubscriptionToken Subscribe(Action<string> action, Prism.Interfaces.ThreadOption threadOption, bool keepSubscriberReferenceAlive, Predicate<string> filter)
+            {
+                SubscribeArgumentAction = action;
+                SubscribeArgumentFilter = filter;
+                return null;
+            }
+        }
     }
 
     internal class MockNewsReaderPresenter : INewsReaderPresenter
     {
         public bool SetNewsArticleCalled { get; set; }
 
-        public bool ShowWasCalled{ get; private set; }
+        public bool ShowWasCalled { get; private set; }
 
         public void SetNewsArticle(NewsArticle article)
         {
-            SetNewsArticleCalled = true;    
+            SetNewsArticleCalled = true;
         }
 
         public void Show()
@@ -370,5 +351,5 @@ namespace StockTraderRI.Modules.News.Tests.Controllers
         }
     }
 
-   
+
 }

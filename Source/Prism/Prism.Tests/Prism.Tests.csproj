@@ -84,6 +84,9 @@
     <Compile Include="Events\EventFixture.cs" />
     <Compile Include="Events\WeakDelegateFixture.cs" />
     <Compile Include="Events\WPFThreadHelper.cs" />
+    <Compile Include="Logging\TextLoggerFixture.cs" />
+    <Compile Include="Logging\EmptyLoggerFixture.cs" />
+    <Compile Include="Logging\TraceLoggerFixture.cs" />
     <Compile Include="Mocks\MockConfigurationStore.cs" />
     <Compile Include="Mocks\MockRegionAdapter.cs" />
     <Compile Include="Regions\ContentControlRegionAdapterFixture.cs" />
