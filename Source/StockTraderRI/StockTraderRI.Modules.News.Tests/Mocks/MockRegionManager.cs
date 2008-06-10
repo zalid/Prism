@@ -17,46 +17,25 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows;
-using Prism.Interfaces;
+using Microsoft.Practices.Composite.Regions;
 
 namespace StockTraderRI.Modules.News.Tests.Mocks
 {
     public class MockRegionManager : IRegionManager
     {
-        public string GetRegionArgumentRegionName;
+        private IDictionary<string, IRegion> _regions = new Dictionary<string, IRegion>();
 
-        public MockNewsRegion MockNewsRegion = new MockNewsRegion();
-
-        public void Register(string regionName, IRegion region)
+        public IDictionary<string, IRegion> Regions
         {
-            throw new NotImplementedException();
+            get { return _regions; }
         }
 
-        public IRegion GetRegion(string regionName)
-        {
-            GetRegionArgumentRegionName = regionName;
-            return MockNewsRegion;
-        }
-
-        public bool HasRegion(string regionName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CreateRegion(DependencyObject containerElement, string regionName)
+        public void AttachNewRegion(object regionTarget, string regionName)
         {
             throw new NotImplementedException();
         }
 
         public IRegionManager CreateRegionManager()
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public void Unregister(string regionName)
         {
             throw new NotImplementedException();
         }
@@ -83,7 +62,7 @@ namespace StockTraderRI.Modules.News.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public ICollectionView Views
+        public IViewsCollection Views
         {
             get { throw new NotImplementedException(); }
         }
@@ -91,6 +70,11 @@ namespace StockTraderRI.Modules.News.Tests.Mocks
         public void Activate(object view)
         {
             ShowArgumentView = view;
+        }
+
+        public void Deactivate(object view)
+        {
+            throw new NotImplementedException();
         }
 
         public IRegionManager Add(object view, string viewName)
@@ -114,7 +98,14 @@ namespace StockTraderRI.Modules.News.Tests.Mocks
         public IRegionManager RegionManager
         {
             set { throw new NotImplementedException(); }
+            get { throw new NotImplementedException();}
         }
+
+        public IViewsCollection ActiveViews
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         #endregion
     }
 }

@@ -11,7 +11,7 @@
 		<Setter Property="Foreground" Value="#FFBDDAF2"/>
 		<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
 		<Setter Property="VerticalContentAlignment" Value="Stretch"/>
-        <Setter Property="Header" Value="{Binding Content.HeaderInfo, RelativeSource={RelativeSource Self}}" />
+        <Setter Property="Header" Value="{Binding Content.DataContext.HeaderInfo, RelativeSource={RelativeSource Self}}" />
         <Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type TabItem}">

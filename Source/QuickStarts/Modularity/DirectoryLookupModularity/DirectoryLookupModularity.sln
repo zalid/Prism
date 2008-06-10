@@ -17,17 +17,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleC", "ModuleC\ModuleC.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleD", "ModuleD\ModuleD.csproj", "{54F9C4FC-2B30-40F0-8335-E880C640548E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Prism", "Prism", "{9AADB34A-193E-408A-8871-B314314D0179}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Composite Application Library", "Composite Application Library", "{9AADB34A-193E-408A-8871-B314314D0179}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism", "..\..\..\Prism\Prism\Prism.csproj", "{E20361F8-7B3F-437D-8799-EDE1FB7B15C1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.Interfaces", "..\..\..\Prism\Prism.Interfaces\Prism.Interfaces.csproj", "{C4E0705E-7D35-441A-BC04-6F4E5D25FD60}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.UnityContainerAdapter", "..\..\..\Prism\Prism.UnityContainerAdapter\Prism.UnityContainerAdapter.csproj", "{17831F3B-6B82-4916-BD2B-2CE2071EA622}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.Wpf", "..\..\..\CAL\Composite.Wpf\Composite.Wpf.csproj", "{F807062D-6FC9-4FF0-A9F5-5F94653EDC4D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", "{1BB487DB-F7E2-4347-B6FC-D62EC3865F99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prism.Tests", "..\..\..\Prism\Prism.Tests\Prism.Tests.csproj", "{BBC4F378-C99A-4F50-B0E6-E3B97B9F22CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.Wpf.Tests", "..\..\..\CAL\Composite.Wpf.Tests\Composite.Wpf.Tests.csproj", "{BBC4F378-C99A-4F50-B0E6-E3B97B9F22CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.UnityExtensions", "..\..\..\CAL\Composite.UnityExtensions\Composite.UnityExtensions.csproj", "{17831F3B-6B82-4916-BD2B-2CE2071EA622}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite", "..\..\..\CAL\Composite\Composite.csproj", "{77138947-1D13-4E22-AEE0-5D0DD046CA34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,30 +55,30 @@ Global
 		{54F9C4FC-2B30-40F0-8335-E880C640548E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54F9C4FC-2B30-40F0-8335-E880C640548E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54F9C4FC-2B30-40F0-8335-E880C640548E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E20361F8-7B3F-437D-8799-EDE1FB7B15C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E20361F8-7B3F-437D-8799-EDE1FB7B15C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E20361F8-7B3F-437D-8799-EDE1FB7B15C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E20361F8-7B3F-437D-8799-EDE1FB7B15C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4E0705E-7D35-441A-BC04-6F4E5D25FD60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4E0705E-7D35-441A-BC04-6F4E5D25FD60}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4E0705E-7D35-441A-BC04-6F4E5D25FD60}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4E0705E-7D35-441A-BC04-6F4E5D25FD60}.Release|Any CPU.Build.0 = Release|Any CPU
-		{17831F3B-6B82-4916-BD2B-2CE2071EA622}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{17831F3B-6B82-4916-BD2B-2CE2071EA622}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{17831F3B-6B82-4916-BD2B-2CE2071EA622}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{17831F3B-6B82-4916-BD2B-2CE2071EA622}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F807062D-6FC9-4FF0-A9F5-5F94653EDC4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F807062D-6FC9-4FF0-A9F5-5F94653EDC4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F807062D-6FC9-4FF0-A9F5-5F94653EDC4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F807062D-6FC9-4FF0-A9F5-5F94653EDC4D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BBC4F378-C99A-4F50-B0E6-E3B97B9F22CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BBC4F378-C99A-4F50-B0E6-E3B97B9F22CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBC4F378-C99A-4F50-B0E6-E3B97B9F22CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBC4F378-C99A-4F50-B0E6-E3B97B9F22CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17831F3B-6B82-4916-BD2B-2CE2071EA622}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17831F3B-6B82-4916-BD2B-2CE2071EA622}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17831F3B-6B82-4916-BD2B-2CE2071EA622}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17831F3B-6B82-4916-BD2B-2CE2071EA622}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77138947-1D13-4E22-AEE0-5D0DD046CA34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77138947-1D13-4E22-AEE0-5D0DD046CA34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77138947-1D13-4E22-AEE0-5D0DD046CA34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77138947-1D13-4E22-AEE0-5D0DD046CA34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{E20361F8-7B3F-437D-8799-EDE1FB7B15C1} = {9AADB34A-193E-408A-8871-B314314D0179}
-		{C4E0705E-7D35-441A-BC04-6F4E5D25FD60} = {9AADB34A-193E-408A-8871-B314314D0179}
+		{F807062D-6FC9-4FF0-A9F5-5F94653EDC4D} = {9AADB34A-193E-408A-8871-B314314D0179}
 		{17831F3B-6B82-4916-BD2B-2CE2071EA622} = {9AADB34A-193E-408A-8871-B314314D0179}
+		{77138947-1D13-4E22-AEE0-5D0DD046CA34} = {9AADB34A-193E-408A-8871-B314314D0179}
 		{BBC4F378-C99A-4F50-B0E6-E3B97B9F22CC} = {1BB487DB-F7E2-4347-B6FC-D62EC3865F99}
 	EndGlobalSection
 EndGlobal

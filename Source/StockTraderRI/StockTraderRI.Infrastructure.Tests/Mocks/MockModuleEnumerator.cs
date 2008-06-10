@@ -16,7 +16,7 @@
 //===============================================================================
 
 using System.Collections.Generic;
-using Prism.Interfaces;
+using Microsoft.Practices.Composite.Modularity;
 
 namespace StockTraderRI.Infrastructure.Tests.Mocks
 {

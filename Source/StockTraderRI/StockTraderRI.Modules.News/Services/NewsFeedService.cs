@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Xml.Linq;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Infrastructure.Models;
@@ -32,22 +33,16 @@ namespace StockTraderRI.Modules.News.Services
         public NewsFeedService()
         {
             var document = XDocument.Parse(Resources.News);
-            foreach (var newsItem in document.Descendants("NewsItem"))
-            {
-                var tickerSymbol = newsItem.Attribute("TickerSymbol").Value;
-                if (newsData.ContainsKey(tickerSymbol) == false)
+            newsData = document.Descendants("NewsItem")
+                .GroupBy(x => x.Attribute("TickerSymbol").Value,
+                x => new NewsArticle
                 {
-                    newsData.Add(tickerSymbol, new List<NewsArticle>());
-                }
-                newsData[tickerSymbol].Add(new NewsArticle()
-                {
-                    PublishedDate = DateTime.Parse(newsItem.Attribute("PublishedDate").Value, CultureInfo.CurrentCulture),
-                    Title = newsItem.Element("Title").Value,
-                    Body = newsItem.Element("Body").Value,
-                    IconUri = newsItem.Attribute("IconUri") != null ? newsItem.Attribute("IconUri").Value : null
-                });
-
-            }
+                    PublishedDate = DateTime.Parse(x.Attribute("PublishedDate").Value, CultureInfo.InvariantCulture),
+                    Title = x.Element("Title").Value,
+                    Body = x.Element("Body").Value,
+                    IconUri = x.Attribute("IconUri") != null ? x.Attribute("IconUri").Value : null
+                })
+                .ToDictionary(group => group.Key, group => group.ToList());
         }
 
         #region INewsFeed Members

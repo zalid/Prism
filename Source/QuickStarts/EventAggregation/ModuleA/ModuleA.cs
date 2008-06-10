@@ -15,12 +15,9 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Unity;
-using Prism.Interfaces;
 
 namespace ModuleA
 {
@@ -34,7 +31,7 @@ namespace ModuleA
         public void Initialize()
         {
             var addFundView = Container.Resolve<AddFundView>();
-            RegionManager.GetRegion("LeftRegion").Add(addFundView);
+            RegionManager.Regions["LeftRegion"].Add(addFundView);
         }
 
         public IUnityContainer Container { get; private set; }

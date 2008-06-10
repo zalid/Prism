@@ -44,14 +44,14 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         [TestMethod]
         public void CanInitPresenter()
         {
-            OrdersPresenter presenter = CreatePresenter();
+            OrdersPresentationModel presentationModel = CreatePresenter();
 
-            Assert.AreEqual<IOrdersView>(view, presenter.View);
+            Assert.AreEqual<IOrdersView>(view, presentationModel.View);
         }
 
-        private OrdersPresenter CreatePresenter()
+        private OrdersPresentationModel CreatePresenter()
         {
-            return new OrdersPresenter(view);
+            return new OrdersPresentationModel(view);
         }
     }
 }

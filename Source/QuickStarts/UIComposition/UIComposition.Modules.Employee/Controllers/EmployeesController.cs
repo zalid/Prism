@@ -15,25 +15,28 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-
+using System.Globalization;
+using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Unity;
-using Prism.Interfaces;
 using UIComposition.Modules.Project;
+
 namespace UIComposition.Modules.Employee.Controllers
 {
     public class EmployeesController : IEmployeesController
     {
         private IUnityContainer container;
+        private IRegionManager regionManager;
 
-        public EmployeesController(IUnityContainer container)
+        public EmployeesController(IUnityContainer container, IRegionManager regionManager)
         {
             this.container = container;
+            this.regionManager = regionManager;
         }
 
-        public virtual void OnEmployeeSelected(IRegionManager regionManager, BusinessEntities.Employee employee)
+        public virtual void OnEmployeeSelected(BusinessEntities.Employee employee)
         {
-            IRegion detailsRegion = regionManager.GetRegion(RegionNames.DetailsRegion);
-            object existingView = detailsRegion.GetView(employee.EmployeeId.ToString());
+            IRegion detailsRegion = regionManager.Regions[RegionNames.DetailsRegion];
+            object existingView = detailsRegion.GetView(employee.EmployeeId.ToString(CultureInfo.InvariantCulture));
 
             if (existingView == null)
             {
@@ -43,8 +46,8 @@ namespace UIComposition.Modules.Employee.Controllers
                 IEmployeesDetailsPresenter detailsPresenter = this.container.Resolve<IEmployeesDetailsPresenter>();
                 detailsPresenter.SetSelectedEmployee(employee);
 
-                IRegionManager detailsRegionManager = detailsRegion.Add(detailsPresenter.View, employee.EmployeeId.ToString(), true);
-                IRegion region = detailsRegionManager.GetRegion(RegionNames.TabRegion);
+                IRegionManager detailsRegionManager = detailsRegion.Add(detailsPresenter.View, employee.EmployeeId.ToString(CultureInfo.InvariantCulture), true);
+                IRegion region = detailsRegionManager.Regions[RegionNames.TabRegion];
                 region.Add(projectsListPresenter.View, "CurrentProjectsView");
                 detailsRegion.Activate(detailsPresenter.View);
             }

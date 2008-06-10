@@ -15,15 +15,8 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UIComposition.Infrastructure;
-using Prism.Interfaces;
 using System.Windows.Controls;
 using UIComposition.Modules.Project;
-using System.Collections.ObjectModel;
 
 namespace UIComposition.Modules.Employee.Tests.Mocks
 {

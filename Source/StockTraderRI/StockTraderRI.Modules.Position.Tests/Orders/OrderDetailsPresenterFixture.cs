@@ -16,22 +16,15 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.ComponentModel;
-using StockTraderRI.Modules.Position.Models;
-using StockTraderRI.Modules.Position.Tests.Mocks;
-using StockTraderRI.Infrastructure.Models;
-using StockTraderRI.Modules.Position.Orders;
 using StockTraderRI.Infrastructure;
-using System.Windows.Input;
 using StockTraderRI.Infrastructure.Interfaces;
-using Prism.Commands;
-using System.Xml;
-using StockTraderRI.Modules.Position.PresentationModels;
+using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.Position.Interfaces;
+using StockTraderRI.Modules.Position.Models;
+using StockTraderRI.Modules.Position.Orders;
+using StockTraderRI.Modules.Position.Tests.Mocks;
+using System.ComponentModel;
 
 namespace StockTraderRI.Modules.Position.Tests.Orders
 {
@@ -42,65 +35,57 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         public void PresenterProvidesViewModelToBindTo()
         {
             var view = new MockOrderDetailsView();
-            using (var presenter = new OrderDetailsPresenter(view, null, null, new MockStockTraderRICommandProxy()))
-            {
-                Assert.IsNotNull(view.Model);
-            }
+            var presenter = new OrderDetailsPresentationModel(view, null, null);
+
+            Assert.IsNotNull(view.Model);
         }
 
         [TestMethod]
         public void PresenterCreatesPublicSubmitCommand()
         {
-            using (var presenter = new TestableOrderDetailsPresenter(new MockOrderDetailsView(), null))
-            {
-                Assert.IsNotNull(presenter.SubmitCommand);
-            }
+            var presenter = new TestableOrderDetailsPresenter(new MockOrderDetailsView(), null);
+
+            Assert.IsNotNull(presenter.SubmitCommand);
         }
 
         [TestMethod]
         public void CanExecuteChangedIsRaisedForSubmitCommandWhenModelChanges()
         {
             var view = new MockOrderDetailsView();
-              bool canExecuteChanged = false;
+            bool canExecuteChanged = false;
 
-            using (var presenter = new TestableOrderDetailsPresenter(view, null))
-            {
-                presenter.SubmitCommand.CanExecuteChanged += delegate { canExecuteChanged = true; };
+            var presenter = new TestableOrderDetailsPresenter(view, null);
 
-                view.Model.Shares = 2;
+            presenter.SubmitCommand.CanExecuteChanged += delegate { canExecuteChanged = true; };
 
-                Assert.IsTrue(canExecuteChanged);
-            }
+            presenter.Shares = 2;
+
+            Assert.IsTrue(canExecuteChanged);
         }
 
         [TestMethod]
         public void CannotSubmitWhenSharesIsNotPositive()
         {
-            using (var presenter = new TestableOrderDetailsPresenter(new MockOrderDetailsView(), null))
-            {
-                var model = presenter.View.Model;
+            var presenter = new TestableOrderDetailsPresenter(new MockOrderDetailsView(), null);
 
-                model.Shares = 2;
-                model.Shares = 2;
-                Assert.IsTrue(presenter.SubmitCommand.CanExecute(null));
+            presenter.Shares = 2;
+            presenter.StopLimitPrice = 2;
+            Assert.IsTrue(presenter.SubmitCommand.CanExecute(null));
 
-                model.Shares = 0;
-                Assert.IsFalse(presenter.SubmitCommand.CanExecute(null));
-            }
+            presenter.Shares = 0;
+            Assert.IsFalse(presenter.SubmitCommand.CanExecute(null));
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void SubmitThrowsIfCanExecuteIsFalse()
         {
-            using (var presenter = new TestableOrderDetailsPresenter(new MockOrderDetailsView(), null))
-            {
-                var model = presenter.View.Model;
-                model.Shares = 0;
-                Assert.IsFalse(presenter.SubmitCommand.CanExecute(null));
+            var presenter = new TestableOrderDetailsPresenter(new MockOrderDetailsView(),
+                                                              new MockAccountPositionService());
+            presenter.Shares = 0;
+            Assert.IsFalse(presenter.SubmitCommand.CanExecute(null));
 
-                presenter.SubmitCommand.Execute(null);
-            }
+            presenter.SubmitCommand.Execute(null);
         }
 
         [TestMethod]
@@ -108,17 +93,15 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         {
             bool closeViewRaised = false;
 
-            using (var presenter = new TestableOrderDetailsPresenter(new MockOrderDetailsView(), null))
+            var presenter = new TestableOrderDetailsPresenter(new MockOrderDetailsView(), null);
+            presenter.CloseViewRequested += delegate
             {
-                presenter.CloseViewRequested += delegate
-                {
-                    closeViewRaised = true;
-                };
+                closeViewRaised = true;
+            };
 
-                presenter.CancelCommand.Execute(null);
+            presenter.CancelCommand.Execute(null);
 
-                Assert.IsTrue(closeViewRaised);
-            }
+            Assert.IsTrue(closeViewRaised);
         }
 
         [TestMethod]
@@ -126,19 +109,20 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         {
             bool closeViewRaised = false;
 
-            using (var presenter = new TestableOrderDetailsPresenter(new MockOrderDetailsView(), null))
+            var presenter = new TestableOrderDetailsPresenter(new MockOrderDetailsView(),
+                                                              new MockAccountPositionService());
+            presenter.CloseViewRequested += delegate
             {
-                presenter.CloseViewRequested += delegate
-                {
-                    closeViewRaised = true;
-                };
+                closeViewRaised = true;
+            };
 
-                presenter.Model.Shares = 1;
-                Assert.IsTrue(presenter.SubmitCommand.CanExecute(null));
-                presenter.SubmitCommand.Execute(null);
+            presenter.TransactionType = TransactionType.Buy;
+            presenter.Shares = 1;
+            presenter.StopLimitPrice = 1;
+            Assert.IsTrue(presenter.SubmitCommand.CanExecute(null));
+            presenter.SubmitCommand.Execute(null);
 
-                Assert.IsTrue(closeViewRaised);
-            }
+            Assert.IsTrue(closeViewRaised);
         }
 
         [TestMethod]
@@ -146,81 +130,69 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         {
             var accountPositionService = new MockAccountPositionService();
             accountPositionService.AddPosition(new AccountPosition("TESTFUND", 10m, 15));
-            using (var presenter = new TestableOrderDetailsPresenter(new MockOrderDetailsView(), accountPositionService))
-            {
-                var model = presenter.View.Model;
+            var presenter = new TestableOrderDetailsPresenter(new MockOrderDetailsView(), accountPositionService);
 
-                model.TickerSymbol = "TESTFUND";
-                model.TransactionType = TransactionType.Sell;
-                model.Shares = 5;
-                Assert.IsTrue(presenter.SubmitCommand.CanExecute(null));
+            presenter.TickerSymbol = "TESTFUND";
+            presenter.TransactionType = TransactionType.Sell;
+            presenter.Shares = 5;
+            presenter.StopLimitPrice = 1;
+            Assert.IsTrue(presenter.SubmitCommand.CanExecute(null));
 
-                model.Shares = 16;
-                Assert.IsFalse(presenter.SubmitCommand.CanExecute(null));
-            }
+            presenter.Shares = 16;
+            Assert.IsFalse(presenter.SubmitCommand.CanExecute(null));
         }
 
         [TestMethod]
         public void PresenterCreatesCallSetOrderTypes()
         {
             var view = new MockOrderDetailsView();
-            using (var presenter = new OrderDetailsPresenter(view, null, null, new MockStockTraderRICommandProxy()))
-            {
-                Assert.IsNotNull(view.Model.AvailableOrderTypes);
-                Assert.IsTrue(view.Model.AvailableOrderTypes.Count > 0);
-                Assert.AreEqual(Enum.GetValues(typeof(OrderType)).Length, view.Model.AvailableOrderTypes.Count);
+            var presenter = new OrderDetailsPresentationModel(view, null, null);
+            Assert.IsNotNull(presenter.AvailableOrderTypes);
+            Assert.IsTrue(presenter.AvailableOrderTypes.Count > 0);
+            Assert.AreEqual(Enum.GetValues(typeof(OrderType)).Length, presenter.AvailableOrderTypes.Count);
 
-            }
         }
 
         [TestMethod]
         public void PresenterCreatesCallSetTimeInForce()
         {
             var view = new MockOrderDetailsView();
-            using (var presenter = new OrderDetailsPresenter(view, null, null, new MockStockTraderRICommandProxy()))
-            {
-                Assert.IsNotNull(view.Model.AvailableTimesInForce);
-                Assert.IsTrue(view.Model.AvailableTimesInForce.Count > 0);
-                Assert.AreEqual(Enum.GetValues(typeof(TimeInForce)).Length, view.Model.AvailableTimesInForce.Count);
-            }
+            var presenter = new OrderDetailsPresentationModel(view, null, null);
+            Assert.IsNotNull(presenter.AvailableTimesInForce);
+            Assert.IsTrue(presenter.AvailableTimesInForce.Count > 0);
+            Assert.AreEqual(Enum.GetValues(typeof(TimeInForce)).Length, presenter.AvailableTimesInForce.Count);
         }
 
         [TestMethod]
         public void SetTransactionInfoShouldUpdateTheModel()
         {
             var view = new MockOrderDetailsView();
-            using (var presenter = new OrderDetailsPresenter(view, null, null, new MockStockTraderRICommandProxy()))
-            {
-                presenter.TransactionInfo = new TransactionInfo
-                                                {TickerSymbol = "T000", TransactionType = TransactionType.Sell};
+            var presenter = new OrderDetailsPresentationModel(view, new MockAccountPositionService(), null);
+            presenter.TransactionInfo = new TransactionInfo { TickerSymbol = "T000", TransactionType = TransactionType.Sell };
 
-                Assert.AreEqual("T000", presenter.Model.TickerSymbol);
-                Assert.AreEqual(TransactionType.Sell, presenter.Model.TransactionType);
-            }
+            Assert.AreEqual("T000", presenter.TickerSymbol);
+            Assert.AreEqual(TransactionType.Sell, presenter.TransactionType);
         }
 
         [TestMethod]
         public void PresenterUpdatesCommandsBasedOnActiveChangedOfView()
         {
             var view = new MockOrderDetailsView();
-            using (var presenter = new TestableOrderDetailsPresenter(view, null))
-            {
-                view.IsActive = true;
-                view.RaiseIsActiveChanged();
+            var presenter = new TestableOrderDetailsPresenter(view, null);
+            view.IsActive = true;
+            view.RaiseIsActiveChanged();
 
-                Assert.IsTrue(presenter.CancelCommand.IsActive);
+            Assert.IsTrue(presenter.CancelCommand.IsActive);
 
-                view.IsActive = false;
-                view.RaiseIsActiveChanged();
+            view.IsActive = false;
+            view.RaiseIsActiveChanged();
 
-                Assert.IsFalse(presenter.CancelCommand.IsActive);
+            Assert.IsFalse(presenter.CancelCommand.IsActive);
 
-                view.IsActive = true;
-                view.RaiseIsActiveChanged();
+            view.IsActive = true;
+            view.RaiseIsActiveChanged();
 
-                Assert.IsTrue(presenter.CancelCommand.IsActive);
-
-            }
+            Assert.IsTrue(presenter.CancelCommand.IsActive);
         }
 
         [TestMethod]
@@ -229,52 +201,82 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
             var view = new MockOrderDetailsView();
             view.IsActive = true;
 
-            using (var presenter = new TestableOrderDetailsPresenter(view, null))
-            {
-                Assert.IsTrue(presenter.CancelCommand.IsActive);
-            }
+            var presenter = new TestableOrderDetailsPresenter(view, null);
+
+            Assert.IsTrue(presenter.CancelCommand.IsActive);
         }
 
         [TestMethod]
         public void SubmitCallsServiceWithCorrectOrder()
         {
             var ordersService = new MockOrdersService();
-            using (var presenter = new TestableOrderDetailsPresenter(new MockOrderDetailsView(), null, ordersService, new MockStockTraderRICommandProxy()))
-            {
-                presenter.Model.Shares = 2;
-                presenter.Model.TickerSymbol = "AAAA";
-                presenter.Model.TransactionType = TransactionType.Buy;
-                presenter.Model.TimeInForce = TimeInForce.EndOfDay;
-                presenter.Model.OrderType = OrderType.Limit;
-                presenter.Model.StopLimitPrice = 15;
+            var presenter = new TestableOrderDetailsPresenter(new MockOrderDetailsView(),
+                                                              new MockAccountPositionService(), ordersService);
+            presenter.Shares = 2;
+            presenter.TickerSymbol = "AAAA";
+            presenter.TransactionType = TransactionType.Buy;
+            presenter.TimeInForce = TimeInForce.EndOfDay;
+            presenter.OrderType = OrderType.Limit;
+            presenter.StopLimitPrice = 15;
 
-                Assert.IsNull(ordersService.SubmitArgumentOrder);
-                presenter.SubmitCommand.Execute(null);
+            Assert.IsNull(ordersService.SubmitArgumentOrder);
+            presenter.SubmitCommand.Execute(null);
 
-                var submittedOrder = ordersService.SubmitArgumentOrder;
-                Assert.IsNotNull(submittedOrder);
-                Assert.AreEqual("AAAA", submittedOrder.TickerSymbol);
-                Assert.AreEqual(TransactionType.Buy, submittedOrder.TransactionType);
-                Assert.AreEqual(TimeInForce.EndOfDay, submittedOrder.TimeInForce);
-                Assert.AreEqual(OrderType.Limit, submittedOrder.OrderType);
-                Assert.AreEqual(15, submittedOrder.StopLimitPrice);
-            }
+            var submittedOrder = ordersService.SubmitArgumentOrder;
+            Assert.IsNotNull(submittedOrder);
+            Assert.AreEqual("AAAA", submittedOrder.TickerSymbol);
+            Assert.AreEqual(TransactionType.Buy, submittedOrder.TransactionType);
+            Assert.AreEqual(TimeInForce.EndOfDay, submittedOrder.TimeInForce);
+            Assert.AreEqual(OrderType.Limit, submittedOrder.OrderType);
+            Assert.AreEqual(15, submittedOrder.StopLimitPrice);
         }
 
         [TestMethod]
         public void VerifyTransactionInfoModificationsInOrderDetails()
         {
             var view = new MockOrderDetailsView();
-            var orderDetailsPresenter = new OrderDetailsPresenter(view, null, null, new MockStockTraderRICommandProxy());
+            var orderDetailsPresenter = new OrderDetailsPresentationModel(view, new MockAccountPositionService(), null);
             var transactionInfo = new TransactionInfo { TickerSymbol = "Fund0", TransactionType = TransactionType.Buy };
             orderDetailsPresenter.TransactionInfo = transactionInfo;
-            view.Model.TransactionType = TransactionType.Sell;
+            orderDetailsPresenter.TransactionType = TransactionType.Sell;
             Assert.AreEqual(TransactionType.Sell, transactionInfo.TransactionType);
-            
-            view.Model.TickerSymbol = "Fund1";
+
+            orderDetailsPresenter.TickerSymbol = "Fund1";
             Assert.AreEqual("Fund1", transactionInfo.TickerSymbol);
         }
 
+
+        [TestMethod]
+        public void CannotSubmitIfStopLimitZero()
+        {
+            var accountPositionService = new MockAccountPositionService();
+            accountPositionService.AddPosition(new AccountPosition("TESTFUND", 10m, 15));
+            var presenter = new TestableOrderDetailsPresenter(new MockOrderDetailsView(), accountPositionService);
+
+            presenter.TickerSymbol = "TESTFUND";
+            presenter.TransactionType = TransactionType.Sell;
+            presenter.Shares = 5;
+            presenter.StopLimitPrice = 1;
+            Assert.IsTrue(presenter.SubmitCommand.CanExecute(null));
+
+            presenter.StopLimitPrice = 0;
+            Assert.IsFalse(presenter.SubmitCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        public void ShouldSetStopLimitPriceInModel()
+        {
+            var accountPositionService = new MockAccountPositionService();
+            accountPositionService.AddPosition(new AccountPosition("TESTFUND", 10m, 15));
+            var presenter = new TestableOrderDetailsPresenter(new MockOrderDetailsView(), accountPositionService);
+
+            presenter.TickerSymbol = "TESTFUND";
+            presenter.TransactionType = TransactionType.Sell;
+            presenter.Shares = 5;
+            presenter.StopLimitPrice = 0;
+
+            Assert.AreEqual<string>("The stop limit price must be greater than 0", presenter["StopLimitPrice"]);
+        }
 
 
 
@@ -284,7 +286,21 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         //    var presenter = new TestableOrderDetailsPresenter(new MockOrderDetailsView(), null);
         //    Assert.IsTrue(StockTraderRICommands.SubmitOrderCommand.
         //}
-	
+        [TestMethod]
+        public void PropertyChangedIsRaisedWhenSharesIsChanged()
+        {
+            var presenter = new OrderDetailsPresentationModel(new MockOrderDetailsView(),null,null);
+            presenter.Shares = 5;
+
+            bool sharesPropertyChangedRaised = false;
+            presenter.PropertyChanged += delegate(object sender, PropertyChangedEventArgs e)
+            {
+                if (e.PropertyName == "Shares")
+                    sharesPropertyChangedRaised = true;
+            };
+            presenter.Shares = 0;
+            Assert.IsTrue(sharesPropertyChangedRaised);
+        }
     }
 
     internal class MockOrdersService : IOrdersService
@@ -297,28 +313,17 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         }
     }
 
-    class TestableOrderDetailsPresenter : OrderDetailsPresenter
+    class TestableOrderDetailsPresenter : OrderDetailsPresentationModel
     {
         public TestableOrderDetailsPresenter(IOrderDetailsView view, IAccountPositionService accountPositionService)
-          :  this (view, accountPositionService, new MockOrdersService(), new MockStockTraderRICommandProxy() )
+            : this(view, accountPositionService, new MockOrdersService())
         {
         }
 
-        public TestableOrderDetailsPresenter(IOrderDetailsView view, IAccountPositionService accountPositionService, IOrdersService ordersService, StockTraderRICommandProxy commandProxy)
-            : base(view, accountPositionService, ordersService, commandProxy)
+        public TestableOrderDetailsPresenter(IOrderDetailsView view, IAccountPositionService accountPositionService, IOrdersService ordersService)
+            : base(view, accountPositionService, ordersService)
         {
-            
-        }
 
-        public ActiveAwareDelegateCommand<string> SubmitCommand
-        {
-            get { return submitCommand; }
         }
-
-        public ActiveAwareDelegateCommand<string> CancelCommand
-        {
-            get { return cancelCommand; }
-        }
-
     }
 }

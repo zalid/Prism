@@ -16,9 +16,6 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Infrastructure.PresentationModels;
 
@@ -30,7 +27,10 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
 
         public MarketHistoryCollection GetPriceHistory(string tickerSymbol)
         {
-            return new MarketHistoryCollection { new MarketHistoryItem(new DateTime(1), 1.00m), new MarketHistoryItem(new DateTime(2), 2.00m) };
+            return new MarketHistoryCollection { 
+                new MarketHistoryItem { DateTimeMarker = new DateTime(1), Value = 1.00m }
+                , new MarketHistoryItem { DateTimeMarker = new DateTime(2), Value =  2.00m}
+            };
         }
 
         #endregion

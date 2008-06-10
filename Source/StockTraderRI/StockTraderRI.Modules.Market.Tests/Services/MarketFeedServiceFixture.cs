@@ -42,7 +42,7 @@ namespace StockTraderRI.Modules.Market.Tests.Services
         }
 
         [TestMethod]
-        public void ShouldFireUpdatedOnSinglePriceChange()
+        public void ShouldPublishUpdatedOnSinglePriceChange()
         {
             var eventAggregator = new MockPriceUpdatedEventAggregator();
 
@@ -51,7 +51,7 @@ namespace StockTraderRI.Modules.Market.Tests.Services
                 marketFeed.TestUpdatePrice("STOCK0", 30.00m, 1000);
             }
 
-            Assert.IsTrue(eventAggregator.MockMarketPriceUpdatedEvent.FireCalled);
+            Assert.IsTrue(eventAggregator.MockMarketPriceUpdatedEvent.PublishCalled);
         }
 
         [TestMethod]
@@ -94,7 +94,7 @@ namespace StockTraderRI.Modules.Market.Tests.Services
         }
 
         [TestMethod]
-        public void ShouldFireUpdatedAfterUpdatingPrices()
+        public void ShouldPublishUpdatedAfterUpdatingPrices()
         {
             var eventAggregator = new MockPriceUpdatedEventAggregator();
 
@@ -102,7 +102,7 @@ namespace StockTraderRI.Modules.Market.Tests.Services
             {
                 marketFeed.InvokeUpdatePrices();
             }
-            Assert.IsTrue(eventAggregator.MockMarketPriceUpdatedEvent.FireCalled);
+            Assert.IsTrue(eventAggregator.MockMarketPriceUpdatedEvent.PublishCalled);
         }
 
 
@@ -117,7 +117,7 @@ namespace StockTraderRI.Modules.Market.Tests.Services
         }
 
         [TestMethod]
-        public void UpdateShouldFireWithinRefreshInterval()
+        public void UpdateShouldPublishWithinRefreshInterval()
         {
             var eventAggregator = new MockPriceUpdatedEventAggregator();
 
@@ -127,12 +127,12 @@ namespace StockTraderRI.Modules.Market.Tests.Services
 
                 var callCompletedEvent = new System.Threading.ManualResetEvent(false);
 
-                eventAggregator.MockMarketPriceUpdatedEvent.FireCalledEvent +=
+                eventAggregator.MockMarketPriceUpdatedEvent.PublishCalledEvent +=
                         delegate { callCompletedEvent.Set(); };
 
                 callCompletedEvent.WaitOne(5000, true); // Wait up to 5 seconds
             }
-            Assert.IsTrue(eventAggregator.MockMarketPriceUpdatedEvent.FireCalled);
+            Assert.IsTrue(eventAggregator.MockMarketPriceUpdatedEvent.PublishCalled);
         }
 
         [TestMethod]
@@ -148,7 +148,7 @@ namespace StockTraderRI.Modules.Market.Tests.Services
         }
 
         [TestMethod]
-        public void FiredEventContainsTheUpdatedPriceList()
+        public void PublishedEventContainsTheUpdatedPriceList()
         {
             var eventAgregator = new MockPriceUpdatedEventAggregator();
             var marketFeed = new TestableMarketFeedService(eventAgregator);
@@ -156,8 +156,8 @@ namespace StockTraderRI.Modules.Market.Tests.Services
 
             marketFeed.InvokeUpdatePrices();
 
-            Assert.IsTrue(eventAgregator.MockMarketPriceUpdatedEvent.FireCalled);
-            var payload = eventAgregator.MockMarketPriceUpdatedEvent.FireArgumentPayload;
+            Assert.IsTrue(eventAgregator.MockMarketPriceUpdatedEvent.PublishCalled);
+            var payload = eventAgregator.MockMarketPriceUpdatedEvent.PublishArgumentPayload;
             Assert.IsNotNull(payload);
             Assert.IsTrue(payload.ContainsKey("STOCK0"));
             Assert.AreEqual(marketFeed.GetPrice("STOCK0"), payload["STOCK0"]);
@@ -201,21 +201,21 @@ namespace StockTraderRI.Modules.Market.Tests.Services
 
         public class MockMarketPricesUpdatedEvent : MarketPricesUpdatedEvent
         {
-            public bool FireCalled;
-            public IDictionary<string, decimal> FireArgumentPayload;
-            public EventHandler FireCalledEvent;
+            public bool PublishCalled;
+            public IDictionary<string, decimal> PublishArgumentPayload;
+            public EventHandler PublishCalledEvent;
 
-            private void OnFireCalledEvent(object sender, EventArgs args)
+            private void OnPublishCalledEvent(object sender, EventArgs args)
             {
-                if (FireCalledEvent != null)
-                    FireCalledEvent(sender, args);
+                if (PublishCalledEvent != null)
+                    PublishCalledEvent(sender, args);
             }
 
-            public override void Fire(IDictionary<string, decimal> payload)
+            public override void Publish(IDictionary<string, decimal> payload)
             {
-                FireCalled = true;
-                FireArgumentPayload = payload;
-                OnFireCalledEvent(this, EventArgs.Empty);
+                PublishCalled = true;
+                PublishArgumentPayload = payload;
+                OnPublishCalledEvent(this, EventArgs.Empty);
             }
         }
     }

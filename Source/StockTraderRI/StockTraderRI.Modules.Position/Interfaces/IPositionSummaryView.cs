@@ -19,17 +19,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Practices.Composite.Events;
 using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Infrastructure.Interfaces;
-using StockTraderRI.Modules.Position.PresentationModels;
-using Prism.Utility;
+using StockTraderRI.Modules.Position.PositionSummary;
 
 namespace StockTraderRI.Modules.Position.Interfaces
 {
     public interface IPositionSummaryView
     {
         event EventHandler<DataEventArgs<string>> TickerSymbolSelected;
-        PositionSummaryPresentationModel Model { get; set; }
+        IPositionSummaryPresentationModel Model { get; set; }
 
         void ShowTrendLine(ITrendLineView view);
     }

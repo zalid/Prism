@@ -15,9 +15,9 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System.Windows;
+using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Unity;
-using Prism.Interfaces;
 using StockTraderRI.Modules.Watch.AddWatch;
 using StockTraderRI.Modules.Watch.Services;
 using StockTraderRI.Modules.Watch.WatchList;
@@ -27,12 +27,12 @@ namespace StockTraderRI.Modules.Watch
     public class WatchModule : IModule
     {
         private readonly IUnityContainer _container;
-        private readonly IRegionManager _regionManagerService;
+        private readonly IRegionManager _regionManager;
 
         public WatchModule(IUnityContainer container, IRegionManager regionManager)
         {
             _container = container;
-            _regionManagerService = regionManager;
+            _regionManager = regionManager;
         }
 
         #region IModule Members
@@ -41,17 +41,17 @@ namespace StockTraderRI.Modules.Watch
         {
             RegisterViewsAndServices();
 
-            IWatchListPresenter watchListPresenter = _container.Resolve<IWatchListPresenter>();
-            _regionManagerService.GetRegion("WatchRegion").Add(watchListPresenter.View);
+            IWatchListPresentationModel watchListPresentationModel = _container.Resolve<IWatchListPresentationModel>();
+            _regionManager.Regions["WatchRegion"].Add(watchListPresentationModel.View);
             IAddWatchPresenter addWatchPresenter = _container.Resolve<IAddWatchPresenter>();
-            _regionManagerService.GetRegion("MainToolbarRegion").Add(addWatchPresenter.View);
+            _regionManager.Regions["MainToolbarRegion"].Add(addWatchPresenter.View);
         }
 
         protected void RegisterViewsAndServices()
         {
             _container.RegisterType<IWatchListService, WatchListService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IWatchListView, WatchListView>();
-            _container.RegisterType<IWatchListPresenter, WatchListPresenter>();
+            _container.RegisterType<IWatchListPresentationModel, WatchListPresentationModel>();
             _container.RegisterType<IAddWatchView, AddWatchView>();
             _container.RegisterType<IAddWatchPresenter, AddWatchPresenter>();
         }

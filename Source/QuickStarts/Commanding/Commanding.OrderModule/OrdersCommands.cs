@@ -15,7 +15,8 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using Prism.Commands;
+using Microsoft.Practices.Composite.Wpf.Commands;
+
 namespace Commanding.Modules.Order
 {
     public static class OrdersCommands

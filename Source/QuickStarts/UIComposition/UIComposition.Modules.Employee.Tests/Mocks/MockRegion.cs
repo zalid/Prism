@@ -16,10 +16,8 @@
 //===============================================================================
 
 using System;
-using System.ComponentModel;
 using System.Windows;
-using Prism.Interfaces;
-using System.Collections.ObjectModel;
+using Microsoft.Practices.Composite.Regions;
 
 namespace UIComposition.Modules.Employee.Tests.Mocks
 {
@@ -41,7 +39,7 @@ namespace UIComposition.Modules.Employee.Tests.Mocks
             ViewsCount--;
         }
 
-        public ICollectionView Views
+        public IViewsCollection Views
         {
             get { return null; }
         }
@@ -49,6 +47,11 @@ namespace UIComposition.Modules.Employee.Tests.Mocks
         public void Activate(object view)
         {
             ActivateCalled = true;
+        }
+
+        public void Deactivate(object view)
+        {
+            throw new NotImplementedException();
         }
 
         public IRegionManager Add(object view, string name)
@@ -67,6 +70,11 @@ namespace UIComposition.Modules.Employee.Tests.Mocks
         }
 
         public IRegionManager RegionManager { get; set; }
+
+        public IViewsCollection ActiveViews
+        {
+            get { throw new NotImplementedException(); }
+        }
 
         public IRegionManager Add(object view, string name, bool createRegionManagerScope)
         {

@@ -333,10 +333,10 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         /// 2. Right-Click on a stock in Position Table and Select Sell Option
         /// 3. Enter the data for Required fields with half the number of shares
         /// 4. Repeat steps 2 & 3 with step 3 changed to enter more than half number of shares
-        /// 5. Click on "Submit All" button
+        /// 5. Check if the "Submit All" button can be clicked (enabled)
         /// 
         /// Expected Result:
-        /// User should sell share across multiple sell requests.
+        /// User should not be allowed to sell more than held number of shares across multiple sell requests.
         /// </summary>
         [TestMethod]
         public void AttemptSellShareSpreadAcrossMultipleSellRequestsWithAllNumberOfSharesAddingToMoreThanHeldNumberOfShares()
@@ -375,16 +375,16 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             ///////////////////////////////
 
             Button submitAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
+            Assert.IsFalse(submitAllButton.Enabled);
             submitAllButton.Click();
 
             GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander").AndControlType(typeof(GroupBox)));
-            //Assert.IsNotNull(buySellSymbolGroup);
-            Assert.IsNull(buySellSymbolGroup);
+            Assert.IsNotNull(buySellSymbolGroup);
 
             //validate if the sell transaction was successful
             List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
-            Assert.IsNotNull(orders.Find(o => o.Equals(sellSymbolOrder)));
-            Assert.IsNotNull(orders.Find(o => o.Equals(sellSymbolAnotherOrder)));
+            Assert.IsNull(orders.Find(o => o.Equals(sellSymbolOrder)));
+            Assert.IsNull(orders.Find(o => o.Equals(sellSymbolAnotherOrder)));
         }
 
         /// <summary>

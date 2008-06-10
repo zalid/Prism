@@ -18,10 +18,9 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using Prism.Utility;
+using Microsoft.Practices.Composite.Events;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Modules.Position.Interfaces;
-using StockTraderRI.Modules.Position.PresentationModels;
 
 namespace StockTraderRI.Modules.Position.PositionSummary
 {
@@ -30,7 +29,7 @@ namespace StockTraderRI.Modules.Position.PositionSummary
     /// </summary>
     public partial class PositionSummaryView : UserControl, IPositionSummaryView
     {
-        PositionSummaryPresentationModel _model;
+        IPositionSummaryPresentationModel _model;
 
         public PositionSummaryView()
         {
@@ -44,15 +43,11 @@ namespace StockTraderRI.Modules.Position.PositionSummary
             TickerSymbolSelected(this, e);
         }
 
-        public string HeaderInfo
-        {
-            get { return "POSITION"; }
-        }
         #region IPositionSummaryView Members
 
         public event EventHandler<DataEventArgs<string>> TickerSymbolSelected = delegate { };
 
-        public PositionSummaryPresentationModel Model
+        public IPositionSummaryPresentationModel Model
         {
             get
             {
@@ -61,7 +56,7 @@ namespace StockTraderRI.Modules.Position.PositionSummary
             set
             {
                 _model = value;
-                pieChart.ItemsSource = _model.Data;
+                pieChart.ItemsSource = _model.PositionSummaryItems;
                 DataContext = _model;
             }
         }

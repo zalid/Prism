@@ -18,7 +18,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Prism.Commands;
+using Microsoft.Practices.Composite.Wpf.Commands;
 using StockTraderRI.Modules.Watch.Services;
 
 namespace StockTraderRI.Modules.WatchList.Tests.Mocks

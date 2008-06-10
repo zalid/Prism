@@ -108,10 +108,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\CollapsingState.cs" />
-    <Compile Include="Controls\CollapsibleTabControl.cs" />
     <Compile Include="Controls\TearOffItemsControl.cs" />
-    <Compile Include="EntLibPrismLogger.cs" />
+    <Compile Include="EntLibLoggerAdapter.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -142,21 +141,21 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Prism\Prism.UnityContainerAdapter\Prism.UnityContainerAdapter.csproj">
+    <ProjectReference Include="..\..\CAL\Composite.UnityExtensions\Composite.UnityExtensions.csproj">
       <Project>{17831F3B-6B82-4916-BD2B-2CE2071EA622}</Project>
-      <Name>Prism.UnityContainerAdapter</Name>
+      <Name>Composite.UnityExtensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CAL\Composite.Wpf\Composite.Wpf.csproj">
+      <Project>{F807062D-6FC9-4FF0-A9F5-5F94653EDC4D}</Project>
+      <Name>Composite.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CAL\Composite\Composite.csproj">
+      <Project>{77138947-1D13-4E22-AEE0-5D0DD046CA34}</Project>
+      <Name>Composite</Name>
     </ProjectReference>
     <ProjectReference Include="..\StockTraderRI.Infrastructure\StockTraderRI.Infrastructure.csproj">
       <Project>{0A123C1B-F316-447D-99A5-44CCF8023683}</Project>
       <Name>StockTraderRI.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Prism\Prism.Interfaces\Prism.Interfaces.csproj">
-      <Project>{C4E0705E-7D35-441A-BC04-6F4E5D25FD60}</Project>
-      <Name>Prism.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Prism\Prism\Prism.csproj">
-      <Project>{E20361F8-7B3F-437D-8799-EDE1FB7B15C1}</Project>
-      <Name>Prism</Name>
     </ProjectReference>
     <ProjectReference Include="..\StockTraderRI.Modules.Market\StockTraderRI.Modules.Market.csproj">
       <Project>{65E5631B-965B-4E16-9B98-6DCAE79B0D85}</Project>
@@ -174,12 +173,6 @@
       <Project>{78621307-C67F-4C61-96AA-7EE4B3C08620}</Project>
       <Name>StockTraderRI.Modules.Watch</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Themes\images\pinIconDocked.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Themes\images\pinIconNonDocked.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

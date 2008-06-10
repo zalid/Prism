@@ -604,7 +604,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             submitButton.Click();
 
             //give time for submit processing
-            System.Threading.Thread.Sleep(2000);
+            //System.Threading.Thread.Sleep(2000);
 
             // Validate if extender Buy/Sell Panel disappears.
             // AND

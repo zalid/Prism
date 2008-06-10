@@ -60,11 +60,71 @@ namespace Commanding.AcceptanceTests
         }
         
         #endregion
-
+        /// <summary>
+        /// Launch the Commanding QS application and check for the display of required controls
+        /// 
+        /// Repro Steps:
+        /// 1. Launch the Commanding QS application.
+        /// 2. Check for the display items on the default page of the application
+        /// 
+        /// Expected Result:
+        /// Required controls should be loaded on the shell window with the default data
         [TestMethod]
         public void ApplicationLaunch()
         {
-            ///TODO: to check if the controls expected to be loaded on the Shell window is loaded properly, as expected
+            //check if the controls expected to be loaded on the Shell window is loaded properly with the default data, as expected           
+            const int initialOrdersCount = 3;
+
+            Button saveAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("SaveAllToolBarButton"));
+            Assert.IsNotNull(saveAllButton);
+
+            Button saveButton = window.Get<Button>(TestDataInfrastructure.GetControlId("SaveButton"));
+            Assert.IsNotNull(saveButton);
+           
+            Label orderNameLabel = (Label)window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("OrderNameLabel"))
+                                                             .AndByText(TestDataInfrastructure.GetTestInputData("DefaultOrder"))
+                                                             .AndControlType(typeof(Label)));
+            Assert.IsNotNull(orderNameLabel);
+
+            Label dateLabel = window.Get<Label>(TestDataInfrastructure.GetControlId("DateLabel"));
+            Assert.IsNotNull(dateLabel);
+
+            Label quantityLabel = window.Get<Label>(TestDataInfrastructure.GetControlId("QuantityLabel"));
+            Assert.IsNotNull(quantityLabel);
+
+            Label priceLabel = window.Get<Label>(TestDataInfrastructure.GetControlId("PriceLabel"));
+            Assert.IsNotNull(priceLabel);
+
+            Label shippingLabel = window.Get<Label>(TestDataInfrastructure.GetControlId("ShippingLabel"));
+            Assert.IsNotNull(shippingLabel);
+
+            Label totalLabel = window.Get<Label>(TestDataInfrastructure.GetControlId("TotalLabel"));
+            Assert.IsNotNull(totalLabel);
+
+            TextBox deliveryDateTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("DeliveryDateTextBox"));       
+            Assert.IsNotNull(deliveryDateTextBox);
+            
+            TextBox priceTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("PriceTextBox"));
+            Assert.IsNotNull(priceTextBox);
+            Assert.AreEqual(priceTextBox.Text, TestDataInfrastructure.GetTestInputData("DefaultData"));
+
+            TextBox quantityTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("QuantityTextBox"));
+            Assert.IsNotNull(quantityTextBox);
+            Assert.AreEqual(quantityTextBox.Text, TestDataInfrastructure.GetTestInputData("DefaultData"));
+
+            TextBox shippingTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("ShippingTextBox"));
+            Assert.IsNotNull(shippingTextBox);
+            Assert.AreEqual(shippingTextBox.Text, TestDataInfrastructure.GetTestInputData("DefaultData"));
+
+            TextBox totalTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("TotalTextBox"));
+            Assert.IsNotNull(totalTextBox);
+            Assert.AreEqual(totalTextBox.Text, TestDataInfrastructure.GetTestInputData("DefaultData"));
+
+            ListBox orderView = window.Get<ListBox>(TestDataInfrastructure.GetControlId("OrderListView"));
+            Assert.IsNotNull(orderView);
+            Assert.AreEqual(orderView.Items.Count, initialOrdersCount);
         }
+       
+        
     }
 }

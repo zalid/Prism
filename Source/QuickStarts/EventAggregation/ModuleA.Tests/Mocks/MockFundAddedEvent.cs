@@ -21,14 +21,14 @@ namespace ModuleA.Tests.Mocks
 {
     class MockFundAddedEvent : FundAddedEvent
     {
-        public bool FireCalled;
-        public FundOrder FireArgumentPayload;
+        public bool PublishCalled;
+        public FundOrder PublishArgumentPayload;
 
 
-        public override void Fire(FundOrder payload)
+        public override void Publish(FundOrder payload)
         {
-            FireCalled = true;
-            FireArgumentPayload = payload;
+            PublishCalled = true;
+            PublishArgumentPayload = payload;
         }
     }
 }

@@ -15,13 +15,13 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using Microsoft.Practices.Composite.Events;
+
 namespace UIComposition.Modules.Employee
 {
     using System;
     using System.Windows;
     using Microsoft.Practices.Unity;
-    using Prism.Interfaces;
-    using Prism.Utility;
     using UIComposition.Infrastructure;
     using UIComposition.Modules.Project;
     using UIComposition.Modules.Employee.Controllers;
@@ -48,7 +48,7 @@ namespace UIComposition.Modules.Employee
 
         private void OnEmployeeSelected(object sender, DataEventArgs<BusinessEntities.Employee> e)
         {
-            employeeController.OnEmployeeSelected(View.RegionManager, e.Value);
+            employeeController.OnEmployeeSelected(e.Value);
         }
     }
 }

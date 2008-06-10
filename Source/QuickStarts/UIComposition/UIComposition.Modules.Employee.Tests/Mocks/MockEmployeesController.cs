@@ -16,10 +16,6 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Prism.Interfaces;
 using UIComposition.Modules.Employee.Controllers;
 
 namespace UIComposition.Modules.Employee.Tests.Mocks
@@ -33,7 +29,7 @@ namespace UIComposition.Modules.Employee.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public void OnEmployeeSelected(IRegionManager regionManager, BusinessEntities.Employee employee)
+        public void OnEmployeeSelected(BusinessEntities.Employee employee)
         {
             ShowEmployeeDetailsCalled = true;
         }

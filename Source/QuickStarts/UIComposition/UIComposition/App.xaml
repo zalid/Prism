@@ -4,11 +4,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles\Shared.xaml"></ResourceDictionary>                
-                <ResourceDictionary Source="Styles\Label.xaml"></ResourceDictionary>
-                <ResourceDictionary Source="Styles\TabControl.xaml"></ResourceDictionary>
-                <ResourceDictionary Source="Styles\TextBox.xaml"></ResourceDictionary>
-                <ResourceDictionary Source="Styles\ToolTip.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="Styles/styles.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

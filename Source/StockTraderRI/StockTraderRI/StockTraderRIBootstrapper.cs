@@ -16,10 +16,9 @@
 //===============================================================================
 
 using System.Windows;
-using Prism.Interfaces;
-using Prism.Interfaces.Logging;
-using Prism.Services;
-using Prism.UnityContainerAdapter;
+using Microsoft.Practices.Composite.Logging;
+using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Composite.UnityExtensions;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Modules.Market;
 using StockTraderRI.Modules.News;
@@ -28,22 +27,22 @@ using StockTraderRI.Modules.Watch;
 
 namespace StockTraderRI
 {
-    public class StockTraderRIBootstrapper : UnityPrismBootstrapper
+    public class StockTraderRIBootstrapper : UnityBootstrapper
     {
-        private readonly EntLibPrismLogger _prismLogger = new EntLibPrismLogger();
+        private readonly EntLibLoggerAdapter _logger = new EntLibLoggerAdapter();
 
         protected override IModuleEnumerator GetModuleEnumerator()
         {
             return new StaticModuleEnumerator()
                 .AddModule(typeof(NewsModule))
                 .AddModule(typeof(MarketModule))
-                .AddModule(typeof(WatchModule), new[] { "MarketModule" })
-                .AddModule(typeof(PositionModule), new[] { "MarketModule", "NewsModule" });
+                .AddModule(typeof(WatchModule), "MarketModule")
+                .AddModule(typeof(PositionModule), "MarketModule", "NewsModule");
         }
 
-        protected override IPrismLogger PrismLogger
+        protected override ILoggerFacade LoggerFacade
         {
-            get { return _prismLogger; }
+            get { return _logger; }
         }
 
         protected override void ConfigureContainer()

@@ -69,6 +69,8 @@
     <Compile Include="AutomatedTests\ApplicationObserver\IStateObserver.cs" />
     <Compile Include="AutomatedTests\ApplicationObserver\StateDiagnosis.cs" />
     <Compile Include="AutomatedTests\FixtureBase.cs" />
+    <Compile Include="AutomatedTests\ModuleFixtures\OrderModuleCommon.cs" />
+    <Compile Include="AutomatedTests\ModuleFixtures\OrderModuleFixture.cs" />
     <Compile Include="AutomatedTests\ShellFixture.cs" />
     <Compile Include="Helpers\ConfigHandler.cs" />
     <Compile Include="Helpers\ResxConfigHandler.cs" />
@@ -78,11 +80,13 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ControlIdentifiers.resx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="TestData\TestDataInput.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TestDataInput.resx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="TestInfrastructure\DataProviderBase.cs" />
     <Compile Include="TestInfrastructure\IDataProvider.cs" />
@@ -96,15 +100,16 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ControlIdentifiers.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="TestData\TestDataInput.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TestDataInput.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AutomatedTests\ModuleFixtures\" />
     <Folder Include="TestInfrastructure\DataProvider\MockModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -115,4 +120,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PreBuildEvent>$(FrameworkDir)\..\v3.5\msbuild.exe "$(SolutionDir)\Commanding.sln"</PreBuildEvent>
+  </PropertyGroup>
 </Project>

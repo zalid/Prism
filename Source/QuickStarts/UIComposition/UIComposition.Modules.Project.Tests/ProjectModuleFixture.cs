@@ -15,9 +15,9 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Prism.Interfaces;
 using UIComposition.Infrastructure;
 using UIComposition.Modules.Project.Services;
 using UIComposition.Modules.Project.Tests.Mocks;
@@ -56,7 +56,7 @@ namespace UIComposition.Modules.Project.Tests
             container.RegisterInstance<IRegionManager>(regionManager);
             MockRegion mainToolbar = new MockRegion();
 
-            regionManager.Register(RegionNames.MainToolBar, mainToolbar);
+            regionManager.Regions.Add(RegionNames.MainToolBar, mainToolbar);
 
             ProjectModule module = CreateProjectModule();
 
@@ -69,13 +69,13 @@ namespace UIComposition.Modules.Project.Tests
 
         private ProjectModule CreateProjectModule()
         {
-            ProjectModule module = new ProjectModule(container, regionManager);
+            ProjectModule module = new ProjectModule(container);
             return module;
         }
 
         private TestableProjectModule CreateTestableProjectModule()
         {
-            TestableProjectModule module = new TestableProjectModule(container, regionManager);
+            TestableProjectModule module = new TestableProjectModule(container);
             return module;
         }
 
@@ -83,8 +83,8 @@ namespace UIComposition.Modules.Project.Tests
 
     class TestableProjectModule : ProjectModule
     {
-        public TestableProjectModule(IUnityContainer container, IRegionManager regionManager)
-            : base(container, regionManager)
+        public TestableProjectModule(IUnityContainer container)
+            : base(container)
         {
 
         }

@@ -15,9 +15,9 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Prism.Interfaces;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Modules.Position.Controllers;
 using StockTraderRI.Modules.Position.Interfaces;
@@ -43,14 +43,14 @@ namespace StockTraderRI.Modules.Position.Tests
 
             Assert.AreEqual(typeof(AccountPositionService), container.Types[typeof(IAccountPositionService)]);
             Assert.AreEqual(typeof(PositionSummaryView), container.Types[typeof(IPositionSummaryView)]);
-            Assert.AreEqual(typeof(PositionSummaryPresenter), container.Types[typeof(IPositionSummaryPresenter)]);
+            Assert.AreEqual(typeof(PositionSummaryPresentationModel), container.Types[typeof(IPositionSummaryPresentationModel)]);
             Assert.AreEqual(typeof(OrdersView), container.Types[typeof(IOrdersView)]);
-            Assert.AreEqual(typeof(OrdersPresenter), container.Types[typeof(IOrdersPresenter)]);
+            Assert.AreEqual(typeof(OrdersPresentationModel), container.Types[typeof(IOrdersPresentationModel)]);
             Assert.AreEqual(typeof(OrderDetailsView), container.Types[typeof(IOrderDetailsView)]);
-            Assert.AreEqual(typeof(OrderDetailsPresenter), container.Types[typeof(IOrderDetailsPresenter)]);
+            Assert.AreEqual(typeof(OrderDetailsPresentationModel), container.Types[typeof(IOrderDetailsPresentationModel)]);
             Assert.AreEqual(typeof(OrderCommandsView), container.Types[typeof(IOrderCommandsView)]);
             Assert.AreEqual(typeof(OrderCompositeView), container.Types[typeof(IOrderCompositeView)]);
-            Assert.AreEqual(typeof(OrderCompositePresenter), container.Types[typeof(IOrderCompositePresenter)]);
+            Assert.AreEqual(typeof(OrderCompositePresentationModel), container.Types[typeof(IOrderCompositePresentationModel)]);
             Assert.AreEqual(typeof(OrdersController), container.Types[typeof(IOrdersController)]);
             Assert.AreEqual(typeof(XmlOrdersService), container.Types[typeof(IOrdersService)]);
 
@@ -64,11 +64,11 @@ namespace StockTraderRI.Modules.Position.Tests
             MockRegionManager regionManager = new MockRegionManager();
             var container = new MockUnityResolver();
             container.Bag.Add(typeof(IOrdersController), new MockOrdersController());
-            container.Bag.Add(typeof(IPositionSummaryPresenter), new MockPositionSummaryPresenter());
+            container.Bag.Add(typeof(IPositionSummaryPresentationModel), new MockPositionSummaryPresenter());
             PositionModule module = new PositionModule(container, regionManager);
-            regionManager.Register("MainRegion", mainRegion);
-            regionManager.Register("CollapsibleRegion", new MockRegion());
-            regionManager.Register("MainToolbarRegion", toolbarRegion);
+            regionManager.Regions.Add("MainRegion", mainRegion);
+            regionManager.Regions.Add("CollapsibleRegion", new MockRegion());
+            regionManager.Regions.Add("MainToolbarRegion", toolbarRegion);
 
             Assert.AreEqual(0, toolbarRegion.AddedViews.Count);
             Assert.AreEqual(0, mainRegion.AddedViews.Count);
@@ -95,7 +95,7 @@ namespace StockTraderRI.Modules.Position.Tests
         }
     }
 
-    internal class MockPositionSummaryPresenter : IPositionSummaryPresenter
+    internal class MockPositionSummaryPresenter : IPositionSummaryPresentationModel
     {
         #region IPositionSummaryPresenter Members
 
@@ -105,6 +105,47 @@ namespace StockTraderRI.Modules.Position.Tests
         {
             get { return _view; }
             set { _view = value; }
+        }
+
+
+        public System.Collections.ObjectModel.ObservableCollection<PositionSummaryItem> PositionSummaryItems
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+
+        public Microsoft.Practices.Composite.Wpf.Commands.DelegateCommand<string> BuyCommand
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        public Microsoft.Practices.Composite.Wpf.Commands.DelegateCommand<string> SellCommand
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        #endregion
+
+        #region IPositionSummaryPresentationModel Members
+
+
+        public string HeaderInfo
+        {
+            get { throw new System.NotImplementedException(); }
         }
 
         #endregion

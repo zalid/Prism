@@ -16,18 +16,11 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using Prism.Interfaces;
-using Prism.Utility;
 using StockTraderRI.Modules.News.Article;
-using StockTraderRI.Modules.News.PresentationModels;
 
 namespace StockTraderRI.Modules.News.Tests.Mocks
 {
-    public class MockArticleView : UIElement, IArticleView
+    public class MockArticleView : IArticleView
     {
         public ArticlePresentationModel Model { get; set; }
         public event EventHandler<EventArgs> ShowNewsReader = delegate { };

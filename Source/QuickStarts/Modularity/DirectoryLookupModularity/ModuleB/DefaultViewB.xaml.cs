@@ -17,7 +17,7 @@
 
 using System.Windows;
 using System.Windows.Controls;
-using Prism.Interfaces;
+using Microsoft.Practices.Composite.Modularity;
 
 namespace ModuleB
 {
@@ -26,12 +26,12 @@ namespace ModuleB
     /// </summary>
     public partial class DefaultViewB : UserControl
     {
-        private readonly IModuleLoaderService moduleLoaderService;
+        private readonly IModuleLoader moduleLoader;
         private readonly IModuleEnumerator moduleEnumerator;
 
-        public DefaultViewB(IModuleLoaderService moduleLoaderService, IModuleEnumerator moduleEnumerator)
+        public DefaultViewB(IModuleLoader moduleLoader, IModuleEnumerator moduleEnumerator)
         {
-            this.moduleLoaderService = moduleLoaderService;
+            this.moduleLoader = moduleLoader;
             this.moduleEnumerator = moduleEnumerator;
 
             InitializeComponent();
@@ -39,7 +39,7 @@ namespace ModuleB
 
         private void OnLoadModuleCClick(object sender, RoutedEventArgs e)
         {
-            moduleLoaderService.Initialize(moduleEnumerator.GetModule("ModuleC"));
+            moduleLoader.Initialize(moduleEnumerator.GetModule("ModuleC"));
         }
     }
 }

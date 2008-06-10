@@ -59,7 +59,10 @@
   <ItemGroup>
     <Compile Include="Behaviors\ItemSelectorBehavior.cs" />
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
+    <Compile Include="Converters\StringToNullableNumberConverter.cs" />
     <Compile Include="ExtendedHeader.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Interfaces\IHeaderInfoProvider.cs" />
     <Compile Include="Interfaces\IOrderCommandsView.cs" />
     <Compile Include="IShellView.cs" />
     <Compile Include="IUnityContainerConfigurator.cs" />
@@ -89,21 +92,17 @@
     <Compile Include="TransactionType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Prism\Prism.Interfaces\Prism.Interfaces.csproj">
-      <Project>{C4E0705E-7D35-441A-BC04-6F4E5D25FD60}</Project>
-      <Name>Prism.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Prism\Prism\Prism.csproj">
-      <Project>{E20361F8-7B3F-437D-8799-EDE1FB7B15C1}</Project>
-      <Name>Prism</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CAL\Composite.Wpf\Composite.Wpf.csproj">
+      <Project>{F807062D-6FC9-4FF0-A9F5-5F94653EDC4D}</Project>
+      <Name>Composite.Wpf</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

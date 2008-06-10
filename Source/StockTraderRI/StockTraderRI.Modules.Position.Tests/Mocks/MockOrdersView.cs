@@ -16,12 +16,15 @@
 //===============================================================================
 
 using StockTraderRI.Modules.Position.Interfaces;
-using System.Windows;
+using StockTraderRI.Modules.Position.Orders;
 
 namespace StockTraderRI.Modules.Position.Tests.Mocks
 {
-    class MockOrdersView : UIElement, IOrdersView
+    class MockOrdersView : IOrdersView
     {
-
+        public IOrdersPresentationModel Model
+        {
+            set { }
+        }
     }
 }

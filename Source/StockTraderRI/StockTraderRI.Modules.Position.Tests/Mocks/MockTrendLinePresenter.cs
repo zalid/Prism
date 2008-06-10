@@ -57,7 +57,7 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
         public string SelectedTickerSymbol { get; set; }
     }
 
-    public class MockTrendLineView : Control, ITrendLineView
+    public class MockTrendLineView : ITrendLineView
     {
         #region ITrendLineView Members
 

@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:inf="clr-namespace:Commanding.Modules.Order">
     <ToolBar>
-        <Button Name="SaveAllToolBarButton" Command="{x:Static inf:OrdersCommands.SaveAllOrdersCommand}">Save All Orders</Button>
+        <Button AutomationProperties.AutomationId="SaveAllToolBarButton" Command="{x:Static inf:OrdersCommands.SaveAllOrdersCommand}">Save All Orders</Button>
+        <Separator />
     </ToolBar>
 </UserControl>

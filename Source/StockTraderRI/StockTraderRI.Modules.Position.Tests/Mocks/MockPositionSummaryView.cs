@@ -16,21 +16,16 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Microsoft.Practices.Composite.Events;
 using StockTraderRI.Infrastructure.Interfaces;
-using StockTraderRI.Infrastructure.PresentationModels;
-using System.Windows.Controls;
-using StockTraderRI.Modules.Position.PresentationModels;
-using Prism.Utility;
 using StockTraderRI.Modules.Position.Interfaces;
+using StockTraderRI.Modules.Position.PositionSummary;
 
 namespace StockTraderRI.Modules.Position.Tests.Mocks
 {
-    class MockPositionSummaryView : Control, IPositionSummaryView
+    class MockPositionSummaryView : IPositionSummaryView
     {
-        public PositionSummaryPresentationModel Model { get; set; }
+        public IPositionSummaryPresentationModel Model { get; set; }
 
         public event EventHandler<DataEventArgs<string>> TickerSymbolSelected = delegate { };
 
@@ -45,7 +40,7 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
 
         public void ShowTrendLine(ITrendLineView view)
         {
-            
+
         }
 
         #endregion

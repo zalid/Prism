@@ -15,20 +15,13 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using Prism.Interfaces;
-using StockTraderRI.Modules.Position.PresentationModels;
+using Microsoft.Practices.Composite;
+using StockTraderRI.Modules.Position.Orders;
 
 namespace StockTraderRI.Modules.Position.Interfaces
 {
     public interface IOrderCompositeView : IActiveAware
     {
-        void SetDetailView(UIElement detailView);
-        void SetCommandView(UIElement commandView);
-        OrderCompositePresentationModel Model { set; }
+        IOrderCompositePresentationModel Model { set; }
     }
 }

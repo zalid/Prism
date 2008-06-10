@@ -26,9 +26,6 @@ using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.ComponentModel;
 using System.Diagnostics;
-using StockTraderRI.Modules.Position.PresentationModels;
-using Prism.Interfaces;
-using Prism.Utility;
 using System.Globalization;
 
 namespace StockTraderRI.Modules.Position.Orders
@@ -40,12 +37,8 @@ namespace StockTraderRI.Modules.Position.Orders
             this.InitializeComponent();
         }
 
-        public OrderDetailsPresentationModel Model
+        public IOrderDetailsPresentationModel Model
         {
-            get
-            {
-                return DataContext as OrderDetailsPresentationModel;
-            }
             set
             {
                 DataContext = value;

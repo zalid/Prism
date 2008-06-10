@@ -17,14 +17,14 @@
 
 using System;
 using System.Collections.Generic;
-using Prism.Interfaces;
+using Microsoft.Practices.Composite.Events;
 
 namespace StockTraderRI.Modules.WatchList.Tests.Mocks
 {
     public class MockEventAggregator : IEventAggregator
     {
         Dictionary<Type, object> events = new Dictionary<Type, object>();
-        public TEventType Get<TEventType>() where TEventType : class, new()
+        public TEventType GetInstance<TEventType>() where TEventType : class, new()
         {
             return (TEventType)events[typeof(TEventType)];
         }

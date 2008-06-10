@@ -17,8 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.Reflection;
 
@@ -36,12 +34,12 @@ namespace Modularity.AcceptanceTests.TestInfrastructure
         {
             List<Module> modules = new List<Module>();
             Module module = null;
-            
+
             string thisAssemblyLocation = Assembly.GetExecutingAssembly().Location;
             //from the assembly location knock-off the assembly file name along with ".dll" extension
             string path = thisAssemblyLocation.Substring(0, thisAssemblyLocation.Length - Assembly.GetExecutingAssembly().GetName().Name.Length - ".dll".Length);
             path += TestDataInfrastructure.GetTestInputData("ModulesFolder");
-            
+
             DirectoryInfo directory = new DirectoryInfo(path);
             string fileName;
 
@@ -52,32 +50,42 @@ namespace Modularity.AcceptanceTests.TestInfrastructure
 
                 //reflect and find the value of the StartupLoaded property from the custom attributes
                 //assumption: the module file (implementing IModule interface) is named after the module and so is the namespace 
-                object customAttribute = Assembly.LoadFrom(file.FullName)
-                                            .GetType(fileName + "." + fileName)
-                                            .GetCustomAttributes(true)[0];
-                Type type = customAttribute.GetType();
-                
-                object startupLoaded = type.InvokeMember(TestDataInfrastructure.GetTestInputData("StartupLoadingAttributeDirLookup")
-                                                        , BindingFlags.GetProperty
-                                                        , null
-                                                        , customAttribute
-                                                        , null);
-                module.AllowsDelayLoading = !bool.Parse(startupLoaded.ToString());
+                Type moduleType = Assembly.LoadFrom(file.FullName)
+                    .GetType(fileName + "." + fileName);
 
-                object[] dependsOn = (object[])type.InvokeMember(TestDataInfrastructure.GetTestInputData("DependencyAttributeDirLookup")
-                                                                , BindingFlags.GetProperty
-                                                                , null
-                                                                , customAttribute
-                                                                , null);
-                if (null != dependsOn)
+                if (moduleType != null)
                 {
-                    foreach (string dependency in dependsOn)
+                    object[] attributes = moduleType.GetCustomAttributes(true);
+
+                    foreach (var customAttribute in attributes)
                     {
-                        module.Dependencies.Add(dependency);
+                        Type type = customAttribute.GetType();
+                        switch (type.Name)
+                        {
+                            case "ModuleAttribute":
+                                object startupLoaded =
+                            type.InvokeMember(
+                                TestDataInfrastructure.GetTestInputData("StartupLoadingAttributeDirLookup")
+                                , BindingFlags.GetProperty
+                                , null
+                                , customAttribute
+                                , null);
+                                module.AllowsDelayLoading = !bool.Parse(startupLoaded.ToString());
+                                break;
+
+                            case "ModuleDependencyAttribute":
+                                object moduleDependencyName =
+                                type.InvokeMember(
+                                TestDataInfrastructure.GetTestInputData("DependencyAttributeDirLookup")
+                                , BindingFlags.GetProperty
+                                , null
+                                , customAttribute
+                                , null);
+                                module.Dependencies.Add(moduleDependencyName.ToString());
+                                break;
+                        }
                     }
                 }
-
-                modules.Add(module);
             }
 
             return modules;

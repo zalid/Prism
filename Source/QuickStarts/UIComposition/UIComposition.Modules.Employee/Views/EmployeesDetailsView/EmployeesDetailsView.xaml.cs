@@ -16,10 +16,11 @@
 //===============================================================================
 
 
+using UIComposition.Modules.Employee.PresentationModels;
+
 namespace UIComposition.Modules.Employee
 {
     using System.Windows.Controls;
-    using UIComposition.Modules.Employee.PresententationModels;
 
     /// <summary>
     /// Interaction logic for EmployeesDetailsView.xaml

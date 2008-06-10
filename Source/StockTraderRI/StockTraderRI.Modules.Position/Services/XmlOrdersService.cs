@@ -16,19 +16,24 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
+using Microsoft.Practices.Composite.Logging;
 using StockTraderRI.Modules.Position.Interfaces;
 using StockTraderRI.Modules.Position.Models;
-using System.Globalization;
+using StockTraderRI.Modules.Position.Properties;
 
 namespace StockTraderRI.Modules.Position.Services
 {
     public class XmlOrdersService : IOrdersService
     {
+        private ILoggerFacade logger;
+
+        public XmlOrdersService(ILoggerFacade logger)
+        {
+            this.logger = logger;
+        }
         private string _filename = "SubmittedOrders.xml";
 
         public string Filename
@@ -53,7 +58,7 @@ namespace StockTraderRI.Modules.Position.Services
                 document.Add(ordersElement);
             }
 
-            var orderElement = new XElement("Order", 
+            var orderElement = new XElement("Order",
                 new XAttribute("OrderType", order.OrderType),
                 new XAttribute("Shares", order.Shares),
                 new XAttribute("StopLimitPrice", order.StopLimitPrice),
@@ -63,6 +68,10 @@ namespace StockTraderRI.Modules.Position.Services
                 new XAttribute("Date", DateTime.Now.ToString(CultureInfo.InvariantCulture))
                 );
             ordersElement.Add(orderElement);
+
+            string message = String.Format(CultureInfo.CurrentCulture, Resources.LogOrderSubmitted,
+                                           orderElement.ToString());
+            logger.Log(message, Category.Debug, Priority.Low);
         }
     }
 }

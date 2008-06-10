@@ -68,5 +68,77 @@ namespace Commanding.Tests.AcceptanceTests.TestData {
                 return ResourceManager.GetString("ApplicationLoadFailure", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 0.
+        /// </summary>
+        internal static string DefaultData {
+            get {
+                return ResourceManager.GetString("DefaultData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order 1.
+        /// </summary>
+        internal static string DefaultOrder {
+            get {
+                return ResourceManager.GetString("DefaultOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 60.5.
+        /// </summary>
+        internal static string DefaultPrice {
+            get {
+                return ResourceManager.GetString("DefaultPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 5.
+        /// </summary>
+        internal static string DefaultQuantity {
+            get {
+                return ResourceManager.GetString("DefaultQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 40.
+        /// </summary>
+        internal static string DefaultShipping {
+            get {
+                return ResourceManager.GetString("DefaultShipping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -50.
+        /// </summary>
+        internal static string InvalidPrice {
+            get {
+                return ResourceManager.GetString("InvalidPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -5.
+        /// </summary>
+        internal static string InvalidQuantity {
+            get {
+                return ResourceManager.GetString("InvalidQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order .
+        /// </summary>
+        internal static string Order {
+            get {
+                return ResourceManager.GetString("Order", resourceCulture);
+            }
+        }
     }
 }

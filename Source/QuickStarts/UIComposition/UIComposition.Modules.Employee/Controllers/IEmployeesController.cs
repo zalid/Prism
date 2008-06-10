@@ -15,12 +15,10 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using Prism.Interfaces;
-
 namespace UIComposition.Modules.Employee.Controllers
 {
     public interface IEmployeesController
     {
-        void OnEmployeeSelected(IRegionManager regionManager, BusinessEntities.Employee employee);
+        void OnEmployeeSelected(BusinessEntities.Employee employee);
     }
 }

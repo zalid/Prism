@@ -15,8 +15,8 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using Prism;
-using Prism.Interfaces;
+using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Composite.Regions;
 
 namespace ModuleC
 {
@@ -32,7 +32,7 @@ namespace ModuleC
 
         public void Initialize()
         {
-            _regionManager.GetRegion("MainRegion").Add(new DefaultViewC());
+            _regionManager.Regions["MainRegion"].Add(new DefaultViewC());
         }
     }
 }

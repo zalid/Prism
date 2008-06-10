@@ -16,13 +16,12 @@
 //===============================================================================
 
 using System.Windows;
-using Prism.Interfaces;
-using Prism.Services;
-using Prism.UnityContainerAdapter;
+using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Composite.UnityExtensions;
 
 namespace DirectoryLookupModularity
 {
-    public class Bootstrapper : UnityPrismBootstrapper
+    public class Bootstrapper : UnityBootstrapper
     {
         protected override DependencyObject CreateShell()
         {

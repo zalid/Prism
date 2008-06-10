@@ -47,7 +47,7 @@ using System.Runtime.InteropServices;
 //the line below to match the UICulture setting in the project file.
 
 //[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)]
-
+[assembly: NeutralResourcesLanguage("en")]
 
 // Specifies the location in which theme dictionaries are stored for types in an assembly.
 [assembly: ThemeInfo(

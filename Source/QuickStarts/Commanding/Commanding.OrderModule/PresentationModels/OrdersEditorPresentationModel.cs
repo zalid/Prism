@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using Commanding.Modules.Order.Views;
-using Prism.Utility;
+using Microsoft.Practices.Composite.Events;
 
 namespace Commanding.Modules.Order.PresentationModels
 {
@@ -30,7 +30,7 @@ namespace Commanding.Modules.Order.PresentationModels
         private readonly OrdersCommandProxy commandProxy;
 
         public OrdersEditorView View { get; private set; }
-        public ObservableCollection<OrderPresentationModel> Orders { get; set; }
+        public ObservableCollection<OrderPresentationModel> Orders { get; private set; }
 
         public OrdersEditorPresentationModel(OrdersEditorView view, OrdersCommandProxy commandProxy)
         {

@@ -15,9 +15,9 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System.Windows;
+using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Unity;
-using Prism.Interfaces;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Modules.Position.Controllers;
 using StockTraderRI.Modules.Position.Interfaces;
@@ -44,11 +44,11 @@ namespace StockTraderRI.Modules.Position
         {
             RegisterViewsAndServices();
 
-            IPositionSummaryPresenter presenter = _container.Resolve<IPositionSummaryPresenter>();
-            IRegion mainRegion = _regionManager.GetRegion("MainRegion");
-            mainRegion.Add(presenter.View);
+            IPositionSummaryPresentationModel presentationModel = _container.Resolve<IPositionSummaryPresentationModel>();
+            IRegion mainRegion = _regionManager.Regions["MainRegion"];
+            mainRegion.Add(presentationModel.View);
 
-            IRegion mainToolbarRegion = _regionManager.GetRegion("MainToolbarRegion");
+            IRegion mainToolbarRegion = _regionManager.Regions["MainToolbarRegion"];
             mainToolbarRegion.Add(new OrdersToolBar());
         }
 
@@ -56,14 +56,14 @@ namespace StockTraderRI.Modules.Position
         {
             _container.RegisterType<IAccountPositionService, AccountPositionService>();
             _container.RegisterType<IPositionSummaryView, PositionSummaryView>();
-            _container.RegisterType<IPositionSummaryPresenter, PositionSummaryPresenter>();
+            _container.RegisterType<IPositionSummaryPresentationModel, PositionSummaryPresentationModel>();
             _container.RegisterType<IOrdersView, OrdersView>();
-            _container.RegisterType<IOrdersPresenter, OrdersPresenter>();
+            _container.RegisterType<IOrdersPresentationModel, OrdersPresentationModel>();
             _container.RegisterType<IOrderDetailsView, OrderDetailsView>();
-            _container.RegisterType<IOrderDetailsPresenter, OrderDetailsPresenter>();
+            _container.RegisterType<IOrderDetailsPresentationModel, OrderDetailsPresentationModel>();
             _container.RegisterType<IOrderCommandsView, OrderCommandsView>();
             _container.RegisterType<IOrderCompositeView, OrderCompositeView>();
-            _container.RegisterType<IOrderCompositePresenter, OrderCompositePresenter>();
+            _container.RegisterType<IOrderCompositePresentationModel, OrderCompositePresentationModel>();
             _container.RegisterType<IOrdersController, OrdersController>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IOrdersService, XmlOrdersService>();
 

@@ -15,10 +15,10 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using UIComposition.Modules.Employee.PresentationModels;
+
 namespace UIComposition.Modules.Employee
 {
-    using UIComposition.Modules.Employee.PresententationModels;
-
     public interface IEmployeesDetailsView
     {
         EmployeesDetailsPresentationModel Model { get; set; }

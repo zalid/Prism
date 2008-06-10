@@ -31,28 +31,23 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using StockTraderRI.Modules.Position.Interfaces;
-using Prism.Interfaces;
-using Prism.Utility;
 
 namespace StockTraderRI.Modules.Position.Orders
 {
     /// <summary>
     /// Interaction logic for TransactionView.xaml
     /// </summary>
-    public partial class OrdersView : UserControl, IOrdersView, IHeaderInfoProvider<string>
+    public partial class OrdersView : UserControl, IOrdersView
     {
         public OrdersView()
         {
-            this.DataContext = this;
-
             InitializeComponent();
         }
 
-        public string HeaderInfo
+        public IOrdersPresentationModel Model
         {
-            get { return "BUY & SELL"; }
+            set {  this.DataContext = value; }
         }
-
     }
    
 }

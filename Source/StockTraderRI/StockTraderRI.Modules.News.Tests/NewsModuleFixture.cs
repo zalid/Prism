@@ -17,14 +17,11 @@
 
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Prism.Interfaces;
-using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Modules.News.Article;
 using StockTraderRI.Modules.News.Controllers;
-using StockTraderRI.Modules.News.Tests.Controllers;
-using StockTraderRI.Modules.News.Tests.Mocks;
 using StockTraderRI.Modules.News.Services;
+using StockTraderRI.Modules.News.Tests.Mocks;
 
 namespace StockTraderRI.Modules.News.Tests
 {
@@ -42,10 +39,10 @@ namespace StockTraderRI.Modules.News.Tests
 
             newsModule.InvokeRegisterViewsAndServices();
 
-            Assert.AreEqual(typeof(ArticleView), container.Types[typeof (IArticleView)]);
+            Assert.AreEqual(typeof(ArticleView), container.Types[typeof(IArticleView)]);
             Assert.AreEqual(typeof(NewsFeedService), container.Types[typeof(INewsFeedService)]);
             Assert.AreEqual(typeof(NewsController), container.Types[typeof(INewsController)]);
-            Assert.AreEqual(typeof(ArticlePresenter), container.Types[typeof(IArticlePresenter)]);
+            Assert.AreEqual(typeof(ArticlePresentationModel), container.Types[typeof(IArticlePresentationModel)]);
             Assert.AreEqual(typeof(NewsReaderPresenter), container.Types[typeof(INewsReaderPresenter)]);
             Assert.AreEqual(typeof(NewsReader), container.Types[typeof(INewsReaderView)]);
         }
@@ -62,7 +59,7 @@ namespace StockTraderRI.Modules.News.Tests
 
             Assert.IsTrue(controller.RunCalled);
         }
-	
+
 
         internal class TestableNewsModule : NewsModule
         {

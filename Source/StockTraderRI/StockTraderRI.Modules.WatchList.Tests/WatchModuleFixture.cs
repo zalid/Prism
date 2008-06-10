@@ -15,9 +15,10 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Prism.Interfaces;
 using StockTraderRI.Modules.Watch;
 using StockTraderRI.Modules.Watch.AddWatch;
 using StockTraderRI.Modules.Watch.Services;
@@ -40,7 +41,7 @@ namespace StockTraderRI.Modules.WatchList.Tests
 
             Assert.AreEqual(typeof(WatchListService), container.Types[typeof(IWatchListService)]);
             Assert.AreEqual(typeof(WatchListView), container.Types[typeof(IWatchListView)]);
-            Assert.AreEqual(typeof(WatchListPresenter), container.Types[typeof(IWatchListPresenter)]);
+            Assert.AreEqual(typeof(WatchListPresentationModel), container.Types[typeof(IWatchListPresentationModel)]);
             Assert.AreEqual(typeof(AddWatchView), container.Types[typeof(IAddWatchView)]);
             Assert.AreEqual(typeof(AddWatchPresenter), container.Types[typeof(IAddWatchPresenter)]);
         }
@@ -53,10 +54,10 @@ namespace StockTraderRI.Modules.WatchList.Tests
             var regionManager = new MockRegionManager();
             var container = new MockUnityResolver();
             container.Bag.Add(typeof(IAddWatchPresenter), new MockAddWatchPresenter());
-            container.Bag.Add(typeof(IWatchListPresenter), new MockWatchListPresenter());
+            container.Bag.Add(typeof(IWatchListPresentationModel), new MockWatchListPresentationModel());
             IModule module = new WatchModule(container, regionManager);
-            regionManager.Register("WatchRegion", collapsibleRegion);
-            regionManager.Register("MainToolbarRegion", toolbarRegion);
+            regionManager.Regions.Add("WatchRegion", collapsibleRegion);
+            regionManager.Regions.Add("MainToolbarRegion", toolbarRegion);
 
             Assert.AreEqual(0, toolbarRegion.AddedViews.Count);
             Assert.AreEqual(0, collapsibleRegion.AddedViews.Count);
@@ -89,14 +90,13 @@ namespace StockTraderRI.Modules.WatchList.Tests
             }
         }
 
-        class MockWatchListPresenter : IWatchListPresenter
+        class MockWatchListPresentationModel : IWatchListPresentationModel
         {
             private IWatchListView _view = new MockWatchListView();
 
             public IWatchListView View
             {
                 get { return _view; }
-                set { _view = value; }
             }
         }
 

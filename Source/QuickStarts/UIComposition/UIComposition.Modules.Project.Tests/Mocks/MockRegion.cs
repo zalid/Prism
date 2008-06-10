@@ -15,9 +15,8 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System.ComponentModel;
 using System.Windows;
-using Prism.Interfaces;
+using Microsoft.Practices.Composite.Regions;
 
 namespace UIComposition.Modules.Project.Tests.Mocks
 {
@@ -38,14 +37,24 @@ namespace UIComposition.Modules.Project.Tests.Mocks
             ViewsCount--;
         }
 
-        public ICollectionView Views
+        public IViewsCollection Views
         {
             get { return null; }
+        }
+
+        public IViewsCollection ActiveViews
+        {
+            get { throw new System.NotImplementedException(); }
         }
 
         public void Activate(object view)
         {
             ActivateCalled = true;
+        }
+
+        public void Deactivate(object view)
+        {
+            throw new System.NotImplementedException();
         }
 
         public IRegionManager Add(object view, string name)

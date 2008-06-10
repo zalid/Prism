@@ -120,4 +120,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PreBuildEvent>$(FrameworkDir)\..\v3.5\msbuild.exe "$(SolutionDir)\EventAggregation.sln"</PreBuildEvent>
+  </PropertyGroup>
 </Project>

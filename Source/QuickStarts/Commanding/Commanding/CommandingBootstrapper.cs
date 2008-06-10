@@ -15,14 +15,15 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using System.ComponentModel;
 using System.Windows;
 using Commanding.Modules.Order;
-using Prism.Services;
-using Prism.UnityContainerAdapter;
+using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Composite.UnityExtensions;
 
 namespace Commanding
 {
-    class CommandingBootstrapper : UnityPrismBootstrapper
+    class CommandingBootstrapper : UnityBootstrapper
     {
         protected override DependencyObject CreateShell()
         {
@@ -31,7 +32,7 @@ namespace Commanding
             return shell;
         }
 
-        protected override Prism.Interfaces.IModuleEnumerator GetModuleEnumerator()
+        protected override IModuleEnumerator GetModuleEnumerator()
         {
             return new StaticModuleEnumerator().AddModule(typeof(OrderModule));
         }

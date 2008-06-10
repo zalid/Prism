@@ -100,7 +100,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
                 case BuySellEnum.Buy:
                     //right click on the added symbol in the Position Table and click Buy
                     list.Rows.Find(r => r.Cells[0].Text.Equals(symbol)).RightClick();
-                    System.Threading.Thread.Sleep(2000);
+                    System.Threading.Thread.Sleep(1000);
                     window.PopupMenu("Buy").Click();
                     break;
                 case BuySellEnum.Sell:
@@ -108,8 +108,8 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
 
                     //right click on the added symbol in the Position Table and click sell
                     list.Rows.Find(r => r.Cells[0].Text.Equals(symbol)).RightClick();
-                    System.Threading.Thread.Sleep(2000);
-                    window.PopupMenu("Sell").Click();
+                    System.Threading.Thread.Sleep(1000);
+                    window.PopupMenu("Sell").Click();                    
                     break;
             }
         }
@@ -317,8 +317,9 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
 
         private void SelectBuySellTabPage()
         {
+            System.Threading.Thread.Sleep(2000);                                                              
             Tab positionBuySellTab = window.Get<Tab>(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("PositionBuySellTab"))
-                                                                   .AndControlType(typeof(Tab)));                                                                            
+                                                                   .AndControlType(typeof(Tab)));            
             positionBuySellTab.Pages.Find(p => p.NameMatches(TestDataInfrastructure.GetTestInputData("BuySellTab"))).Select();
         }
 

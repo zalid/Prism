@@ -15,7 +15,8 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using UIComposition.Modules.Employee.PresententationModels;
+using UIComposition.Modules.Employee.PresentationModels;
+
 namespace UIComposition.Modules.Employee
 {
     public class EmployeesDetailsPresenter : IEmployeesDetailsPresenter

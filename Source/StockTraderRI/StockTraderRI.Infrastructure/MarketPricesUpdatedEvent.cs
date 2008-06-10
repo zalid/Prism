@@ -16,11 +16,11 @@
 //===============================================================================
 
 using System.Collections.Generic;
-using Prism.Events;
+using Microsoft.Practices.Composite.Wpf.Events;
 
 namespace StockTraderRI.Infrastructure
 {
-    public class MarketPricesUpdatedEvent : PrismEvent<IDictionary<string, decimal>>
+    public class MarketPricesUpdatedEvent : WpfEvent<IDictionary<string, decimal>>
     {
     }
 }

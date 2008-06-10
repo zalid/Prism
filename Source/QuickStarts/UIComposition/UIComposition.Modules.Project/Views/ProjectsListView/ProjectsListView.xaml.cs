@@ -18,8 +18,6 @@
 namespace UIComposition.Modules.Project
 {
     using System.Windows.Controls;
-    using Prism.Interfaces;
-    using Prism.Utility;
     using UIComposition.Infrastructure;
     using System.Collections.ObjectModel;
 

@@ -15,7 +15,7 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using Prism.Interfaces;
+using Microsoft.Practices.Composite.Modularity;
 
 namespace StockTraderRI.Infrastructure.Tests.Mocks
 {

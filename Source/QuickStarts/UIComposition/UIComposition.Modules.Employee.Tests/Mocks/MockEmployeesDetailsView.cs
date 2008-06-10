@@ -16,7 +16,7 @@
 //===============================================================================
 
 using System.Windows.Controls;
-using UIComposition.Modules.Employee.PresententationModels;
+using UIComposition.Modules.Employee.PresentationModels;
 
 namespace UIComposition.Modules.Employee.Tests.Mocks
 {

@@ -17,42 +17,27 @@
 
 using System;
 using System.Collections.Generic;
-using Prism.Interfaces;
+using Microsoft.Practices.Composite.Regions;
 
 namespace UIComposition.Modules.Project.Tests.Mocks
 {
     public class MockRegionManager : IRegionManager
     {
-        public Dictionary<string, IRegion> Regions = new Dictionary<string, IRegion>();
+        private Dictionary<string, IRegion> _regions = new Dictionary<string, IRegion>();
 
         #region IRegionManager Members
-
-        public void Register(string regionName, IRegion region)
-        {
-            Regions.Add(regionName, region);
-        }
-
-        public IRegion GetRegion(string regionName)
-        {
-            return Regions[regionName];
-        }
-
-        public bool HasRegion(string regionName)
-        {
-            throw new NotImplementedException();
-        }
 
         public IRegionManager CreateRegionManager()
         {
             throw new NotImplementedException();
         }
 
-        public void CreateRegion(System.Windows.DependencyObject element, string regionName)
+        public IDictionary<string, IRegion> Regions
         {
-            throw new NotImplementedException();
+            get { return _regions; }
         }
 
-        public void Unregister(string regionName)
+        public void AttachNewRegion(object objectToAdapt, string regionName)
         {
             throw new NotImplementedException();
         }

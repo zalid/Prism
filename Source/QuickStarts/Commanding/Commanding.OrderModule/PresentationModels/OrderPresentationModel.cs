@@ -18,9 +18,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using Commanding.Modules.Order.Properties;
-using Prism.Commands;
-using Prism.Utility;
+using Microsoft.Practices.Composite.Events;
+using Microsoft.Practices.Composite.Wpf.Commands;
 
 namespace Commanding.Modules.Order.PresentationModels
 {
@@ -148,7 +149,7 @@ namespace Commanding.Modules.Order.PresentationModels
             {
                 // Not implemented because we are not consuming it. 
                 // Instead, we are displaying error messages at the item level. 
-                 throw new NotImplementedException();
+                throw new NotImplementedException();
             }
         }
 
@@ -189,7 +190,7 @@ namespace Commanding.Modules.Order.PresentationModels
         private void Save(object obj)
         {
             //Save the order here.
-            Console.WriteLine(String.Format("{0} saved.", OrderName));
+            Console.WriteLine(String.Format(CultureInfo.InvariantCulture, "{0} saved.", OrderName));
 
             //Notify that the order was saved
             OnSaved(new DataEventArgs<OrderPresentationModel>(this));

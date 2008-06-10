@@ -17,10 +17,10 @@
 
 using System;
 using EventAggregation.Infrastructure;
+using Microsoft.Practices.Composite.Wpf.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModuleB.Tests.Mocks;
-using Prism.Events;
-using Prism.Interfaces;
+using SubscriptionToken = Microsoft.Practices.Composite.Wpf.Events.SubscriptionToken;
 
 namespace ModuleB.Tests
 {
@@ -39,8 +39,8 @@ namespace ModuleB.Tests
             ActivityPresenter presenter = new ActivityPresenter(mockEventAggregator);
             presenter.View = view;
             string customerId = "ALFKI";
-            presenter.CustomerID = customerId;
-            FundOrder payload = new FundOrder() { CustomerID = customerId, TickerSymbol = "MSFT" };
+            presenter.CustomerId = customerId;
+            FundOrder payload = new FundOrder() { CustomerId = customerId, TickerSymbol = "MSFT" };
             mockEvent.SubscribeArgumentAction(payload);
             StringAssert.Contains(view.AddContentArgumentContent, "MSFT");
         }
@@ -55,14 +55,28 @@ namespace ModuleB.Tests
             ActivityPresenter presenter = new ActivityPresenter(mockEventAggregator);
             presenter.View = new MockActivityView();
 
-            presenter.CustomerID = "ALFKI";
+            presenter.CustomerId = "ALFKI";
 
-            Assert.IsTrue(mockEvent.SubscribeArgumentFilter(new FundOrder { CustomerID = "ALFKI" }));
-            Assert.AreEqual(ThreadOption.UIThread, mockEvent.ThreadOption);
-            Assert.IsFalse(mockEvent.SubscribeArgumentFilter(new FundOrder { CustomerID = "FilteredOutCustomer" }));
+            Assert.IsTrue(mockEvent.SubscribeArgumentFilter(new FundOrder { CustomerId = "ALFKI" }));
+            Assert.AreEqual(Microsoft.Practices.Composite.Wpf.Events.ThreadOption.UIThread, mockEvent.ThreadOption);
+            Assert.IsFalse(mockEvent.SubscribeArgumentFilter(new FundOrder { CustomerId = "FilteredOutCustomer" }));
         }
 
+        [TestMethod]
+        public void PresenterUnsubcribesFromFundAddedEventIfCustomerIDIsSetTwice()
+        {
+            var mockEventAggregator = new MockEventAggregator();
 
+            MockFundAddedEvent mockEvent = new MockFundAddedEvent();
+            mockEventAggregator.AddMapping<FundAddedEvent>(mockEvent);
+            ActivityPresenter presenter = new ActivityPresenter(mockEventAggregator);
+            presenter.View = new MockActivityView();
+
+            presenter.CustomerId = "ALFKI";
+            presenter.CustomerId = "ALFKI";
+
+            Assert.AreEqual(1, mockEvent.SubscribeCount);
+        }
     }
 
     internal class MockFundAddedEvent : FundAddedEvent
@@ -70,12 +84,20 @@ namespace ModuleB.Tests
         public Action<FundOrder> SubscribeArgumentAction;
         public Predicate<FundOrder> SubscribeArgumentFilter;
         public ThreadOption ThreadOption;
-        public override SubscriptionToken Subscribe(Action<FundOrder> action, Prism.Interfaces.ThreadOption threadOption, bool keepSubscriberReferenceAlive, Predicate<FundOrder> filter)
+        public int SubscribeCount;
+
+        public override SubscriptionToken Subscribe(Action<FundOrder> action, ThreadOption threadOption, bool keepSubscriberReferenceAlive, Predicate<FundOrder> filter)
         {
             SubscribeArgumentAction = action;
             SubscribeArgumentFilter = filter;
             ThreadOption = threadOption;
-            return null;
+            SubscribeCount++;
+            return new SubscriptionToken();
+        }
+
+        public override void Unsubscribe(SubscriptionToken subscriptionToken)
+        {
+            SubscribeCount--;
         }
     }
 

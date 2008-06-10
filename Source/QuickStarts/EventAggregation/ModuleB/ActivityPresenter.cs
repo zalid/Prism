@@ -16,17 +16,19 @@
 //===============================================================================
 
 using System.Diagnostics;
-using EventAggregation.Infrastructure;
-using ModuleB.Properties;
-using Prism.Interfaces;
 using System.Globalization;
+using EventAggregation.Infrastructure;
+using Microsoft.Practices.Composite.Events;
+using Microsoft.Practices.Composite.Wpf.Events;
+using ModuleB.Properties;
 
 namespace ModuleB
 {
     public class ActivityPresenter
     {
-        private string _customerID;
+        private string _customerId;
         private IEventAggregator eventAggregator;
+        private SubscriptionToken subscriptionToken;
 
         public ActivityPresenter(IEventAggregator eventAggregator)
         {
@@ -41,15 +43,24 @@ namespace ModuleB
 
         public IActivityView View { get; set; }
 
-        public string CustomerID
+        public string CustomerId
         {
-            get { return _customerID; }
+            get { return _customerId; }
             set
             {
-                _customerID = value;
-                this.eventAggregator.Get<FundAddedEvent>().Subscribe(FundAddedEventHandler, ThreadOption.UIThread, false, fundOrder => fundOrder.CustomerID == _customerID);
+                _customerId = value;
 
-                View.Title = string.Format(CultureInfo.CurrentCulture, Resources.ActivityTitle, CustomerID);
+                FundAddedEvent fundAddedEvent = eventAggregator.GetInstance<FundAddedEvent>();
+
+                if (subscriptionToken != null)
+                {
+                    fundAddedEvent.Unsubscribe(subscriptionToken);
+                }
+
+                subscriptionToken = fundAddedEvent.Subscribe(FundAddedEventHandler, ThreadOption.UIThread, false,
+                                                             fundOrder => fundOrder.CustomerId == _customerId);
+
+                View.Title = string.Format(CultureInfo.CurrentCulture, Resources.ActivityTitle, CustomerId);
             }
         }
     }

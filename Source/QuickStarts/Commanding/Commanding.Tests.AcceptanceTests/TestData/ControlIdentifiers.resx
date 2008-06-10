@@ -117,7 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DateLabel" xml:space="preserve">
+    <value>DateLabel</value>
+  </data>
+  <data name="DeliveryDateTextBox" xml:space="preserve">
+    <value>DeliveryDateTextBox</value>
+  </data>
+  <data name="OrderListView" xml:space="preserve">
+    <value>OrderListView</value>
+  </data>
+  <data name="OrderNameLabel" xml:space="preserve">
+    <value>OrderNameLabel</value>
+  </data>
+  <data name="PriceLabel" xml:space="preserve">
+    <value>PriceLabel</value>
+  </data>
+  <data name="PriceTextBox" xml:space="preserve">
+    <value>PriceTextBox</value>
+  </data>
+  <data name="QuantityLabel" xml:space="preserve">
+    <value>QuantityLabel</value>
+  </data>
+  <data name="QuantityTextBox" xml:space="preserve">
+    <value>QuantityTextBox</value>
+  </data>
   <data name="SaveAllToolBarButton" xml:space="preserve">
     <value>SaveAllToolBarButton</value>
+  </data>
+  <data name="SaveButton" xml:space="preserve">
+    <value>SaveButton</value>
+  </data>
+  <data name="ShippingLabel" xml:space="preserve">
+    <value>ShippingLabel</value>
+  </data>
+  <data name="ShippingTextBox" xml:space="preserve">
+    <value>ShippingTextBox</value>
+  </data>
+  <data name="TotalLabel" xml:space="preserve">
+    <value>TotalLabel</value>
+  </data>
+  <data name="TotalTextBox" xml:space="preserve">
+    <value>TotalTextBox</value>
   </data>
 </root>

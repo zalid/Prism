@@ -16,13 +16,12 @@
 //===============================================================================
 
 using System.Windows;
-using Prism.Interfaces;
-using Prism.Services;
-using Prism.UnityContainerAdapter;
+using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Composite.UnityExtensions;
 
 namespace ConfigurationModularity
 {
-    public class Bootstrapper : UnityPrismBootstrapper
+    public class Bootstrapper : UnityBootstrapper
     {
         protected override DependencyObject CreateShell()
         {
@@ -35,8 +34,7 @@ namespace ConfigurationModularity
 
         protected override IModuleEnumerator GetModuleEnumerator()
         {
-            ConfigurationStore store = new ConfigurationStore();
-            return new ConfigurationModuleEnumerator(store);
+            return new ConfigurationModuleEnumerator();
         }
     }
 }

@@ -15,9 +15,9 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Prism.Interfaces;
 using UIComposition.Modules.Employee.Controllers;
 using UIComposition.Modules.Employee.Services;
 using UIComposition.Modules.Employee.Tests.Mocks;
@@ -28,13 +28,13 @@ namespace UIComposition.Modules.Employee.Tests
     public class EmployeeModuleFixture
     {
         MockUnityContainer container;
-        MockRegionManagerService regionManagerService;
+        MockRegionManager regionManager;
 
         [TestInitialize]
         public void SetUp()
         {
             container = new MockUnityContainer();
-            regionManagerService = new MockRegionManagerService();
+            regionManager = new MockRegionManager();
         }
 
         [TestMethod]
@@ -73,12 +73,12 @@ namespace UIComposition.Modules.Employee.Tests
         public void InitializeShouldAddEmployeesViewToRegion()
         {
             container.RegisterInstance<IUnityContainer>(container);
-            container.RegisterInstance<IRegionManager>(regionManagerService);
+            container.RegisterInstance<IRegionManager>(regionManager);
             MockRegion mainRegion = new MockRegion();
             MockRegion mainToolbar = new MockRegion();
 
-            regionManagerService.Register(RegionNames.MainRegion, mainRegion);
-            regionManagerService.Register(RegionNames.MainToolBar, mainToolbar);
+            regionManager.Regions.Add(RegionNames.MainRegion, mainRegion);
+            regionManager.Regions.Add(RegionNames.MainToolBar, mainToolbar);
 
             EmployeeModule module = CreateModule();
 
@@ -91,13 +91,13 @@ namespace UIComposition.Modules.Employee.Tests
 
         private TestableEmployeeModule CreateTestableModule()
         {
-            TestableEmployeeModule module = new TestableEmployeeModule(container, regionManagerService);
+            TestableEmployeeModule module = new TestableEmployeeModule(container, regionManager);
             return module;
         }
 
         private EmployeeModule CreateModule()
         {
-            EmployeeModule module = new EmployeeModule(container, regionManagerService);
+            EmployeeModule module = new EmployeeModule(container, regionManager);
             return module;
         }
     }

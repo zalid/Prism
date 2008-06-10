@@ -23,7 +23,7 @@ namespace UIComposition.Modules.Project
     {
         public ObservableCollection<BusinessEntities.Project> Projects { get; set; }
 
-        public string HeaderInfo
+        public static string HeaderInfo
         {
             get { return "Current Projects"; }
         }

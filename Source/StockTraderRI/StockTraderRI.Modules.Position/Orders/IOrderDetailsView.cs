@@ -19,13 +19,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using StockTraderRI.Modules.Position.PresentationModels;
-using Prism.Interfaces;
+using Microsoft.Practices.Composite;
 
 namespace StockTraderRI.Modules.Position.Orders
 {
     public interface IOrderDetailsView : IActiveAware
     {
-        OrderDetailsPresentationModel Model { get; set; }
+        IOrderDetailsPresentationModel Model { set; }
     }
 }

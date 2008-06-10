@@ -15,12 +15,13 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using Prism;
-using Prism.Interfaces;
+using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Composite.Regions;
 
 namespace ModuleA
 {
-    [Module(ModuleName = "ModuleA", DependsOn = new[] { "ModuleD" })]
+    [Module(ModuleName = "ModuleA")]
+    [ModuleDependency("ModuleD")]
     public class ModuleA : IModule
     {
         private readonly IRegionManager _regionManager;
@@ -32,7 +33,7 @@ namespace ModuleA
 
         public void Initialize()
         {
-            _regionManager.GetRegion("MainRegion").Add(new DefaultViewA());
+            _regionManager.Regions["MainRegion"].Add(new DefaultViewA());
         }
     }
 }

@@ -16,6 +16,8 @@
 //===============================================================================
 
 
+using Microsoft.Practices.Composite.Regions;
+
 namespace UIComposition.Modules.Employee
 {
     using System.Windows.Controls;
@@ -33,12 +35,6 @@ namespace UIComposition.Modules.Employee
         public void SetHeader(IEmployeesListView employeesListView)
         {
             this.HeaderPanel.Content = employeesListView;
-        }
-
-
-        public Prism.Interfaces.IRegionManager RegionManager
-        {
-            get { return Prism.Regions.RegionManager.GetRegionManager(this); }
         }
     }
 }

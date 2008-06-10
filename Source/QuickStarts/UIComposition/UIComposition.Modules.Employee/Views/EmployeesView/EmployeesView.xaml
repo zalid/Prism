@@ -2,9 +2,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:UIComposition.Modules.Employee"
-    xmlns:prism="http://www.codeplex.com/prism">
-    <StackPanel x:Name="EmployeesPanel">
+    xmlns:cal="http://www.codeplex.com/CompositeWPF">
+    <StackPanel>
         <ContentControl x:Name="HeaderPanel"/> 
-        <ContentControl x:Name="DetailsPanel" prism:RegionManager.RegionName="{x:Static local:RegionNames.DetailsRegion}"/>
+        <ContentControl cal:RegionManager.RegionName="{x:Static local:RegionNames.DetailsRegion}"/>
     </StackPanel>
 </UserControl>

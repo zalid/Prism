@@ -127,7 +127,7 @@
     <value>dependencies</value>
   </data>
   <data name="DependencyAttributeDirLookup" xml:space="preserve">
-    <value>DependsOn</value>
+    <value>ModuleName</value>
   </data>
   <data name="DependencyNode" xml:space="preserve">
     <value>dependency</value>

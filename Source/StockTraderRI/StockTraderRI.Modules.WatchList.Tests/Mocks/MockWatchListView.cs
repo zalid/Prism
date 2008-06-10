@@ -16,21 +16,12 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using StockTraderRI.Infrastructure.Interfaces;
-using System.Windows.Controls;
-using System.Collections.ObjectModel;
-using StockTraderRI.Infrastructure.Models;
-using Prism.Utility;
+using Microsoft.Practices.Composite.Events;
 using StockTraderRI.Modules.Watch.WatchList;
-using StockTraderRI.Modules.Watch;
-using StockTraderRI.Modules.Watch.PresentationModels;
 
 namespace StockTraderRI.Modules.WatchList.Tests.Mocks
 {
-    class MockWatchListView : Control, IWatchListView
+    class MockWatchListView : IWatchListView
     {
         public event EventHandler<DataEventArgs<string>> OnRemoveMenuItemClicked;
 

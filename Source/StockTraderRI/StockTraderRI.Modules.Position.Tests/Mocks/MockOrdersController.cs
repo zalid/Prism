@@ -19,8 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Practices.Composite.Wpf.Commands;
 using StockTraderRI.Modules.Position.Controllers;
-using Prism.Commands;
 
 namespace StockTraderRI.Modules.Position.Tests.Mocks
 {
@@ -29,13 +29,13 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
         #region IOrdersController Members
 
         DelegateCommand<string> _buyCommand = new DelegateCommand<string>(delegate { });
-        public Prism.Commands.DelegateCommand<string> BuyCommand
+        public DelegateCommand<string> BuyCommand
         {
             get { return _buyCommand; }
         }
 
         DelegateCommand<string> _sellCommand = new DelegateCommand<string>(delegate { });
-        public Prism.Commands.DelegateCommand<string> SellCommand
+        public DelegateCommand<string> SellCommand
         {
             get { return _sellCommand; }
         }

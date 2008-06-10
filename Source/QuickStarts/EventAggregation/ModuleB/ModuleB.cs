@@ -15,8 +15,9 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Unity;
-using Prism.Interfaces;
 
 namespace ModuleB
 {
@@ -35,7 +36,7 @@ namespace ModuleB
             activityView1.CustomerId = "Customer1";
             activityView2.CustomerId = "Customer2";
 
-            IRegion rightRegion = RegionManager.GetRegion("RightRegion");
+            IRegion rightRegion = RegionManager.Regions["RightRegion"];
             rightRegion.Add(activityView1);
             rightRegion.Add(activityView2);
         }

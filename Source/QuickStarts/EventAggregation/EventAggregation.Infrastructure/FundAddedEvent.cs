@@ -19,11 +19,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Prism.Events;
+using Microsoft.Practices.Composite.Wpf.Events;
 
 namespace EventAggregation.Infrastructure
 {
-    public class FundAddedEvent : PrismEvent<FundOrder>
+    public class FundAddedEvent : WpfEvent<FundOrder>
     {
     }
 }

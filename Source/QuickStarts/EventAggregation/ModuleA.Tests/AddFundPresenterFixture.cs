@@ -26,7 +26,7 @@ namespace ModuleA.Tests
     public class AddFundPresenterFixture
     {
         [TestMethod]
-        public void PresenterFiresFundAddedOnViewAddClick()
+        public void PresenterPublishesFundAddedOnViewAddClick()
         {
             var view = new MockAddFundView();
             var EventAggregator = new MockEventAggregator();
@@ -37,11 +37,11 @@ namespace ModuleA.Tests
             view.Customer = "99";
             view.Fund = "TestFund";
 
-            view.FireAddClick();
+            view.PublishAddClick();
 
-            Assert.IsTrue(mockFundAddedEvent.FireCalled);
-            Assert.AreEqual("99", mockFundAddedEvent.FireArgumentPayload.CustomerID);
-            Assert.AreEqual("TestFund", mockFundAddedEvent.FireArgumentPayload.TickerSymbol);
+            Assert.IsTrue(mockFundAddedEvent.PublishCalled);
+            Assert.AreEqual("99", mockFundAddedEvent.PublishArgumentPayload.CustomerId);
+            Assert.AreEqual("TestFund", mockFundAddedEvent.PublishArgumentPayload.TickerSymbol);
         }
 
 
@@ -49,7 +49,7 @@ namespace ModuleA.Tests
 
     class MockAddFundView : IAddFundView
     {
-        public void FireAddClick()
+        public void PublishAddClick()
         {
             AddFund(this, EventArgs.Empty);
         }

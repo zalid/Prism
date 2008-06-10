@@ -16,7 +16,8 @@
 //===============================================================================
 
 using HelloWorld.Views;
-using Prism.Interfaces;
+using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Composite.Regions;
 
 namespace HelloWorld
 {
@@ -31,7 +32,7 @@ namespace HelloWorld
 
         public void Initialize()
         {
-            IRegion mainRegion = this.regionManager.GetRegion("MainRegion");
+            IRegion mainRegion = this.regionManager.Regions["MainRegion"];
             mainRegion.Add(new HelloWorldView());
         }
     }

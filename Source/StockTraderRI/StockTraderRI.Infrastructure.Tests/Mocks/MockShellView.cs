@@ -15,10 +15,9 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System.Windows.Controls;
 namespace StockTraderRI.Infrastructure.Tests.Mocks
 {
-    internal class MockShellView : Control, IShellView
+    internal class MockShellView : IShellView
     {
         public bool ShowCalled { get; set; }
 

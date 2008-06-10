@@ -120,4 +120,28 @@
   <data name="ApplicationLoadFailure" xml:space="preserve">
     <value>Failing the test cases as the application failed to load</value>
   </data>
+  <data name="DefaultData" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="DefaultOrder" xml:space="preserve">
+    <value>Order 1</value>
+  </data>
+  <data name="DefaultPrice" xml:space="preserve">
+    <value>60.5</value>
+  </data>
+  <data name="DefaultQuantity" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="DefaultShipping" xml:space="preserve">
+    <value>40</value>
+  </data>
+  <data name="InvalidPrice" xml:space="preserve">
+    <value>-50</value>
+  </data>
+  <data name="InvalidQuantity" xml:space="preserve">
+    <value>-5</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Order </value>
+  </data>
 </root>

@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Practices.Composite.Wpf, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\CAL\Composite.Wpf\bin\Debug\Microsoft.Practices.Composite.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -42,13 +46,9 @@
     <Compile Include="ActivityPresenterFixture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Prism\Prism.Interfaces\Prism.Interfaces.csproj">
-      <Project>{C4E0705E-7D35-441A-BC04-6F4E5D25FD60}</Project>
-      <Name>Prism.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Prism\Prism\Prism.csproj">
-      <Project>{E20361F8-7B3F-437D-8799-EDE1FB7B15C1}</Project>
-      <Name>Prism %28Prism\Prism%29</Name>
+    <ProjectReference Include="..\..\..\CAL\Composite\Composite.csproj">
+      <Project>{77138947-1D13-4E22-AEE0-5D0DD046CA34}</Project>
+      <Name>Composite</Name>
     </ProjectReference>
     <ProjectReference Include="..\EventAggregation.Infrastructure\EventAggregation.Infrastructure.csproj">
       <Project>{8F3F1393-6AC3-47FA-8D7B-B01EC4511F4A}</Project>

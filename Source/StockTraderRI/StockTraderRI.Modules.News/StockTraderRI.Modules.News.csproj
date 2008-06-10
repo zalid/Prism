@@ -76,8 +76,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Article\ArticlePresenter.cs" />
-    <Compile Include="Article\IArticlePresenter.cs" />
+    <Compile Include="Article\ArticlePresentationModel.cs" />
+    <Compile Include="Article\IArticlePresentationModel.cs" />
     <Compile Include="Article\INewsReaderPresenter.cs" />
     <Compile Include="Article\INewsReaderView.cs" />
     <Compile Include="Article\NewsReader.xaml.cs">
@@ -85,12 +85,12 @@
     </Compile>
     <Compile Include="Article\NewsReaderPresenter.cs" />
     <Compile Include="Controllers\INewsController.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="NewsModule.cs" />
     <Compile Include="Article\IArticleView.cs" />
     <Compile Include="Article\ArticleView.xaml.cs">
       <DependentUpon>ArticleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PresentationModels\ArticlePresentationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -104,13 +104,13 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Prism\Prism.Interfaces\Prism.Interfaces.csproj">
-      <Project>{C4E0705E-7D35-441A-BC04-6F4E5D25FD60}</Project>
-      <Name>Prism.Interfaces</Name>
+    <ProjectReference Include="..\..\CAL\Composite.Wpf\Composite.Wpf.csproj">
+      <Project>{F807062D-6FC9-4FF0-A9F5-5F94653EDC4D}</Project>
+      <Name>Composite.Wpf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Prism\Prism\Prism.csproj">
-      <Project>{E20361F8-7B3F-437D-8799-EDE1FB7B15C1}</Project>
-      <Name>Prism</Name>
+    <ProjectReference Include="..\..\CAL\Composite\Composite.csproj">
+      <Project>{77138947-1D13-4E22-AEE0-5D0DD046CA34}</Project>
+      <Name>Composite</Name>
     </ProjectReference>
     <ProjectReference Include="..\StockTraderRI.Infrastructure\StockTraderRI.Infrastructure.csproj">
       <Project>{0A123C1B-F316-447D-99A5-44CCF8023683}</Project>

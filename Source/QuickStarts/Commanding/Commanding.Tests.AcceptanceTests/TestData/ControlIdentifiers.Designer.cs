@@ -61,11 +61,128 @@ namespace Commanding.Tests.AcceptanceTests.TestData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DateLabel.
+        /// </summary>
+        internal static string DateLabel {
+            get {
+                return ResourceManager.GetString("DateLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DeliveryDateTextBox.
+        /// </summary>
+        internal static string DeliveryDateTextBox {
+            get {
+                return ResourceManager.GetString("DeliveryDateTextBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OrderListView.
+        /// </summary>
+        internal static string OrderListView {
+            get {
+                return ResourceManager.GetString("OrderListView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OrderNameLabel.
+        /// </summary>
+        internal static string OrderNameLabel {
+            get {
+                return ResourceManager.GetString("OrderNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PriceLabel.
+        /// </summary>
+        internal static string PriceLabel {
+            get {
+                return ResourceManager.GetString("PriceLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PriceTextBox.
+        /// </summary>
+        internal static string PriceTextBox {
+            get {
+                return ResourceManager.GetString("PriceTextBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to QuantityLabel.
+        /// </summary>
+        internal static string QuantityLabel {
+            get {
+                return ResourceManager.GetString("QuantityLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to QuantityTextBox.
+        /// </summary>
+        internal static string QuantityTextBox {
+            get {
+                return ResourceManager.GetString("QuantityTextBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SaveAllToolBarButton.
         /// </summary>
         internal static string SaveAllToolBarButton {
             get {
                 return ResourceManager.GetString("SaveAllToolBarButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SaveButton.
+        /// </summary>
+        internal static string SaveButton {
+            get {
+                return ResourceManager.GetString("SaveButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ShippingLabel.
+        /// </summary>
+        internal static string ShippingLabel {
+            get {
+                return ResourceManager.GetString("ShippingLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ShippingTextBox.
+        /// </summary>
+        internal static string ShippingTextBox {
+            get {
+                return ResourceManager.GetString("ShippingTextBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TotalLabel.
+        /// </summary>
+        internal static string TotalLabel {
+            get {
+                return ResourceManager.GetString("TotalLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TotalTextBox.
+        /// </summary>
+        internal static string TotalTextBox {
+            get {
+                return ResourceManager.GetString("TotalTextBox", resourceCulture);
             }
         }
     }

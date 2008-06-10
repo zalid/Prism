@@ -16,15 +16,15 @@
 //===============================================================================
 
 using System.Windows;
+using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Composite.UnityExtensions;
 
 namespace UIComposition
 {
     using Modules.Employee;
     using Modules.Project;
-    using Prism.Interfaces;
-    using Prism.UnityContainerAdapter;
 
-    internal class Bootstrapper : UnityPrismBootstrapper
+    internal class Bootstrapper : UnityBootstrapper
     {
         protected override DependencyObject CreateShell()
         {

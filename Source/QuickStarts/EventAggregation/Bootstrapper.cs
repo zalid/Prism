@@ -16,15 +16,16 @@
 //===============================================================================
 
 using System.Windows;
-using Prism.UnityContainerAdapter;
+using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Composite.UnityExtensions;
 
 namespace EventAggregation
 {
-    public class Bootstrapper : UnityPrismBootstrapper
+    public class Bootstrapper : UnityBootstrapper
     {
         protected override DependencyObject CreateShell()
         {
-            var shell = Container.Resolve<Shell>();
+            Shell shell = Container.Resolve<Shell>();
 
             shell.Show();
 
@@ -33,8 +34,8 @@ namespace EventAggregation
 
         protected override void InitializeModules()
         {
-            var moduleA = Container.Resolve<ModuleA.ModuleA>();
-            var moduleB = Container.Resolve<ModuleB.ModuleB>();
+            IModule moduleA = Container.Resolve<ModuleA.ModuleA>();
+            IModule moduleB = Container.Resolve<ModuleB.ModuleB>();
 
             moduleA.Initialize();
             moduleB.Initialize();

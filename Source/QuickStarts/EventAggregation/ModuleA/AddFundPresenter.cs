@@ -17,7 +17,7 @@
 
 using System;
 using EventAggregation.Infrastructure;
-using Prism.Interfaces;
+using Microsoft.Practices.Composite.Events;
 
 namespace ModuleA
 {
@@ -34,11 +34,11 @@ namespace ModuleA
         void AddFund(object sender, EventArgs e)
         {
             FundOrder fundOrder = new FundOrder();
-            fundOrder.CustomerID = View.Customer;
+            fundOrder.CustomerId = View.Customer;
             fundOrder.TickerSymbol = View.Fund;
 
-            if (!string.IsNullOrEmpty(fundOrder.CustomerID) && !string.IsNullOrEmpty(fundOrder.TickerSymbol))
-                eventAggregator.Get<FundAddedEvent>().Fire(fundOrder);
+            if (!string.IsNullOrEmpty(fundOrder.CustomerId) && !string.IsNullOrEmpty(fundOrder.TickerSymbol))
+                eventAggregator.GetInstance<FundAddedEvent>().Publish(fundOrder);
         }
 
         public IAddFundView View

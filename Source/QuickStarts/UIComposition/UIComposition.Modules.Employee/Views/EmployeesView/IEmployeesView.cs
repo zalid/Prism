@@ -17,9 +17,7 @@
 
 namespace UIComposition.Modules.Employee
 {
-    using Prism.Interfaces;
-
-    public interface IEmployeesView : IRegionManagerScopeProvider
+    public interface IEmployeesView
     {
         void SetHeader(IEmployeesListView employeesListView);
     }

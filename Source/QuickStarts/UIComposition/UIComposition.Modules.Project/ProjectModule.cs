@@ -15,21 +15,20 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using Microsoft.Practices.Composite.Modularity;
+
 namespace UIComposition.Modules.Project
 {
     using Microsoft.Practices.Unity;
-    using Prism.Interfaces;
-    using UIComposition.Modules.Project.Services;
+    using Services;
 
     public class ProjectModule : IModule
     {
-        private IUnityContainer container;
-        private IRegionManager regionManager;
+        private readonly IUnityContainer container;
 
-        public ProjectModule(IUnityContainer container, IRegionManager regionManager)
+        public ProjectModule(IUnityContainer container)
         {
             this.container = container;
-            this.regionManager = regionManager;
         }
 
         public void Initialize()

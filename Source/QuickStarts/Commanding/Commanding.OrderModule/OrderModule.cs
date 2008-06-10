@@ -16,8 +16,9 @@
 //===============================================================================
 
 using Commanding.Modules.Order.PresentationModels;
+using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Unity;
-using Prism.Interfaces;
 
 namespace Commanding.Modules.Order
 {
@@ -36,10 +37,10 @@ namespace Commanding.Modules.Order
         {
             OrdersEditorPresentationModel presentationModel = container.Resolve<OrdersEditorPresentationModel>();
 
-            IRegion mainRegion = regionManager.GetRegion("MainRegion");
+            IRegion mainRegion = regionManager.Regions["MainRegion"];
             mainRegion.Add(presentationModel.View);
 
-            IRegion globalCommandsRegion = regionManager.GetRegion("GlobalCommandsRegion");
+            IRegion globalCommandsRegion = regionManager.Regions["GlobalCommandsRegion"];
             globalCommandsRegion.Add(new OrdersToolBar());
         }
     }

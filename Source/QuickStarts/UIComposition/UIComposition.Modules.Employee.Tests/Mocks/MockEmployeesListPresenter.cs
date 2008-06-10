@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Prism.Utility;
+using Microsoft.Practices.Composite.Events;
 
 namespace UIComposition.Modules.Employee.Tests.Mocks
 {

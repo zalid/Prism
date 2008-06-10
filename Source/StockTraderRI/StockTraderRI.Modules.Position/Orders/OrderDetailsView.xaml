@@ -205,16 +205,16 @@
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="true">
                     <Setter Property="ToolTip"
-        Value="{Binding RelativeSource={RelativeSource Self},
+                        Value="{Binding RelativeSource={RelativeSource Self},
                         Path=(Validation.Errors)[0].ErrorContent}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
         <infConverters:EnumToBooleanConverter x:Key="enumToBooleanConverter" />
+        <infConverters:StringToNullableNumberConverter x:Key="StringToNullableNumberConverter" />
     </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot" >
-   
         <ComboBox x:Name="OrderTypeCombo" IsSynchronizedWithCurrentItem="True" SelectedValue="{Binding Path=OrderType, Mode=TwoWay}" ItemsSource="{Binding AvailableOrderTypes}" SelectedValuePath="Value" HorizontalAlignment="Left" Margin="115,16,0,0" Width="124.864" RenderTransformOrigin="0.224,0.48" Style="{DynamicResource ComboBoxStyle1}" VerticalAlignment="Top" Height="25"/>
         <Label Target="{Binding ElementName=TickerSymbolTextBox}" Margin="17,0,0,54" FontFamily="Franklin Gothic" FontSize="14" FontWeight="Normal" Foreground="#FF79B8EC" Content="_SYMBOL" HorizontalAlignment="Left" Width="78.945" RenderTransformOrigin="0.514,-0.509" Height="25.873" VerticalAlignment="Bottom" />
         <!--<TextBlock Margin="0,16,167,0" FontFamily="Franklin Gothic" FontSize="14" FontWeight="Normal" Foreground="#FF79B8EC" Text="PRICE TYPE" TextAlignment="Left" TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Top" Width="78.945" Height="25"/>-->
@@ -225,8 +225,8 @@
 		<!--<ComboBox IsSynchronizedWithCurrentItem="True" Margin="0,16,26,0" RenderTransformOrigin="0.224,0.48" Style="{DynamicResource ComboBoxStyle1}" VerticalAlignment="Top" Height="25" HorizontalAlignment="Right" Width="124.864"/>-->
 		<ComboBox Name="TimeInForceCombo" IsSynchronizedWithCurrentItem="True" Margin="0,0,26,22" RenderTransformOrigin="0.224,0.48" Style="{DynamicResource ComboBoxStyle1}" HorizontalAlignment="Right" Width="124.864" Height="25" VerticalAlignment="Bottom" SelectedValue="{Binding TimeInForce, Mode=TwoWay}" ItemsSource="{Binding AvailableTimesInForce}" SelectedValuePath="Value" />
 		<TextBox x:Name="TickerSymbolTextBox" HorizontalAlignment="Left" Margin="115,51,0,54" Width="124.864" Text="{Binding TickerSymbol}"/>
-		<TextBox Name="StopLimitPriceTextBox" HorizontalAlignment="Right" Margin="0,51,26,54" Width="124.864" Text="{Binding StopLimitPrice}" RenderTransformOrigin="2.451,0.16"/>
-        <TextBox Name="SharesTextBox" HorizontalAlignment="Left" Margin="115,0,0,22" Width="124.864" Text="{Binding Path=Shares, ValidatesOnExceptions=True, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Style="{StaticResource textBoxInError}" Height="25" VerticalAlignment="Bottom"/>
+		<TextBox Name="StopLimitPriceTextBox" HorizontalAlignment="Right" Margin="0,51,26,54" Width="124.864" Text="{Binding Path=StopLimitPrice, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, NotifyOnValidationError=True, ValidatesOnDataErrors=True, Converter={StaticResource StringToNullableNumberConverter}}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Style="{StaticResource textBoxInError}" RenderTransformOrigin="2.451,0.16"/>
+        <TextBox Name="SharesTextBox" HorizontalAlignment="Left" Margin="115,0,0,22" Width="124.864" Text="{Binding Path=Shares, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, NotifyOnValidationError=True, ValidatesOnDataErrors=True, Converter={StaticResource StringToNullableNumberConverter}}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Style="{StaticResource textBoxInError}" Height="25" VerticalAlignment="Bottom" />        
         <RadioButton Name="BuyRadio" Style="{StaticResource RadioButtonStyle}" IsChecked="{Binding Path=TransactionType, Mode=TwoWay, Converter={StaticResource enumToBooleanConverter}, ConverterParameter={x:Static inf:TransactionType.Buy}}" HorizontalAlignment="Right" Margin="0,16,25.728,0" Width="64.136" Height="17" VerticalAlignment="Top">Buy</RadioButton>
         <RadioButton Name="SellRadio" Style="{StaticResource RadioButtonStyle}" IsChecked="{Binding Path=TransactionType, Mode=TwoWay, Converter={StaticResource enumToBooleanConverter}, ConverterParameter={x:Static inf:TransactionType.Sell}}" Margin="0,16,86.864,0" Height="17" VerticalAlignment="Top" HorizontalAlignment="Right" Width="64">Sell</RadioButton>
     </Grid>

@@ -21,7 +21,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UIComposition.Modules.Employee.Tests.Mocks;
-using Prism.Interfaces;
 using UIComposition.Modules.Project;
 
 namespace UIComposition.Modules.Employee.Tests

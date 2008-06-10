@@ -88,7 +88,7 @@ namespace Modularity_AcceptanceTests.TestData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DependsOn.
+        ///   Looks up a localized string similar to ModuleName.
         /// </summary>
         internal static string DependencyAttributeDirLookup {
             get {

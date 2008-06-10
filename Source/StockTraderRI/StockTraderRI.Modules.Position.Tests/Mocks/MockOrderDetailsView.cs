@@ -16,18 +16,13 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using StockTraderRI.Modules.Position.Orders;
-using StockTraderRI.Modules.Position.PresentationModels;
-using System.Windows.Controls;
 
 namespace StockTraderRI.Modules.Position.Tests.Mocks
 {
-    public class MockOrderDetailsView : Control, IOrderDetailsView
+    public class MockOrderDetailsView : IOrderDetailsView
     {
-        public OrderDetailsPresentationModel Model { get; set; }
+        public IOrderDetailsPresentationModel Model { get; set; }
 
         public void RaiseIsActiveChanged()
         {

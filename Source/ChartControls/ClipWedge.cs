@@ -25,6 +25,7 @@ namespace StockTraderRI.ChartControls
 {
     public class ClipWedge : ContentControl
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static ClipWedge()
         {
             r = new Random();

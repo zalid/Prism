@@ -61,6 +61,7 @@
     <Compile Include="DefaultViewA.xaml.cs">
       <DependentUpon>DefaultViewA.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ModuleA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -93,10 +94,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Prism\Prism.Interfaces\Prism.Interfaces.csproj">
-      <Project>{C4E0705E-7D35-441A-BC04-6F4E5D25FD60}</Project>
-      <Name>Prism.Interfaces</Name>
-      <Private>False</Private>
+    <ProjectReference Include="..\..\..\..\CAL\Composite\Composite.csproj">
+      <Project>{77138947-1D13-4E22-AEE0-5D0DD046CA34}</Project>
+      <Name>Composite</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

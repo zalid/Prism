@@ -16,14 +16,7 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
-using StockTraderRI.Infrastructure.PresentationModels;
-using StockTraderRI.Infrastructure.Models;
-using Prism.Utility;
-using StockTraderRI.Modules.Watch.PresentationModels;
+using Microsoft.Practices.Composite.Events;
 
 namespace StockTraderRI.Modules.Watch.WatchList
 {

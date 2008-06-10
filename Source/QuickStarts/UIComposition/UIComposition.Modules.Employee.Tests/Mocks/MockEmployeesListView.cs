@@ -20,8 +20,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
-using Prism.Utility;
 using System.Windows.Controls;
+using Microsoft.Practices.Composite.Events;
 
 namespace UIComposition.Modules.Employee.Tests.Mocks
 {

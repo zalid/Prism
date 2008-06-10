@@ -15,10 +15,11 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using Microsoft.Practices.Composite.Events;
+
 namespace UIComposition.Modules.Employee
 {
     using System;
-    using Prism.Utility;
 
     public interface IEmployeesListPresenter
     {

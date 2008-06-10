@@ -17,42 +17,25 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows;
-using Prism.Interfaces;
+using Microsoft.Practices.Composite.Regions;
 
 namespace StockTraderRI.Modules.Position.Tests.Mocks
 {
     public class MockRegionManager : IRegionManager
     {
-        public Dictionary<string, IRegion> Regions = new Dictionary<string, IRegion>();
+        private Dictionary<string, IRegion> _regions = new Dictionary<string, IRegion>();
 
-        public void Register(string regionName, IRegion region)
+        public IDictionary<string, IRegion> Regions
         {
-            Regions.Add(regionName, region);
+            get { return _regions; }
         }
 
-        public IRegion GetRegion(string regionName)
-        {
-            return Regions[regionName];
-        }
-
-        public bool HasRegion(string regionName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CreateRegion(DependencyObject containerElement, string regionName)
+        public void AttachNewRegion(object regionTarget, string regionName)
         {
             throw new NotImplementedException();
         }
 
         public IRegionManager CreateRegionManager()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Unregister(string regionName)
         {
             throw new NotImplementedException();
         }
@@ -73,7 +56,7 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
             AddedViews.Remove(view);
         }
 
-        public ICollectionView Views
+        public IViewsCollection Views
         {
             get { throw new NotImplementedException(); }
         }
@@ -81,6 +64,11 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
         public void Activate(object view)
         {
             SelectedItem = view;
+        }
+
+        public void Deactivate(object view)
+        {
+            throw new NotImplementedException();
         }
 
         public IRegionManager Add(object view, string viewName)
@@ -101,9 +89,15 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
 
         public IRegionManager RegionManager
         {
+            get { throw new NotImplementedException(); }         
             set { throw new NotImplementedException(); }
         }
 
         public object SelectedItem { get; set; }
+
+        public IViewsCollection ActiveViews
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }

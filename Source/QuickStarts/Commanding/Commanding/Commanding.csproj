@@ -70,6 +70,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Styles\styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -81,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandingBootstrapper.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -97,6 +102,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -105,17 +111,17 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Prism\Prism.Interfaces\Prism.Interfaces.csproj">
-      <Project>{C4E0705E-7D35-441A-BC04-6F4E5D25FD60}</Project>
-      <Name>Prism.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Prism\Prism.UnityContainerAdapter\Prism.UnityContainerAdapter.csproj">
+    <ProjectReference Include="..\..\..\CAL\Composite.UnityExtensions\Composite.UnityExtensions.csproj">
       <Project>{17831F3B-6B82-4916-BD2B-2CE2071EA622}</Project>
-      <Name>Prism.UnityContainerAdapter</Name>
+      <Name>Composite.UnityExtensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Prism\Prism\Prism.csproj">
-      <Project>{E20361F8-7B3F-437D-8799-EDE1FB7B15C1}</Project>
-      <Name>Prism</Name>
+    <ProjectReference Include="..\..\..\CAL\Composite.Wpf\Composite.Wpf.csproj">
+      <Project>{F807062D-6FC9-4FF0-A9F5-5F94653EDC4D}</Project>
+      <Name>Composite.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\CAL\Composite\Composite.csproj">
+      <Project>{77138947-1D13-4E22-AEE0-5D0DD046CA34}</Project>
+      <Name>Composite</Name>
     </ProjectReference>
     <ProjectReference Include="..\Commanding.OrderModule\Commanding.Modules.Order.csproj">
       <Project>{2FBD1FEC-7E2D-4157-9245-5267CB081482}</Project>

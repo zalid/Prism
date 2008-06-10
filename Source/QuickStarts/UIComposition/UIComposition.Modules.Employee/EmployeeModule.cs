@@ -15,18 +15,20 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Composite.Regions;
+
 namespace UIComposition.Modules.Employee
 {
     using System.Windows;
+    using Controllers;
     using Microsoft.Practices.Unity;
-    using Prism.Interfaces;
-    using UIComposition.Modules.Employee.Controllers;
-    using UIComposition.Modules.Employee.Services;
+    using Services;
 
     public class EmployeeModule : IModule
     {
-        private IUnityContainer container;
-        private IRegionManager regionManager;
+        private readonly IUnityContainer container;
+        private readonly IRegionManager regionManager;
 
         public EmployeeModule(IUnityContainer container, IRegionManager regionManager)
         {
@@ -40,7 +42,7 @@ namespace UIComposition.Modules.Employee
 
             EmployeesPresenter presenter = this.container.Resolve<EmployeesPresenter>();
 
-            IRegion mainRegion = this.regionManager.GetRegion(RegionNames.MainRegion);
+            IRegion mainRegion = this.regionManager.Regions[RegionNames.MainRegion];
             mainRegion.Add((UIElement)presenter.View);
         }
 

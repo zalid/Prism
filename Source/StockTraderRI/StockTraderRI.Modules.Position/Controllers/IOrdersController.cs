@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Prism.Commands;
+using Microsoft.Practices.Composite.Wpf.Commands;
 
 namespace StockTraderRI.Modules.Position.Controllers
 {

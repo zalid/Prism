@@ -15,20 +15,7 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Prism.Interfaces;
 
 namespace ModuleB
 {
@@ -38,13 +25,14 @@ namespace ModuleB
     public partial class ActivityView : UserControl, IActivityView
     {
         private ActivityPresenter presenter;
-        
+
         public ActivityView()
         {
             InitializeComponent();
         }
 
-        public ActivityView(ActivityPresenter presenter) : this()
+        public ActivityView(ActivityPresenter presenter)
+            : this()
         {
             this.presenter = presenter;
             presenter.View = this;
@@ -64,7 +52,7 @@ namespace ModuleB
 
         public string CustomerId
         {
-            set { presenter.CustomerID = value; }
+            set { presenter.CustomerId = value; }
         }
 
         #endregion

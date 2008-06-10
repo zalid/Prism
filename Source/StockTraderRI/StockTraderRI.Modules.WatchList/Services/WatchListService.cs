@@ -18,7 +18,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Prism.Commands;
+using Microsoft.Practices.Composite.Wpf.Commands;
 using StockTraderRI.Infrastructure.Interfaces;
 
 namespace StockTraderRI.Modules.Watch.Services

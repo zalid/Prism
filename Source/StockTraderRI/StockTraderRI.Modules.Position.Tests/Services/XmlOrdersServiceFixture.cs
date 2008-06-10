@@ -16,16 +16,15 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockTraderRI.Infrastructure;
-using StockTraderRI.Modules.Position.Services;
 using StockTraderRI.Modules.Position.Models;
 using StockTraderRI.Modules.Position.Orders;
-using System.Globalization;
+using StockTraderRI.Modules.Position.Services;
+using StockTraderRI.Modules.Position.Tests.Mocks;
 
 namespace StockTraderRI.Modules.Position.Tests.Services
 {
@@ -35,7 +34,8 @@ namespace StockTraderRI.Modules.Position.Tests.Services
         [TestMethod]
         public void SubmitSavesOrderToXml()
         {
-            var ordersService = new XmlOrdersService();
+            var logger = new MockLogger();
+            var ordersService = new XmlOrdersService(logger);
             var document = new XDocument();
 
             var order = new Order
@@ -68,6 +68,31 @@ namespace StockTraderRI.Modules.Position.Tests.Services
             var parsedDate = DateTime.Parse(dateElement.Value, CultureInfo.InvariantCulture);
             Assert.IsTrue(parsedDate < DateTime.Now.AddSeconds(1));
             Assert.IsTrue(parsedDate > DateTime.Now.AddSeconds(-10));
+        }
+
+        [TestMethod]
+        public void SubmitLogsAnEntry()
+        {
+            var logger = new MockLogger();
+            var ordersService = new XmlOrdersService(logger);
+            var document = new XDocument();
+
+            var order = new Order
+            {
+                OrderType = OrderType.Stop,
+                Shares = 3,
+                StopLimitPrice = 14,
+                TickerSymbol = "TESTSTOCK",
+                TimeInForce = TimeInForce.ThirtyDays,
+                TransactionType = TransactionType.Buy
+            };
+
+            ordersService.Submit(order, document);
+
+            StringAssert.Contains(logger.LastMessage, "An order has been submitted.");
+            StringAssert.Contains(logger.LastMessage, "TESTSTOCK");
+            StringAssert.Contains(logger.LastMessage, "3");
+            StringAssert.Contains(logger.LastMessage, TransactionType.Buy.ToString());
         }
     }
 }

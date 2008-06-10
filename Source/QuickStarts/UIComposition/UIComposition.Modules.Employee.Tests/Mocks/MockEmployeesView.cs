@@ -16,6 +16,7 @@
 //===============================================================================
 
 using System.Windows.Controls;
+using Microsoft.Practices.Composite.Regions;
 
 namespace UIComposition.Modules.Employee.Tests.Mocks
 {
@@ -28,7 +29,7 @@ namespace UIComposition.Modules.Employee.Tests.Mocks
             SetHeaderCalled = true;
         }
 
-        public Prism.Interfaces.IRegionManager RegionManager
+        public IRegionManager RegionManager
         {
             get { return null; }
         }

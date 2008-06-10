@@ -22,11 +22,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Prism.AcceptanceTests.Test")]
+[assembly: AssemblyTitle("StockTraderRI.AcceptanceTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft Corp")]
-[assembly: AssemblyProduct("Prism.AcceptanceTests.Test")]
+[assembly: AssemblyProduct("Composite Application Library")]
 [assembly: AssemblyCopyright("Copyright © Microsoft Corp 2008")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

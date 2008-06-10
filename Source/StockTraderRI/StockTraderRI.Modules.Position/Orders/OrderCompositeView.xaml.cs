@@ -16,21 +16,8 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Prism.Interfaces;
 using StockTraderRI.Modules.Position.Interfaces;
-using StockTraderRI.Modules.Position.PresentationModels;
 
 namespace StockTraderRI.Modules.Position.Orders
 {
@@ -44,30 +31,13 @@ namespace StockTraderRI.Modules.Position.Orders
             InitializeComponent();
         }
 
-        #region IOrderCompositeView Members
-
-        public void SetDetailView(UIElement detailView)
-        {
-            CompositeExpander.Content = detailView;
-            //DetailArea.Children.Add(detailView);
-        }
-
-        public void SetCommandView(UIElement commandView)
-        {
-            CompositeExpander.Header = commandView;
-            //CommandArea.Children.Add(commandView);
-        }
-
-
-        public OrderCompositePresentationModel Model
+        public IOrderCompositePresentationModel Model
         {
             set
             {
                 DataContext = value;
             }
         }
-
-        #endregion
 
         #region IActiveAware Members
 

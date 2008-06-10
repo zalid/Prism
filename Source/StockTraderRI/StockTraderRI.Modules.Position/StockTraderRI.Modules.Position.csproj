@@ -69,48 +69,46 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Interfaces\IOrderCompositeView.cs" />
     <Compile Include="Models\Order.cs" />
-    <Compile Include="Orders\IOrderCompositePresenter.cs" />
-    <Compile Include="Orders\IOrdersPresenter.cs" />
+    <Compile Include="Orders\IOrderCompositePresentationModel.cs" />
+    <Compile Include="Orders\IOrdersPresentationModel.cs" />
     <Compile Include="Orders\OrderCommandsView.xaml.cs">
       <DependentUpon>OrderCommandsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Orders\OrderCompositeView.xaml.cs">
       <DependentUpon>OrderCompositeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Orders\OrderCompositePresenter.cs" />
-    <Compile Include="Orders\OrderDetailsPresenter.cs" />
+    <Compile Include="Orders\OrderCompositePresentationModel.cs" />
+    <Compile Include="Orders\OrderDetailsPresentationModel.cs" />
     <Compile Include="Orders\OrderDetailsView.xaml.cs">
       <DependentUpon>OrderDetailsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Orders\IOrderDetailsPresenter.cs" />
+    <Compile Include="Orders\IOrderDetailsPresentationModel.cs" />
     <Compile Include="Orders\IOrderDetailsView.cs" />
     <Compile Include="Orders\OrderType.cs" />
     <Compile Include="Orders\TimeInForce.cs" />
     <Compile Include="Orders\OrdersView.xaml.cs">
       <DependentUpon>OrdersView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Orders\OrdersPresenter.cs" />
+    <Compile Include="Orders\OrdersPresentationModel.cs" />
     <Compile Include="Controllers\IOrdersController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Interfaces\IPositionSummaryView.cs" />
     <Compile Include="Interfaces\IOrdersView.cs" />
-    <Compile Include="PresentationModels\OrderCompositePresentationModel.cs" />
-    <Compile Include="PresentationModels\TransactionInfo.cs" />
+    <Compile Include="PositionSummary\PositionSummaryPresentationModel.cs" />
+    <Compile Include="Models\TransactionInfo.cs" />
     <Compile Include="Orders\ValueDescription.cs" />
     <Compile Include="PositionGrid.xaml.cs">
       <DependentUpon>PositionGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="PositionModule.cs" />
-    <Compile Include="PositionSummary\IPositionSummaryPresenter.cs" />
-    <Compile Include="PositionSummary\PositionSummaryPresenter.cs" />
+    <Compile Include="PositionSummary\IPositionSummaryPresentationModel.cs" />
     <Compile Include="PositionSummary\PositionSummaryView.xaml.cs">
       <DependentUpon>PositionSummaryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PresentationModels\OrderDetailsPresentationModel.cs" />
-    <Compile Include="PresentationModels\PositionSummaryItem.cs" />
-    <Compile Include="PresentationModels\PositionSummaryPresentationModel.cs" />
+    <Compile Include="PositionSummary\PositionSummaryItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -158,6 +156,14 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CAL\Composite.Wpf\Composite.Wpf.csproj">
+      <Project>{F807062D-6FC9-4FF0-A9F5-5F94653EDC4D}</Project>
+      <Name>Composite.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CAL\Composite\Composite.csproj">
+      <Project>{77138947-1D13-4E22-AEE0-5D0DD046CA34}</Project>
+      <Name>Composite</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ChartControls\StockTraderRI.ChartControls.csproj">
       <Project>{CBF8605C-8DAC-4CBB-9A1E-D798D83B277E}</Project>
       <Name>StockTraderRI.ChartControls</Name>
@@ -165,14 +171,6 @@
     <ProjectReference Include="..\StockTraderRI.Infrastructure\StockTraderRI.Infrastructure.csproj">
       <Project>{0A123C1B-F316-447D-99A5-44CCF8023683}</Project>
       <Name>StockTraderRI.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Prism\Prism.Interfaces\Prism.Interfaces.csproj">
-      <Project>{C4E0705E-7D35-441A-BC04-6F4E5D25FD60}</Project>
-      <Name>Prism.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Prism\Prism\Prism.csproj">
-      <Project>{E20361F8-7B3F-437D-8799-EDE1FB7B15C1}</Project>
-      <Name>Prism</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

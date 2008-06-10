@@ -17,34 +17,23 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows;
-using Prism.Interfaces;
+using Microsoft.Practices.Composite.Regions;
 
-namespace StockTraderRI.Modules.WatchList.Tests
+namespace StockTraderRI.Modules.WatchList.Tests.Mocks
 {
     public class MockRegionManager : IRegionManager
     {
-        public Dictionary<string, IRegion> Regions = new Dictionary<string, IRegion>();
+        private readonly Dictionary<string, IRegion> _regions = new Dictionary<string, IRegion>();
 
-        public void Register(string regionName, IRegion region)
+        public IDictionary<string, IRegion> Regions
         {
-            Regions.Add(regionName, region);
-        }
-
-        public IRegion GetRegion(string regionName)
-        {
-            return Regions[regionName];
+            get { return _regions; }
         }
 
         #region Not implemented
 
-        public bool HasRegion(string regionName)
-        {
-            throw new NotImplementedException();
-        }
 
-        public void CreateRegion(DependencyObject containerElement, string regionName)
+        public void AttachNewRegion(object regionTarget, string regionName)
         {
             throw new NotImplementedException();
         }
@@ -54,10 +43,6 @@ namespace StockTraderRI.Modules.WatchList.Tests
             throw new NotImplementedException();
         }
 
-        public void Unregister(string regionName)
-        {
-            throw new NotImplementedException();
-        }
         #endregion
     }
 
@@ -78,12 +63,22 @@ namespace StockTraderRI.Modules.WatchList.Tests
             throw new NotImplementedException();
         }
 
-        public ICollectionView Views
+        public IViewsCollection Views
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public IViewsCollection ActiveViews
         {
             get { throw new NotImplementedException(); }
         }
 
         public void Activate(object view)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Deactivate(object view)
         {
             throw new NotImplementedException();
         }
@@ -105,8 +100,10 @@ namespace StockTraderRI.Modules.WatchList.Tests
 
         public IRegionManager RegionManager
         {
+            get { throw new NotImplementedException(); }            
             set { throw new NotImplementedException(); }
         }
+
         #endregion
     }
 }

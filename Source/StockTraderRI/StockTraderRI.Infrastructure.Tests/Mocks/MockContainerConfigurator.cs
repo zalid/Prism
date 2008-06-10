@@ -15,10 +15,12 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using Microsoft.Practices.Composite;
+using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Composite.UnityExtensions;
+using Microsoft.Practices.Composite.Wpf.Regions;
 using Microsoft.Practices.Unity;
-using Prism.Interfaces;
-using Prism.Regions;
-using Prism.UnityContainerAdapter;
 
 namespace StockTraderRI.Infrastructure.Tests.Mocks
 {
@@ -35,10 +37,10 @@ namespace StockTraderRI.Infrastructure.Tests.Mocks
         public void Configure(IUnityContainer container)
         {
             container.RegisterInstance<IUnityContainer>(container);
-            container.RegisterType<IPrismContainer, UnityPrismContainer>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IContainerFacade, UnityContainerAdapter>(new ContainerControlledLifetimeManager());
 
             container.RegisterInstance<IModuleEnumerator>(MockModuleEnumerator);
-            container.RegisterType<IModuleLoaderService, MockModuleLoaderService>();
+            container.RegisterType<IModuleLoader, MockModuleLoader>();
 
             container.RegisterInstance<IShellView>(MockShellView);
             container.RegisterType<IRegionManager, RegionManager>();

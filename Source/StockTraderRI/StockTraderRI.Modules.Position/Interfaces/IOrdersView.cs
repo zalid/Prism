@@ -19,10 +19,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using StockTraderRI.Modules.Position.Orders;
 
 namespace StockTraderRI.Modules.Position.Interfaces
 {
     public interface IOrdersView
     {
+        IOrdersPresentationModel Model { set; }
     }
 }

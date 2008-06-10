@@ -15,11 +15,11 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using Prism.Events;
+using Microsoft.Practices.Composite.Wpf.Events;
 
 namespace StockTraderRI.Infrastructure
 {
-    public class TickerSymbolSelectedEvent : PrismEvent<string>
+    public class TickerSymbolSelectedEvent : WpfEvent<string>
     {
     }
 }

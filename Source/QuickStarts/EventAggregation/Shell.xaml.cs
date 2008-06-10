@@ -16,7 +16,6 @@
 //===============================================================================
 
 using System.Windows;
-using Prism.Interfaces;
 
 namespace EventAggregation
 {
@@ -25,7 +24,7 @@ namespace EventAggregation
     /// </summary>
     public partial class Shell : Window
     {
-        public Shell(IRegionManager regionManager)
+        public Shell()
         {
             InitializeComponent();
         }

@@ -69,6 +69,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GeometryOperation.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="LabelExtractor.cs" />
     <Compile Include="LineChart.cs" />
     <Compile Include="LineChartPanel.cs" />

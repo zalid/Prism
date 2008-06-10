@@ -15,16 +15,12 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace EventAggregation.Infrastructure
 {
     public class FundOrder
     {
-        public string CustomerID { get; set; }
+        public string CustomerId { get; set; }
         public string TickerSymbol { get; set; }
     }
 }
