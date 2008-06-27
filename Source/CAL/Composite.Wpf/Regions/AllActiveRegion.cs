@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -27,8 +27,9 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
     public class AllActiveRegion : Region
     {
         /// <summary>
-        /// Gets a readonly view of the collection of all the active views in the region.
+        /// Gets a readonly view of the collection of all the active views in the region. These are all the added views.
         /// </summary>
+        /// <value>An <see cref="IViewsCollection"/> of all the active views.</value>
         public override IViewsCollection ActiveViews
         {
             get { return Views; }
@@ -38,6 +39,7 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
         /// Deactive is not valid in this Region. This method will always throw <see cref="InvalidOperationException"/>.
         /// </summary>
         /// <param name="view">The view to deactivate.</param>
+        /// <exception cref="InvalidOperationException">Every time this method is called.</exception>
         public override void Deactivate(object view)
         {
             throw new InvalidOperationException(Resources.DeactiveNotPossibleException);

@@ -55,31 +55,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\ActiveAwareDelegateCommandFixture.cs" />
     <Compile Include="Commands\DelegateCommandFixture.cs" />
-    <Compile Include="Commands\ActiveAwareCompositeCommandFixture.cs" />
     <Compile Include="Commands\CompositeCommandFixture.cs" />
-    <EmbeddedResource Include="Mocks\Modules\MockAttributedModule.cs" />
-    <Compile Include="CompilerHelper.cs" />
-    <EmbeddedResource Include="Mocks\Modules\MockModuleThrowingException.cs" />
-    <EmbeddedResource Include="Mocks\Modules\MockModuleReferencedAssembly.cs" />
-    <EmbeddedResource Include="Mocks\Modules\MockModuleReferencingAssembly.cs" />
-    <EmbeddedResource Include="Mocks\Modules\MockDependantModule.cs" />
-    <EmbeddedResource Include="Mocks\Modules\MockDependencyModule.cs" />
-    <Compile Include="Events\EventAggregatorFixture.cs" />
-    <Compile Include="Events\EventFixture.cs" />
-    <Compile Include="Events\SubscriptionTokenFixture.cs" />
-    <Compile Include="Events\WeakDelegateFixture.cs" />
+    <Compile Include="Events\DispatcherEventSubscriptionFixture.cs" />
+    <Compile Include="Mocks\MockDelegateReference.cs" />
+    <Compile Include="Events\WpfEventFixture.cs" />
     <Compile Include="Events\WPFThreadHelper.cs" />
-    <Compile Include="Logging\TextLoggerFixture.cs" />
-    <Compile Include="Logging\EmptyLoggerFixture.cs" />
-    <Compile Include="Logging\TraceLoggerFixture.cs" />
-    <Compile Include="Mocks\MockConfigurationStore.cs" />
     <Compile Include="Mocks\MockRegionAdapter.cs" />
     <Compile Include="Mocks\MockViewsCollection.cs" />
-    <EmbeddedResource Include="Mocks\Modules\MockModuleReferencingOtherModule.cs" />
-    <Compile Include="Modularity\ModuleAttributeFixture.cs" />
-    <Compile Include="Modularity\ModuleInfoFixture.cs" />
     <Compile Include="Regions\AllActiveRegionFixture.cs" />
     <Compile Include="Regions\ContentControlRegionAdapterFixture.cs" />
     <Compile Include="Regions\ItemsControlRegionAdapterFixture.cs" />
@@ -91,26 +74,7 @@
     <Compile Include="Regions\SelectorRegionAdapterFixture.cs" />
     <Compile Include="Regions\RegionFixture.cs" />
     <Compile Include="Regions\ViewsCollectionFixture.cs" />
-    <Compile Include="Modularity\ConfigurationStoreFixture.cs" />
-    <Compile Include="Modularity\ConfigurationModuleEnumeratorFixture.cs" />
-    <Compile Include="Modularity\StaticModuleEnumeratorFixture.cs" />
-    <Compile Include="ListDictionaryFixture.cs" />
-    <Compile Include="Modularity\ModuleDependencySolverFixture.cs" />
-    <Compile Include="Modularity\DirectoryLookupModuleEnumeratorFixture.cs" />
     <Compile Include="Mocks\MockRegion.cs" />
-    <EmbeddedResource Include="Mocks\Modules\MockModuleA.cs" />
-    <Compile Include="Mocks\MockLogger.cs" />
-    <Compile Include="Mocks\MockContainerAdapter.cs" />
-    <Compile Include="Modularity\ModuleLoaderFixture.cs" />
-    <Compile Include="Utility\DataEventArgsFixture.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Mocks\Configuration\OneModule\App.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Mocks\Configuration\TwoModulesWithDependency\App.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Composite.Wpf\Composite.Wpf.csproj">

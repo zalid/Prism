@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -49,17 +49,23 @@ namespace Microsoft.Practices.Composite.Modularity
             }
         }
 
-        /// <summary>
-        /// Gets the type of <see cref="ConfigurationElementCollectionType"/>.
-        /// </summary>
+        ///<summary>
+        ///Gets the type of the <see cref="T:System.Configuration.ConfigurationElementCollection" />.
+        ///</summary>
+        ///<value>
+        ///The <see cref="T:System.Configuration.ConfigurationElementCollectionType" /> of this collection.
+        ///</value>
         public override ConfigurationElementCollectionType CollectionType
         {
             get { return ConfigurationElementCollectionType.BasicMap; }
         }
 
-        /// <summary>
-        /// Gets the name to identify this collection in the configuration.
-        /// </summary>
+        ///<summary>
+        ///Gets the name used to identify this collection of elements in the configuration file when overridden in a derived class.
+        ///</summary>
+        ///<value>
+        ///The name of the collection; otherwise, an empty string.
+        ///</value>
         protected override string ElementName
         {
             get { return "dependency"; }
@@ -84,11 +90,13 @@ namespace Microsoft.Practices.Composite.Modularity
             return new ModuleDependencyConfigurationElement();
         }
 
-        /// <summary>
-        /// Gets the element key for specified element.
-        /// </summary>
-        /// <param name="element">The <see cref="ConfigurationElement"/> to get the key for.</param>
-        /// <returns>An <see langword="object"/>.</returns>
+        ///<summary>
+        ///Gets the element key for a specified configuration element when overridden in a derived class.
+        ///</summary>
+        ///<param name="element">The <see cref="T:System.Configuration.ConfigurationElement" /> to return the key for. </param>
+        ///<returns>
+        ///An <see cref="T:System.Object" /> that acts as the key for the specified <see cref="T:System.Configuration.ConfigurationElement" />.
+        ///</returns>
         protected override object GetElementKey(ConfigurationElement element)
         {
             return ((ModuleDependencyConfigurationElement)element).ModuleName;

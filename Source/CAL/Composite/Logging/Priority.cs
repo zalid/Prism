@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -27,14 +27,17 @@ namespace Microsoft.Practices.Composite.Logging
         /// No priority specified.
         /// </summary>
         None = 0,
+
         /// <summary>
         /// High priority entry.
         /// </summary>
         High = 1,
+
         /// <summary>
         /// Medium priority entry.
         /// </summary>
         Medium,
+
         /// <summary>
         /// Low priority entry.
         /// </summary>

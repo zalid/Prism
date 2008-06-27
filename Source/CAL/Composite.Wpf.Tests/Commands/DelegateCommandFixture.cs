@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -131,6 +131,22 @@ namespace Microsoft.Practices.Composite.Wpf.Tests.Commands
         {
             var command = new DelegateCommand<int>(null, null);
         }
+
+
+        [TestMethod]
+        public void IsActivePropertyChangeFiresEvent()
+        {
+            bool fired = false;
+            var command = new DelegateCommand<object>(DoNothing);
+            command.IsActiveChanged += delegate { fired = true; };
+            command.IsActive = true;
+
+            Assert.IsTrue(fired);
+        }
+
+        public void DoNothing(object param)
+        { }
+
 
         class DelegateHandlers
         {

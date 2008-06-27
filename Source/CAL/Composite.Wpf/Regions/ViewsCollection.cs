@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -22,26 +22,114 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using Microsoft.Practices.Composite.Regions;
-using Microsoft.Practices.Composite.Wpf.Regions;
 
 namespace Microsoft.Practices.Composite.Wpf.Regions
 {
+    /// <summary>
+    /// Implementation of <see cref="IViewsCollection"/> that takes an <see cref="ObservableCollection{T}"/> of <see cref="ItemMetadata"/>
+    /// and filters it to display an <see cref="INotifyCollectionChanged"/> collection of
+    /// <see cref="object"/> elements (the items which the <see cref="ItemMetadata"/> wraps).
+    /// </summary>
     public class ViewsCollection : IViewsCollection
     {
         private readonly ObservableCollection<ItemMetadata> subjectCollection;
-        private readonly Func<ItemMetadata, bool> filter;
+        private readonly Predicate<ItemMetadata> filter;
 
         private readonly List<object> filteredCollection = new List<object>();
 
-        public ViewsCollection(ObservableCollection<ItemMetadata> list, Func<ItemMetadata, bool> filter)
+        /// <summary>
+        /// Initializes a new instance of <see cref="ViewsCollection"/>.
+        /// </summary>
+        /// <param name="list">The list to wrap and filter.</param>
+        /// <param name="filter">A predicate to filter the <paramref name="list"/> collection.</param>
+        public ViewsCollection(ObservableCollection<ItemMetadata> list, Predicate<ItemMetadata> filter)
         {
             this.subjectCollection = list;
             this.filter = filter;
             Initialize();
-            subjectCollection.CollectionChanged += UnderlyingCollectionChanged;
+            subjectCollection.CollectionChanged += UnderlyingCollection_CollectionChanged;
         }
 
-        public void Reset()
+        /// <summary>
+        /// Determines whether the collection contains a specific value.
+        /// </summary>
+        /// <param name="value">The object to locate in the collection.</param>
+        /// <returns><see langword="true" /> if <paramref name="value"/> is found in the collection; otherwise, <see langword="false" />.</returns>
+        public bool Contains(object value)
+        {
+            return filteredCollection.Contains(value);
+        }
+
+        ///<summary>
+        ///Returns an enumerator that iterates through the collection.
+        ///</summary>
+        ///<returns>
+        ///A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
+        ///</returns>
+        public IEnumerator<object> GetEnumerator()
+        {
+            return filteredCollection.GetEnumerator();
+        }
+
+        ///<summary>
+        ///Returns an enumerator that iterates through a collection.
+        ///</summary>
+        ///<returns>
+        ///An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
+        ///</returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        /// <summary>
+        /// Occurs when the collection changes.
+        /// </summary>
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+        private void AddAndNotify(object item)
+        {
+            AddAndNotify(new List<object>(1) { item });
+        }
+
+        private void AddAndNotify(IList items)
+        {
+            if (items.Count > 0)
+            {
+                filteredCollection.AddRange(items.Cast<object>());
+                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, items));
+            }
+        }
+
+        private void RemoveAndNotify(object item)
+        {
+            RemoveAndNotify(new List<object>(1) { item });
+        }
+
+        private void RemoveAndNotify(IList items)
+        {
+            if (items.Count > 0)
+            {
+                int index = -1;
+                if (items.Count == 1)
+                {
+                    index = filteredCollection.IndexOf(items[0]);
+                }
+                foreach (object item in items)
+                {
+                    filteredCollection.Remove(item);
+                }
+                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, items, index));
+            }
+        }
+
+        private void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+        {
+            NotifyCollectionChangedEventHandler Handler = CollectionChanged;
+            if (Handler != null) Handler(this, e);
+        }
+
+        private void Reset()
         {
             foreach (ItemMetadata itemMetadata in subjectCollection)
             {
@@ -49,7 +137,7 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
             }
             filteredCollection.Clear();
             Initialize();
-            InvokeCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
         private void Initialize()
@@ -64,7 +152,7 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
             }
         }
 
-        void UnderlyingCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void UnderlyingCollection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             List<object> changedItems = new List<object>();
             switch (e.Action)
@@ -114,66 +202,6 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
                     AddAndNotify(itemMetadata.Item);
                 }
             }
-        }
-
-
-        public bool Contains(object value)
-        {
-            return filteredCollection.Contains(value);
-        }
-
-        public IEnumerator<object> GetEnumerator()
-        {
-            return filteredCollection.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public event NotifyCollectionChangedEventHandler CollectionChanged;
-
-        private void AddAndNotify(object item)
-        {
-            AddAndNotify(new List<object>(1) { item });
-        }
-
-        private void AddAndNotify(IList items)
-        {
-            if (items.Count > 0)
-            {
-                filteredCollection.AddRange(items.Cast<object>());
-                InvokeCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, items));
-            }
-        }
-
-        private void RemoveAndNotify(object item)
-        {
-            RemoveAndNotify(new List<object>(1) { item });
-        }
-
-        private void RemoveAndNotify(IList items)
-        {
-            if (items.Count > 0)
-            {
-                int index = -1;
-                if (items.Count == 1)
-                {
-                    index = filteredCollection.IndexOf(items[0]);
-                }
-                foreach (object item in items)
-                {
-                    filteredCollection.Remove(item);
-                }
-                InvokeCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, items, index));
-            }
-        }
-
-        private void InvokeCollectionChanged(NotifyCollectionChangedEventArgs e)
-        {
-            NotifyCollectionChangedEventHandler Handler = CollectionChanged;
-            if (Handler != null) Handler(this, e);
         }
     }
 }

@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -107,9 +107,9 @@ namespace StockTraderRI.AcceptanceTests.Test.AutomatedTests.ModuleFixtures
             //    need to force an invoke
             //  
 
-            Assert.IsNotNull(window.AutomationElement.SearchInRawTreeByName(TestDataInfrastructure.GetTestInputData("DefaultCompositeTrendView")));
+            Assert.IsNotNull(Window.AutomationElement.SearchInRawTreeByName(TestDataInfrastructure.GetTestInputData("DefaultCompositeTrendView")));
             
-            List<MarketHistoryItem> history = testDataInfrastructure.GetData<MarketHistoryDataProvider, MarketHistoryItem>();
+            List<MarketHistoryItem> history = TestDataInfrastructure.GetData<MarketHistoryDataProvider, MarketHistoryItem>();
             List<MarketHistoryItem> defaultItems = history.FindAll(i => i.TickerSymbol.Equals(TestDataInfrastructure.GetTestInputData("DefaultCompositeTrendView")));
             
             Assert.IsTrue(ValidateXAxisDataRange(defaultItems));
@@ -138,9 +138,9 @@ namespace StockTraderRI.AcceptanceTests.Test.AutomatedTests.ModuleFixtures
             //    - Validate the data range and Get the Min Max date value in our Test time span match the displayed time span
             //    
 
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             string selectedSymbol;
-            List<MarketHistoryItem> history = testDataInfrastructure.GetData<MarketHistoryDataProvider, MarketHistoryItem>();
+            List<MarketHistoryItem> history = TestDataInfrastructure.GetData<MarketHistoryDataProvider, MarketHistoryItem>();
 
             foreach (ListViewRow row in list.Rows)
             {
@@ -151,7 +151,7 @@ namespace StockTraderRI.AcceptanceTests.Test.AutomatedTests.ModuleFixtures
 
                 selectedSymbol = row.Cells[0].Text;
 
-                Assert.IsNotNull(window.AutomationElement.SearchInRawTreeByName(selectedSymbol));
+                Assert.IsNotNull(Window.AutomationElement.SearchInRawTreeByName(selectedSymbol));
 
                 List<MarketHistoryItem> defaultItems = history.FindAll(i => i.TickerSymbol.Equals(selectedSymbol));
 
@@ -174,7 +174,7 @@ namespace StockTraderRI.AcceptanceTests.Test.AutomatedTests.ModuleFixtures
         /// Validate if the Y - Axis range matches with the data from the MarketHistory.xml file
         /// </summary>
         /// <param name="defaultItems"></param>
-        private bool ValidateYAxisDataRange(List<MarketHistoryItem> defaultItems)
+        private static bool ValidateYAxisDataRange(List<MarketHistoryItem> defaultItems)
         {
             defaultItems.Sort((a, b) => a.MarketItem.CompareTo(b.MarketItem));
 
@@ -191,7 +191,7 @@ namespace StockTraderRI.AcceptanceTests.Test.AutomatedTests.ModuleFixtures
         {
             defaultItems.Sort((a, b) => a.Date.CompareTo(b.Date));
             //TODO: find a better mechanism to check the X-Axis data
-            return defaultItems.FindAll(i => window.AutomationElement.SearchInRawTreeByName(i.Date.ToString()) != null).Count.Equals(defaultItems.Count);
+            return defaultItems.FindAll(i => Window.AutomationElement.SearchInRawTreeByName(i.Date.ToString()) != null).Count.Equals(defaultItems.Count);
 
             //TODO: also verify the lower and upper bound of the X-Axis - but how?
         }

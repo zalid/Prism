@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -18,16 +18,19 @@
 
 namespace Microsoft.Practices.Composite.Modularity
 {
+    /// <summary>
+    /// Defines an interface to enumerate a list of modules.
+    /// </summary>
     public interface IModuleEnumerator
     {
         /// <summary>
-        /// Gets a list of metadata information of the modules.
+        /// Gets a list of metadata that describes the modules.
         /// </summary>
         /// <returns>An array of <see cref="ModuleInfo"/>.</returns>
         ModuleInfo[] GetModules();
 
         /// <summary>
-        /// Gets a list of metadata information of the modules that should be loaded at startup.
+        /// Gets a list of metadata that describes the modules that should be loaded at startup.
         /// </summary>
         /// <returns>An array of <see cref="ModuleInfo"/>.</returns>
         ModuleInfo[] GetStartupLoadedModules();
@@ -35,7 +38,8 @@ namespace Microsoft.Practices.Composite.Modularity
         /// <summary>
         /// Gets the metadata information of a module by its name.
         /// </summary>
-        /// <returns>An array of <see cref="ModuleInfo"/>.</returns>
-        ModuleInfo[] GetModule(string moduleName);
+        /// <param name="moduleName">The module's name.</param>
+        /// <returns>A <see cref="ModuleInfo"/> associated with the <paramref name="moduleName"/> parameter.</returns>
+        ModuleInfo GetModule(string moduleName);
     }
 }

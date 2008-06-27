@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -224,92 +224,244 @@ namespace Microsoft.Practices.Composite.Wpf.Tests.Commands
         }
 
 
-        internal class TestableCompositeCommand : CompositeCommand
+        [TestMethod]
+        public void MultiDispatchCommandExecutesActiveRegisteredCommands()
         {
-            public bool CanExecuteChangedRaised;
+            CompositeCommand activeAwareCommand = new CompositeCommand();
+            MockActiveAwareCommand command = new MockActiveAwareCommand();
+            command.IsActive = true;
+            activeAwareCommand.RegisterCommand(command);
 
-            public TestableCompositeCommand()
+            activeAwareCommand.Execute(null);
+
+            Assert.IsTrue(command.WasExecuted);
+        }
+
+        [TestMethod]
+        public void MultiDispatchCommandDoesNotExecutesInActiveRegisteredCommands()
+        {
+            CompositeCommand activeAwareCommand = new CompositeCommand(true);
+            MockActiveAwareCommand command = new MockActiveAwareCommand();
+            command.IsActive = false;
+            activeAwareCommand.RegisterCommand(command);
+
+            activeAwareCommand.Execute(null);
+
+            Assert.IsFalse(command.WasExecuted);
+        }
+
+        [TestMethod]
+        public void DispatchCommandDoesNotIncludeInActiveRegisteredCommandInVoting()
+        {
+            CompositeCommand activeAwareCommand = new CompositeCommand(true);
+            MockActiveAwareCommand command = new MockActiveAwareCommand();
+            activeAwareCommand.RegisterCommand(command);
+            command.IsValid = true;
+            command.IsActive = false;
+
+            Assert.IsFalse(activeAwareCommand.CanExecute(null), "Registered Command is inactive so should not participate in CanExecute vote");
+
+            command.IsActive = true;
+
+            Assert.IsTrue(activeAwareCommand.CanExecute(null));
+
+            command.IsValid = false;
+
+            Assert.IsFalse(activeAwareCommand.CanExecute(null));
+
+        }
+
+        [TestMethod]
+        public void DispatchCommandShouldIgnoreInActiveCommandsInCanExecuteVote()
+        {
+            CompositeCommand activeAwareCommand = new CompositeCommand(true);
+            MockActiveAwareCommand commandOne = new MockActiveAwareCommand() { IsActive = false, IsValid = false };
+            MockActiveAwareCommand commandTwo = new MockActiveAwareCommand() { IsActive = true, IsValid = true };
+
+            activeAwareCommand.RegisterCommand(commandOne);
+            activeAwareCommand.RegisterCommand(commandTwo);
+
+            Assert.IsTrue(activeAwareCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        public void ActivityCausesActiveAwareCommandToRequeryCanExecute()
+        {
+            CompositeCommand activeAwareCommand = new CompositeCommand(true);
+            MockActiveAwareCommand command = new MockActiveAwareCommand();
+            activeAwareCommand.RegisterCommand(command);
+            command.IsActive = true;
+
+            bool globalCanExecuteChangeFired = false;
+            activeAwareCommand.CanExecuteChanged += delegate
+                                                        {
+                                                            globalCanExecuteChangeFired = true;
+                                                        };
+
+
+            Assert.IsFalse(globalCanExecuteChangeFired);
+            command.IsActive = false;
+            Assert.IsTrue(globalCanExecuteChangeFired);
+        }
+
+        [TestMethod]
+        public void ShouldNotMonitorActivityIfUseActiveMonitoringFalse()
+        {
+            var mockCommand = new MockActiveAwareCommand();
+            mockCommand.IsValid = true;
+            mockCommand.IsActive = true;
+            var nonActiveAwareCompositeCommand = new CompositeCommand(false);
+            bool canExecuteChangedRaised = false;
+            nonActiveAwareCompositeCommand.RegisterCommand(mockCommand);
+            nonActiveAwareCompositeCommand.CanExecuteChanged += delegate
             {
-                CanExecuteChanged += ((sender, e) => CanExecuteChangedRaised = true);
+                canExecuteChangedRaised = true;
+            };
+
+            mockCommand.IsActive = false;
+
+            Assert.IsFalse(canExecuteChangedRaised);
+
+            nonActiveAwareCompositeCommand.Execute(null);
+
+            Assert.IsTrue(mockCommand.WasExecuted);
+        }
+    }
+
+
+    internal class MockActiveAwareCommand : IActiveAware, ICommand
+    {
+        private bool _isActive;
+
+        #region IActiveAware Members
+
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set
+            {
+                if (_isActive != value)
+                {
+                    _isActive = value;
+                    OnActiveChanged(this, EventArgs.Empty);
+                }
             }
         }
 
-        internal class TestCommand : ICommand
+        public event EventHandler IsActiveChanged = delegate { };
+        #endregion
+
+        virtual protected void OnActiveChanged(object sender, EventArgs e)
         {
-            public bool CanExecuteCalled { get; set; }
-            public bool ExecuteCalled { get; set; }
-            public int ExecuteCallCount { get; set; }
-
-            public bool CanExecuteValue = true;
-
-            public void FireCanExecuteChanged()
-            {
-                CanExecuteChanged(this, EventArgs.Empty);
-            }
-            #region ICommand Members
-
-            public bool CanExecute(object parameter)
-            {
-                CanExecuteCalled = true;
-                return CanExecuteValue;
-            }
-
-            public event EventHandler CanExecuteChanged = delegate { };
-
-            public void Execute(object parameter)
-            {
-                ExecuteCalled = true;
-                ExecuteCallCount += 1;
-            }
-
-            #endregion
+            IsActiveChanged(sender, e);
         }
 
-        internal class BadDivisionCommand : ICommand
+        public bool WasExecuted { get; set; }
+        public bool IsValid { get; set; }
+
+
+        #region ICommand Members
+
+        public bool CanExecute(object parameter)
         {
-            #region ICommand Members
-
-            public bool CanExecute(object parameter)
-            {
-                return true;
-            }
-
-            public event EventHandler CanExecuteChanged;
-
-            public void Execute(object parameter)
-            {
-                throw new DivideByZeroException("Test Divide By Zero");
-            }
-
-            #endregion
+            return IsValid;
         }
 
-        internal class SelfUnregisterableCommand : ICommand
+        public event EventHandler CanExecuteChanged = delegate { };
+
+        public void Execute(object parameter)
         {
-            public CompositeCommand Command;
-            public bool ExecutedCalled = false;
-
-            public SelfUnregisterableCommand(CompositeCommand command)
-            {
-                Command = command;
-            }
-
-            #region ICommand Members
-
-            public bool CanExecute(object parameter)
-            {
-                throw new NotImplementedException();
-            }
-
-            public event EventHandler CanExecuteChanged;
-
-            public void Execute(object parameter)
-            {
-                Command.UnregisterCommand(this);
-                ExecutedCalled = true;
-            }
-
-            #endregion
+            WasExecuted = true;
         }
+
+        #endregion
+    }
+
+    internal class TestableCompositeCommand : CompositeCommand
+    {
+        public bool CanExecuteChangedRaised;
+
+        public TestableCompositeCommand()
+        {
+            CanExecuteChanged += ((sender, e) => CanExecuteChangedRaised = true);
+        }
+    }
+
+    internal class TestCommand : ICommand
+    {
+        public bool CanExecuteCalled { get; set; }
+        public bool ExecuteCalled { get; set; }
+        public int ExecuteCallCount { get; set; }
+
+        public bool CanExecuteValue = true;
+
+        public void FireCanExecuteChanged()
+        {
+            CanExecuteChanged(this, EventArgs.Empty);
+        }
+        #region ICommand Members
+
+        public bool CanExecute(object parameter)
+        {
+            CanExecuteCalled = true;
+            return CanExecuteValue;
+        }
+
+        public event EventHandler CanExecuteChanged = delegate { };
+
+        public void Execute(object parameter)
+        {
+            ExecuteCalled = true;
+            ExecuteCallCount += 1;
+        }
+
+        #endregion
+    }
+
+    internal class BadDivisionCommand : ICommand
+    {
+        #region ICommand Members
+
+        public bool CanExecute(object parameter)
+        {
+            return true;
+        }
+
+        public event EventHandler CanExecuteChanged;
+
+        public void Execute(object parameter)
+        {
+            throw new DivideByZeroException("Test Divide By Zero");
+        }
+
+        #endregion
+    }
+
+    internal class SelfUnregisterableCommand : ICommand
+    {
+        public CompositeCommand Command;
+        public bool ExecutedCalled = false;
+
+        public SelfUnregisterableCommand(CompositeCommand command)
+        {
+            Command = command;
+        }
+
+        #region ICommand Members
+
+        public bool CanExecute(object parameter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public event EventHandler CanExecuteChanged;
+
+        public void Execute(object parameter)
+        {
+            Command.UnregisterCommand(this);
+            ExecutedCalled = true;
+        }
+
+        #endregion
     }
 }

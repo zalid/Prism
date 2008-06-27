@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -19,16 +19,16 @@
 namespace Microsoft.Practices.Composite.Events
 {
     /// <summary>
-    /// Defines an interface to get the instances of the events.
+    /// Defines an interface to get instances of an event type.
     /// </summary>
     public interface IEventAggregator
     {
         /// <summary>
-        /// Gets the instance of the event.
+        /// Gets an instance of an event type.
         /// </summary>
         /// <typeparam name="TEventType">The type of event to get.</typeparam>
         /// <returns>An instance of an event object of type <typeparamref name="TEventType"/>.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
-        TEventType GetInstance<TEventType>() where TEventType : class, new();
+        TEventType GetEvent<TEventType>() where TEventType : EventBase;
     }
 }

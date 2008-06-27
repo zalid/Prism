@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -21,9 +21,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Microsoft.Practices.Composite.Wpf.Tests.Mocks;
 using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Composite.Wpf.Regions;
+using Microsoft.Practices.Composite.Wpf.Tests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Practices.Composite.Wpf.Tests.Regions
@@ -63,7 +63,7 @@ namespace Microsoft.Practices.Composite.Wpf.Tests.Regions
             control.Items.Add(view);
             IRegionAdapter adapter = new TestableItemsControlRegionAdapter();
 
-            var region = (NewMockRegion)adapter.Initialize(control);
+            var region = (MockRegion)adapter.Initialize(control);
 
             Assert.AreEqual(1, region.MockViews.Count());
             Assert.AreSame(view, region.MockViews.ElementAt(0));
@@ -79,13 +79,13 @@ namespace Microsoft.Practices.Composite.Wpf.Tests.Regions
 
             try
             {
-                var region = (NewMockRegion)adapter.Initialize(tabControl);
+                var region = (MockRegion)adapter.Initialize(tabControl);
                 Assert.Fail();
             }
             catch (Exception ex)
             {
                 Assert.IsInstanceOfType(ex, typeof(InvalidOperationException));
-                StringAssert.Contains(ex.Message, "ItemsControl's ItemsSource property must not be set when also used with Regions.");
+                StringAssert.Contains(ex.Message, "ItemsControl's ItemsSource property is not empty.");
             }
         }
 
@@ -101,13 +101,13 @@ namespace Microsoft.Practices.Composite.Wpf.Tests.Regions
 
             try
             {
-                var region = (NewMockRegion)adapter.Initialize(tabControl);
+                var region = (MockRegion)adapter.Initialize(tabControl);
                 Assert.Fail();
             }
             catch (Exception ex)
             {
                 Assert.IsInstanceOfType(ex, typeof(InvalidOperationException));
-                StringAssert.Contains(ex.Message, "ItemsControl's ItemsSource property must not be set when also used with Regions.");
+                StringAssert.Contains(ex.Message, "ItemsControl's ItemsSource property is not empty.");
             }
         }
 
@@ -118,7 +118,7 @@ namespace Microsoft.Practices.Composite.Wpf.Tests.Regions
 
         internal class TestableItemsControlRegionAdapter : ItemsControlRegionAdapter
         {
-            private NewMockRegion region = new NewMockRegion();
+            private MockRegion region = new MockRegion();
 
             protected override IRegion CreateRegion()
             {

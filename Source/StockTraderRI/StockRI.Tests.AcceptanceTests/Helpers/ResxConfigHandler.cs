@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -27,18 +27,17 @@ namespace StockTraderRI.AcceptanceTests.Helpers
     /// <summary>
     /// Handler to read value from XML file (having key-value pair) on specifying the XML file path and the key.
     /// </summary>
-    public class ResxConfigHandler : IDisposable
+    public class ResXConfigHandler : IDisposable
     {
         ResXResourceReader rsxr;
-        IDictionaryEnumerator id;
 
-        public ResxConfigHandler(string filePath)
+        public ResXConfigHandler(string filePath)
         {
             // Create a ResXResourceReader for the file items.resx.
             rsxr = new ResXResourceReader(filePath);
 
             // Create an IDictionaryEnumerator to iterate through the resources.
-            id = rsxr.GetEnumerator();
+            rsxr.GetEnumerator();
         }
 
         public virtual string GetValue(string key)
@@ -64,7 +63,7 @@ namespace StockTraderRI.AcceptanceTests.Helpers
 
         #endregion
 
-        protected void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (disposing)
             {

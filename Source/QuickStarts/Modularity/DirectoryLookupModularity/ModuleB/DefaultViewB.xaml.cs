@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -39,7 +39,7 @@ namespace ModuleB
 
         private void OnLoadModuleCClick(object sender, RoutedEventArgs e)
         {
-            moduleLoader.Initialize(moduleEnumerator.GetModule("ModuleC"));
+            moduleLoader.Initialize(new ModuleInfo[] {moduleEnumerator.GetModule("ModuleC")});
         }
     }
 }

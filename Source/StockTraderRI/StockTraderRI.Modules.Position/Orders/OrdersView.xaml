@@ -78,14 +78,11 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <StackPanel x:Name="LayoutRoot">
-        <!--<TabControl  x:Name="OrdersTabControl" cal:RegionManager.RegionName="OrdersRegion" ItemContainerStyle="{DynamicResource HeaderStyle}">
-        </TabControl>-->
-         <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,10,10,10">
+    <DockPanel x:Name="LayoutRoot">
+        <StackPanel DockPanel.Dock="Top"  Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,10,10,10">
             <Button Name="SubmitAllButton" Command="{x:Static inf:StockTraderRICommands.SubmitAllOrdersCommand}">Submit All</Button>
             <Button Name="CancelAllButton" Command="{x:Static inf:StockTraderRICommands.CancelAllOrdersCommand}">Cancel All</Button>
-        </StackPanel>       
-        <ListBox Height="500" x:Name="OrdersListBox" behaviors:ItemSelectorBehavior.TrackItemSelection="True" BorderThickness="0" ItemContainerStyle="{StaticResource ShellThemeListBoxStyle}" IsSynchronizedWithCurrentItem="True" cal:RegionManager.RegionName="OrdersRegion" />
-
-    </StackPanel>
+        </StackPanel>
+        <ListBox x:Name="OrdersListBox" behaviors:ItemSelectorBehavior.TrackItemSelection="True" BorderThickness="0" ItemContainerStyle="{StaticResource ShellThemeListBoxStyle}" IsSynchronizedWithCurrentItem="True" cal:RegionManager.RegionName="{x:Static inf:RegionNames.OrdersRegion}" />
+    </DockPanel>
 </UserControl>

@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -26,20 +26,20 @@ namespace StockTraderRI.Infrastructure
 
     public static class StockTraderRICommands
     {
-        public static ActiveAwareCompositeCommand SubmitOrderCommand = new ActiveAwareCompositeCommand();
-        public static ActiveAwareCompositeCommand CancelOrderCommand = new ActiveAwareCompositeCommand();
+        public static CompositeCommand SubmitOrderCommand = new CompositeCommand(true);
+        public static CompositeCommand CancelOrderCommand = new CompositeCommand(true);
         public static CompositeCommand SubmitAllOrdersCommand = new CompositeCommand();
         public static CompositeCommand CancelAllOrdersCommand = new CompositeCommand();
     }
 
     public class StockTraderRICommandProxy
     {
-        virtual public ActiveAwareCompositeCommand SubmitOrderCommand
+        virtual public CompositeCommand SubmitOrderCommand
         {
             get { return StockTraderRICommands.SubmitOrderCommand; }
         }
 
-        virtual public ActiveAwareCompositeCommand CancelOrderCommand
+        virtual public CompositeCommand CancelOrderCommand
         {
             get { return StockTraderRICommands.CancelOrderCommand; }
         }

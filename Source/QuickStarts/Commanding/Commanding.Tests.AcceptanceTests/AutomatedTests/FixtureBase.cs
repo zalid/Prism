@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -26,14 +26,19 @@ using Commanding.AcceptanceTests.TestInfrastructure;
 using System.Collections.Specialized;
 using Commanding.AcceptanceTests.Helpers;
 using Core.Configuration;
+using System.Globalization;
 
 namespace Commanding.AcceptanceTests
 {
     public abstract class FixtureBase : IStateObserver
     {
-        public Application app;
-        public Window window;
-        public TestDataInfrastructure testDataInfrastructure;
+        private Application app;
+        private Window window;
+
+        public Window Window
+        {
+            get { return window; }
+        }        
 
         public void TestInitialize()
         {
@@ -45,8 +50,7 @@ namespace Commanding.AcceptanceTests
             StateDiagnosis.Instance.StartDiagnosis(this);
 
             app = Application.Launch(ConfigHandler.GetValue("CommandingApp"));
-            window = app.GetWindow("Shell", Core.Factory.InitializeOption.NoCache);
-            testDataInfrastructure = new TestDataInfrastructure();
+            window = app.GetWindow("Shell", Core.Factory.InitializeOption.NoCache);            
 
             //Stop the diagnosis.
             StateDiagnosis.Instance.StopDiagnosis(this);
@@ -63,7 +67,7 @@ namespace Commanding.AcceptanceTests
             }
         }
 
-        private void SetupWhiteConfigParameters()
+        private static void SetupWhiteConfigParameters()
         {
             NameValueCollection collection = ConfigHandler.GetConfigSection("White/Core");
 
@@ -72,7 +76,7 @@ namespace Commanding.AcceptanceTests
             {
                 if (coreAppXmlConfigType.GetProperty(property).PropertyType.Equals(typeof(Int32)))
                 {
-                    coreAppXmlConfigType.GetProperty(property).SetValue(CoreAppXmlConfiguration.Instance, Convert.ToInt32(collection[property]), null);
+                    coreAppXmlConfigType.GetProperty(property).SetValue(CoreAppXmlConfiguration.Instance, Convert.ToInt32(collection[property],CultureInfo.InvariantCulture), null);
                 }
             }
         }

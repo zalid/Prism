@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -20,15 +20,30 @@ using System.Collections.Specialized;
 
 namespace Microsoft.Practices.Composite.Wpf.Regions
 {
+    /// <summary>
+    /// Behavior that monitors an <see cref="INotifyCollectionChanged"/> object and 
+    /// changes the value for the <see cref="IActiveAware.IsActive"/> property when
+    /// an object that implements <see cref="IActiveAware"/> gets added or removed 
+    /// from the collection.
+    /// </summary>
     public class CollectionActiveAwareBehavior
     {
         private readonly WeakReference _collection;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="CollectionActiveAwareBehavior"/>.
+        /// </summary>
+        /// <param name="collection">The collection to monitor.</param>
+        /// <remarks>This instance will keep a <see cref="WeakReference"/> to the
+        /// <paramref name="collection"/>, so the collection can be garbage collected.</remarks>
         public CollectionActiveAwareBehavior(INotifyCollectionChanged collection)
         {
             _collection = new WeakReference(collection);
         }
 
+        /// <summary>
+        /// Attaches the behavior to the <see cref="INotifyCollectionChanged"/>.
+        /// </summary>
         public void Attach()
         {
             INotifyCollectionChanged collection = GetCollection();
@@ -36,6 +51,9 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
                 collection.CollectionChanged += OnCollectionChanged;
         }
 
+        /// <summary>
+        /// Detaches the behavior from the <see cref="INotifyCollectionChanged"/>.
+        /// </summary>
         public void Detach()
         {
             INotifyCollectionChanged collection = GetCollection();
@@ -63,7 +81,8 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
                         activeAware.IsActive = false;
                 }
             }
-            //TODO: handle other action values (reset, etc)
+
+            // handle other action values (reset, etc)?
         }
 
         private INotifyCollectionChanged GetCollection()

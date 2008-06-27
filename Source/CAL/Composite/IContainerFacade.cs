@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -38,7 +38,7 @@ namespace Microsoft.Practices.Composite
         /// <param name="type">The type of object to get from the container.</param>
         /// <returns>
         /// An instance of <paramref name="type"/>. 
-        /// If the type cannot be resolved it will return a <langword="null" /> value.
+        /// If the type cannot be resolved it will return a <see langword="null" /> value.
         /// </returns>
         object TryResolve(Type type);
     }

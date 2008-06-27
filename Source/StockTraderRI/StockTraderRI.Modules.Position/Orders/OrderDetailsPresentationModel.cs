@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -66,8 +66,8 @@ namespace StockTraderRI.Modules.Position.Orders
             View.Model = this;
             ValidateModel();
 
-            SubmitCommand = new ActiveAwareDelegateCommand<object>(Submit, CanSubmit);
-            CancelCommand = new ActiveAwareDelegateCommand<object>(Cancel);
+            SubmitCommand = new DelegateCommand<object>(Submit, CanSubmit);
+            CancelCommand = new DelegateCommand<object>(Cancel);
             SubmitCommand.IsActive = view.IsActive;
             CancelCommand.IsActive = view.IsActive;
 
@@ -180,8 +180,8 @@ namespace StockTraderRI.Modules.Position.Orders
             }
         }
 
-        public ActiveAwareDelegateCommand<object> SubmitCommand { get; private set;}
-        public ActiveAwareDelegateCommand<object> CancelCommand { get; private set;}
+        public DelegateCommand<object> SubmitCommand { get; private set;}
+        public DelegateCommand<object> CancelCommand { get; private set;}
 
         public bool HasErrors()
         {

@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -134,7 +134,7 @@ namespace StockTraderRI.Modules.Market.Services
             {
                 clonedPriceList = new Dictionary<string, decimal>(_priceList);
             }
-            EventAggregator.GetInstance<MarketPricesUpdatedEvent>().Publish(clonedPriceList);
+            EventAggregator.GetEvent<MarketPricesUpdatedEvent>().Publish(clonedPriceList);
         }
 
         private static int CalculateRefreshIntervalMillisecondsFromSeconds(int seconds)

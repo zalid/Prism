@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -243,18 +243,36 @@ namespace Microsoft.Practices.Composite.Wpf.Tests.Regions
             Assert.AreEqual(1, region.Views.Cast<object>().Count());
         }
 
-        //Should throw
-        //[TestMethod]
-        //public void ShowWithNonAddedViewAddsViewFirst()
-        //{
-        //    IRegion region = new Region();
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ActivateNonAddedViewThrows()
+        {
+            IRegion region = new Region();
 
-        //    object nonAddedView = new object();
+            object nonAddedView = new object();
 
-        //    Assert.AreEqual(0, region.Views.Cast<object>().Count());
-        //    region.Activate(nonAddedView);
-        //    Assert.AreEqual(1, region.Views.Cast<object>().Count());
-        //}
+            region.Activate(nonAddedView);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void DeactivateNonAddedViewThrows()
+        {
+            IRegion region = new Region();
+
+            object nonAddedView = new object();
+
+            region.Deactivate(nonAddedView);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ActivateNullViewThrows()
+        {
+            IRegion region = new Region();
+
+            region.Activate(null);
+        }
 
         //[TestMethod]
         //public void ShouldSelectFirstViewAdded()

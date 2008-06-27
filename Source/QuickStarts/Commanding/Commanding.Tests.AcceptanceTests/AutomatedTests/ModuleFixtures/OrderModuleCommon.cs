@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -62,27 +62,27 @@ namespace Commanding.Tests.AcceptanceTests.AutomatedTests.ModuleFixtures
 
         private void PopulateOrderDetailsWithData()
         {
-            AutomationElement quantityTextBox = window.AutomationElement.SearchInRawTreeByName(TestDataInfrastructure.GetControlId("QuantityTextBox"));
+            AutomationElement quantityTextBox = Window.AutomationElement.SearchInRawTreeByName(TestDataInfrastructure.GetControlId("QuantityTextBox"));
             SetTextBoxValue(quantityTextBox, TestDataInfrastructure.GetTestInputData("DefaultQuantity"));
 
-            AutomationElement priceTextBox = window.AutomationElement.SearchInRawTreeByName(TestDataInfrastructure.GetControlId("PriceTextBox"));
+            AutomationElement priceTextBox = Window.AutomationElement.SearchInRawTreeByName(TestDataInfrastructure.GetControlId("PriceTextBox"));
             SetTextBoxValue(priceTextBox, TestDataInfrastructure.GetTestInputData("DefaultPrice"));                     
 
-            AutomationElement shippingTextBox = window.AutomationElement.SearchInRawTreeByName(TestDataInfrastructure.GetControlId("ShippingTextBox"));
+            AutomationElement shippingTextBox = Window.AutomationElement.SearchInRawTreeByName(TestDataInfrastructure.GetControlId("ShippingTextBox"));
             SetTextBoxValue(shippingTextBox, TestDataInfrastructure.GetTestInputData("DefaultShipping"));
           
         }
-        private void SetTextBoxValue(AutomationElement element, string value)
+        private static void SetTextBoxValue(AutomationElement element, string value)
         {
             ValuePattern valuePattern = element.GetCurrentPattern(ValuePattern.Pattern) as ValuePattern;
             valuePattern.SetValue(value);
         }
         private void PopulateOrderDetailsWithInvalidData()
         {
-            AutomationElement quantityTextBox = window.AutomationElement.SearchInRawTreeByName(TestDataInfrastructure.GetControlId("QuantityTextBox"));
+            AutomationElement quantityTextBox = Window.AutomationElement.SearchInRawTreeByName(TestDataInfrastructure.GetControlId("QuantityTextBox"));
             SetTextBoxValue(quantityTextBox, TestDataInfrastructure.GetTestInputData("InvalidQuantity"));
 
-            AutomationElement priceTextBox = window.AutomationElement.SearchInRawTreeByName(TestDataInfrastructure.GetControlId("PriceTextBox"));
+            AutomationElement priceTextBox = Window.AutomationElement.SearchInRawTreeByName(TestDataInfrastructure.GetControlId("PriceTextBox"));
             SetTextBoxValue(priceTextBox, TestDataInfrastructure.GetTestInputData("InvalidPrice"));
         }
     }

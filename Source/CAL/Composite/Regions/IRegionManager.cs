@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -19,10 +19,13 @@ using System.Collections.Generic;
 
 namespace Microsoft.Practices.Composite.Regions
 {
+    /// <summary>
+    /// Defines an interface to manage a set of <see cref="IRegion">regions</see> and to attach regions to objects (typically controls).
+    /// </summary>
     public interface IRegionManager
     {
         /// <summary>
-        /// Contains a dictionary of <see cref="IRegion"/> that identify each region by name. You can use this dictionary to add or remove regions to the current region manager.
+        /// Gets a dictionary of <see cref="IRegion"/> that identify each region by name. You can use this dictionary to add or remove regions to the current region manager.
         /// </summary>
         IDictionary<string, IRegion> Regions { get; }
 

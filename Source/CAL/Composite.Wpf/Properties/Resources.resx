@@ -121,7 +121,10 @@
     <value>The object must be of type '{0}' in order to use the current region adapter.</value>
   </data>
   <data name="ContentControlHasContentException" xml:space="preserve">
-    <value>ContentControl's Content property must not be set when also used with Regions.</value>
+    <value>ContentControl's Content property is not empty. 
+    This control is being associated with a region, but the control is already bound to something else. 
+    If you did not explicitly set the control's Content property, 
+    this exception may be caused by a change in the value of the inherited RegionManager attached property.</value>
   </data>
   <data name="DeactiveNotPossibleException" xml:space="preserve">
     <value>Deactivation is not possible in this type of region.</value>
@@ -130,7 +133,10 @@
     <value>Both the executeMethod and the canExecuteMethod delegates cannot be null.</value>
   </data>
   <data name="ItemsControlHasItemsSourceException" xml:space="preserve">
-    <value>ItemsControl's ItemsSource property must not be set when also used with Regions.</value>
+    <value>ItemsControl's ItemsSource property is not empty. 
+    This control is being associated with a region, but the control is already bound to something else. 
+    If you did not explicitly set the control's ItemSource property, 
+    this exception may be caused by a change in the value of the inherited RegionManager attached property.</value>
   </data>
   <data name="MappingExistsException" xml:space="preserve">
     <value>Mapping with the given type is already registered: {0}</value>
@@ -150,10 +156,7 @@
   <data name="ValueNotFound" xml:space="preserve">
     <value>{0} not found</value>
   </data>
-  <data name="ViewToRemoveNotInRegion" xml:space="preserve">
-    <value>The region does not contain the view you are trying to remove</value>
-  </data>
-  <data name="ViewToShowNotInRegion" xml:space="preserve">
-    <value>The region does not contain the view you are trying to show.</value>
+  <data name="ViewNotInRegionException" xml:space="preserve">
+    <value>The region does not contain the specified view.</value>
   </data>
 </root>

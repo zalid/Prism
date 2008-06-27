@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -19,7 +19,7 @@ using Microsoft.Practices.Composite.Wpf.Events;
 
 namespace StockTraderRI.Infrastructure
 {
-    public class TickerSymbolSelectedEvent : WpfEvent<string>
+    public class TickerSymbolSelectedEvent : CompositeWpfEvent<string>
     {
     }
 }

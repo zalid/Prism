@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -83,7 +84,7 @@
     <Compile Include="AutomatedTests\ModuleFixtures\ProjectModuleFixture.cs" />
     <Compile Include="AutomatedTests\UICompositionFixture.cs" />
     <Compile Include="Helpers\ConfigHandler.cs" />
-    <Compile Include="Helpers\ResxConfigHandler.cs" />
+    <Compile Include="Helpers\ResXConfigHandler.cs" />
     <Compile Include="Helpers\UIItemExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestData\ControlIdentifiers.Designer.cs">
@@ -111,6 +112,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ControlIdentifiers.Designer.cs</LastGenOutput>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="TestData\TestDataInput.resx">
       <Generator>ResXFileCodeGenerator</Generator>

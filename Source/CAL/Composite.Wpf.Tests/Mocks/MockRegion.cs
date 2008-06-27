@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -21,57 +21,6 @@ using Microsoft.Practices.Composite.Regions;
 namespace Microsoft.Practices.Composite.Wpf.Tests.Mocks
 {
     class MockRegion : IRegion
-    {
-        public IRegionManager Add(object view)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Remove(object view)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Activate(object view)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IRegionManager Add(object view, string viewName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IRegionManager Add(object view, string viewName, bool createRegionManagerScope)
-        {
-            throw new NotImplementedException();
-        }
-
-        public object GetView(string viewName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IRegionManager RegionManager { get; set; }
-
-
-        public IViewsCollection Views
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public IViewsCollection ActiveViews
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public void Deactivate(object view)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    class NewMockRegion : IRegion
     {
         public MockViewsCollection MockViews = new MockViewsCollection();
         public MockViewsCollection MockActiveViews = new MockViewsCollection();

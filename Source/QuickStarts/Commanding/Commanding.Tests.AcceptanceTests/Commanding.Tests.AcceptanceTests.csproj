@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -73,7 +74,7 @@
     <Compile Include="AutomatedTests\ModuleFixtures\OrderModuleFixture.cs" />
     <Compile Include="AutomatedTests\ShellFixture.cs" />
     <Compile Include="Helpers\ConfigHandler.cs" />
-    <Compile Include="Helpers\ResxConfigHandler.cs" />
+    <Compile Include="Helpers\ResXConfigHandler.cs" />
     <Compile Include="Helpers\UIItemExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestData\ControlIdentifiers.Designer.cs">

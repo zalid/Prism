@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -21,6 +21,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Permissions;
 using System.Security.Policy;
 using Microsoft.Practices.Composite.Properties;
 
@@ -29,6 +30,8 @@ namespace Microsoft.Practices.Composite.Modularity
     /// <summary>
     /// Implements a <see cref="IModuleEnumerator"/> that gets the module metadata by examining all the assemblies located in a specified path.
     /// </summary>
+    [SecurityPermission(SecurityAction.LinkDemand)]
+    [SecurityPermission(SecurityAction.InheritanceDemand)]
     public class DirectoryLookupModuleEnumerator : IModuleEnumerator
     {
         private readonly string path;
@@ -72,11 +75,13 @@ namespace Microsoft.Practices.Composite.Modularity
         /// <summary>
         /// Gets the metadata information of a module by its name in the specified path.
         /// </summary>
-        /// <returns>An array of <see cref="ModuleInfo"/>.</returns>
-        public ModuleInfo[] GetModule(string moduleName)
+        /// <param name="moduleName">The module's name.</param>
+        /// <returns>A <see cref="ModuleInfo"/> associated with the <paramref name="moduleName"/> parameter.</returns>
+        public ModuleInfo GetModule(string moduleName)
         {
             EnsureModulesDiscovered();
-            return _modules.Where(moduleInfo => moduleInfo.ModuleName == moduleName).ToArray();
+            return _modules.FirstOrDefault(moduleInfo => moduleInfo.ModuleName == moduleName);
+
         }
 
         private void EnsureModulesDiscovered()
@@ -89,10 +94,10 @@ namespace Microsoft.Practices.Composite.Modularity
                 {
                     List<string> loadedAssemblies = new List<string>();
 
-
                     var assemblies = (
                         from Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()
-                        where !String.IsNullOrEmpty(assembly.Location)
+                        where !(assembly is System.Reflection.Emit.AssemblyBuilder)
+                            && !String.IsNullOrEmpty(assembly.Location)
                         select assembly.Location
                         );
 
@@ -115,15 +120,22 @@ namespace Microsoft.Practices.Composite.Modularity
             }
         }
 
+        /// <summary>
+        /// Creates a new child domain and copies the evidence from a parent domain.
+        /// </summary>
+        /// <param name="parentDomain">The parent domain.</param>
+        /// <returns>The new child domain.</returns>
+        /// <remarks>
+        /// Grabs the <paramref name="parentDomain"/> evidence and uses it to construct the new
+        /// <see cref="AppDomain"/> because in a ClickOnce execution environment, creating an
+        /// <see cref="AppDomain"/> will by default pick up the partial trust environment of 
+        /// the AppLaunch.exe, which was the root executable. The AppLaunch.exe does a 
+        /// create domain and applies the evidence from the ClickOnce manifests to 
+        /// create the domain that the application is actually executing in. This will 
+        /// need to be Full Trust for Composite Application Library applications.
+        /// </remarks>
         protected virtual AppDomain BuildChildDomain(AppDomain parentDomain)
         {
-            // Need to grab the current AppDomain evidence and use it to construct the new AppDomain
-            // because in a ClickOnce execution environment, creating an AppDomain will by default pick
-            // up the partial trust environment of the AppLaunch.exe, which was the root executable. The 
-            // AppLaunch.exe does a create domain and applies the evidence from the ClickOnce manifests to 
-            // create the domain that the app is actually executing in. This will need to be Full Trust for 
-            // CAL apps.
-
             Evidence evidence = new Evidence(parentDomain.Evidence);
             AppDomainSetup setup = parentDomain.SetupInformation;
             return AppDomain.CreateDomain("DiscoveryRegion", evidence, setup);
@@ -132,17 +144,38 @@ namespace Microsoft.Practices.Composite.Modularity
         class InnerModuleInfoLoader : MarshalByRefObject
         {
             [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-            public ModuleInfo[] GetModuleInfos(string path)
+            internal ModuleInfo[] GetModuleInfos(string path)
             {
                 DirectoryInfo directory = new DirectoryInfo(path);
+
+                ResolveEventHandler resolveEventHandler =
+                    delegate(object sender, ResolveEventArgs args)
+                    {
+                        Assembly loadedAssembly = AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies().FirstOrDefault(
+                                asm => string.Equals(asm.FullName, args.Name, StringComparison.InvariantCultureIgnoreCase));
+                        if (loadedAssembly != null)
+                        {
+                            return loadedAssembly;
+                        }
+                        AssemblyName assemblyName = new AssemblyName(args.Name);
+                        string dependentAssemblyFilename = Path.Combine(directory.FullName, assemblyName.Name + ".dll");
+                        if (File.Exists(dependentAssemblyFilename))
+                        {
+                            return Assembly.ReflectionOnlyLoadFrom(dependentAssemblyFilename);
+                        }
+                        return Assembly.ReflectionOnlyLoad(args.Name);
+                    };
+
+                AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += resolveEventHandler;
 
                 Assembly moduleReflectionOnlyAssembly =
                     AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies().First(
                         asm => asm.FullName == typeof(IModule).Assembly.FullName);
                 Type IModuleType = moduleReflectionOnlyAssembly.GetType(typeof(IModule).FullName);
 
+                Assembly[] alreadyLoadedAssemblies = AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies();
                 var modules = directory.GetFiles("*.dll")
-                    .Where(file => AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies()
+                    .Where(file => alreadyLoadedAssemblies
                         .FirstOrDefault(assembly => String.Compare(Path.GetFileName(assembly.Location), file.Name, StringComparison.OrdinalIgnoreCase) == 0) == null)
                     .SelectMany(file => Assembly.ReflectionOnlyLoadFrom(file.FullName)
                                             .GetExportedTypes()
@@ -151,11 +184,12 @@ namespace Microsoft.Practices.Composite.Modularity
                                             .Select(type => CreateModuleInfo(type)));
 
                 var array = modules.ToArray();
+                AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve -= resolveEventHandler;
                 return array;
             }
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-            public void LoadAssemblies(IEnumerable<string> assemblies)
+            internal void LoadAssemblies(IEnumerable<string> assemblies)
             {
                 foreach (string assemblyPath in assemblies)
                 {

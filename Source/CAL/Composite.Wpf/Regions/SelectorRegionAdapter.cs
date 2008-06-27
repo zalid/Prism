@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -25,8 +25,19 @@ using Microsoft.Practices.Composite.Wpf.Properties;
 
 namespace Microsoft.Practices.Composite.Wpf.Regions
 {
+    /// <summary>
+    /// Adapter that creates a new <see cref="Region"/> and binds all
+    /// the views to the adapted <see cref="Selector"/>.
+    /// It also keeps the <see cref="IRegion.ActiveViews"/> and the selected items
+    /// of the <see cref="Selector"/> in sync.
+    /// </summary>
     public class SelectorRegionAdapter : RegionAdapterBase<Selector>
     {
+        /// <summary>
+        /// Adapts an <see cref="Selector"/> to an <see cref="IRegion"/>.
+        /// </summary>
+        /// <param name="region">The new region being used.</param>
+        /// <param name="regionTarget">The object to adapt.</param>
         protected override void Adapt(IRegion region, Selector regionTarget)
         {
             if (regionTarget.ItemsSource != null || (BindingOperations.GetBinding(regionTarget, ItemsControl.ItemsSourceProperty) != null))
@@ -44,33 +55,46 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
             regionTarget.ItemsSource = region.Views;
         }
 
+        /// <summary>
+        /// Attach new behaviors.
+        /// </summary>
+        /// <param name="region">The region being used.</param>
+        /// <param name="regionTarget">The object to adapt.</param>
+        /// <remarks>
+        /// This class attaches the base behaviors and also listens for changes in the
+        /// activity of the region or the control selection and keeps the in sync.
+        /// </remarks>
         protected override void AttachBehaviors(IRegion region, Selector regionTarget)
         {
             base.AttachBehaviors(region, regionTarget);
 
-            //The coordinator uses weak references while listening to events to prevent memory leaks
+            //The behavior uses weak references while listening to events to prevent memory leaks
             //when destroying the region but not the control or viceversa.
-            SelectorRegionAdapterCoordinator coordinator = new SelectorRegionAdapterCoordinator(regionTarget, region);
-            coordinator.Attach();
+            SelectorRegionSyncBehavior syncBehavior = new SelectorRegionSyncBehavior(regionTarget, region);
+            syncBehavior.Attach();
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="Region"/>.
+        /// </summary>
+        /// <returns>A new instance of <see cref="Region"/>.</returns>
         protected override IRegion CreateRegion()
         {
             return new Region();
         }
 
-        private class SelectorRegionAdapterCoordinator
+        private class SelectorRegionSyncBehavior
         {
             private readonly WeakReference _selectorWeakReference;
             private readonly WeakReference _regionWeakReference;
 
-            public SelectorRegionAdapterCoordinator(Selector selector, IRegion region)
+            internal SelectorRegionSyncBehavior(Selector selector, IRegion region)
             {
                 _selectorWeakReference = new WeakReference(selector);
                 _regionWeakReference = new WeakReference(region);
             }
 
-            public void Attach()
+            internal void Attach()
             {
                 Selector selector = GetSelector();
                 IRegion region = GetRegion();
@@ -81,7 +105,7 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
                 }
             }
 
-            public void Detach()
+            internal void Detach()
             {
                 Selector selector = GetSelector();
                 if (selector != null)

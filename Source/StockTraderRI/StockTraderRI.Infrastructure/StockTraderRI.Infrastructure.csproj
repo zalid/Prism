@@ -59,20 +59,19 @@
   <ItemGroup>
     <Compile Include="Behaviors\ItemSelectorBehavior.cs" />
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
+    <Compile Include="Converters\ErrorConverter.cs" />
     <Compile Include="Converters\StringToNullableNumberConverter.cs" />
     <Compile Include="ExtendedHeader.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Interfaces\IHeaderInfoProvider.cs" />
     <Compile Include="Interfaces\IOrderCommandsView.cs" />
-    <Compile Include="IShellView.cs" />
-    <Compile Include="IUnityContainerConfigurator.cs" />
     <Compile Include="MarketPricesUpdatedEvent.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ShellPresenter.cs" />
+    <Compile Include="RegionNames.cs" />
     <Compile Include="StockTraderRICommands.cs" />
     <Compile Include="Converters\TwoDecimalPlaceConverter.cs" />
     <Compile Include="Interfaces\IMarketHistoryService.cs" />
@@ -86,7 +85,7 @@
     <Compile Include="Models\AccountPositionModelEventArgs.cs" />
     <Compile Include="Models\NewsArticle.cs" />
     <Compile Include="Models\NewsFeedEventArgs.cs" />
-    <Compile Include="PresentationModels\MarketHistoryCollection.cs" />
+    <Compile Include="Models\MarketHistoryCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TickerSymbolSelectedEvent.cs" />
     <Compile Include="TransactionType.cs" />
@@ -102,6 +101,10 @@
     <ProjectReference Include="..\..\CAL\Composite.Wpf\Composite.Wpf.csproj">
       <Project>{F807062D-6FC9-4FF0-A9F5-5F94653EDC4D}</Project>
       <Name>Composite.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CAL\Composite\Composite.csproj">
+      <Project>{77138947-1D13-4E22-AEE0-5D0DD046CA34}</Project>
+      <Name>Composite</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

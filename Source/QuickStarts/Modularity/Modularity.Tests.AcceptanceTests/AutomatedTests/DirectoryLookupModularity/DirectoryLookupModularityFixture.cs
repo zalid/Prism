@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -70,13 +70,13 @@ namespace Modularity.AcceptanceTests.AutomatedTests
         public void ApplicationLaunch()
         {
             // perform Directory Sweep and get all the participating modules
-            List<Module> lm = testDataInfrastructure.GetData<DirectoryLookupModuleDataProvider, Module>();
+            List<Module> lm = TestDataInfrastructure.GetData<DirectoryLookupModuleDataProvider, Module>();
             List<Module> sortedList = lm.SortModulesInLoadOrder();
             Label moduleContent;
 
             foreach (Module m in sortedList)
             {
-                moduleContent = window.Get<Label>(
+                moduleContent = Window.Get<Label>(
                                    SearchCriteria
                                        .ByText(TestDataInfrastructure.GetTestInputData(m.ModuleName + TestDataInfrastructure.GetTestInputData("ContentString")))
                                        .AndControlType(typeof(Label)));

@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -30,13 +30,14 @@ namespace Microsoft.Practices.Composite.Modularity
         public ModuleConfigurationElement()
         {
         }
+
         /// <summary>
         /// Initializes a new instance of <see cref="ModuleConfigurationElement"/>.
         /// </summary>
         /// <param name="assemblyFile">The assembly file where the module is located.</param>
-        /// <param name="moduleType">The type of the module</param>
-        /// <param name="moduleName">The name of the module</param>
-        /// <param name="startupLoaded">his attribute specifies whether the module is loaded at startup</param>
+        /// <param name="moduleType">The type of the module.</param>
+        /// <param name="moduleName">The name of the module.</param>
+        /// <param name="startupLoaded">This attribute specifies whether the module is loaded at startup.</param>
         public ModuleConfigurationElement(string assemblyFile, string moduleType, string moduleName, bool startupLoaded)
         {
             base["assemblyFile"] = assemblyFile;
@@ -48,6 +49,7 @@ namespace Microsoft.Practices.Composite.Modularity
         /// <summary>
         /// Gets or sets the assembly file.
         /// </summary>
+        /// <value>The assembly file.</value>
         [ConfigurationProperty("assemblyFile", IsRequired = true)]
         public string AssemblyFile
         {
@@ -58,6 +60,7 @@ namespace Microsoft.Practices.Composite.Modularity
         /// <summary>
         /// Gets or sets the module type.
         /// </summary>
+        /// <value>The module's type.</value>
         [ConfigurationProperty("moduleType", IsRequired = true)]
         public string ModuleType
         {
@@ -68,6 +71,7 @@ namespace Microsoft.Practices.Composite.Modularity
         /// <summary>
         /// Gets or sets the module name.
         /// </summary>
+        /// <value>The module's name.</value>
         [ConfigurationProperty("moduleName", IsRequired = true)]
         public string ModuleName
         {
@@ -76,8 +80,9 @@ namespace Microsoft.Practices.Composite.Modularity
         }
 
         /// <summary>
-        /// Gets or sets whether the module is loaded at startup.
+        /// Gets or sets a value indicating whether the module should be loaded at startup.
         /// </summary>
+        /// <value>A value indicating whether the module should be loaded at startup.</value>
         [ConfigurationProperty("startupLoaded", IsRequired = false, DefaultValue = true)]
         public bool StartupLoaded
         {
@@ -88,6 +93,7 @@ namespace Microsoft.Practices.Composite.Modularity
         /// <summary>
         /// Gets or sets the modules this module depends on.
         /// </summary>
+        /// <value>The names of the modules that this depends on.</value>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [ConfigurationProperty("dependencies", IsDefaultCollection = true, IsKey = false)]
         public ModuleDependencyCollection Dependencies

@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -19,7 +19,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 using Microsoft.Practices.Composite.Events;
+using Microsoft.Practices.Composite.Wpf.Commands;
 using Microsoft.Practices.Composite.Wpf.Events;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Interfaces;
@@ -31,7 +33,6 @@ namespace StockTraderRI.Modules.Watch.WatchList
     public class WatchListPresentationModel : IWatchListPresentationModel, INotifyPropertyChanged, IHeaderInfoProvider<string>
     {
         private ObservableCollection<WatchItem> _watchListItems;
-
 
         public WatchListPresentationModel(IWatchListView view, IWatchListService watchListService, IMarketFeedService marketFeedService, IEventAggregator eventAggregator)
         {
@@ -46,8 +47,8 @@ namespace StockTraderRI.Modules.Watch.WatchList
             watchList.CollectionChanged += delegate { PopulateWatchItemsList(watchList); };
             PopulateWatchItemsList(watchList);
 
-            eventAggregator.GetInstance<MarketPricesUpdatedEvent>().Subscribe(MarketPricesUpdated, ThreadOption.UIThread);
-            View.OnRemoveMenuItemClicked += View_OnRemoveMenuItemClicked;
+            eventAggregator.GetEvent<MarketPricesUpdatedEvent>().Subscribe(MarketPricesUpdated, ThreadOption.UIThread);
+            RemoveWatchCommand = new DelegateCommand<string>(RemoveWatch);
         }
 
 
@@ -81,9 +82,9 @@ namespace StockTraderRI.Modules.Watch.WatchList
             }
         }
 
-        private void View_OnRemoveMenuItemClicked(object sender, DataEventArgs<string> e)
+        private void RemoveWatch(string tickerSymbol)
         {
-            watchList.Remove(e.Value);
+            watchList.Remove(tickerSymbol);
         }
 
         private void PopulateWatchItemsList(ObservableCollection<string> watchItemsList)
@@ -105,6 +106,7 @@ namespace StockTraderRI.Modules.Watch.WatchList
         }
 
         public IWatchListView View { get; private set; }
+        public ICommand RemoveWatchCommand { get; private set; }
         private readonly IMarketFeedService marketFeedService;
         private readonly ObservableCollection<string> watchList;
     }

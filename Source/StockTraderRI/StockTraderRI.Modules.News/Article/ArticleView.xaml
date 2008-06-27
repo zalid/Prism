@@ -33,7 +33,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <!--Labels are used due to limitations in UI Automation Testing. Not a good practice to use labels in this case, TextBlock would be better.-->
+        <!--Labels are used instead of Textblocks due to limitations in UI Automation Testing with DataTemplates. -->
         <DataTemplate x:Key="ArticleDataTemplate" DataType="{x:Type infModels:NewsArticle}">
             <StackPanel Margin="2,2,2,2" >
                 <Label x:Name="ArticlePublishedDate" Content="{Binding Path=PublishedDate}"/>
@@ -61,5 +61,4 @@
                  >
     </ListBox>
     </Grid>
-    <!--<TextBlock Text="{Binding ArticleBody}" />-->
 </UserControl>

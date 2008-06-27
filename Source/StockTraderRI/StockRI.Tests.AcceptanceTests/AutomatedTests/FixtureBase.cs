@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -25,14 +25,30 @@ using System.Collections.Specialized;
 using System.Configuration;
 using Core.Configuration;
 using System.Reflection;
+using System.Globalization;
 
 namespace StockTraderRI.AcceptanceTests.AutomatedTests
 {
     public abstract class FixtureBase : IStateObserver
     {
-        public Application app;
-        public Window window;
-        public TestDataInfrastructure testDataInfrastructure;
+        private Application app;
+        private Window window;
+        private TestDataInfrastructure tdInfrastructure;
+
+        public Application App
+        {
+            get { return app; }
+        }
+
+        public Window Window
+        {
+            get { return window; }
+        }
+
+        public TestDataInfrastructure TestDataInfrastructure
+        {
+            get { return tdInfrastructure; }
+        }
 
         public void TestInitialize()
         {
@@ -44,8 +60,8 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
             StateDiagnosis.Instance.StartDiagnosis(this);  
 
             app = Application.Launch(ConfigHandler.GetValue("StockTraderApp"));
-            window = app.GetWindow("Shell", Core.Factory.InitializeOption.NoCache);
-            testDataInfrastructure = new TestDataInfrastructure();
+            window = App.GetWindow("Shell", Core.Factory.InitializeOption.NoCache);
+            tdInfrastructure = new TestDataInfrastructure();
 
             //Stop the diagnosis.
             StateDiagnosis.Instance.StopDiagnosis(this);
@@ -56,30 +72,23 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         /// </summary>
         public void TestCleanup()
         {
-            if (null != app)
+            if (null != App)
             {
-                app.Kill();
+                App.Kill();
             }
         }
 
-        private void SetupWhiteConfigParameters()
+        protected static void SetupWhiteConfigParameters()
         {
             NameValueCollection collection = ConfigHandler.GetConfigSection("White/Core");
-
-            //TODO: Remove commented code if the dynamic property assignment works fine
-            /* 
-            CoreAppXmlConfiguration.Instance.PopupTimeout = Convert.ToInt32(collection["PopupTimeout"]);
-            CoreAppXmlConfiguration.Instance.SuggestionListTimeout = Convert.ToInt32(collection["SuggestionListTimeout"]);
-            CoreAppXmlConfiguration.Instance.BusyTimeout = Convert.ToInt32(collection["BusyTimeout"]);
-            CoreAppXmlConfiguration.Instance.UIAutomationZeroWindowBugTimeout = Convert.ToInt32(collection["UIAutomationZeroWindowBugTimeout"]);
-            */
 
             Type coreAppXmlConfigType = CoreAppXmlConfiguration.Instance.GetType();
             foreach (string property in collection.Keys)
             {
                 if (coreAppXmlConfigType.GetProperty(property).PropertyType.Equals(typeof(Int32)))
                 {
-                    coreAppXmlConfigType.GetProperty(property).SetValue(CoreAppXmlConfiguration.Instance, Convert.ToInt32(collection[property]), null);
+                    coreAppXmlConfigType.GetProperty(property).SetValue(
+                        CoreAppXmlConfiguration.Instance, Convert.ToInt32(collection[property], CultureInfo.InvariantCulture), null);
                 }
             }
         }

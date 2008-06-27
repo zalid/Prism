@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mocks\MockEventFactory.cs" />
+    <Compile Include="Mocks\MockEventAggregator.cs" />
     <Compile Include="Mocks\MockFundAddedEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AddFundPresenterFixture.cs" />

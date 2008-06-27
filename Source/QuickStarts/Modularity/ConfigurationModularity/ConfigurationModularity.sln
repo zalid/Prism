@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.Wpf", "..\..\..\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.UnityExtensions", "..\..\..\CAL\Composite.UnityExtensions\Composite.UnityExtensions.csproj", "{17831F3B-6B82-4916-BD2B-2CE2071EA622}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.Wpf.Tests", "..\..\..\CAL\Composite.Wpf.Tests\Composite.Wpf.Tests.csproj", "{BBC4F378-C99A-4F50-B0E6-E3B97B9F22CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.Tests", "..\..\..\CAL\Composite.Tests\Composite.Tests.csproj", "{7DB8E74D-214F-4840-B294-58372D369958}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,10 +67,10 @@ Global
 		{17831F3B-6B82-4916-BD2B-2CE2071EA622}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17831F3B-6B82-4916-BD2B-2CE2071EA622}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17831F3B-6B82-4916-BD2B-2CE2071EA622}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BBC4F378-C99A-4F50-B0E6-E3B97B9F22CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BBC4F378-C99A-4F50-B0E6-E3B97B9F22CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BBC4F378-C99A-4F50-B0E6-E3B97B9F22CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BBC4F378-C99A-4F50-B0E6-E3B97B9F22CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DB8E74D-214F-4840-B294-58372D369958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DB8E74D-214F-4840-B294-58372D369958}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DB8E74D-214F-4840-B294-58372D369958}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DB8E74D-214F-4840-B294-58372D369958}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +79,6 @@ Global
 		{77138947-1D13-4E22-AEE0-5D0DD046CA34} = {9AADB34A-193E-408A-8871-B314314D0179}
 		{F807062D-6FC9-4FF0-A9F5-5F94653EDC4D} = {9AADB34A-193E-408A-8871-B314314D0179}
 		{17831F3B-6B82-4916-BD2B-2CE2071EA622} = {9AADB34A-193E-408A-8871-B314314D0179}
-		{BBC4F378-C99A-4F50-B0E6-E3B97B9F22CC} = {1BB487DB-F7E2-4347-B6FC-D62EC3865F99}
+		{7DB8E74D-214F-4840-B294-58372D369958} = {1BB487DB-F7E2-4347-B6FC-D62EC3865F99}
 	EndGlobalSection
 EndGlobal

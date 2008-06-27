@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -24,7 +24,7 @@ namespace StockTraderRI.Modules.News.Tests.Mocks
     public class MockEventAggregator : IEventAggregator
     {
         Dictionary<Type, object> events = new Dictionary<Type, object>();
-        public TEventType GetInstance<TEventType>() where TEventType : class, new()
+        public TEventType GetEvent<TEventType>() where TEventType : EventBase
         {
             return (TEventType)events[typeof(TEventType)];
         }

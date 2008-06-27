@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -19,9 +19,9 @@ using System;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Microsoft.Practices.Composite.Wpf.Tests.Mocks;
 using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Composite.Wpf.Regions;
+using Microsoft.Practices.Composite.Wpf.Tests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Practices.Composite.Wpf.Tests.Regions
@@ -35,7 +35,7 @@ namespace Microsoft.Practices.Composite.Wpf.Tests.Regions
             var control = new ContentControl();
             IRegionAdapter adapter = new TestableContentControlRegionAdapter();
 
-            NewMockRegion region = (NewMockRegion)adapter.Initialize(control);
+            MockRegion region = (MockRegion)adapter.Initialize(control);
             Assert.IsNotNull(region);
 
             Assert.IsNull(control.Content);
@@ -64,13 +64,13 @@ namespace Microsoft.Practices.Composite.Wpf.Tests.Regions
 
             try
             {
-                var region = (NewMockRegion)adapter.Initialize(control);
+                var region = (MockRegion)adapter.Initialize(control);
                 Assert.Fail();
             }
             catch (Exception ex)
             {
                 Assert.IsInstanceOfType(ex, typeof(InvalidOperationException));
-                StringAssert.Contains(ex.Message, "ContentControl's Content property must not be set when also used with Regions.");
+                StringAssert.Contains(ex.Message, "ContentControl's Content property is not empty.");
             }
         }
 
@@ -86,13 +86,13 @@ namespace Microsoft.Practices.Composite.Wpf.Tests.Regions
 
             try
             {
-                var region = (NewMockRegion)adapter.Initialize(control);
+                var region = (MockRegion)adapter.Initialize(control);
                 Assert.Fail();
             }
             catch (Exception ex)
             {
                 Assert.IsInstanceOfType(ex, typeof(InvalidOperationException));
-                StringAssert.Contains(ex.Message, "ContentControl's Content property must not be set when also used with Regions.");
+                StringAssert.Contains(ex.Message, "ContentControl's Content property is not empty.");
             }
         }
 
@@ -103,7 +103,7 @@ namespace Microsoft.Practices.Composite.Wpf.Tests.Regions
 
         internal class TestableContentControlRegionAdapter : ContentControlRegionAdapter
         {
-            private NewMockRegion region = new NewMockRegion();
+            private MockRegion region = new MockRegion();
 
             protected override IRegion CreateRegion()
             {

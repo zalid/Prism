@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -25,6 +25,7 @@ using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.Position.Interfaces;
+using StockTraderRI.Modules.Position.Models;
 using StockTraderRI.Modules.Position.Orders;
 using StockTraderRI.Modules.Position.Properties;
 using System.Linq;
@@ -49,9 +50,9 @@ namespace StockTraderRI.Modules.Position.Controllers
             this.commandProxy = commandProxy;
             BuyCommand = new DelegateCommand<string>(OnBuyExecuted);
             SellCommand = new DelegateCommand<string>(OnSellExecuted);
-            SubmitAllCommand = new DelegateCommand<object>(null, SubmitAllCanExecute);
-            OrderModels = new List<IOrderDetailsPresentationModel>();
-            commandProxy.SubmitAllOrdersCommand.RegisterCommand(SubmitAllCommand);
+            SubmitAllVoteOnlyCommand = new DelegateCommand<object>(null, SubmitAllCanExecute);
+            OrderModels = new List<IOrderCompositePresentationModel>();
+            commandProxy.SubmitAllOrdersCommand.RegisterCommand(SubmitAllVoteOnlyCommand);
             
         }
 
@@ -67,43 +68,38 @@ namespace StockTraderRI.Modules.Position.Controllers
 
         virtual protected bool SubmitAllCanExecute(object parameter)
         {
-            bool canExecute = true;
-            Dictionary<string,long> shareSums = new Dictionary<string, long>();
+            Dictionary<string,long> sellOrderShares = new Dictionary<string, long>();
+
+            if (OrderModels.Count == 0) return false;
+
             foreach(var order in OrderModels)
             {
-                if(!shareSums.ContainsKey(order.TickerSymbol))
-                    shareSums.Add(order.TickerSymbol,0);
-
-                if(order.Shares.HasValue)
+                if (order.TransactionInfo.TransactionType == TransactionType.Sell)
                 {
-                    if(order.TransactionType == TransactionType.Buy)
-                    {
-                        shareSums[order.TickerSymbol] += order.Shares.Value;
-                    }
-                    else
-                    {
-                        shareSums[order.TickerSymbol] -= order.Shares.Value;
-                    }
+                    string tickerSymbol = order.TransactionInfo.TickerSymbol.ToUpper(CultureInfo.CurrentCulture);
+                    if (!sellOrderShares.ContainsKey(tickerSymbol))
+                        sellOrderShares.Add(tickerSymbol, 0);
+
+                    //populate dictionary with total shares bought or sold by tickersymbol
+                    sellOrderShares[tickerSymbol] += order.Shares;
                 }
-                    
             }
 
             IList<AccountPosition> positions = _accountPositionService.GetAccountPositions();
-            
-            foreach(string key in shareSums.Keys)
+
+            foreach (string key in sellOrderShares.Keys)
             {
-                if(shareSums[key] < 0) //More sell than buy order shares for this tickersymbol
+                AccountPosition position =
+                    positions.FirstOrDefault(
+                        x => String.Compare(x.TickerSymbol, key, StringComparison.CurrentCultureIgnoreCase) == 0);
+                if (position == null || position.Shares < sellOrderShares[key])
                 {
-                    if ((positions.First(x=> x.TickerSymbol == key).Shares) < Math.Abs(shareSums[key]))
-                    {
-                        //trying to sell more shares than we own
-                        canExecute = false;
-                        break;
-                    }
+                    //trying to sell more shares than we own
+                    return false;
                 }
             }
 
-            return canExecute;
+            return true;
             
         }
 
@@ -114,7 +110,7 @@ namespace StockTraderRI.Modules.Position.Controllers
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.StringCannotBeNullOrEmpty, "tickerSymbol"));
             }
 
-            IRegion region = _regionManager.Regions["MainRegion"];
+            IRegion region = _regionManager.Regions[RegionNames.MainRegion];
 
             //Make Sure OrdersView is in CollapsibleRegion
             if (region.GetView("OrdersView") == null)
@@ -128,19 +124,19 @@ namespace StockTraderRI.Modules.Position.Controllers
             IRegion ordersRegion = _regionManager.Regions[ORDERS_REGION];
 
             var orderCompositePresentationModel = _container.Resolve<IOrderCompositePresentationModel>();
-            orderCompositePresentationModel.SetTransactionInfo(tickerSymbol, transactionType);
+            orderCompositePresentationModel.TransactionInfo = new TransactionInfo(tickerSymbol, transactionType);
             orderCompositePresentationModel.CloseViewRequested += delegate
             {
+                OrderModels.Remove(orderCompositePresentationModel);
                 commandProxy.SubmitAllOrdersCommand.UnregisterCommand(orderCompositePresentationModel.SubmitCommand);
                 commandProxy.CancelAllOrdersCommand.UnregisterCommand(orderCompositePresentationModel.CancelCommand);
                 commandProxy.SubmitOrderCommand.UnregisterCommand(orderCompositePresentationModel.SubmitCommand);
                 commandProxy.CancelOrderCommand.UnregisterCommand(orderCompositePresentationModel.CancelCommand);
                 ordersRegion.Remove(orderCompositePresentationModel.View);
-                OrderModels.Remove(orderCompositePresentationModel.OrderDetailsPresentationModel);
             };
 
             ordersRegion.Add(orderCompositePresentationModel.View);
-            OrderModels.Add(orderCompositePresentationModel.OrderDetailsPresentationModel);
+            OrderModels.Add(orderCompositePresentationModel);
 
             commandProxy.SubmitAllOrdersCommand.RegisterCommand(orderCompositePresentationModel.SubmitCommand);
             commandProxy.CancelAllOrdersCommand.RegisterCommand(orderCompositePresentationModel.CancelCommand);
@@ -156,9 +152,9 @@ namespace StockTraderRI.Modules.Position.Controllers
 
         public DelegateCommand<string> BuyCommand { get; private set; }
         public DelegateCommand<string> SellCommand { get; private set; }
-        public DelegateCommand<object> SubmitAllCommand{ get; private set; }
+        public DelegateCommand<object> SubmitAllVoteOnlyCommand{ get; private set; }
 
-        public List<IOrderDetailsPresentationModel> OrderModels { get; private set;}
+        private List<IOrderCompositePresentationModel> OrderModels { get; set;}
 
         #endregion
     }

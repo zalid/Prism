@@ -7,8 +7,8 @@
     <ProjectGuid>{AA066C31-9DEB-4EA4-A265-818211A8066F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EventBroker_AcceptanceTests</RootNamespace>
-    <AssemblyName>EventBroker_AcceptanceTests</AssemblyName>
+    <RootNamespace>EventAggregation.Tests.AcceptanceTests</RootNamespace>
+    <AssemblyName>EventAggregation.Tests.AcceptanceTests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids></PropertyGroup>
@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -72,7 +73,7 @@
     <Compile Include="AutomatedTests\ModuleFixtures\ModuleBFixture.cs" />
     <Compile Include="AutomatedTests\ModuleFixtures\ModuleAFixture.cs" />
     <Compile Include="Helpers\ConfigHandler.cs" />
-    <Compile Include="Helpers\ResxConfigHandler.cs" />
+    <Compile Include="Helpers\ResXConfigHandler.cs" />
     <Compile Include="Helpers\UIItemExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestData\ControlIdentifiers.Designer.cs">

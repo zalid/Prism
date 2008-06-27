@@ -20,9 +20,7 @@
                 </DataTemplate>
             </Expander.HeaderTemplate>
         </Expander>
-        <!--<Grid Name="DetailArea"></Grid>
-    <Grid Name="CommandArea"></Grid>-->
-        <Rectangle Margin="0,10,0,0" Fill="#FF939DA5" Stroke="{x:Null}" RadiusX="0" RadiusY="0" VerticalAlignment="Bottom" Height="4" RenderTransformOrigin="0.5,0.5">
+        <Rectangle Margin="0,5,0,0" Fill="#FF939DA5" Stroke="{x:Null}" RadiusX="0" RadiusY="0" VerticalAlignment="Bottom" Height="4" RenderTransformOrigin="0.5,0.5">
             <Rectangle.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="1" ScaleY="-1"/>

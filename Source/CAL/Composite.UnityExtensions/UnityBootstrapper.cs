@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -20,7 +20,6 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using Microsoft.Practices.Composite;
 using Microsoft.Practices.Composite.Events;
 using Microsoft.Practices.Composite.Logging;
 using Microsoft.Practices.Composite.Modularity;
@@ -31,26 +30,36 @@ using Microsoft.Practices.Unity;
 
 namespace Microsoft.Practices.Composite.UnityExtensions
 {
+    /// <summary>
+    /// Base class that provides a basic bootstrapping sequence that
+    /// registers most of the Composite Application Library assets
+    /// in a <see cref="IUnityContainer"/>.
+    /// </summary>
+    /// <remarks>
+    /// This class must be overriden to provide application specific configuration.
+    /// </remarks>
     public abstract class UnityBootstrapper
     {
         private readonly ILoggerFacade _loggerFacade = new TraceLogger();
         private bool _useDefaultConfiguration = true;
 
         /// <summary>
-        /// Returns the default <see cref="IUnityContainer"/> for the application.
+        /// Gets the default <see cref="IUnityContainer"/> for the application.
         /// </summary>
+        /// <value>The default <see cref="IUnityContainer"/> instance.</value>
         public IUnityContainer Container { get; private set; }
 
         /// <summary>
-        /// Returns the default <see cref="ILoggerFacade"/> for the application.
+        /// Gets the default <see cref="ILoggerFacade"/> for the application.
         /// </summary>
+        /// <value>A <see cref="ILoggerFacade"/> instance.</value>
         protected virtual ILoggerFacade LoggerFacade
         {
             get { return _loggerFacade; }
         }
 
         /// <summary>
-        /// Run the bootstrapper process.
+        /// Runs the bootstrapper process.
         /// </summary>
         public void Run()
         {
@@ -60,7 +69,7 @@ namespace Microsoft.Practices.Composite.UnityExtensions
         /// <summary>
         /// Run the bootstrapper process.
         /// </summary>
-        /// <param name="useDefaultConfiguration">If <see langword="true"/>, registers default CAL services in the container. This is the default behavior.</param>
+        /// <param name="useDefaultConfiguration">If <see langword="true"/>, registers default Composite Application Library services in the container. This is the default behavior.</param>
         public void Run(bool useDefaultConfiguration)
         {
             _useDefaultConfiguration = useDefaultConfiguration;
@@ -100,7 +109,7 @@ namespace Microsoft.Practices.Composite.UnityExtensions
         }
 
         /// <summary>
-        /// Configure the <see cref="IUnityContainer"/>. May be overwritten in a derived class to add specific
+        /// Configures the <see cref="IUnityContainer"/>. May be overwritten in a derived class to add specific
         /// type mappings required by the application.
         /// </summary>
         protected virtual void ConfigureContainer()
@@ -129,7 +138,7 @@ namespace Microsoft.Practices.Composite.UnityExtensions
         /// to adapt UI controls defined in XAML to use a region and register it automatically.
         /// May be overwritten in a derived class to add specific mappings required by the application.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The <see cref="RegionAdapterMappings"/> instance containing all the mappings.</returns>
         protected virtual RegionAdapterMappings ConfigureRegionAdapterMappings()
         {
             RegionAdapterMappings regionAdapterMappings = Container.TryResolve<RegionAdapterMappings>();
@@ -144,7 +153,9 @@ namespace Microsoft.Practices.Composite.UnityExtensions
         }
 
         /// <summary>
-        /// Initialize the modules. May be overwritten in a derived class to use custom module loading and avoid using an <seealso cref="IModuleLoader"/> and <seealso cref="IModuleEnumerator"/>.
+        /// Initializes the modules. May be overwritten in a derived class to use custom 
+        /// module loading and avoid using an <seealso cref="IModuleLoader"/> and 
+        /// <seealso cref="IModuleEnumerator"/>.
         /// </summary>
         protected virtual void InitializeModules()
         {
@@ -167,7 +178,7 @@ namespace Microsoft.Practices.Composite.UnityExtensions
         /// <summary>
         /// Creates the <see cref="IUnityContainer"/> that will be used as the default container.
         /// </summary>
-        /// <returns>A new instance of <see cref="IUnityContainer"/></returns>
+        /// <returns>A new instance of <see cref="IUnityContainer"/>.</returns>
         protected virtual IUnityContainer CreateContainer()
         {
             return new UnityContainer();
@@ -187,11 +198,11 @@ namespace Microsoft.Practices.Composite.UnityExtensions
         }
 
         /// <summary>
-        /// Utility method to add a service to the container only if that service is not already in the container.
+        /// Registers a type in the container only if that type was not already registered.
         /// </summary>
-        /// <param name="fromType">The interface of type to register</param>
-        /// <param name="toType">The type implementing the interface</param>
-        /// <param name="registerAsSingleton"></param>
+        /// <param name="fromType">The interface type to register.</param>
+        /// <param name="toType">The type implementing the interface.</param>
+        /// <param name="registerAsSingleton">Registers the type as a singleton.</param>
         protected void RegisterTypeIfMissing(Type fromType, Type toType, bool registerAsSingleton)
         {
             ILoggerFacade logger = LoggerFacade;
@@ -216,13 +227,17 @@ namespace Microsoft.Practices.Composite.UnityExtensions
             }
         }
 
-
         /// <summary>
         /// Creates the shell or main window of the application.
         /// </summary>
-        /// <returns>The shell of the application. This object will be injected with the default <seealso cref="IRegionManager"/> of
-        /// the application in order to be able to add regions using the <seealso cref="RegionManager.RegionNameProperty"/> attached
-        /// property from XAML.</returns>
+        /// <returns>The shell of the application.</returns>
+        /// <remarks>
+        /// If the returned instance is a <see cref="DependencyObject"/>, the
+        /// <see cref="UnityBootstrapper"/> will attach the default <seealso cref="IRegionManager"/> of
+        /// the application in its <see cref="RegionManager.RegionManagerProperty"/> attached property
+        /// in order to be able to add regions by using the <seealso cref="RegionManager.RegionNameProperty"/>
+        /// attached property from XAML.
+        /// </remarks>
         protected abstract DependencyObject CreateShell();
     }
 }

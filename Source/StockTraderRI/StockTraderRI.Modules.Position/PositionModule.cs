@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -18,6 +18,7 @@
 using Microsoft.Practices.Composite.Modularity;
 using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Unity;
+using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Modules.Position.Controllers;
 using StockTraderRI.Modules.Position.Interfaces;
@@ -45,16 +46,16 @@ namespace StockTraderRI.Modules.Position
             RegisterViewsAndServices();
 
             IPositionSummaryPresentationModel presentationModel = _container.Resolve<IPositionSummaryPresentationModel>();
-            IRegion mainRegion = _regionManager.Regions["MainRegion"];
+            IRegion mainRegion = _regionManager.Regions[RegionNames.MainRegion];
             mainRegion.Add(presentationModel.View);
 
-            IRegion mainToolbarRegion = _regionManager.Regions["MainToolbarRegion"];
+            IRegion mainToolbarRegion = _regionManager.Regions[RegionNames.MainToolbarRegion];
             mainToolbarRegion.Add(new OrdersToolBar());
         }
 
         protected void RegisterViewsAndServices()
         {
-            _container.RegisterType<IAccountPositionService, AccountPositionService>();
+            _container.RegisterType<IAccountPositionService, AccountPositionService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPositionSummaryView, PositionSummaryView>();
             _container.RegisterType<IPositionSummaryPresentationModel, PositionSummaryPresentationModel>();
             _container.RegisterType<IOrdersView, OrdersView>();
@@ -65,7 +66,7 @@ namespace StockTraderRI.Modules.Position
             _container.RegisterType<IOrderCompositeView, OrderCompositeView>();
             _container.RegisterType<IOrderCompositePresentationModel, OrderCompositePresentationModel>();
             _container.RegisterType<IOrdersController, OrdersController>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IOrdersService, XmlOrdersService>();
+            _container.RegisterType<IOrdersService, XmlOrdersService>(new ContainerControlledLifetimeManager());
 
         }
 

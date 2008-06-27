@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -24,8 +24,17 @@ using Microsoft.Practices.Composite.Wpf.Properties;
 
 namespace Microsoft.Practices.Composite.Wpf.Regions
 {
+    /// <summary>
+    /// Adapter that creates a new <see cref="SingleActiveRegion"/> and monitors its
+    /// active view to set it on the adapted <see cref="ContentControl"/>. 
+    /// </summary>
     public class ContentControlRegionAdapter : RegionAdapterBase<ContentControl>
     {
+        /// <summary>
+        /// Adapts a <see cref="ContentControl"/> to an <see cref="IRegion"/>.
+        /// </summary>
+        /// <param name="region">The new region being used.</param>
+        /// <param name="regionTarget">The object to adapt.</param>
         protected override void Adapt(IRegion region, ContentControl regionTarget)
         {
             if (regionTarget.Content != null || (BindingOperations.GetBinding(regionTarget, ContentControl.ContentProperty) != null))
@@ -37,6 +46,10 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
             };
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="SingleActiveRegion"/>.
+        /// </summary>
+        /// <returns>A new instance of <see cref="SingleActiveRegion"/>.</returns>
         protected override IRegion CreateRegion()
         {
             return new SingleActiveRegion();

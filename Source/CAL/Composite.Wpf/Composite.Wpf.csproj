@@ -17,10 +17,11 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
+    <DocumentationFile>bin\Debug\Microsoft.Practices.Composite.Wpf.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -55,14 +56,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\ActiveAwareDelegateCommand.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
-    <Compile Include="Commands\ActiveAwareCompositeCommand.cs" />
     <Compile Include="Commands\CompositeCommand.cs" />
-    <Compile Include="Events\WpfEvent.cs" />
-    <Compile Include="Events\SubscriptionToken.cs" />
+    <Compile Include="Events\DispatcherEventSubscription.cs" />
+    <Compile Include="Events\CompositeWpfEvent.cs" />
     <Compile Include="Events\ThreadOption.cs" />
-    <Compile Include="Events\WeakDelegate.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Regions\AllActiveRegion.cs" />
     <Compile Include="Regions\ContentControlRegionAdapter.cs" />

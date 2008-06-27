@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -28,6 +28,7 @@ using Core.UIItems;
 using Core.UIItems.WindowItems;
 using Core.UIItems.Finders;
 using Commanding.Tests.AcceptanceTests.AutomatedTests;
+using System.Globalization;
 
 namespace Commanding.Tests.AcceptanceTests.AutomatedTests.ModuleFixtures
 {     
@@ -52,12 +53,12 @@ namespace Commanding.Tests.AcceptanceTests.AutomatedTests.ModuleFixtures
             PopulateOrderDetailsWithData();
 
             //Get the handle of the Orders List view
-            ListBox orderView = (ListBox)window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("OrderListView"))
+            ListBox orderView = (ListBox)Window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("OrderListView"))
                                                              .AndControlType(typeof(ListBox)));
             int orderCount = orderView.Items.Count;
             
             //Get the handle of the save button
-            Button saveButton = window.Get<Button>(TestDataInfrastructure.GetControlId("SaveButton"));
+            Button saveButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("SaveButton"));
             //check if the save button is enabled
             Assert.IsTrue(saveButton.Enabled);
             //click on the save button
@@ -84,14 +85,14 @@ namespace Commanding.Tests.AcceptanceTests.AutomatedTests.ModuleFixtures
         {
             int count=0;
             //Get the hanlde of the Order list view
-            ListBox orderView = window.Get<ListBox>(TestDataInfrastructure.GetControlId("OrderListView"));            
+            ListBox orderView = Window.Get<ListBox>(TestDataInfrastructure.GetControlId("OrderListView"));            
             int orderCount = orderView.Items.Count;
 
             //Select the orders in the list view one by one and POpulate valid order details for every order
             while(count < orderCount)
             {
                 orderView.Items[count].Select();
-                Label orderNameLabel = (Label)window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("OrderNameLabel"))
+                Label orderNameLabel = (Label)Window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("OrderNameLabel"))
                                                                 .AndByText(TestDataInfrastructure.GetTestInputData("Order") + (count+1))
                                                                 .AndControlType(typeof(Label)));
                 Assert.IsNotNull(orderNameLabel);
@@ -100,14 +101,14 @@ namespace Commanding.Tests.AcceptanceTests.AutomatedTests.ModuleFixtures
             }
 
             //Get the hanlde of the toolbar Save all button
-            Button saveAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("SaveAllToolBarButton"));
+            Button saveAllButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("SaveAllToolBarButton"));
             //check if the toolbar save all button is enabled
             Assert.IsTrue(saveAllButton.Enabled);
             //click on the tollbar save all button
             saveAllButton.Click();
 
             //check if all the orders are saved and removed from the listview
-            Assert.AreEqual(orderView.Items.Count.ToString(), TestDataInfrastructure.GetTestInputData("DefaultData"));
+            Assert.AreEqual(orderView.Items.Count.ToString(CultureInfo.InvariantCulture), TestDataInfrastructure.GetTestInputData("DefaultData"));
         }
 
         /// <summary>
@@ -130,7 +131,7 @@ namespace Commanding.Tests.AcceptanceTests.AutomatedTests.ModuleFixtures
             PopulateOrderDetailsWithData();
            
             //Get the hanlde of the save button
-            Button saveButton = window.Get<Button>(TestDataInfrastructure.GetControlId("SaveButton"));
+            Button saveButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("SaveButton"));
             //check if the save button is enabled
             Assert.IsTrue(saveButton.Enabled);
 
@@ -155,19 +156,19 @@ namespace Commanding.Tests.AcceptanceTests.AutomatedTests.ModuleFixtures
         /// User must be able to Save all the orders when valid data is entered and 
         /// save all button must be disabled whenever invalid details are entered even for one order.
         [TestMethod]
-        public void AttemptToolbarSaveAllForMultipleValidOrdersAndOneInvalidOrder()
+        public void AttemptToolBarSaveAllForMultipleValidOrdersAndOneInvalidOrder()
         {
             int count = 0;
 
             //Get the hanlde of the order list view
-            ListBox orderView = window.Get<ListBox>(TestDataInfrastructure.GetControlId("OrderListView"));            
+            ListBox orderView = Window.Get<ListBox>(TestDataInfrastructure.GetControlId("OrderListView"));            
             int orderCount = orderView.Items.Count;
 
             //Select the orders in the list view one by one and POpulate valid order details for every order
             while (count < orderCount)
             {
                 orderView.Items[count].Select();
-                Label orderNameLabel = (Label)window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("OrderNameLabel"))
+                Label orderNameLabel = (Label)Window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("OrderNameLabel"))
                                                                 .AndByText(TestDataInfrastructure.GetTestInputData("Order") + (count + 1))
                                                                 .AndControlType(typeof(Label)));
                 Assert.IsNotNull(orderNameLabel);
@@ -176,7 +177,7 @@ namespace Commanding.Tests.AcceptanceTests.AutomatedTests.ModuleFixtures
             }
 
             //Get the hanlde of te toolbar save all button
-            Button saveAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("SaveAllToolBarButton"));
+            Button saveAllButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("SaveAllToolBarButton"));
             //check if the toolbar save all button is enabled
             Assert.IsTrue(saveAllButton.Enabled);
 

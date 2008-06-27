@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -59,9 +59,9 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             int symbolShare = 0;
 
             symbol = TestDataInfrastructure.GetTestInputData("Symbol");
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             
-            symbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(symbol)).Cells[positionTableSharesHeader].Text);
+            symbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(symbol)).Cells[positionTableSharesHeader].Text, CultureInfo.CurrentCulture);
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
             Order symbolOrder = new Order(
                                         symbol,
@@ -73,7 +73,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
                                     );
             PopulateBuySellPanelWithData(symbolOrder);
 
-            Button submitButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
+            Button submitButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
             Assert.IsFalse(submitButton.Enabled);
         }
 
@@ -102,10 +102,10 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             
             symbol = TestDataInfrastructure.GetTestInputData("Symbol");
             anotherSymbol = TestDataInfrastructure.GetTestInputData("PositionSymbol");
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
 
-            symbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(symbol)).Cells[positionTableSharesHeader].Text);
-            anotherSymbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(anotherSymbol)).Cells[positionTableSharesHeader].Text);
+            symbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(symbol)).Cells[positionTableSharesHeader].Text, CultureInfo.CurrentCulture);
+            anotherSymbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(anotherSymbol)).Cells[positionTableSharesHeader].Text, CultureInfo.CurrentCulture);
 
             //Enter details for first symbol
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
@@ -133,7 +133,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             PopulateBuySellPanelWithData(anotherSymbolOrder);
             ////////////////////////
 
-            Button submitAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
+            Button submitAllButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
             Assert.IsFalse(submitAllButton.Enabled);
         }
 
@@ -162,10 +162,10 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
 
             symbol = TestDataInfrastructure.GetTestInputData("Symbol");
             anotherSymbol = TestDataInfrastructure.GetTestInputData("PositionSymbol");
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
 
-            symbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(symbol)).Cells[positionTableSharesHeader].Text);
-            anotherSymbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(anotherSymbol)).Cells[positionTableSharesHeader].Text);
+            symbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(symbol)).Cells[positionTableSharesHeader].Text, CultureInfo.CurrentCulture);
+            anotherSymbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(anotherSymbol)).Cells[positionTableSharesHeader].Text, CultureInfo.CurrentCulture);
 
             //Enter details for first symbol
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
@@ -193,7 +193,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             PopulateBuySellPanelWithData(anotherSymbolOrder);
             ////////////////////////
 
-            Button submitAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
+            Button submitAllButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
             Assert.IsFalse(submitAllButton.Enabled);
         }
 
@@ -222,10 +222,10 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
 
             symbol = TestDataInfrastructure.GetTestInputData("Symbol");
             anotherSymbol = TestDataInfrastructure.GetTestInputData("PositionSymbol");
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
 
-            symbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(symbol)).Cells[positionTableSharesHeader].Text);
-            anotherSymbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(anotherSymbol)).Cells[positionTableSharesHeader].Text);
+            symbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(symbol)).Cells[positionTableSharesHeader].Text, CultureInfo.CurrentCulture);
+            anotherSymbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(anotherSymbol)).Cells[positionTableSharesHeader].Text, CultureInfo.CurrentCulture);
 
             //Enter details for first symbol
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
@@ -253,12 +253,12 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             PopulateBuySellPanelWithData(anotherSymbolOrder);
             ////////////////////////
 
-            Button submitButton = window.Get<Button>(
+            Button submitButton = Window.Get<Button>(
                 SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("BuySellSubmitButton"))
                 .AndIndex(0));
             Assert.IsFalse(submitButton.Enabled);
 
-            submitButton = window.Get<Button>(
+            submitButton = Window.Get<Button>(
                 SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("BuySellSubmitButton"))
                 .AndIndex(1));
             Assert.IsTrue(submitButton.Enabled);
@@ -266,7 +266,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             submitButton.Click();
 
             //validate if the buy transaction was successful
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsTrue(orders.Find(o => o.Symbol.Equals(anotherSymbol)).Equals(anotherSymbolOrder));
         }
 
@@ -292,8 +292,8 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             string positionTableSharesHeader = TestDataInfrastructure.GetTestInputData("PositionTableShares");
 
             symbol = TestDataInfrastructure.GetTestInputData("Symbol");
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
-            symbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(symbol)).Cells[positionTableSharesHeader].Text);
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            symbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(symbol)).Cells[positionTableSharesHeader].Text, CultureInfo.CurrentCulture);
 
             //Enter symbol details with shares / 2 in first tab
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, symbol);
@@ -313,15 +313,15 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             PopulateBuySellPanelWithData(sellSymbolOrder);
             ///////////////////////////////
 
-            Button submitAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
+            Button submitAllButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
             submitAllButton.Click();
 
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
                                                                                 .AndControlType(typeof(GroupBox)));
             Assert.IsNull(buySellSymbolGroup);
 
             //validate if the sell transaction was successful
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsTrue(orders.FindAll(o => o.Equals(sellSymbolOrder)).Count.Equals(2));
         }
 
@@ -345,7 +345,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             int symbolShare = 0;
 
             symbol = TestDataInfrastructure.GetTestInputData("Symbol");
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             symbolShare = (int)list.GetData(symbol, PositionTableColumnHeader.NumberOfShares);
 
             //Enter symbol details with shares / 2 in first tab
@@ -374,15 +374,15 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             PopulateBuySellPanelWithData(sellSymbolAnotherOrder);
             ///////////////////////////////
 
-            Button submitAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
+            Button submitAllButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
             Assert.IsFalse(submitAllButton.Enabled);
             submitAllButton.Click();
 
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander").AndControlType(typeof(GroupBox)));
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander").AndControlType(typeof(GroupBox)));
             Assert.IsNotNull(buySellSymbolGroup);
 
             //validate if the sell transaction was successful
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsNull(orders.Find(o => o.Equals(sellSymbolOrder)));
             Assert.IsNull(orders.Find(o => o.Equals(sellSymbolAnotherOrder)));
         }
@@ -424,15 +424,15 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             PopulateBuySellPanelWithData(buySymbolOrder);
             ///////////////////////////////
 
-            Button submitAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
+            Button submitAllButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
             submitAllButton.Click();
 
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
                                                                                 .AndControlType(typeof(GroupBox)));
             Assert.IsNull(buySellSymbolGroup);
 
             //validate if the sell transaction was successful
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsTrue(orders.FindAll(o => o.Equals(buySymbolOrder)).Count.Equals(2));
         }
 
@@ -465,7 +465,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
                                     );
             PopulateBuySellPanelWithData(model);
 
-            Button submitButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
+            Button submitButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
             submitButton.Click();
 
             //give time for submit processing
@@ -474,12 +474,12 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             // Validate if extender Buy/Sell Panel disappears.
             // AND
             // Validate if the buy transactions were successful
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
                                                                                 .AndControlType(typeof(GroupBox)));
             Assert.IsNull(buySellSymbolGroup);
 
             //validate if the buy transaction was successful
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsTrue(orders.Find(o => o.Symbol.Equals(symbol)).Equals(model));
         }
 
@@ -532,7 +532,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
                                     );
             PopulateBuySellPanelWithData(sellModel);
 
-            Button submitAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
+            Button submitAllButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
             Assert.IsFalse(submitAllButton.Enabled);
         }
 
@@ -568,8 +568,8 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             sellSymbol = TestDataInfrastructure.GetTestInputData("PositionSymbol1");
             invalidBuySymbol = TestDataInfrastructure.GetTestInputData("InvalidSymbol");
 
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
-            sellSymbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(sellSymbol)).Cells[positionTableSharesHeader].Text);
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            sellSymbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(sellSymbol)).Cells[positionTableSharesHeader].Text, CultureInfo.CurrentCulture);
 
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, buySymbol);
             Order buyModel = new Order(
@@ -593,14 +593,14 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
                                     );
             PopulateBuySellPanelWithData(sellModel);
 
-            Button submitAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
+            Button submitAllButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
             submitAllButton.Click();
 
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander").AndControlType(typeof(GroupBox)));
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander").AndControlType(typeof(GroupBox)));
             Assert.IsNotNull(buySellSymbolGroup);
             
             //validate the transaction was successful
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsNull(orders.Find(o => o.Symbol.Equals(buySymbol)));
             Assert.IsTrue(orders.Find(o => o.Symbol.Equals(sellSymbol)).Equals(sellModel));
         }
@@ -653,7 +653,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
                                         );
             PopulateBuySellPanelWithData(sellModel);
 
-            Button submitAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
+            Button submitAllButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
             Assert.IsFalse(submitAllButton.Enabled);
         }
 
@@ -677,14 +677,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         [Ignore]
         public void MultiSelectSharesFromPositionTableAndBuyAll()
         {
-            string symbol;
-            string anotherSymbol;
-            string positionTableSymbolHeader = TestDataInfrastructure.GetTestInputData("PositionTableSymbol");
-
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
-
-            symbol = list.Rows[0].Cells[positionTableSymbolHeader].Text;
-            anotherSymbol = list.Rows[1].Cells[positionTableSymbolHeader].Text;
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
 
             //handle multiple row selection in watchlist and open buysell panel for buy
             list.MultiSelect(0);
@@ -692,16 +685,16 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             list.Rows[0].RightClick();
 
             System.Threading.Thread.Sleep(1000);
-            window.PopupMenu("Buy").Click();
+            Window.PopupMenu("Buy").Click();
 
             //check for first expander panel
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
                                                                                 .AndControlType(typeof(GroupBox))
                                                                                 .AndIndex(0));
             Assert.IsNotNull(buySellSymbolGroup);
 
             //check for second expander panel
-            buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+            buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
                                                                                 .AndControlType(typeof(GroupBox))
                                                                                 .AndIndex(1));
             Assert.IsNotNull(buySellSymbolGroup);
@@ -728,30 +721,23 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
         [Ignore]
         public void MultiSelectSharesFromPositionTableAndSellAll()
         {
-            string symbol;
-            string anotherSymbol;
-            string positionTableSymbolHeader = TestDataInfrastructure.GetTestInputData("PositionTableSymbol");
-
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
-
-            symbol = list.Rows[0].Cells[positionTableSymbolHeader].Text;
-            anotherSymbol = list.Rows[1].Cells[positionTableSymbolHeader].Text;
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
 
             list.MultiSelect(0);
             list.MultiSelect(1);
             list.Rows[0].RightClick();
 
             System.Threading.Thread.Sleep(1000);
-            window.PopupMenu("Sell").Click();
+            Window.PopupMenu("Sell").Click();
 
             //check for first expander panel
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
                                                                                 .AndControlType(typeof(GroupBox))
                                                                                 .AndIndex(0));
             Assert.IsNotNull(buySellSymbolGroup);
 
             //check for second expander panel
-            buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+            buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
                                                                                 .AndControlType(typeof(GroupBox))
                                                                                 .AndIndex(1));
             Assert.IsNotNull(buySellSymbolGroup);
@@ -783,8 +769,8 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
 
             symbol = TestDataInfrastructure.GetTestInputData("Symbol");
 
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
-            symbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(symbol)).Cells[positionTableSharesHeader].Text);
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            symbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(symbol)).Cells[positionTableSharesHeader].Text, CultureInfo.CurrentCulture);
 
             //Buy the share
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Buy, symbol);
@@ -812,15 +798,15 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             PopulateBuySellPanelWithData(sellModel);
             ///////////////////////////////
 
-            Button submitAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
+            Button submitAllButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
             submitAllButton.Click();
 
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
                                                                                 .AndControlType(typeof(GroupBox)));
             Assert.IsNull(buySellSymbolGroup);
 
             //validate if the sell and buy transaction was successful
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsNotNull(orders.Find(o => o.Equals(buyModel)));
             Assert.IsNotNull(orders.Find(o => o.Equals(sellModel)));
         }
@@ -858,9 +844,9 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             buySymbol = TestDataInfrastructure.GetTestInputData("PositionSymbol1");
             buyAnotherSymbol = TestDataInfrastructure.GetTestInputData("PositionSymbol3");
 
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
-            symbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(sellSymbol)).Cells[positionTableSharesHeader].Text);
-            anotherSymbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(sellAnotherSymbol)).Cells[positionTableSharesHeader].Text);
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            symbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(sellSymbol)).Cells[positionTableSharesHeader].Text, CultureInfo.CurrentCulture);
+            anotherSymbolShare = Convert.ToInt32(list.Rows.Find(r => r.Cells[positionTableSymbolHeader].Text.Equals(sellAnotherSymbol)).Cells[positionTableSharesHeader].Text, CultureInfo.CurrentCulture);
 
             //Sell a share
             LaunchBuySellPanelFromPositionTable(BuySellEnum.Sell, sellSymbol);
@@ -914,15 +900,15 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             PopulateBuySellPanelWithData(anotherBuyModel);
             /////////////////////////////////////////////////////////////
 
-            Button submitAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
+            Button submitAllButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
             submitAllButton.Click();
 
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
                                                                                 .AndControlType(typeof(GroupBox)));
             Assert.IsNull(buySellSymbolGroup);
 
             //validate if the sell transaction was successful
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsNotNull(orders.Find(o => o.Equals(sellModel)));
             Assert.IsNotNull(orders.Find(o => o.Equals(anotherSellModel)));
             Assert.IsNotNull(orders.Find(o => o.Equals(buyModel)));
@@ -954,7 +940,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             // Select the position table
             SelectPositionTabPage();
 
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             numberOfShares = (int)list.GetData(symbol, PositionTableColumnHeader.NumberOfShares);
 
             Order model = new Order(
@@ -969,11 +955,11 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
 
             //overwrite invalid "number of shares" value
             
-            TextBox shareTextBox = window.Get<TextBox>(TestDataInfrastructure.GetControlId("BuySellSharesTextBox"));
+            TextBox shareTextBox = Window.Get<TextBox>(TestDataInfrastructure.GetControlId("BuySellSharesTextBox"));
             shareTextBox.Text = TestDataInfrastructure.GetTestInputData("InvalidString");
 
             //check if the submit button is disabled
-            Button submitButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
+            Button submitButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
             submitButton.Focus();
             Assert.IsFalse(submitButton.Enabled);
         }

@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -30,7 +30,7 @@ namespace Microsoft.Practices.Composite.Logging
         private readonly TextWriter writer;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="TextWriter"/> that writes to
+        /// Initializes a new instance of <see cref="TextLogger"/> that writes to
         /// the console output.
         /// </summary>
         public TextLogger()
@@ -39,7 +39,7 @@ namespace Microsoft.Practices.Composite.Logging
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="TextWriter"/>.
+        /// Initializes a new instance of <see cref="TextLogger"/>.
         /// </summary>
         /// <param name="writer">The writer to use for writing log entries.</param>
         public TextLogger(TextWriter writer)

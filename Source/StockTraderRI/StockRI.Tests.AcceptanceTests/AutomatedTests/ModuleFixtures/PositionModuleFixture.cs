@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -25,6 +25,7 @@ using Core.UIItems.ListViewItems;
 using Core.UIItems.Finders;
 using StockTraderRI.AcceptanceTests.TestInfrastructure;
 using StockTraderRI.AcceptanceTests.Helpers;
+using System.Globalization;
 
 namespace StockTraderRI.AcceptanceTests.AutomatedTests
 {
@@ -64,7 +65,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         [TestMethod]
         public void AccountPositionTableColumns()
         {
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             ListViewHeader listHeader = list.Header;
 
             Assert.AreEqual(6, listHeader.Columns.Count);
@@ -95,9 +96,9 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         [TestMethod]
         public void AccountPositionTableRowCount()
         {
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             //read number of account positions from the AccountPosition.xml data file
-            int positionRowCount = testDataInfrastructure.GetCount<AccountPositionDataProvider, AccountPosition>();
+            int positionRowCount = TestDataInfrastructure.GetCount<AccountPositionDataProvider, AccountPosition>();
 
             Assert.AreEqual(positionRowCount, list.Rows.Count);
         }
@@ -117,7 +118,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         [TestMethod]
         public void AccountPositionDerivedData()
         {
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             ListViewRow listRow = null;
             string symbol;
            
@@ -152,8 +153,8 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
 
                     if (!isMarketPriceMatching)
                     {
-                        if (Convert.ToDouble(marketPrice).ToString("0.00")
-                            .Equals((Convert.ToDouble(share) * Convert.ToDouble(lastPrice)).ToString("0.00")))
+                        if (Convert.ToDouble(marketPrice, CultureInfo.CurrentCulture).ToString("0.00", CultureInfo.CurrentCulture)
+                            .Equals((Convert.ToDouble(share, CultureInfo.CurrentCulture) * Convert.ToDouble(lastPrice, CultureInfo.CurrentCulture)).ToString("0.00", CultureInfo.CurrentCulture)))
                         {
                             isMarketPriceMatching = true;
                         }
@@ -161,8 +162,8 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
 
                     if (!isGainLossMatching)
                     {
-                        if (Convert.ToDouble(gainLoss).ToString("0.00")
-                            .Equals(Math.Round((Convert.ToDouble(lastPrice) * Convert.ToDouble(share) - Convert.ToDouble(costBasis)) / Convert.ToDouble(costBasis) * 100, 2).ToString("0.00")))
+                        if (Convert.ToDouble(gainLoss, CultureInfo.CurrentCulture).ToString("0.00", CultureInfo.CurrentCulture)
+                            .Equals(Math.Round((Convert.ToDouble(lastPrice, CultureInfo.CurrentCulture) * Convert.ToDouble(share, CultureInfo.CurrentCulture) - Convert.ToDouble(costBasis, CultureInfo.CurrentCulture)) / Convert.ToDouble(costBasis, CultureInfo.CurrentCulture) * 100, 2).ToString("0.00", CultureInfo.CurrentCulture)))
                         {
                             isGainLossMatching = true;
                         }
@@ -177,7 +178,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
                 }
 
                 //if either the Market Price or the Gain-Loss value does not match, then the test case fails
-                Assert.IsTrue(isMarketPriceMatching && isGainLossMatching, String.Format("Computed Value for {0} is not correct", symbol));
+                Assert.IsTrue(isMarketPriceMatching && isGainLossMatching, String.Format(CultureInfo.CurrentCulture, "Computed Value for {0} is not correct", symbol));
             }
         }
     }

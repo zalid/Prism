@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -15,10 +15,7 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Practices.Composite.Events;
 
 namespace StockTraderRI.Modules.Watch.WatchList
 {
@@ -27,18 +24,9 @@ namespace StockTraderRI.Modules.Watch.WatchList
     /// </summary>
     public partial class WatchListView : UserControl, IWatchListView
     {
-        public event EventHandler<DataEventArgs<string>> OnRemoveMenuItemClicked = delegate { };
-
         public WatchListView()
         {
             InitializeComponent();
-        }
-
-        private void RemoveMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            WatchItem selectedItem = watchListListView.SelectedValue as WatchItem;
-            if (selectedItem != null)
-                OnRemoveMenuItemClicked(this, new DataEventArgs<string>(selectedItem.TickerSymbol));
         }
 
         #region IWatchListView Members

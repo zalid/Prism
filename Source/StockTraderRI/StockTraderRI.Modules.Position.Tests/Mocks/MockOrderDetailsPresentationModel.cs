@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -63,15 +63,9 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
 
         public decimal? StopLimitPrice { get; set; }
 
-        public ActiveAwareDelegateCommand<object> SubmitCommand
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public DelegateCommand<object> SubmitCommand { get; set;}
 
-        public ActiveAwareDelegateCommand<object> CancelCommand
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public DelegateCommand<object> CancelCommand { get; set;}
 
         #region IOrderDetailsPresentationModel Members
 

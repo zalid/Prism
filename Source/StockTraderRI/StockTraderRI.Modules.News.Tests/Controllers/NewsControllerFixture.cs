@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -16,6 +16,7 @@
 //===============================================================================
 
 using System;
+using Microsoft.Practices.Composite.Events;
 using Microsoft.Practices.Composite.Wpf.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockTraderRI.Infrastructure;

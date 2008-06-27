@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -19,7 +19,7 @@
 namespace Microsoft.Practices.Composite.Logging
 {
     /// <summary>
-    /// Defines a simple logger façade to be used by the Composite Application Library
+    /// Defines a simple logger façade to be used by the Composite Application Library.
     /// </summary>
     public interface ILoggerFacade
     {

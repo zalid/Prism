@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -20,7 +20,7 @@ using Microsoft.Practices.Composite.Wpf.Events;
 
 namespace StockTraderRI.Infrastructure
 {
-    public class MarketPricesUpdatedEvent : WpfEvent<IDictionary<string, decimal>>
+    public class MarketPricesUpdatedEvent : CompositeWpfEvent<IDictionary<string, decimal>>
     {
     }
 }

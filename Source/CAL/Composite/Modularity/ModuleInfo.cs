@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -28,18 +28,25 @@ namespace Microsoft.Practices.Composite.Modularity
     public class ModuleInfo
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleInfo"/> class with the given
-        /// assembly file, module type, module name and dependencies.
+        /// Initializes a new instance of <see cref="ModuleInfo"/>.
         /// </summary>
+        /// <param name="assemblyFile">The assembly file. Must be different than <see langword="null" />.</param>
+        /// <param name="moduleType">The module's type.</param>
+        /// <param name="moduleName">The module's name.</param>
+        /// <param name="dependsOn">The names of the modules that this depends on.</param>
         public ModuleInfo(string assemblyFile, string moduleType, string moduleName, params string[] dependsOn)
             : this(assemblyFile, moduleType, moduleName, true, dependsOn)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleInfo"/> class with the given
-        /// assembly file, module type, module name, startup loaded and dependencies.
+        /// Initializes a new instance of <see cref="ModuleInfo"/>.
         /// </summary>
+        /// <param name="assemblyFile">The assembly file. Must be different than <see langword="null" />.</param>
+        /// <param name="moduleType">The module's type.</param>
+        /// <param name="moduleName">The module's name.</param>
+        /// <param name="startupLoaded">Indicates whether this module should be loaded on startup.</param>
+        /// <param name="dependsOn">The names of the modules that this depends on.</param>
         public ModuleInfo(string assemblyFile, string moduleType, string moduleName, bool startupLoaded, params string[] dependsOn)
         {
             if (string.IsNullOrEmpty(assemblyFile))
@@ -56,32 +63,33 @@ namespace Microsoft.Practices.Composite.Modularity
         }
 
         /// <summary>
-        /// The assembly file where the module is located.
+        /// Gets the assembly file where the module is located.
         /// </summary>
+        /// <value>The assembly file where the module is located.</value>
         public string AssemblyFile { get; private set; }
 
         /// <summary>
-        /// The type of the module.
+        /// Gets the type of the module.
         /// </summary>
+        /// <value>The type of the module.</value>
         public string ModuleType { get; private set; }
 
         /// <summary>
-        /// The name of the module.
+        /// Gets the name of the module.
         /// </summary>
+        /// <value>The name of the module.</value>
         public string ModuleName { get; private set; }
 
         /// <summary>
-        /// The list of modules that this module depends upon.
+        /// Gets the list of modules that this module depends upon.
         /// </summary>
+        /// <value>The list of modules that this module depends upon.</value>
         public IList<string> DependsOn { get; private set; }
 
         /// <summary>
-        /// Specifies whether the module should be loaded at startup. 
+        /// Gets a value indicating whether the module should be loaded at startup. 
         /// </summary>
-        /// <param name="value">
-        /// When <see langword="true"/> (default value), it indicates that this module should be loaded at startup. 
-        /// Otherwise you should explicitly load this module on demand.
-        /// </param>
+        /// <value>A <see langword="bool"/> value indicating whether the module should be loaded at startup.</value>
         public bool StartupLoaded { get; private set; }
     }
 }

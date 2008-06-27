@@ -28,17 +28,11 @@
         </Style>
     </UserControl.Resources>
     <StackPanel>
-        <!--<Grid>
-            <Rectangle Fill="#FF77B6EB" Stroke="{x:Null}" RadiusX="8" RadiusY="8" VerticalAlignment="Top" Height="25"/>
-            <TextBlock Margin="10,5,0,0" FontFamily="Franklin Gothic" FontSize="14" FontWeight="Normal" Foreground="#FFFFFFFF" Text="WATCHLIST" TextAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="15.5"/>
-    		<Path HorizontalAlignment="Right" VerticalAlignment="Top" Width="20.251" Height="18.542" Fill="#FFFFFFFF" Stretch="Fill" Stroke="{x:Null}" Grid.Column="3" Data="M951.00031,55.374676 L960.50024,37.124668 C960.50024,37.124668 971.375,37.25 971.25,47.875 971.125,58.5 970.08348,62.666678 970.08348,62.666678 970.08348,62.666678 964.75016,54.374676 951.00031,55.374676 z"/>
-    		<Path MouseDown="Path_MouseDown" Style="{StaticResource PathMouseOverStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Width="12.938" Height="16.353" Stretch="Fill" Stroke="{x:Null}" StrokeDashOffset="0" StrokeMiterLimit="10" StrokeStartLineCap="Flat" StrokeThickness="5" Data="M968.6875,57.34375 C968.6875,57.34375 965.125,52.75 955.75,52.75 L961.81297,41.003682 C961.81297,41.003682 968.68797,40.410197 968.68797,47.285197 z"/>
-        </Grid>-->
         <ListView Margin="5,5,5,5" x:Name="watchListListView" ItemsSource="{Binding WatchListItems}" 
                   BorderThickness="0" Width="175" Height="160" HorizontalAlignment="Left" IsSynchronizedWithCurrentItem="True" >
             <ListView.ContextMenu>
                 <ContextMenu x:Name="watchListContextMenu">
-                    <MenuItem x:Name="RemoveMenuItem" Header="Remove" Click="RemoveMenuItem_Click"></MenuItem>
+                    <MenuItem Header="Remove" Command="{Binding RemoveWatchCommand}" CommandParameter="{Binding WatchListItems/TickerSymbol}" AutomationProperties.AutomationId="RemoveMenuItem"></MenuItem>
                 </ContextMenu>
             </ListView.ContextMenu>
             <ListView.ItemContainerStyle>
@@ -55,7 +49,7 @@
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.View>
-                <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="WatchList" ColumnHeaderContainerStyle="{StaticResource HeaderContainerStyle}">
+                <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Watch List" ColumnHeaderContainerStyle="{StaticResource HeaderContainerStyle}">
                     <GridViewColumn Header="Symbol" DisplayMemberBinding="{Binding Path=TickerSymbol}" Width="65"/>
                     <GridViewColumn Header="Last"  DisplayMemberBinding="{Binding Path=CurrentPrice, Converter={StaticResource twoDecimalPlaceConverter}, ConverterParameter=2}" Width="85" />
                 </GridView>

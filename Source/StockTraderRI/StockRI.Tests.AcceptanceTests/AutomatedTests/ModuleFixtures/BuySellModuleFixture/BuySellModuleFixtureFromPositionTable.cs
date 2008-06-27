@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -133,7 +133,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
                                     );
             PopulateBuySellPanelWithData(model);
 
-            Button submitButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
+            Button submitButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
             submitButton.Click();
 
             //give time for submit processing
@@ -142,12 +142,12 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             // Validate if selected tab in Buy/Sell Panel disappears.
             // AND
             // Validate if the buy transactions were successful
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
                                                                                 .AndControlType(typeof(GroupBox)));
             Assert.IsNull(buySellSymbolGroup);
 
             //validate if the buy transaction was successful
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsTrue(orders.Find(o => o.Symbol.Equals(symbol)).Equals(model));
         }
 
@@ -182,7 +182,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
                                     );
             PopulateBuySellPanelWithData(model);
 
-            Button submitButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
+            Button submitButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
             submitButton.Click();
 
             //give time for submit processing
@@ -191,12 +191,12 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             // Validate if the expander Buy/Sell Panel disappears.
             // AND
             // Validate if the sell transactions was successful 
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
                                                                                 .AndControlType(typeof(GroupBox)));
             Assert.IsNull(buySellSymbolGroup);
 
             //validate if the sell transaction was successful
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsTrue(orders.Find(o => o.Symbol.Equals(symbol)).Equals(model));
 
         }
@@ -252,7 +252,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             PopulateBuySellPanelWithData(anotherModel);
             /////////////////////////////////
 
-            Button submitAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
+            Button submitAllButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
             submitAllButton.Click();
 
             //give time for submit processing
@@ -262,11 +262,11 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             // AND
             // Validate if the buy transactions were successful
             //SearchCriteria.ByAutomationId("Expander").AndControlType(typeof(GroupBox))
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>("CompositeExpander");
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>("CompositeExpander");
             Assert.IsNull(buySellSymbolGroup);
 
             //validate if the buy transactions were successful
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsNotNull(orders.Find(o => o.Symbol.Equals(symbol)));
             Assert.IsNotNull(orders.Find(o => o.Symbol.Equals(anotherSymbol)));
 
@@ -325,7 +325,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
                                     );
             PopulateBuySellPanelWithData(anotherModel);
 
-            Button submitAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
+            Button submitAllButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitAllButton"));
             submitAllButton.Click();
 
             //give time for submit processing
@@ -334,11 +334,11 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             // Validate if expander Buy/Sell Panels disappear.
             // AND
             // Validate if the sell transactions were successful
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
                                                                                 .AndControlType(typeof(GroupBox)));
             Assert.IsNull(buySellSymbolGroup);
 
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsNotNull(orders.Find(o => o.Symbol.Equals(symbol) || o.Symbol.Equals(anotherSymbol)));
 
             // Validate the correctness of data.
@@ -376,7 +376,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
                                     );
             PopulateBuySellPanelWithData(model);
 
-            Button cancelButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellCancelButton"));
+            Button cancelButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellCancelButton"));
             cancelButton.Click();
 
             //give time for cancel processing
@@ -385,11 +385,11 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             // Validate if expander Buy/Sell Panel disappears.
             // AND
             // Validate if the buy transaction did not proceed.
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
                                                                                 .AndControlType(typeof(GroupBox)));
             Assert.IsNull(buySellSymbolGroup);
 
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsNull(orders.Find(o => o.Symbol.Equals(symbol)));
         }
 
@@ -444,7 +444,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
                                     );
             PopulateBuySellPanelWithData(anotherModel);
 
-            Button cancelAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellCancelAllButton"));
+            Button cancelAllButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellCancelAllButton"));
             cancelAllButton.Click();
 
             //give time for cancel processing
@@ -453,11 +453,11 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             // Validate if expander Buy/Sell Panels disappear.
             // AND
             // Validate if the buy transaction did not proceed.
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
                                                                                 .AndControlType(typeof(GroupBox)));
             Assert.IsNull(buySellSymbolGroup);
 
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsNull(orders.Find(o => o.Symbol.Equals(symbol) || o.Symbol.Equals(anotherSymbol)));
         }
 
@@ -492,26 +492,26 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
                                     );
             PopulateBuySellPanelWithData(model);
 
-            Button buyAtLastButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellBuyLastButton"));
+            Button buyAtLastButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellBuyLastButton"));
             buyAtLastButton.Click();
 
             //get the last price for the share
-            List<Market> market = testDataInfrastructure.GetData<MarketDataProvider, Market>();
+            List<Market> market = TestDataInfrastructure.GetData<MarketDataProvider, Market>();
             model.LimitStopPrice = market.Find(m => m.TickerSymbol.Equals(symbol)).LastPrice;
 
-            Button submitButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
+            Button submitButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
             submitButton.Click();
 
             //give time for submit processing
             System.Threading.Thread.Sleep(2000);
 
             // Validate if the tab disappears.
-            Tab buySellSymbolTab = window.Get<Tab>(
+            Tab buySellSymbolTab = Window.Get<Tab>(
                 SearchCriteria.ByText(BuySellEnum.Buy.ToString() + " " + symbol).AndControlType(typeof(Tab)));
             Assert.IsNull(buySellSymbolTab);
 
             //validate if the buy transaction was successful
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsTrue(orders.Find(o => o.Symbol.Equals(symbol)).Equals(model));
 
         }
@@ -547,26 +547,26 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
                                     );
             PopulateBuySellPanelWithData(model);
 
-            Button sellAtLastButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSellLastButton"));
+            Button sellAtLastButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSellLastButton"));
             sellAtLastButton.Click();
 
             //get the last price for the share
-            List<Market> market = testDataInfrastructure.GetData<MarketDataProvider, Market>();
+            List<Market> market = TestDataInfrastructure.GetData<MarketDataProvider, Market>();
             model.LimitStopPrice = market.Find(m => m.TickerSymbol.Equals(symbol)).LastPrice;
 
-            Button submitButton = window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
+            Button submitButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("BuySellSubmitButton"));
             submitButton.Click();
 
             //give time for submit processing
             System.Threading.Thread.Sleep(2000);
 
             // Validate if the tab disappears.
-            Tab buySellSymbolTab = window.Get<Tab>(
+            Tab buySellSymbolTab = Window.Get<Tab>(
                 SearchCriteria.ByText(BuySellEnum.Sell.ToString() + " " + symbol).AndControlType(typeof(Tab)));
             Assert.IsNull(buySellSymbolTab);
 
             //validate if the buy transaction was successful
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsTrue(orders.Find(o => o.Symbol.Equals(symbol)).Equals(model));
 
         }
@@ -600,7 +600,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
                                     );
             PopulateBuySellPanelWithData(model);
 
-            Button submitButton = window.Get<Button>(TestDataInfrastructure.GetControlId("ToolbarSubmitButton"));
+            Button submitButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("ToolbarSubmitButton"));
             submitButton.Click();
 
             //give time for submit processing
@@ -609,11 +609,11 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             // Validate if extender Buy/Sell Panel disappears.
             // AND
             // Validate if the buy transactions were successful
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
                                                                                 .AndControlType(typeof(GroupBox)));
             Assert.IsNull(buySellSymbolGroup);
 
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsTrue(orders.Find(o => o.Symbol.Equals(symbol)).Equals(model));
 
         }
@@ -669,7 +669,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             PopulateBuySellPanelWithData(anotherModel);
             /////////////////////////////////
 
-            Button submitAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("ToolbarSubmitAllButton"));
+            Button submitAllButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("ToolbarSubmitAllButton"));
             submitAllButton.Click();
 
             //give time for submit processing
@@ -678,11 +678,11 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             // Validate if all expander Buy/Sell Panels disappear.
             // AND
             // Validate if the buy transactions were successful
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
                                                                                 .AndControlType(typeof(GroupBox)));
             Assert.IsNull(buySellSymbolGroup);
 
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsNotNull(orders.Find(o => o.Symbol.Equals(symbol)));
             Assert.IsNotNull(orders.Find(o => o.Symbol.Equals(anotherSymbol)));
 
@@ -722,7 +722,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
                                     );
             PopulateBuySellPanelWithData(model);
 
-            Button cancelButton = window.Get<Button>(TestDataInfrastructure.GetControlId("ToolbarCancelButton"));
+            Button cancelButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("ToolbarCancelButton"));
             cancelButton.Click();
 
             //give time for cancel processing
@@ -731,11 +731,11 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             // Validate if expander Buy/Sell Panel disappears.
             // AND
             // Validate if the buy transaction did not proceed.
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
                                                                                 .AndControlType(typeof(GroupBox)));
             Assert.IsNull(buySellSymbolGroup);
 
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsNull(orders.Find(o => o.Symbol.Equals(symbol)));
         }
 
@@ -790,7 +790,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             PopulateBuySellPanelWithData(anotherModel);
             /////////////////////////////////
 
-            Button cancelAllButton = window.Get<Button>(TestDataInfrastructure.GetControlId("ToolbarCancelAllButton"));
+            Button cancelAllButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("ToolbarCancelAllButton"));
             cancelAllButton.Click();
 
             //give time for cancel processing
@@ -799,11 +799,11 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests.ModuleFixtures
             // Validate if all tabs in Buy/Sell Panel disappears.
             // AND
             // Validate if the sell transaction did not proceed.
-            GroupBox buySellSymbolGroup = window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
+            GroupBox buySellSymbolGroup = Window.Get<GroupBox>(SearchCriteria.ByAutomationId("CompositeExpander")
                                                                                 .AndControlType(typeof(GroupBox)));
             Assert.IsNull(buySellSymbolGroup);
 
-            List<Order> orders = testDataInfrastructure.GetData<OrderDataProvider, Order>();
+            List<Order> orders = TestDataInfrastructure.GetData<OrderDataProvider, Order>();
             Assert.IsNull(orders.Find(o => o.Symbol.Equals(symbol) || o.Symbol.Equals(anotherSymbol)));
         }
     }

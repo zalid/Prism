@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -132,6 +132,7 @@ namespace Microsoft.Practices.Composite.Modularity
         /// <summary>
         /// Gets the number of modules added to the solver.
         /// </summary>
+        /// <value>The number of modules.</value>
         public int ModuleCount
         {
             get { return dependencyMatrix.Count; }

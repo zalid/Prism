@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -30,20 +30,21 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
     /// </summary>
     public class Region : IRegion
     {
-        private ObservableCollection<ItemMetadata> itemMetadataCollection = new ObservableCollection<ItemMetadata>();
+        private ObservableCollection<ItemMetadata> _itemMetadataCollection;
         private IViewsCollection _views;
         private IViewsCollection _activeViews;
 
         /// <summary>
         /// Gets a readonly view of the collection of views in the region.
         /// </summary>
+        /// <value>An <see cref="IViewsCollection"/> of all the added views.</value>
         public virtual IViewsCollection Views
         {
             get
             {
                 if (_views == null)
                 {
-                    _views = new ViewsCollection(itemMetadataCollection, x => true);
+                    _views = new ViewsCollection(ItemMetadataCollection, x => true);
                 }
                 return _views;
             }
@@ -52,13 +53,14 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
         /// <summary>
         /// Gets a readonly view of the collection of all the active views in the region.
         /// </summary>
+        /// <value>An <see cref="IViewsCollection"/> of all the active views.</value>
         public virtual IViewsCollection ActiveViews
         {
             get
             {
                 if (_activeViews == null)
                 {
-                    _activeViews = new ViewsCollection(itemMetadataCollection, x => x.IsActive);
+                    _activeViews = new ViewsCollection(ItemMetadataCollection, x => x.IsActive);
                 }
                 return _activeViews;
             }
@@ -110,16 +112,14 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
         /// <param name="view">The view to remove.</param>
         public virtual void Remove(object view)
         {
-            ItemMetadata itemMetadata = itemMetadataCollection.FirstOrDefault(x => x.Item == view);
-            if (itemMetadata == null)
-                throw new ArgumentException(Resources.ViewToRemoveNotInRegion, "view");
+            ItemMetadata itemMetadata = GetItemMetadataOrThrow(view);
 
-            itemMetadataCollection.Remove(itemMetadata);
+            ItemMetadataCollection.Remove(itemMetadata);
 
             DependencyObject dependencyObject = view as DependencyObject;
-            if (dependencyObject != null && Microsoft.Practices.Composite.Wpf.Regions.RegionManager.GetRegionManager(dependencyObject) == this.RegionManager)
+            if (dependencyObject != null && Regions.RegionManager.GetRegionManager(dependencyObject) == this.RegionManager)
             {
-                dependencyObject.ClearValue(Microsoft.Practices.Composite.Wpf.Regions.RegionManager.RegionManagerProperty);
+                dependencyObject.ClearValue(Regions.RegionManager.RegionManagerProperty);
             }
         }
 
@@ -129,12 +129,8 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
         /// <param name="view">The view to activate.</param>
         public virtual void Activate(object view)
         {
-            ItemMetadata itemMetadata = itemMetadataCollection.FirstOrDefault(x => x.Item == view);
-            if (itemMetadata == null)
-            {
-                //TODO: test
-                throw new NotImplementedException();
-            }
+            ItemMetadata itemMetadata = GetItemMetadataOrThrow(view);
+
             if (!itemMetadata.IsActive)
             {
                 itemMetadata.IsActive = true;
@@ -147,12 +143,8 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
         /// <param name="view">The view to deactivate.</param>
         public virtual void Deactivate(object view)
         {
-            ItemMetadata itemMetadata = itemMetadataCollection.FirstOrDefault(x => x.Item == view);
-            if (itemMetadata == null)
-            {
-                //TODO: test
-                throw new NotImplementedException();
-            }
+            ItemMetadata itemMetadata = GetItemMetadataOrThrow(view);
+
             if (itemMetadata.IsActive)
             {
                 itemMetadata.IsActive = false;
@@ -162,14 +154,14 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
         /// <summary>
         /// Returns the view instance that was added to the region using a specific name.
         /// </summary>
-        /// <param name="viewName">The name used when adding the view to the region</param>
+        /// <param name="viewName">The name used when adding the view to the region.</param>
         /// <returns>Returns the named view or <see langword="null"/> if the view with <paramref name="viewName"/> does not exist in the current region.</returns>
         public virtual object GetView(string viewName)
         {
             if (string.IsNullOrEmpty(viewName))
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.StringCannotBeNullOrEmpty, "viewName"));
 
-            ItemMetadata metadata = itemMetadataCollection.FirstOrDefault(x => x.Name == viewName);
+            ItemMetadata metadata = ItemMetadataCollection.FirstOrDefault(x => x.Name == viewName);
 
             if (metadata != null)
                 return metadata.Item;
@@ -180,18 +172,36 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
         /// <summary>
         /// Gets or sets the <see cref="IRegionManager"/> that will be passed to the views when adding them to the region, unless the view is added by specifying createRegionManagerScope as <see langword="true" />.
         /// </summary>
+        /// <value>The <see cref="IRegionManager"/> where this <see cref="IRegion"/> is registered.</value>
+        /// <remarks>This is usually used by implementations of <see cref="IRegionManager"/> and should not be
+        /// used by the developer explicitely.</remarks>
         public IRegionManager RegionManager { get; set; }
 
+        /// <summary>
+        /// Gets the collection with all the views along with their metadata.
+        /// </summary>
+        /// <value>An <see cref="ObservableCollection{T}"/> of <see cref="ItemMetadata"/> with all the added views.</value>
+        protected virtual ObservableCollection<ItemMetadata> ItemMetadataCollection
+        {
+            get
+            {
+                if (_itemMetadataCollection == null)
+                {
+                    _itemMetadataCollection = new ObservableCollection<ItemMetadata>();
+                }
+                return _itemMetadataCollection;
+            }
+        }
 
         private void InnerAdd(object view, string name, IRegionManager regionManager)
         {
-            if (itemMetadataCollection.FirstOrDefault(x => x.Item == view) != null)
+            if (ItemMetadataCollection.FirstOrDefault(x => x.Item == view) != null)
                 throw new InvalidOperationException(Resources.RegionViewExistsException);
 
             ItemMetadata itemMetadata = new ItemMetadata(view);
             if (!string.IsNullOrEmpty(name))
             {
-                if (itemMetadataCollection.FirstOrDefault(x => x.Name == name) != null)
+                if (ItemMetadataCollection.FirstOrDefault(x => x.Name == name) != null)
                     throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, Resources.RegionViewNameExistsException, name));
                 itemMetadata.Name = name;
             }
@@ -203,7 +213,19 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
                 Regions.RegionManager.SetRegionManager(dependencyObject, regionManager);
             }
 
-            itemMetadataCollection.Add(itemMetadata);
+            ItemMetadataCollection.Add(itemMetadata);
+        }
+
+        private ItemMetadata GetItemMetadataOrThrow(object view)
+        {
+            if (view == null)
+                throw new ArgumentNullException("view");
+
+            ItemMetadata itemMetadata = ItemMetadataCollection.FirstOrDefault(x => x.Item == view);
+            if (itemMetadata == null)
+                throw new ArgumentException(Resources.ViewNotInRegionException, "view");
+
+            return itemMetadata;
         }
     }
 }

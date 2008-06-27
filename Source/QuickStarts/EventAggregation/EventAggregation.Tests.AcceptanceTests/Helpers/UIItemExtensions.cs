@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -23,7 +23,7 @@ using Core.UIItems;
 using System.Windows.Automation;
 using Core.UIItems.TabItems;
 
-namespace EventBroker.AcceptanceTests.Helpers
+namespace EventAggregation.AcceptanceTests.Helpers
 {
     public static class UIItemExtensions
     {
@@ -40,8 +40,8 @@ namespace EventBroker.AcceptanceTests.Helpers
 
             while (elementNode != null)
             {
-                if (name.Equals(elementNode.Current.Name, StringComparison.InvariantCultureIgnoreCase)
-                      || (name.Equals(elementNode.Current.AutomationId, StringComparison.InvariantCultureIgnoreCase)))
+                if (name.Equals(elementNode.Current.Name, StringComparison.OrdinalIgnoreCase)
+                      || (name.Equals(elementNode.Current.AutomationId, StringComparison.OrdinalIgnoreCase)))
                 {
                     return elementNode;
                 }

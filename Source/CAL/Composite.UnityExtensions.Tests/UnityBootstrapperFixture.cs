@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -21,18 +21,16 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using Composite.UnityExtensions.Tests.Mocks;
-using Microsoft.Practices.Composite;
 using Microsoft.Practices.Composite.Events;
 using Microsoft.Practices.Composite.Logging;
 using Microsoft.Practices.Composite.Modularity;
 using Microsoft.Practices.Composite.Regions;
-using Microsoft.Practices.Composite.UnityExtensions;
+using Microsoft.Practices.Composite.UnityExtensions.Tests.Mocks;
 using Microsoft.Practices.Composite.Wpf.Regions;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Composite.UnityExtensions.Tests
+namespace Microsoft.Practices.Composite.UnityExtensions.Tests
 {
     [TestClass]
     public class UnityBootstrapperFixture

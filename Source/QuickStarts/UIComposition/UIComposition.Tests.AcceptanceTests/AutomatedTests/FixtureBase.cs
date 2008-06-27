@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -23,17 +23,24 @@ using UIComposition.AcceptanceTests.TestInfrastructure;
 using UIComposition.AcceptanceTests.Helpers;
 using System.Collections.Specialized;
 using Core.Configuration;
+using System.Globalization;
 
 namespace UIComposition.AcceptanceTests
 {
     public class FixtureBase : IStateObserver
     {
-        public Application app;
-        public Window window;
-        public TestDataInfrastructure testDataInfrastructure;
+        private Application app;
+        private Window window;
+
+        public Window Window
+        {
+             get { return window; }
+        }
 
         public void TestInitialize()
         {
+            SetupWhiteConfigParameters();
+
             // Instantiate and initiate the diagnosis process. Diagnosis steps are included
             // to identify the successful launch of the application window without any unexpected
             // exceptions.
@@ -41,12 +48,24 @@ namespace UIComposition.AcceptanceTests
 
             app = Application.Launch(ConfigHandler.GetValue("UICompositionApp"));
             window = app.GetWindow("UI Composition QuickStart", Core.Factory.InitializeOption.NoCache);
-            testDataInfrastructure = new TestDataInfrastructure();
+            
 
             //Stop the diagnosis.
             StateDiagnosis.Instance.StopDiagnosis(this);
         }
+        protected static void SetupWhiteConfigParameters()
+        {
+            NameValueCollection collection = ConfigHandler.GetConfigSection("White/Core");
 
+            Type coreAppXmlConfigType = CoreAppXmlConfiguration.Instance.GetType();
+            foreach (string property in collection.Keys)
+            {
+                if (coreAppXmlConfigType.GetProperty(property).PropertyType.Equals(typeof(Int32)))
+                {
+                    coreAppXmlConfigType.GetProperty(property).SetValue(CoreAppXmlConfiguration.Instance, Convert.ToInt32(collection[property],CultureInfo.InvariantCulture), null);
+                }
+            }
+        }
         /// <summary>
         /// TestCleanup performs clean-up activities after each test method execution
         /// </summary>
@@ -58,19 +77,7 @@ namespace UIComposition.AcceptanceTests
             }
         }
 
-        private void SetupWhiteConfigParameters()
-        {
-            NameValueCollection collection = ConfigHandler.GetConfigSection("White/Core");
-
-            Type coreAppXmlConfigType = CoreAppXmlConfiguration.Instance.GetType();
-            foreach (string property in collection.Keys)
-            {
-                if (coreAppXmlConfigType.GetProperty(property).PropertyType.Equals(typeof(Int32)))
-                {
-                    coreAppXmlConfigType.GetProperty(property).SetValue(CoreAppXmlConfiguration.Instance, Convert.ToInt32(collection[property]), null);
-                }
-            }
-        }
+       
 
         #region IStateObserver Members
 

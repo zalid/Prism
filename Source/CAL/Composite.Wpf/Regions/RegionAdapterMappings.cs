@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -23,10 +23,20 @@ using Microsoft.Practices.Composite.Wpf.Properties;
 
 namespace Microsoft.Practices.Composite.Wpf.Regions
 {
+    /// <summary>
+    /// This class maps <see cref="Type"/> with <see cref="IRegionAdapter"/>.
+    /// </summary>
     public class RegionAdapterMappings
     {
-        Dictionary<Type, IRegionAdapter> mappings = new Dictionary<Type, IRegionAdapter>();
+        private readonly Dictionary<Type, IRegionAdapter> mappings = new Dictionary<Type, IRegionAdapter>();
 
+        /// <summary>
+        /// Registers the mapping between a type and an adapter.
+        /// </summary>
+        /// <param name="controlType">The type of the control.</param>
+        /// <param name="adapter">The adapter to use with the <paramref name="controlType"/> type.</param>
+        /// <exception cref="ArgumentNullException">When any of <paramref name="controlType"/> or <paramref name="adapter"/> are <see langword="null" />.</exception>
+        /// <exception cref="InvalidOperationException">If a mapping for <paramref name="controlType"/> already exists.</exception>
         public void RegisterMapping(Type controlType, IRegionAdapter adapter)
         {
             if (controlType == null)
@@ -48,6 +58,16 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
             mappings.Add(controlType, adapter);
         }
 
+        /// <summary>
+        /// Returns the adapter associated with the type provided.
+        /// </summary>
+        /// <param name="controlType">The type to obtain the <seealso cref="IRegionAdapter"/> mapped.</param>
+        /// <returns>The <seealso cref="IRegionAdapter"/> mapped to the <paramref name="controlType"/>.</returns>
+        /// <remarks>This class will look for a registered type for <paramref name="controlType"/> and if there is not any,
+        /// it will look for a registered type for any of its ancestors in the class hierarchy.
+        /// If there is no registered type for <paramref name="controlType"/> or any of its ancestors,
+        /// an exception will be thrown.</remarks>
+        /// <exception cref="KeyNotFoundException">When there is no registered type for <paramref name="controlType"/> or any of its ancestors.</exception>
         public IRegionAdapter GetMapping(Type controlType)
         {
             Type currentType = controlType;

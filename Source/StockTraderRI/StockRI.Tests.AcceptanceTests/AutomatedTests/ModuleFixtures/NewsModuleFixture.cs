@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -31,6 +31,7 @@ using StockTraderRI.AcceptanceTests.Helpers;
 using StockTraderRI.AcceptanceTests.TestInfrastructure.MockModels;
 using StockTraderRI.AcceptanceTests.TestInfrastructure.DataProvider.ModuleDataProviders;
 using Core.UIItems.ListBoxItems;
+using System.Globalization;
 
 
 namespace StockTraderRI.AcceptanceTests.AutomatedTests
@@ -75,7 +76,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         public void SelectedSymbolNewsDisplay()
         {
             //get handle of the Position Table and click on each of the rows one after the other
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             string symbol;
             List<News> news;
             ListBox articlesView;
@@ -87,8 +88,8 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
                 symbolRow.Click();
                 symbol = symbolRow.Cells[TestDataInfrastructure.GetTestInputData("PositionTableSymbol")].Text;
 
-                news = testDataInfrastructure.GetDataForId<NewsDataProvider, News>(symbol);
-                articlesView = window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
+                news = TestDataInfrastructure.GetDataForId<NewsDataProvider, News>(symbol);
+                articlesView = Window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
                 
                 if (null != news)
                 {
@@ -101,13 +102,13 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
 
                 foreach (News newsItem in news)
                 {
-                    articleTitle = (Label)window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("ArticleTitle"))
+                    articleTitle = (Label)Window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("ArticleTitle"))
                                                             .AndByText(newsItem.Title)
                                                             .AndControlType(typeof(Label)));
 
                     Assert.IsNotNull(articleTitle);
 
-                    articlePublishedDate = (Label)window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("ArticlePublishedDate"))
+                    articlePublishedDate = (Label)Window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("ArticlePublishedDate"))
                                                             .AndByText(newsItem.PublishedDate.ToString())
                                                             .AndControlType(typeof(Label)));
 
@@ -135,7 +136,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         public void SelectedSymbolRepeatedPositionRowClick()
         {
              //get handle of the Position Table 
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             string symbol;
             List<News> news;
             ListBox articlesView;
@@ -146,10 +147,10 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
 
             //Get the news item for a particular symbol
             symbol = TestDataInfrastructure.GetTestInputData("Symbol");           
-            news = testDataInfrastructure.GetDataForId<NewsDataProvider, News>(symbol);
+            news = TestDataInfrastructure.GetDataForId<NewsDataProvider, News>(symbol);
 
             //Get the handler of the News Article View displayed
-            articlesView = window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
+            articlesView = Window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
 
             //Get the number of news items for the particular symbol
             int newsCount = news.Count;
@@ -159,7 +160,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
             symbolRow.Click();
 
             //Get the handler of the News Article View displayed
-            articlesView = window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
+            articlesView = Window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
 
             Assert.AreEqual(newsCount, articlesView.Items.Count);
         }
@@ -184,7 +185,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         public void ClickingSymbolDisplaysNewsArticlesCorrespondingly()
         {            
             //get handle of the Position Table 
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             string symbol;
             List<News> news;
             ListBox articlesView;
@@ -195,10 +196,10 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
 
             //Get the news item for a particular symbol
             symbol = TestDataInfrastructure.GetTestInputData("Symbol");
-            news = testDataInfrastructure.GetDataForId<NewsDataProvider, News>(symbol);
+            news = TestDataInfrastructure.GetDataForId<NewsDataProvider, News>(symbol);
 
             //Get the handler of the News Article View displayed
-            articlesView = window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
+            articlesView = Window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
 
             Assert.AreEqual(news.Count,articlesView.Items.Count);
 
@@ -208,10 +209,10 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
 
             //Get the news item for a particular symbol
             symbol = TestDataInfrastructure.GetTestInputData("PositionSymbol");
-            news = testDataInfrastructure.GetDataForId<NewsDataProvider, News>(symbol);
+            news = TestDataInfrastructure.GetDataForId<NewsDataProvider, News>(symbol);
 
             //Get the handler of the News Article View displayed
-            articlesView = window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
+            articlesView = Window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
 
             Assert.AreEqual(news.Count, articlesView.Items.Count);
 
@@ -237,7 +238,7 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         public void ClickingAlreadyShownSymbolDisplaysNewsArticlesCorrespondingly()
         {
             //get handle of the Position Table 
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             string symbol;
             List<News> news;
             ListBox articlesView;
@@ -255,10 +256,10 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
 
             //Get the news item for a particular symbol
             symbol = TestDataInfrastructure.GetTestInputData("Symbol");
-            news = testDataInfrastructure.GetDataForId<NewsDataProvider, News>(symbol);
+            news = TestDataInfrastructure.GetDataForId<NewsDataProvider, News>(symbol);
 
             //Get the handler of the News Article View displayed
-            articlesView = window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
+            articlesView = Window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
 
             Assert.AreEqual(news.Count, articlesView.Items.Count);
         }
@@ -280,28 +281,28 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         public void DisplayedNewsDoubleClick()
         {
             //Get the handle of the Position table
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
 
             //Click on the particular symbol row
             list.Rows.Find(row => row.Cells[TestDataInfrastructure.GetTestInputData("PositionTableSymbol")].Text.Equals(TestDataInfrastructure.GetTestInputData("Symbol"))).Click();
 
             //Get the news item for the particular symbol row
-            List<News> news = testDataInfrastructure.GetDataForId<NewsDataProvider, News>(TestDataInfrastructure.GetTestInputData("Symbol"));
+            List<News> news = TestDataInfrastructure.GetDataForId<NewsDataProvider, News>(TestDataInfrastructure.GetTestInputData("Symbol"));
 
             //Get the handle of the articles view
-            ListBox articlesView = window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
+            ListBox articlesView = Window.Get<ListBox>(TestDataInfrastructure.GetControlId("NewsArticlesView"));
             
             //Double click the first news article item
             articlesView.Items[0].DoubleClick();
 
             //Get the handle of the News Reader window
-            Window newsWindow = app.GetWindows().Find(newsArticleWindow => newsArticleWindow.Title.Equals("News Reader"));
+            Window newsWindow = App.GetWindows().Find(newsArticleWindow => newsArticleWindow.Title.Equals("News Reader"));
             Assert.IsNotNull(newsWindow);
 
             //Geth the Body,Title and Published Date from the News Reader window
             string body = newsWindow.Get<TextBox>(TestDataInfrastructure.GetControlId("ArticleBody")).Text;
             string title = newsWindow.Get<Label>(TestDataInfrastructure.GetControlId("ArticleTitle")).Text;
-            DateTime publishedDate = Convert.ToDateTime(newsWindow.Get<Label>(TestDataInfrastructure.GetControlId("ArticlePublishedDate")).Text);
+            DateTime publishedDate = Convert.ToDateTime(newsWindow.Get<Label>(TestDataInfrastructure.GetControlId("ArticlePublishedDate")).Text, CultureInfo.CurrentCulture);
 
             Assert.AreEqual(body,news[0].Body);
             Assert.AreEqual(title, news[0].Title);

@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -18,7 +18,6 @@
 using System;
 using System.Globalization;
 using System.Runtime.Serialization;
-using Microsoft.Practices.Composite.Modularity;
 using Microsoft.Practices.Composite.Properties;
 
 namespace Microsoft.Practices.Composite.Modularity
@@ -53,16 +52,18 @@ namespace Microsoft.Practices.Composite.Modularity
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.</param>
         /// <param name="exception">The exception that is the cause of the current exception, 
-        /// or a null reference if no inner exception is specified.</param>
+        /// or a <see langword="null"/> reference if no inner exception is specified.</param>
         public ModuleLoadException(string message, Exception exception)
             : base(message, exception)
         {
         }
 
-
         /// <summary>
         /// Initializes the exception with a particular module and error message.
         /// </summary>
+        /// <param name="moduleName">The name of the module.</param>
+        /// <param name="moduleAssembly">The assembly where the module is located.</param>
+        /// <param name="message">The error message that explains the reason for the exception.</param>
         public ModuleLoadException(string moduleName, string moduleAssembly, string message)
             : base(String.Format(CultureInfo.CurrentCulture,
                                  Resources.FailedToLoadModule, moduleName, moduleAssembly, message))
@@ -73,6 +74,11 @@ namespace Microsoft.Practices.Composite.Modularity
         /// Initializes the exception with a particular module, error message and inner exception 
         /// that happened.
         /// </summary>
+        /// <param name="moduleName">The name of the module.</param>
+        /// <param name="moduleAssembly">The assembly where the module is located.</param>
+        /// <param name="message">The error message that explains the reason for the exception.</param>
+        /// <param name="innerException">The exception that is the cause of the current exception, 
+        /// or a <see langword="null"/> reference if no inner exception is specified.</param>
         public ModuleLoadException(string moduleName, string moduleAssembly, string message, Exception innerException)
             : base(String.Format(CultureInfo.CurrentCulture,
                                  Resources.FailedToLoadModule, moduleName, moduleAssembly, message), innerException)

@@ -1,5 +1,0 @@
-﻿<UserControl x:Class="UIComposition.Modules.Project.ProjectsListView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
-</UserControl>

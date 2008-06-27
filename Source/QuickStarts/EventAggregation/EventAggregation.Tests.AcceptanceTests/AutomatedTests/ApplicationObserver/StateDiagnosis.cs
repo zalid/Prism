@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -21,9 +21,10 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 using System.Timers;
-using EventBroker.AcceptanceTests.Helpers;
+using EventAggregation.AcceptanceTests.Helpers;
+using System.Globalization;
 
-namespace EventBroker.AcceptanceTests.ApplicationObserver
+namespace EventAggregation.AcceptanceTests.ApplicationObserver
 {
     /// <summary>
     /// Class to diagnose the state of the object and the control flow.
@@ -33,7 +34,7 @@ namespace EventBroker.AcceptanceTests.ApplicationObserver
         private static readonly StateDiagnosis instance = new StateDiagnosis();
         //maintain the mapping of all Observers and Timers
         private Dictionary<IStateObserver, Timer> observerTimerList = new Dictionary<IStateObserver, Timer>();
-        private static bool isFailed = false;
+        private static bool isFailed;
         private string waitTime = ConfigHandler.GetValue("ApplicationLoadWaitTime");
 
         private StateDiagnosis()
@@ -115,7 +116,7 @@ namespace EventBroker.AcceptanceTests.ApplicationObserver
         {
             Timer timer = new Timer();
             //check after 10 sec
-            timer.Interval = Convert.ToDouble(waitTime);
+            timer.Interval = Convert.ToDouble(waitTime,CultureInfo.InvariantCulture);
             timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             return timer;
         }
@@ -141,7 +142,7 @@ namespace EventBroker.AcceptanceTests.ApplicationObserver
         /// <summary>
         /// Method to notify observer about the state change.
         /// </summary>
-        private void NotifyObserver(IStateObserver observer)
+        private static void NotifyObserver(IStateObserver observer)
         {
             // Notify the observer who is hooked up with the timer.
             observer.Notify();

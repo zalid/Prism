@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -18,6 +18,7 @@
 using Microsoft.Practices.Composite.Modularity;
 using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Unity;
+using StockTraderRI.Infrastructure;
 using StockTraderRI.Modules.Watch.AddWatch;
 using StockTraderRI.Modules.Watch.Services;
 using StockTraderRI.Modules.Watch.WatchList;
@@ -42,9 +43,9 @@ namespace StockTraderRI.Modules.Watch
             RegisterViewsAndServices();
 
             IWatchListPresentationModel watchListPresentationModel = _container.Resolve<IWatchListPresentationModel>();
-            _regionManager.Regions["WatchRegion"].Add(watchListPresentationModel.View);
+            _regionManager.Regions[RegionNames.WatchRegion].Add(watchListPresentationModel.View);
             IAddWatchPresenter addWatchPresenter = _container.Resolve<IAddWatchPresenter>();
-            _regionManager.Regions["MainToolbarRegion"].Add(addWatchPresenter.View);
+            _regionManager.Regions[RegionNames.MainToolbarRegion].Add(addWatchPresenter.View);
         }
 
         protected void RegisterViewsAndServices()

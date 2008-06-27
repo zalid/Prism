@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -27,9 +27,20 @@ namespace Microsoft.Practices.Composite.Logging
         /// Debug category.
         /// </summary>
         Debug,
+
         /// <summary>
         /// Exception category.
         /// </summary>
-        Exception
+        Exception,
+
+        /// <summary>
+        /// Informational category.
+        /// </summary>
+        Info,
+
+        /// <summary>
+        /// Warning category.
+        /// </summary>
+        Warn
     }
 }

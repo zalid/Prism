@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -15,12 +15,8 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel;
-using StockTraderRI.Infrastructure.PresentationModels;
+using StockTraderRI.Infrastructure.Models;
 
 namespace StockTraderRI.Modules.Position.PositionSummary
 {
@@ -75,7 +71,7 @@ namespace StockTraderRI.Modules.Position.PositionSummary
             }
         }
 
-        
+
         private long _shares;
 
         public long Shares
@@ -129,10 +125,10 @@ namespace StockTraderRI.Modules.Position.PositionSummary
         {
             get
             {
-                return ((CurrentPrice*Shares - CostBasis) * 100 / CostBasis);
+                return ((CurrentPrice * Shares - CostBasis) * 100 / CostBasis);
             }
         }
-        
+
         private MarketHistoryCollection _priceMarketHistory = new MarketHistoryCollection();
         public MarketHistoryCollection PriceMarketHistory
         {

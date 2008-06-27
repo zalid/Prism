@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -17,7 +17,7 @@
 
 using System;
 using StockTraderRI.Infrastructure.Interfaces;
-using StockTraderRI.Infrastructure.PresentationModels;
+using StockTraderRI.Infrastructure.Models;
 
 namespace StockTraderRI.Modules.Market.Tests.Mocks
 {

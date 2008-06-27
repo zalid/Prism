@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -45,13 +45,13 @@ namespace UIComposition.AcceptanceTests.TestInfrastructure
 
         public static string GetTestInputData(string key)
         {
-            ResxConfigHandler testInputHandler = new ResxConfigHandler(ConfigHandler.GetValue("TestDataInputFile"));
+            ResXConfigHandler testInputHandler = new ResXConfigHandler(ConfigHandler.GetValue("TestDataInputFile"));
             return testInputHandler.GetValue(key);
         }
 
         public static string GetControlId(string key)
         {
-            ResxConfigHandler testInputHandler = new ResxConfigHandler(ConfigHandler.GetValue("ControlIdentifiersFile"));
+            ResXConfigHandler testInputHandler = new ResXConfigHandler(ConfigHandler.GetValue("ControlIdentifiersFile"));
             return testInputHandler.GetValue(key);
         }
     }

@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -121,7 +121,7 @@ namespace Microsoft.Practices.Composite
         /// defined by the specified predicate.
         /// </summary>
         /// <param name="keyFilter">The filter with the condition to use to filter lists by their key.</param>
-        /// <returns></returns>
+        /// <returns>The elements that have a key that matches the condition defined by the specified predicate.</returns>
         public IEnumerable<TValue> FindAllValuesByKey(Predicate<TKey> keyFilter)
         {
             foreach (KeyValuePair<TKey, IList<TValue>> pair in this)
@@ -140,7 +140,7 @@ namespace Microsoft.Practices.Composite
         /// Retrieves all the elements that match the condition defined by the specified predicate.
         /// </summary>
         /// <param name="valueFilter">The filter with the condition to use to filter values.</param>
-        /// <returns></returns>
+        /// <returns>The elements that match the condition defined by the specified predicate.</returns>
         public IEnumerable<TValue> FindAllValues(Predicate<TValue> valueFilter)
         {
             foreach (KeyValuePair<TKey, IList<TValue>> pair in this)
@@ -159,7 +159,7 @@ namespace Microsoft.Practices.Composite
         /// Removes a list by key.
         /// </summary>
         /// <param name="key">The key of the list to remove.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true" /> if the element was removed.</returns>
         public bool Remove(TKey key)
         {
             if (key == null)
@@ -210,6 +210,7 @@ namespace Microsoft.Practices.Composite
         /// <summary>
         /// Gets a shallow copy of all values in all lists.
         /// </summary>
+        /// <value>List of values.</value>
         public IList<TValue> Values
         {
             get
@@ -227,6 +228,7 @@ namespace Microsoft.Practices.Composite
         /// <summary>
         /// Gets the list of keys in the dictionary.
         /// </summary>
+        /// <value>Collection of keys.</value>
         public ICollection<TKey> Keys
         {
             get { return innerValues.Keys; }
@@ -254,6 +256,7 @@ namespace Microsoft.Practices.Composite
         /// <summary>
         /// Gets the number of lists in the dictionary.
         /// </summary>
+        /// <value>Value indicating the values count.</value>
         public int Count
         {
             get { return innerValues.Count; }

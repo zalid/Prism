@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -15,18 +15,11 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Composite.UnityExtensions;
-using Composite.UnityExtensions.Tests.Mocks;
-using Microsoft.Practices.Composite;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Practices.Composite.UnityExtensions.Tests.Mocks;
 using Microsoft.Practices.Unity;
-using UnityContainerAdapter=Microsoft.Practices.Composite.UnityExtensions.UnityContainerAdapter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Composite.UnityExtensions.Tests
+namespace Microsoft.Practices.Composite.UnityExtensions.Tests
 {
     [TestClass]
     public class UnityContainerAdapterFixture
@@ -38,7 +31,7 @@ namespace Composite.UnityExtensions.Tests
             IContainerFacade containerAdapter = new UnityContainerAdapter(container);
 
             container.RegisterType<IService, MockService>();
-            IService mockService = containerAdapter.Resolve(typeof (IService)) as IService;
+            IService mockService = containerAdapter.Resolve(typeof(IService)) as IService;
 
             Assert.IsInstanceOfType(mockService, typeof(IService));
         }
@@ -51,8 +44,8 @@ namespace Composite.UnityExtensions.Tests
 
 
             container.RegisterType<IService, MockService>(new ContainerControlledLifetimeManager());
-            IService mockService1 = containerAdapter.Resolve(typeof (IService)) as IService;
-            IService mockService2 = containerAdapter.Resolve(typeof (IService)) as IService;
+            IService mockService1 = containerAdapter.Resolve(typeof(IService)) as IService;
+            IService mockService2 = containerAdapter.Resolve(typeof(IService)) as IService;
 
             Assert.IsNotNull(mockService1);
             Assert.AreSame(mockService1, mockService2);
@@ -68,7 +61,7 @@ namespace Composite.UnityExtensions.Tests
             container.RegisterType<IDependantB, DependantB>();
             container.RegisterType<IService, MockService>(new ContainerControlledLifetimeManager());
 
-            IDependantA dependantA = containerAdapter.Resolve(typeof (IDependantA)) as IDependantA;
+            IDependantA dependantA = containerAdapter.Resolve(typeof(IDependantA)) as IDependantA;
             Assert.IsNotNull(dependantA);
             Assert.IsInstanceOfType(dependantA, typeof(IDependantA));
             Assert.IsNotNull(dependantA.MyDependantB);

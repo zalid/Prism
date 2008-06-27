@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -28,9 +28,13 @@ namespace Microsoft.Practices.Composite.Wpf.Commands
     /// </summary>
     public class CompositeCommand : ICommand
     {
-        private List<ICommand> registeredCommands = new List<ICommand>();
+        private readonly List<ICommand> registeredCommands = new List<ICommand>();
         private readonly Dispatcher dispatcher;
+        private readonly bool monitorCommandActivity;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="CompositeCommand"/>.
+        /// </summary>
         public CompositeCommand()
         {
             if (Application.Current != null)
@@ -40,63 +44,76 @@ namespace Microsoft.Practices.Composite.Wpf.Commands
         }
 
         /// <summary>
-        /// Adds commands to the collection and signs up for the CanExecuteChanged events.
+        /// Initializes a new instance of <see cref="CompositeCommand"/>.
         /// </summary>
-        /// <param name="command"></param>
+        /// <param name="monitorCommandActivity">Indicates when the command activity is going to be monitored.</param>
+        public CompositeCommand(bool monitorCommandActivity)
+            : this()
+        {
+            this.monitorCommandActivity = monitorCommandActivity;
+        }
+
+        /// <summary>
+        /// Adds a command to the collection and signs up for the <see cref="ICommand.CanExecuteChanged"/> event of it.
+        /// </summary>
+        ///  <remarks>
+        /// If this command is set to monitor command activity, and <paramref name="command"/> 
+        /// implements the <see cref="IActiveAware"/> interface, this method will subscribe to its
+        /// <see cref="IActiveAware.IsActiveChanged"/> event.
+        /// </remarks>
+        /// <param name="command">The command to register.</param>
         public virtual void RegisterCommand(ICommand command)
         {
             if (!registeredCommands.Contains(command))
             {
                 registeredCommands.Add(command);
                 command.CanExecuteChanged += RegisteredCommand_CanExecuteChanged;
-                OnCanExecuteChanged(this, EventArgs.Empty);
+                OnCanExecuteChanged();
+
+                if (monitorCommandActivity)
+                {
+                    var activeAwareCommand = command as IActiveAware;
+                    if (activeAwareCommand != null)
+                    {
+                        activeAwareCommand.IsActiveChanged += Command_IsActiveChanged;
+                    }
+                }
             }
         }
 
-
         /// <summary>
-        /// Removes command from the collection and removes itself from the CanExecuteChanged events.
+        /// Removes a command from the collection and removes itself from the <see cref="ICommand.CanExecuteChanged"/> event of it.
         /// </summary>
-        /// <param name="command"></param>
+        /// <param name="command">The command to unregister.</param>
         public virtual void UnregisterCommand(ICommand command)
         {
             registeredCommands.Remove(command);
             command.CanExecuteChanged -= RegisteredCommand_CanExecuteChanged;
-            OnCanExecuteChanged(this, EventArgs.Empty);
+            OnCanExecuteChanged();
+
+            if (monitorCommandActivity)
+            {
+                var activeAwareCommand = command as IActiveAware;
+                if (activeAwareCommand != null)
+                {
+                    activeAwareCommand.IsActiveChanged -= Command_IsActiveChanged;
+                }
+            }
         }
 
-        /// <summary>
-        /// Re-raises OnCanExecuteChanged.
-        /// </summary>
         private void RegisteredCommand_CanExecuteChanged(object sender, EventArgs e)
         {
-            OnCanExecuteChanged(sender, e);
+            OnCanExecuteChanged();
         }
 
         /// <summary>
-        /// Handles firing of the CanExecuteChanged event.
+        /// Forwards <see cref="ICommand.CanExecute"/> to the registered commands and returns
+        /// <see langword="true" /> if all of the commands return <see langword="true" />.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2109:ReviewVisibleEventHandlers")]
-        protected virtual void OnCanExecuteChanged(object sender, EventArgs e)
-        {
-            if (dispatcher != null && !dispatcher.CheckAccess())
-            {
-                dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                                       new EventHandler(OnCanExecuteChanged),
-                                       sender,
-                                       e);
-                return;
-            }
-            CanExecuteChanged(sender, e);
-        }
-
-        /// <summary>
-        /// Forwards CanExecute to the registered commands and returns true if all the commands can be executed.
-        /// </summary>
-        ///<param name="parameter">Data used by the command.  If the command does not require data to be passed, this object can be set to null.</param>
-        /// <returns>true if all the registered commands can be executed; otherwise, false.</returns>
+        ///<param name="parameter">Data used by the command.
+        /// If the command does not require data to be passed, this object can be set to <see langword="null" />.
+        /// </param>
+        /// <returns><see langword="true" /> if all of the commands return <see langword="true" />; otherwise, <see langword="false" />.</returns>
         public virtual bool CanExecute(object parameter)
         {
             bool hasEnabledCommandsThatShouldBeExecuted = false;
@@ -119,13 +136,14 @@ namespace Microsoft.Practices.Composite.Wpf.Commands
         ///<summary>
         ///Occurs when any of the registered commands raise <seealso cref="CanExecuteChanged"/>.
         ///</summary>
-        public event EventHandler CanExecuteChanged = delegate { };
-
+        public event EventHandler CanExecuteChanged;
 
         /// <summary>
-        /// Forwards Execute to registered commands.
+        /// Forwards <see cref="ICommand.Execute"/> to the registered commands.
         /// </summary>
-        /// <param name="parameter"></param>
+        ///<param name="parameter">Data used by the command.
+        /// If the command does not require data to be passed, this object can be set to <see langword="null" />.
+        /// </param>
         public virtual void Execute(object parameter)
         {
             Queue<ICommand> commands = new Queue<ICommand>(registeredCommands);
@@ -138,20 +156,66 @@ namespace Microsoft.Practices.Composite.Wpf.Commands
             }
         }
 
-
         /// <summary>
-        /// Evaluates if a command should execute.  Base ShouldExecute returns true.
+        /// Evaluates if a command should execute.
         /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
+        /// <param name="command">The command to evaluate.</param>
+        /// <returns>A <see cref="bool"/> value indicating whether the command should be used 
+        /// when evaluating <see cref="CompositeCommand.CanExecute"/> and <see cref="CompositeCommand.Execute"/>.</returns>
+        /// <remarks>
+        /// If this command is set to monitor command activity, and <paramref name="command"/>
+        /// implements the <see cref="IActiveAware"/> interface, 
+        /// this method will return <see langword="false" /> if the command's <see cref="IActiveAware.IsActive"/> 
+        /// property is <see langword="false" />; otherwise it always returns <see langword="true" />.</remarks>
         protected virtual bool ShouldExecute(ICommand command)
         {
+            var activeAwareCommand = command as IActiveAware;
+
+            if (monitorCommandActivity && activeAwareCommand != null)
+            {
+                return (activeAwareCommand.IsActive);
+            }
+
             return true;
         }
 
+        /// <summary>
+        /// Gets the list of all the registered commands.
+        /// </summary>
+        /// <value>A list of registered commands.</value>
         public IList<ICommand> RegisteredCommands
         {
             get { return registeredCommands.AsReadOnly(); }
+        }
+
+        /// <summary>
+        /// Raises <see cref="ICommand.CanExecuteChanged"/> on the UI thread so every 
+        /// command invoker can requery <see cref="ICommand.CanExecute"/> to check if the
+        /// <see cref="CompositeCommand"/> can execute.
+        /// </summary>
+        protected virtual void OnCanExecuteChanged()
+        {
+            EventHandler canExecuteChangedHandler = CanExecuteChanged;
+            if (canExecuteChangedHandler == null) return;
+            if (dispatcher != null && !dispatcher.CheckAccess())
+            {
+                dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                                       (Action)OnCanExecuteChanged);
+            }
+            else
+            {
+                canExecuteChangedHandler(this, EventArgs.Empty);
+            }
+        }
+
+        /// <summary>
+        /// Handler for IsActiveChanged events of registered commands.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">EventArgs to pass to the event.</param>
+        private void Command_IsActiveChanged(object sender, EventArgs e)
+        {
+            this.OnCanExecuteChanged();
         }
     }
 }

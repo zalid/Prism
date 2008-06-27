@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -43,7 +43,7 @@ namespace UIComposition.Modules.Employee
             EmployeesPresenter presenter = this.container.Resolve<EmployeesPresenter>();
 
             IRegion mainRegion = this.regionManager.Regions[RegionNames.MainRegion];
-            mainRegion.Add((UIElement)presenter.View);
+            mainRegion.Add(presenter.View);
         }
 
         protected void RegisterViewsAndServices()

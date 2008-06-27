@@ -5,8 +5,8 @@
     xmlns:chartControls="clr-namespace:StockTraderRI.ChartControls;assembly=StockTraderRI.ChartControls">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="*" ></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -28,18 +28,4 @@
         </Grid>
         <StackPanel Grid.Row="1" Grid.Column="1" x:Name="lineChartPanel"></StackPanel>
     </Grid>
-    <!--<Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <local:PositionGrid x:Name="positionGrid" Grid.Row="0" Grid.ColumnSpan="2"></local:PositionGrid>
-      
-        <chartControls:PieChart x:Name="pieChart" ValuePath="MarketValue" LabelPath="TickerSymbol" Title="" Height="200" Grid.Row="1" Grid.Column="0"></chartControls:PieChart>
-        <StackPanel Grid.Row="1" Grid.Column="1" x:Name="lineChartPanel"></StackPanel>
-    </Grid>-->
 </UserControl>

@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -19,17 +19,19 @@ using System;
 using System.Windows.Input;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Modules.Position.Interfaces;
+using StockTraderRI.Modules.Position.Models;
 
 namespace StockTraderRI.Modules.Position.Orders
 {
     public interface IOrderCompositePresentationModel
     {
-        void SetTransactionInfo(string tickerSymbol, TransactionType transactionType);
         event EventHandler CloseViewRequested;
         IOrderCompositeView View { get; }
 
         ICommand SubmitCommand { get; }
         ICommand CancelCommand { get; }
-        IOrderDetailsPresentationModel OrderDetailsPresentationModel { get; }
+        TransactionInfo TransactionInfo { get; set; }
+        int Shares { get; }
+
     }
 }

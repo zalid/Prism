@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -26,12 +26,13 @@ namespace Microsoft.Practices.Composite
     public interface IActiveAware
     {
         /// <summary>
-        /// Gets or sets the current activity status.
+        /// Gets or sets a value indicating whether the object is active.
         /// </summary>
+        /// <value><see langword="true" /> if the object is active; otherwise <see langword="false" />.</value>
         bool IsActive { get; set; }
 
         /// <summary>
-        /// Notifies that the value for <see cref="IsActive"/> has changed.
+        /// Notifies that the value for <see cref="IsActive"/> property has changed.
         /// </summary>
         event EventHandler IsActiveChanged;
     }

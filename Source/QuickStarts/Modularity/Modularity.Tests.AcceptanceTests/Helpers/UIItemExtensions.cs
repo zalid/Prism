@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -39,7 +39,7 @@ namespace Modularity.AcceptanceTests.Helpers
 
             while (elementNode != null)
             {
-                if (name.Equals(elementNode.Current.Name, StringComparison.InvariantCultureIgnoreCase))
+                if (name.Equals(elementNode.Current.Name, StringComparison.OrdinalIgnoreCase))
                 {
                     return elementNode;
                 }

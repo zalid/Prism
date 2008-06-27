@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -53,10 +53,10 @@ namespace StockTraderRI.AcceptanceTests.TestInfrastructure
         /// <param name="orderType">type of the order</param>
         /// <param name="shares">number of shares to be bought / sold</param>
         /// <param name="timeInForce">time in force</param>
-        public Order(string symbol, decimal limitprice, string orderType, int shares, string timeInForce, string transactionType)
+        public Order(string symbol, decimal limitPrice, string orderType, int shares, string timeInForce, string transactionType)
         {
             this.symbol = symbol;
-            this.limitprice = limitprice;
+            this.limitprice = limitPrice;
             this.orderType = orderType;
             this.shares = shares;
             this.timeInForce = timeInForce;

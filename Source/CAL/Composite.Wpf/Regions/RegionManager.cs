@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -15,12 +15,23 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows;
 using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Composite.Wpf.Properties;
 
 namespace Microsoft.Practices.Composite.Wpf.Regions
 {
+    /// <summary>
+    /// This class is responsible for maintaining a collection of regions and attaching regions to controls. 
+    /// </summary>
+    /// <remarks>
+    /// This class supplies the attached properties that can be used for simple region creation from XAML.
+    /// It finds an adapter mapped to a WPF control and associates a new region to that control by calling
+    /// <see cref="AttachNewRegion"/> automatically.
+    /// </remarks>
     public class RegionManager : IRegionManager
     {
         #region Static properties (for XAML support)
@@ -142,7 +153,6 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
             }
         }
 
-
         #endregion
 
         private readonly RegionAdapterMappings regionAdapterMappings;
@@ -170,9 +180,10 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
         }
 
         /// <summary>
-        /// Contains a dictionary of <see cref="IRegion"/> that identify each region by name.
+        /// Gets a dictionary of <see cref="IRegion"/> that identify each region by name. 
         /// You can use this dictionary to add or remove regions to the current region manager.
         /// </summary>
+        /// <value>An <see cref="IDictionary{TKey,TValue}"/> with all the registered regions.</value>
         public IDictionary<string, IRegion> Regions
         {
             get { return _regions; }
@@ -183,10 +194,15 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
         /// </summary>
         /// <param name="regionTarget">The object to adapt. This is typically a container (i.e a control).</param>
         /// <param name="regionName">The name of the region to register.</param>
+        /// <exception cref="ArgumentException">When regions collection already has a region registered using <paramref name="regionName"/>.</exception>
         public void AttachNewRegion(object regionTarget, string regionName)
         {
+            if (Regions.ContainsKey(regionName))
+                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, Resources.RegionNameExistsException, regionName));
+
             IRegionAdapter regionAdapter = regionAdapterMappings.GetMapping(regionTarget.GetType());
             IRegion region = regionAdapter.Initialize(regionTarget);
+
             Regions.Add(regionName, region);
         }
 
@@ -203,7 +219,7 @@ namespace Microsoft.Practices.Composite.Wpf.Regions
         {
             private readonly IRegionManager regionManager;
 
-            public RegionsDictionary(IRegionManager regionManager)
+            internal RegionsDictionary(IRegionManager regionManager)
             {
                 this.regionManager = regionManager;
             }

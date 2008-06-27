@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -82,6 +83,7 @@
     <Compile Include="AutomatedTests\ModuleFixtures\PositionModuleFixture.cs" />
     <Compile Include="AutomatedTests\ModuleFixtures\WatchListModuleFixture.cs" />
     <Compile Include="AutomatedTests\ModuleFixtures\NewsModuleFixture.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\Enums\BuySellEnum.cs" />
     <Compile Include="Helpers\Enums\PositionTableColumnHeader.cs" />
     <Compile Include="Helpers\ConfigHandler.cs" />
@@ -89,7 +91,7 @@
     <Compile Include="AutomatedTests\ApplicationObserver\StateDiagnosis.cs">
     </Compile>
     <Compile Include="Helpers\UIItemExtensions.cs" />
-    <Compile Include="Helpers\ResxConfigHandler.cs" />
+    <Compile Include="Helpers\ResXConfigHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestData\ControlIdentifiers.Designer.cs">
       <AutoGen>True</AutoGen>

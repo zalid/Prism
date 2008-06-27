@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -71,10 +71,10 @@ namespace UIComposition.AcceptanceTests.AutomatedTests
         public void ApplicationLaunch()
         {
             SearchCriteria searchCriteria = SearchCriteria.ByText(TestDataInfrastructure.GetTestInputData("SelectEmployeeLabelText")).AndControlType(typeof(Label));
-            Label selectEmployeeLabel = window.Get<Label>(searchCriteria);
+            Label selectEmployeeLabel = Window.Get<Label>(searchCriteria);
             Assert.IsNotNull(selectEmployeeLabel);
 
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("EmployeesList"));
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("EmployeesList"));
             Assert.IsNotNull(list, TestDataInfrastructure.GetTestInputData("EmployeeListNotFound"));
 
             Assert.AreEqual(2, list.Rows.Count, TestDataInfrastructure.GetTestInputData("EmployeeListIncorrectRowCount"));

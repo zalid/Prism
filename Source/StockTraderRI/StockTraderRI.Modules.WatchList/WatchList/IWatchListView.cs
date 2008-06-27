@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -15,14 +15,11 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using Microsoft.Practices.Composite.Events;
 
 namespace StockTraderRI.Modules.Watch.WatchList
 {
     public interface IWatchListView
     {
-        event EventHandler<DataEventArgs<string>> OnRemoveMenuItemClicked;
         WatchListPresentationModel Model { set; }
     }
 }

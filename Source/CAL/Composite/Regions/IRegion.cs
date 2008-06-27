@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -15,21 +15,25 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-
 using System.Windows;
 
 namespace Microsoft.Practices.Composite.Regions
 {
+    /// <summary>
+    /// Defines a model that can be used to compose views.
+    /// </summary>
     public interface IRegion
     {
         /// <summary>
         /// Gets a readonly view of the collection of views in the region.
         /// </summary>
+        /// <value>An <see cref="IViewsCollection"/> of all the added views.</value>
         IViewsCollection Views { get; }
 
         /// <summary>
         /// Gets a readonly view of the collection of all the active views in the region.
         /// </summary>
+        /// <value>An <see cref="IViewsCollection"/> of all the active views.</value>
         IViewsCollection ActiveViews { get; }
 
         ///<overloads>Adds a new view to the region.</overloads>
@@ -74,16 +78,20 @@ namespace Microsoft.Practices.Composite.Regions
         /// </summary>
         /// <param name="view">The view to deactivate.</param>
         void Deactivate(object view);
+
         /// <summary>
         /// Returns the view instance that was added to the region using a specific name.
         /// </summary>
-        /// <param name="viewName">The name used when adding the view to the region</param>
+        /// <param name="viewName">The name used when adding the view to the region.</param>
         /// <returns>Returns the named view or <see langword="null"/> if the view with <paramref name="viewName"/> does not exist in the current region.</returns>
         object GetView(string viewName);
 
         /// <summary>
         /// Gets or sets the <see cref="IRegionManager"/> that will be passed to the views when adding them to the region, unless the view is added by specifying createRegionManagerScope as <see langword="true" />.
         /// </summary>
+        /// <value>The <see cref="IRegionManager"/> where this <see cref="IRegion"/> is registered.</value>
+        /// <remarks>This is usually used by implementations of <see cref="IRegionManager"/> and should not be
+        /// used by the developer explicitely.</remarks>
         IRegionManager RegionManager { get; set; }
     }
 }

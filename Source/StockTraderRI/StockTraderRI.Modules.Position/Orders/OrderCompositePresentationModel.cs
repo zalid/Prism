@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -44,6 +44,8 @@ namespace StockTraderRI.Modules.Position.Orders
             this.OrderDetailsView = _orderDetailsPresentationModel.View;
             this.OrderCommandsView = orderCommandsView;
             _view.IsActiveChanged += compositeView_IsActiveChanged;
+            _view.Model = this;
+
         }
 
         void compositeView_IsActiveChanged(object sender, EventArgs e)
@@ -56,12 +58,11 @@ namespace StockTraderRI.Modules.Position.Orders
             OnCloseViewRequested(sender, e);
         }
 
-        public void SetTransactionInfo(string tickerSymbol, TransactionType transactionType)
+        private void SetTransactionInfo(TransactionInfo transactionInfo)
         {
             //This instance of TransactionInfo acts as a "shared model" between this view and the order details view.
             //The scenario says that these 2 views are decoupled, so they don't share the presentation model, they are only tied
             //with this TransactionInfo
-            TransactionInfo transactionInfo = new TransactionInfo { TickerSymbol = tickerSymbol, TransactionType = transactionType };
             _orderDetailsPresentationModel.TransactionInfo = transactionInfo;
 
             //Bind the CompositeOrderView header to a string representation of the TransactionInfo shared instance (we expect the details presenter to modify it from user interaction).
@@ -69,8 +70,7 @@ namespace StockTraderRI.Modules.Position.Orders
             binding.Bindings.Add(new Binding("TransactionType") { Source = transactionInfo });
             binding.Bindings.Add(new Binding("TickerSymbol") { Source = transactionInfo });
             binding.Converter = new OrderHeaderConverter();
-            BindingOperations.SetBinding(this, OrderCompositePresentationModel.HeaderInfoProperty, binding);
-            _view.Model = this;
+            BindingOperations.SetBinding(this, HeaderInfoProperty, binding);
         }
 
         protected virtual void OnCloseViewRequested(object sender, EventArgs e)
@@ -98,6 +98,18 @@ namespace StockTraderRI.Modules.Position.Orders
             get { return _orderDetailsPresentationModel.CancelCommand; }
         }
 
+        public TransactionInfo TransactionInfo
+        {
+            get { return _orderDetailsPresentationModel.TransactionInfo; }
+            set { SetTransactionInfo(value);}
+
+        }
+
+        public int Shares
+        {
+            get { return _orderDetailsPresentationModel.Shares ?? 0; }
+        }
+
         public string HeaderInfo
         {
             get { return (string)GetValue(HeaderInfoProperty); }
@@ -107,10 +119,6 @@ namespace StockTraderRI.Modules.Position.Orders
         public object OrderDetailsView { get; private set; }
         public object OrderCommandsView { get; private set; }
 
-        public IOrderDetailsPresentationModel OrderDetailsPresentationModel
-        {
-            get { return _orderDetailsPresentationModel; }
-        }
         public class OrderHeaderConverter : IMultiValueConverter
         {
             /// <summary>

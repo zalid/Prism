@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -29,17 +29,17 @@ namespace Microsoft.Practices.Composite.Modularity
         private bool _startupLoaded = true;
 
         /// <summary>
-        /// The name of the module.
+        /// Gets or sets the name of the module.
         /// </summary>
+        /// <value>The name of the module.</value>
         public string ModuleName { get; set; }
 
         /// <summary>
-        /// Specifies whether the module should be loaded at startup. 
+        /// Gets or sets a value indicating whether the module should be loaded at startup. 
         /// </summary>
-        /// <param name="value">
         /// When <see langword="true"/> (default value), it indicates that this module should be loaded at startup. 
         /// Otherwise you should explicitly load this module on demand.
-        /// </param>
+        /// <value>A <see cref="bool"/> value.</value>
         public bool StartupLoaded
         {
             get { return _startupLoaded; }

@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -19,21 +19,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EventBroker.AcceptanceTests.ApplicationObserver;
+using EventAggregation.AcceptanceTests.ApplicationObserver;
 using Core;
 using Core.UIItems.WindowItems;
-using EventBroker.AcceptanceTests.TestInfrastructure;
+using EventAggregation.AcceptanceTests.TestInfrastructure;
 using System.Collections.Specialized;
-using EventBroker.AcceptanceTests.Helpers;
+using EventAggregation.AcceptanceTests.Helpers;
 using Core.Configuration;
+using System.Globalization;
 
-namespace EventBroker.AcceptanceTests
+namespace EventAggregation.AcceptanceTests
 {
     public abstract class FixtureBase : IStateObserver
     {
-        public Application app;
-        public Window window;
-        public TestDataInfrastructure testDataInfrastructure;
+        private Application app;
+        private Window window;
+
+        public Window Window
+        {
+            get { return window; }
+        }      
 
         public void TestInitialize()
         {
@@ -44,9 +49,8 @@ namespace EventBroker.AcceptanceTests
             // exceptions.
             StateDiagnosis.Instance.StartDiagnosis(this);
 
-            app = Application.Launch(ConfigHandler.GetValue("EventBrokerApp"));
+            app = Application.Launch(ConfigHandler.GetValue("EventAggregationApp"));
             window = app.GetWindow("Shell", Core.Factory.InitializeOption.NoCache);
-            testDataInfrastructure = new TestDataInfrastructure();
 
             //Stop the diagnosis.
             StateDiagnosis.Instance.StopDiagnosis(this);
@@ -63,7 +67,7 @@ namespace EventBroker.AcceptanceTests
             }
         }
 
-        private void SetupWhiteConfigParameters()
+        private static void SetupWhiteConfigParameters()
         {
             NameValueCollection collection = ConfigHandler.GetConfigSection("White/Core");
 
@@ -72,7 +76,7 @@ namespace EventBroker.AcceptanceTests
             {
                 if (coreAppXmlConfigType.GetProperty(property).PropertyType.Equals(typeof(Int32)))
                 {
-                    coreAppXmlConfigType.GetProperty(property).SetValue(CoreAppXmlConfiguration.Instance, Convert.ToInt32(collection[property]), null);
+                    coreAppXmlConfigType.GetProperty(property).SetValue(CoreAppXmlConfiguration.Instance, Convert.ToInt32(collection[property],CultureInfo.InvariantCulture), null);
                 }
             }
         }

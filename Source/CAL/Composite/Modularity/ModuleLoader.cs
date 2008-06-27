@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -25,7 +25,7 @@ using Microsoft.Practices.Composite.Properties;
 
 namespace Microsoft.Practices.Composite.Modularity
 {
-    // <summary>
+    /// <summary>
     /// Implements the <see cref="IModuleLoader"/> interface. Handles initialization of a set of modules based on types.
     /// </summary>
     public class ModuleLoader : IModuleLoader
@@ -54,13 +54,15 @@ namespace Microsoft.Practices.Composite.Modularity
         }
 
         /// <summary>
-        /// The loaded assemblies. This property is used for testability and it is not intended to be used by inheritors.
+        /// Gets the loaded assemblies. This property is used for testability and it is not intended to be used by inheritors.
         /// </summary>
+        /// <value>A <seealso cref="IDictionary{TKey,TValue}"/> with the loaded asemblies.</value>
         protected IDictionary<string, Assembly> LoadedAssemblies
         {
             get { return loadedAssemblies; }
         }
 
+        /// <summary>
         /// Initialize the specified list of modules.
         /// </summary>
         /// <param name="moduleInfos">The list of modules to initialize.</param>
@@ -77,7 +79,7 @@ namespace Microsoft.Practices.Composite.Modularity
 
                 try
                 {
-                    IModule module = (IModule)containerFacade.Resolve(type);
+                    IModule module = CreateModule(type);
                     module.Initialize();
                 }
                 catch (Exception e)
@@ -85,6 +87,16 @@ namespace Microsoft.Practices.Composite.Modularity
                     HandleModuleLoadError(moduleInfo, type.Assembly.FullName, e);
                 }
             }
+        }
+
+        /// <summary>
+        /// Uses the container to resolve a new <see cref="IModule"/> by specifying its <see cref="Type"/>.
+        /// </summary>
+        /// <param name="type">The type to resolve. This type must implement <see cref="IModule"/>.</param>
+        /// <returns>A new instance of <paramref name="type"/>.</returns>
+        protected virtual IModule CreateModule(Type type)
+        {
+            return (IModule)containerFacade.Resolve(type);
         }
 
         private static List<ModuleInfo> GetModulesLoadOrder(IEnumerable<ModuleInfo> moduleInfoEnumerator)
@@ -123,11 +135,9 @@ namespace Microsoft.Practices.Composite.Modularity
 
             foreach (ModuleInfo module in modules)
             {
-                GuardLegalAssemblyFile(module);
-
                 if (!initializedModules.ContainsKey(module.ModuleType))
                 {
-                    Assembly assembly = LoadAssembly(module.AssemblyFile);
+                    Assembly assembly = LoadAssembly(module);
 
                     Type type = assembly.GetType(module.ModuleType);
 
@@ -138,9 +148,17 @@ namespace Microsoft.Practices.Composite.Modularity
             return newModules;
         }
 
+        /// <summary>
+        /// Loads an assembly based on the information in the specified <see cref="ModuleInfo"/>.
+        /// </summary>
+        /// <param name="moduleInfo">The information that describes what assembly to load.</param>
+        /// <returns>The loaded assembly.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Reflection.Assembly.LoadFrom")]
-        private Assembly LoadAssembly(string assemblyFile)
+        protected virtual Assembly LoadAssembly(ModuleInfo moduleInfo)
         {
+            GuardLegalAssemblyFile(moduleInfo);
+            string assemblyFile = moduleInfo.AssemblyFile;
+
             if (String.IsNullOrEmpty(assemblyFile))
                 throw new ArgumentException(
                     (string.Format(CultureInfo.CurrentCulture, Resources.StringCannotBeNullOrEmpty, "assemblyFile")));
@@ -193,6 +211,15 @@ namespace Microsoft.Practices.Composite.Modularity
             }
         }
 
+        /// <summary>
+        /// Handles any exception ocurred in the module loading process,
+        /// logs the error using the <seealso cref="ILoggerFacade"/> and throws a <seealso cref="ModuleLoadException"/>.
+        /// This method can be overriden to provide a different behavior. 
+        /// </summary>
+        /// <param name="moduleInfo">The module metadata where the error happenened.</param>
+        /// <param name="assemblyName">The assembly name.</param>
+        /// <param name="exception">The exception thrown that is the cause of the current error.</param>
+        /// <exception cref="ModuleLoadException"></exception>
         public virtual void HandleModuleLoadError(ModuleInfo moduleInfo, string assemblyName, Exception exception)
         {
             Exception moduleException = new ModuleLoadException(moduleInfo.ModuleName, assemblyName, exception.Message,

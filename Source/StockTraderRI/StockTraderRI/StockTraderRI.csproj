@@ -111,6 +111,9 @@
     <Compile Include="Controls\TearOffItemsControl.cs" />
     <Compile Include="EntLibLoggerAdapter.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="IShellView.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -126,6 +129,9 @@
     </Compile>
     <Compile Include="Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ShellPresenter.cs">
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="StockTraderRIBootstrapper.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">

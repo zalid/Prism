@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -75,11 +75,11 @@ namespace StockTraderRI.AcceptanceTests.AutomatedTests
         [TestMethod]
         public void ApplicationLaunch()
         {
-            ListView list = window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
+            ListView list = Window.Get<ListView>(TestDataInfrastructure.GetControlId("PositionTableId"));
             Assert.IsNotNull(list);
 
             //read number of account positions from the AccountPosition.xml data file
-            int positionRowCount = testDataInfrastructure.GetCount<AccountPositionDataProvider, AccountPosition>();
+            int positionRowCount = TestDataInfrastructure.GetCount<AccountPositionDataProvider, AccountPosition>();
 
             Assert.AreEqual(positionRowCount, list.Rows.Count);
 

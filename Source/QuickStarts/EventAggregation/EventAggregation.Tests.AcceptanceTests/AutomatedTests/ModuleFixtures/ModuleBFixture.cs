@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -27,13 +27,14 @@ using Core.UIItems.WindowItems;
 using Core.UIItems.Finders;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EventBroker.AcceptanceTests;
+using EventAggregation.AcceptanceTests;
 using Core.UIItems.ListBoxItems;
-using EventBroker.AcceptanceTests.TestInfrastructure;
-using EventBroker.AcceptanceTests.Helpers;
+using EventAggregation.AcceptanceTests.TestInfrastructure;
+using EventAggregation.AcceptanceTests.Helpers;
+using System.Globalization;
 
 
-namespace EventBroker_AcceptanceTests.AutomatedTests.ModuleFixtures
+namespace EventAggregation.AcceptanceTests.AutomatedTests.ModuleFixtures
 {
     /// <summary>
     /// Summary description for UnitTest1
@@ -75,12 +76,12 @@ namespace EventBroker_AcceptanceTests.AutomatedTests.ModuleFixtures
             WPFComboBox customer;
             
             //Get the handle of the customer combo box
-            customer = window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("CustomerCombobox"));
+            customer = Window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("CustomerCombobox"));
 
             //For every customer in the customer combo box,check if a corresponding article view is displayed
             for (int count = 0; count < customer.Items.Count - 1; count++)
             {
-               Assert.IsNotNull((Label)window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("ActivityLabel")).
+               Assert.IsNotNull((Label)Window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("ActivityLabel")).
                         AndByText(TestDataInfrastructure.GetTestInputData("ActivityLabelText") + customer.Items[count].Text)
                         .AndControlType(typeof(Label))));              
             }
@@ -111,22 +112,22 @@ namespace EventBroker_AcceptanceTests.AutomatedTests.ModuleFixtures
             for (int i = 0; i < CUSTOMERS_IN_DROPDOWN; i++)
             {
                 //Get the handle of the Customer combo box and select customer.
-                WPFComboBox customer = window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("CustomerCombobox"));
-                customer.Select(TestDataInfrastructure.GetTestInputData("Customer" + i.ToString()).ToString());
+                WPFComboBox customer = Window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("CustomerCombobox"));
+                customer.Select(TestDataInfrastructure.GetTestInputData("Customer" + i.ToString(CultureInfo.InvariantCulture)).ToString());
                 selectedCustomer[i] = customer.Items[i].Text;
 
                 //Get the handle of the Fund combo box and select fund.
-                WPFComboBox fund = window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("FundCombobox"));
-                fund.Select(TestDataInfrastructure.GetTestInputData("Fund" + i.ToString()));
+                WPFComboBox fund = Window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("FundCombobox"));
+                fund.Select(TestDataInfrastructure.GetTestInputData("Fund" + i.ToString(CultureInfo.InvariantCulture)));
                 selectedFund[i] = fund.Items[i].Text;
 
                 //Get the handle of the Add button and click on it.
-                Button addButton = window.Get<Button>(TestDataInfrastructure.GetControlId("AddButton"));
+                Button addButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("AddButton"));
                 addButton.Click();
             }
 
             // Now validate whether the fund has been added correctly.                  
-            List<AutomationElement> elements = window.AutomationElement.FindSiblingsInTreeByName("ActivityView");
+            List<AutomationElement> elements = Window.AutomationElement.FindSiblingsInTreeByName("ActivityView");
             int counter = 0;
             foreach (AutomationElement element in elements)
             {

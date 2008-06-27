@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -15,16 +15,9 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
-using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockTraderRI.Infrastructure.Interfaces;
-using StockTraderRI.Infrastructure.PresentationModels;
-using System.Collections.ObjectModel;
 using StockTraderRI.Modules.Market.Tests.Mocks;
-using StockTraderRI.Modules.Market;
 using StockTraderRI.Modules.Market.TrendLine;
 
 namespace StockTraderRI.HistoricalModule.Tests
@@ -33,7 +26,7 @@ namespace StockTraderRI.HistoricalModule.Tests
     /// Unit tests for TrendLinePresenter
     /// </summary>
     [TestClass]
-    public class UnitTest1
+    public class TrendLinePresenterFixture
     {
         [TestMethod]
         public void CanInitPresenter()

@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -15,6 +15,7 @@
 // places, or events is intended or should be inferred.
 //===============================================================================
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,20 +26,20 @@ namespace Microsoft.Practices.Composite.Events
     /// </summary>
     public class EventAggregator : IEventAggregator
     {
-        private readonly List<object> _events = new List<object>();
+        private readonly List<EventBase> _events = new List<EventBase>();
 
         /// <summary>
-        /// Gets the instance of the event.
+        /// Gets the single instance of the event managed by this EventAggregator. Multiple calls to this method with the same <typeparamref name="TEventType"/> returns the same event instance.
         /// </summary>
-        /// <typeparam name="TEventType">The type of event to get.</typeparam>
+        /// <typeparam name="TEventType">The type of event to get. This must inherit from <see cref="EventBase"/>.</typeparam>
         /// <returns>A singleton instance of an event object of type <typeparamref name="TEventType"/>.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
-        public TEventType GetInstance<TEventType>() where TEventType : class, new()
+        public TEventType GetEvent<TEventType>() where TEventType : EventBase
         {
             TEventType eventInstance = _events.FirstOrDefault(evt => evt.GetType() == typeof(TEventType)) as TEventType;
             if (eventInstance == null)
             {
-                eventInstance = new TEventType();
+                eventInstance = Activator.CreateInstance<TEventType>();
                 _events.Add(eventInstance);
             }
             return eventInstance;

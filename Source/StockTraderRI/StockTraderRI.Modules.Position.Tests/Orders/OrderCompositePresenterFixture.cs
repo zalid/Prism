@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -19,6 +19,7 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Modules.Position.Interfaces;
+using StockTraderRI.Modules.Position.Models;
 using StockTraderRI.Modules.Position.Orders;
 using StockTraderRI.Modules.Position.Tests.Mocks;
 
@@ -38,7 +39,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
 
             var composite = new OrderCompositePresentationModel(compositeView, detailsPresenter, new OrderCommandsView());
 
-            composite.SetTransactionInfo("FXX01", TransactionType.Sell);
+            composite.TransactionInfo = new TransactionInfo("FXX01", TransactionType.Sell);
 
             Assert.IsNotNull(detailsPresenter.TransactionInfo);
         }
@@ -95,7 +96,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
             var view = new MockOrderCompositeView();
             var composite = new OrderCompositePresentationModel(view, new MockOrderDetailsPresentationModel(), new OrderCommandsView());
 
-            composite.SetTransactionInfo("FXX01", TransactionType.Sell);
+            composite.TransactionInfo = new TransactionInfo("FXX01", TransactionType.Sell);
 
             Assert.IsNotNull(view);
             Assert.AreEqual(composite, view.Model);
@@ -106,7 +107,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         {
             var composite = new OrderCompositePresentationModel(new MockOrderCompositeView(), new MockOrderDetailsPresentationModel(), new OrderCommandsView());
 
-            composite.SetTransactionInfo("FXX01", TransactionType.Sell);
+            composite.TransactionInfo = new TransactionInfo("FXX01", TransactionType.Sell);
 
             Assert.IsNotNull(composite.HeaderInfo);
             Assert.IsTrue(composite.HeaderInfo.Contains("FXX01"));
@@ -117,19 +118,31 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         [TestMethod]
         public void ShouldUpdateHeaderInfoWhenUpdatingTransactionInfo()
         {
-            var presenter = new MockOrderDetailsPresentationModel();
-            var composite = new OrderCompositePresentationModel(new MockOrderCompositeView(), presenter, new OrderCommandsView());
+            var orderDetailsPM = new MockOrderDetailsPresentationModel();
+            var composite = new OrderCompositePresentationModel(new MockOrderCompositeView(), orderDetailsPM, new OrderCommandsView());
 
-            composite.SetTransactionInfo("FXX01", TransactionType.Sell);
+            composite.TransactionInfo = new TransactionInfo("FXX01", TransactionType.Sell);
 
-            presenter.TransactionInfo.TickerSymbol = "NEW_SYMBOL";
+            orderDetailsPM.TransactionInfo.TickerSymbol = "NEW_SYMBOL";
             Assert.AreEqual("Sell NEW_SYMBOL", composite.HeaderInfo);
 
-            presenter.TransactionInfo.TransactionType = TransactionType.Buy;
+            orderDetailsPM.TransactionInfo.TransactionType = TransactionType.Buy;
             Assert.AreEqual("Buy NEW_SYMBOL", composite.HeaderInfo);
         }
 
+        [TestMethod]
+        public void TransactionInfoAndSharesAndCommandsAreTakenFromOrderDetails()
+        {
+            var orderDetailsPM = new MockOrderDetailsPresentationModel();
+            var composite = new OrderCompositePresentationModel(new MockOrderCompositeView(), orderDetailsPM, new OrderCommandsView());
+            orderDetailsPM.Shares = 100;
 
+            Assert.AreEqual(orderDetailsPM.Shares, composite.Shares);
+            Assert.AreSame(orderDetailsPM.SubmitCommand, composite.SubmitCommand);
+            Assert.AreSame(orderDetailsPM.CancelCommand, composite.CancelCommand);
+            Assert.AreSame(orderDetailsPM.TransactionInfo, composite.TransactionInfo);
+        }
+	
     }
 
     internal class MockOrderCompositeView : IOrderCompositeView

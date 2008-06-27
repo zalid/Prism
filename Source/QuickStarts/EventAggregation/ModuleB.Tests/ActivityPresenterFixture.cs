@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -20,7 +20,7 @@ using EventAggregation.Infrastructure;
 using Microsoft.Practices.Composite.Wpf.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModuleB.Tests.Mocks;
-using SubscriptionToken = Microsoft.Practices.Composite.Wpf.Events.SubscriptionToken;
+using SubscriptionToken = Microsoft.Practices.Composite.Events.SubscriptionToken;
 
 namespace ModuleB.Tests
 {

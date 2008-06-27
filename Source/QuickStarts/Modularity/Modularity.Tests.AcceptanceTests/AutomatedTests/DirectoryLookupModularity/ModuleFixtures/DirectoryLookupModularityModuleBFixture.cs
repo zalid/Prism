@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -67,7 +67,7 @@ namespace Modularity.AcceptanceTests.AutomatedTests
         [TestMethod]
         public void ClickLoadModuleCButton()
         {
-            Button button = window.Get<Button>(
+            Button button = Window.Get<Button>(
                 SearchCriteria
                     .ByText(TestDataInfrastructure.GetControlId("LoadModuleCButtonText"))
                     .AndControlType(typeof(Button)));
@@ -76,7 +76,7 @@ namespace Modularity.AcceptanceTests.AutomatedTests
 
             button.Click();
 
-            Label moduleCContent = window.Get<Label>(
+            Label moduleCContent = Window.Get<Label>(
                 SearchCriteria
                     .ByText(TestDataInfrastructure.GetTestInputData("ModuleCContent"))
                     .AndControlType(typeof(Label)));

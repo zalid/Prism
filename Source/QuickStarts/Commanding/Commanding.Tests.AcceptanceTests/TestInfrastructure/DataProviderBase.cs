@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -24,17 +24,17 @@ using System.Xml;
 
 namespace Commanding.AcceptanceTests.TestInfrastructure
 {
-    public abstract class DataProviderBase<TEntity> : IDataProvider<TEntity>
+    public abstract class DataProviderBase<TEntity> : IDataProvider<TEntity>,IDisposable
     {
         XmlSerializer xmlSerializer = null;
         XmlTextReader xmlReader = null;
 
-        public DataProviderBase()
+        protected DataProviderBase()
         {
             xmlSerializer = new XmlSerializer(typeof(List<TEntity>));
             
             string dataFilePath = GetDataFilePath();
-            if (String.Empty != dataFilePath)
+            if (!(String.IsNullOrEmpty(dataFilePath)))
             {
                 xmlReader = new XmlTextReader(dataFilePath);
             }
@@ -52,16 +52,31 @@ namespace Commanding.AcceptanceTests.TestInfrastructure
 
         public virtual int GetCount()
         {
-            try
-            {
-                return ((List<TEntity>)xmlSerializer.Deserialize(xmlReader)).Count;
-            }
-            catch
-            {
-                return -1;
-            }
+                return ((List<TEntity>)xmlSerializer.Deserialize(xmlReader)).Count;            
         }
 
         public abstract string GetDataFilePath();
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (null != xmlReader)
+                {
+                    xmlReader = null;
+                    //Close the reader.
+                    xmlReader.Close();
+                }
+            }
+        }
     }
 }

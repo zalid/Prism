@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -205,13 +205,13 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
 
 
         [TestMethod]
-        public void StartOrderCreatesCompositePresnterAndPassesCorrectInitInfo()
+        public void StartOrderCreatesCompositePMAndPassesCorrectInitInfo()
         {
             IUnityContainer container = new UnityContainer();
             var regionManager = new MockRegionManager();
             container.RegisterType<IOrdersPresentationModel, MockOrdersPresentationModel>();
-            var presenter = new MockOrderCompositePresentationModel();
-            container.RegisterInstance<IOrderCompositePresentationModel>(presenter);
+            var presentationModel = new MockOrderCompositePresentationModel();
+            container.RegisterInstance<IOrderCompositePresentationModel>(presentationModel);
 
             regionManager.Regions.Add("OrdersRegion", new MockRegion());
             regionManager.Regions.Add("MainRegion", new MockRegion());
@@ -219,83 +219,8 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
             var controller = new TestableOrdersController(regionManager, container, new MockStockTraderRICommandProxy(), null);
             controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
 
-            Assert.AreEqual("STOCK01", presenter.SetTransactionInfoArgumentTickerSymbol);
-            Assert.AreEqual(TransactionType.Buy, presenter.SetTransactionInfoArgumentTransactionType);
-        }
-
-        [TestMethod]
-        public void ControllerMaintainsListOfOrderDetailsPresentationModels()
-        {
-            IUnityContainer container = new UnityContainer();
-            var regionManager = new MockRegionManager();
-            container.RegisterType<IOrdersPresentationModel, MockOrdersPresentationModel>();
-            container.RegisterType<IOrderCompositePresentationModel, MockOrderCompositePresentationModel>();
-
-            regionManager.Regions.Add("OrdersRegion", new MockRegion());
-            regionManager.Regions.Add("MainRegion", new MockRegion());
-            var controller = new TestableOrdersController(regionManager, container, new MockStockTraderRICommandProxy(), null);
-            
-            controller.InvokeStartOrder(TransactionType.Sell, "stock0");
-            controller.InvokeStartOrder(TransactionType.Sell, "stock1");
-
-            Assert.AreEqual(2, controller.OrderModels.Count);
-            Assert.AreEqual("stock0", controller.OrderModels[0].TickerSymbol);
-            Assert.AreEqual("stock1", controller.OrderModels[1].TickerSymbol);
-        }
-
-        [TestMethod]
-        public void WhenTwoSellOrdersExceedSharesOwnedCanExecuteReturnsFalse()
-        {
-            var accountPositionService = new MockAccountPositionService();
-            accountPositionService.AddPosition("stock1", 10.0M, 100);
-            var controller = new TestableOrdersController(null, null, new MockStockTraderRICommandProxy(), accountPositionService);
-            var buyOrderModel1 = new MockOrderDetailsPresentationModel() { TickerSymbol = "stock1", Shares = 200, StopLimitPrice = 1.0M, TransactionType = TransactionType.Buy };
-            var sellOrderModel1 = new MockOrderDetailsPresentationModel() { TickerSymbol = "stock1", Shares = 100, StopLimitPrice = 1.0M, TransactionType = TransactionType.Sell };
-            var sellOrderModel2 = new MockOrderDetailsPresentationModel() { TickerSymbol = "stock1", Shares = 1000, StopLimitPrice = 1.0M, TransactionType = TransactionType.Sell };
-            var buyOrderModel2 = new MockOrderDetailsPresentationModel() { TickerSymbol = "stock1", Shares = 1000, StopLimitPrice = 1.0M, TransactionType = TransactionType.Buy };
-
-            //buy 200, total of 300
-            controller.OrderModels.Add(buyOrderModel1);
-
-            Assert.IsTrue(controller.SubmitAllCommand.CanExecute(null));
-
-            //sell 100, total of 200
-            controller.OrderModels.Add(sellOrderModel1);
-
-            Assert.IsTrue(controller.SubmitAllCommand.CanExecute(null));
-
-            //sell 1000, INVALID since total would be -800
-            controller.OrderModels.Add(sellOrderModel2);
-
-            Assert.IsFalse(controller.SubmitAllCommand.CanExecute(null));
-
-            //buy 1000, total of 200
-            controller.OrderModels.Add(buyOrderModel2);
-
-            Assert.IsTrue(controller.SubmitAllCommand.CanExecute(null));
-        }
-
-        [TestMethod]
-        public void OnCloseViewRequestedTheControllerRemovesReferenceToOrderModel()
-        {
-            var container = new MockUnityResolver();
-            var regionManager = new MockRegionManager();
-            var orderCompositePresenter = new MockOrderCompositePresentationModel();
-            container.Bag.Add(typeof(IOrdersPresentationModel), new MockOrdersPresentationModel());
-            container.Bag.Add(typeof(IOrderCompositePresentationModel), orderCompositePresenter);
-
-            var ordersRegion = new MockRegion();
-            regionManager.Regions.Add("OrdersRegion", ordersRegion);
-            regionManager.Regions.Add("MainRegion", new MockRegion());
-            var commandProxy = new MockStockTraderRICommandProxy();
-
-            var controller = new TestableOrdersController(regionManager, container, commandProxy, null);
-            controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
-
-            Assert.AreEqual(1, controller.OrderModels.Count);
-            orderCompositePresenter.RaiseCloseViewRequested();
-
-            Assert.AreEqual(0, controller.OrderModels.Count);
+            Assert.AreEqual("STOCK01", presentationModel.TransactionInfo.TickerSymbol);
+            Assert.AreEqual(TransactionType.Buy, presentationModel.TransactionInfo.TransactionType);
         }
 
         [TestMethod]
@@ -321,6 +246,125 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
             Assert.IsFalse(controller.SubmitAllCommandCalled);
             commandProxy.SubmitAllOrdersCommand.CanExecute(null);
             Assert.IsTrue(controller.SubmitAllCommandCalled);
+        }
+
+        [TestMethod]
+        public void CannotSellMoreSharesThanAreOwned()
+        {
+            var container = new MockUnityResolver();
+            var regionManager = new MockRegionManager();
+            container.Bag.Add(typeof(IOrdersPresentationModel), new MockOrdersPresentationModel());
+
+            var ordersRegion = new MockRegion();
+            regionManager.Regions.Add("OrdersRegion", ordersRegion);
+            regionManager.Regions.Add("MainRegion", new MockRegion());
+            var accountPositionService = new MockAccountPositionService();
+            accountPositionService.AddPosition("STOCK01", 10.0M, 100);
+
+            var controller = new TestableOrdersController(regionManager, container, new MockStockTraderRICommandProxy(), accountPositionService);
+            var buyOrder = new MockOrderCompositePresentationModel() { Shares = 100, };
+
+            container.Bag.Add(typeof(IOrderCompositePresentationModel), buyOrder);
+            controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
+
+            Assert.IsTrue(controller.SubmitAllVoteOnlyCommand.CanExecute(null));
+
+            var sellOrder = new MockOrderCompositePresentationModel() { Shares = 200 };
+            container.Bag[typeof(IOrderCompositePresentationModel)] = sellOrder;
+            controller.InvokeStartOrder(TransactionType.Sell, "STOCK01");
+
+            //Should not be able to sell even though owned shares==100, buy==100 and sell==200
+            Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        public void CannotSellMoreSharesThanAreOwnedInDifferentOrders()
+        {
+            var container = new MockUnityResolver();
+            var regionManager = new MockRegionManager();
+            container.Bag.Add(typeof(IOrdersPresentationModel), new MockOrdersPresentationModel());
+
+            var ordersRegion = new MockRegion();
+            regionManager.Regions.Add("OrdersRegion", ordersRegion);
+            regionManager.Regions.Add("MainRegion", new MockRegion());
+            var accountPositionService = new MockAccountPositionService();
+            accountPositionService.AddPosition("STOCK01", 10.0M, 100);
+
+            var controller = new TestableOrdersController(regionManager, container, new MockStockTraderRICommandProxy(), accountPositionService);
+            var sellOrder1 = new MockOrderCompositePresentationModel() { Shares = 100 };
+
+            container.Bag.Add(typeof(IOrderCompositePresentationModel), sellOrder1);
+            controller.InvokeStartOrder(TransactionType.Sell, "STOCK01");
+
+            Assert.IsTrue(controller.SubmitAllVoteOnlyCommand.CanExecute(null));
+
+            var sellOrder2 = new MockOrderCompositePresentationModel() { Shares = 100 };
+            container.Bag[typeof(IOrderCompositePresentationModel)] = sellOrder2;
+            controller.InvokeStartOrder(TransactionType.Sell, "stock01");
+
+            Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        public void CannotSellMoreSharesThatAreNOTOwned()
+        {
+            var container = new MockUnityResolver();
+            var regionManager = new MockRegionManager();
+            container.Bag.Add(typeof(IOrdersPresentationModel), new MockOrdersPresentationModel());
+
+            var ordersRegion = new MockRegion();
+            regionManager.Regions.Add("OrdersRegion", ordersRegion);
+            regionManager.Regions.Add("MainRegion", new MockRegion());
+
+            var controller = new TestableOrdersController(regionManager, container, new MockStockTraderRICommandProxy(), new MockAccountPositionService());
+
+            var sellOrder = new MockOrderCompositePresentationModel() { Shares = 1};
+            container.Bag.Add(typeof(IOrderCompositePresentationModel), sellOrder);
+
+            controller.InvokeStartOrder(TransactionType.Sell, "NOTOWNED");
+
+            Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        public void CannotSubmitAllWhenNothingToSubmit()
+        {
+            var controller = new TestableOrdersController(new MockRegionManager(), new MockUnityResolver(), new MockStockTraderRICommandProxy(), new MockAccountPositionService());
+
+            Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute(null));
+        }
+
+        [TestMethod]
+        public void AfterAllOrdersSubmittedSubmitAllCommandShouldBeDisabled()
+        {
+            var container = new MockUnityResolver();
+            var regionManager = new MockRegionManager();
+            container.Bag.Add(typeof(IOrdersPresentationModel), new MockOrdersPresentationModel());
+
+            var ordersRegion = new MockRegion();
+            regionManager.Regions.Add("OrdersRegion", ordersRegion);
+            regionManager.Regions.Add("MainRegion", new MockRegion());
+            var commandProxy = new MockStockTraderRICommandProxy();
+
+            var controller = new TestableOrdersController(regionManager, container, commandProxy, new MockAccountPositionService());
+
+            var buyOrder = new MockOrderCompositePresentationModel() { Shares = 100 };
+            container.Bag[typeof (IOrderCompositePresentationModel)] = buyOrder;
+            controller.InvokeStartOrder(TransactionType.Buy, "STOCK1");
+
+            bool canExecuteChangedCalled = false;
+            bool canExecuteResult = false;
+
+            commandProxy.SubmitAllOrdersCommand.CanExecuteChanged += delegate
+                                                                 {
+                                                                     canExecuteChangedCalled = true;
+                                                                     canExecuteResult =
+                                                                         controller.SubmitAllVoteOnlyCommand.CanExecute(null);
+                                                                 };
+            buyOrder.RaiseCloseViewRequested();
+
+            Assert.IsTrue(canExecuteChangedCalled);
+            Assert.IsFalse(canExecuteResult);
         }
 	
     }
@@ -381,18 +425,7 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
     {
         public MockCommand MockSubmitCommand = new MockCommand();
         public MockCommand MockCancelCommand = new MockCommand();
-        public MockOrderDetailsPresentationModel _mockOrderDetailsPresentationModel = new MockOrderDetailsPresentationModel();
-        public string SetTransactionInfoArgumentTickerSymbol;
-        public TransactionType SetTransactionInfoArgumentTransactionType;
         private IOrderCompositeView _view = new MockOrderCompositeView();
-
-        public void SetTransactionInfo(string tickerSymbol, TransactionType transactionType)
-        {
-            SetTransactionInfoArgumentTickerSymbol = tickerSymbol;
-            SetTransactionInfoArgumentTransactionType = transactionType;
-            _mockOrderDetailsPresentationModel.TickerSymbol = tickerSymbol;
-
-        }
 
         public event EventHandler CloseViewRequested;
 
@@ -411,10 +444,9 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
             get { return MockCancelCommand; }
         }
 
-        public IOrderDetailsPresentationModel OrderDetailsPresentationModel
-        {
-            get { return _mockOrderDetailsPresentationModel; }
-        }
+        public TransactionInfo TransactionInfo { get; set;}
+
+        public int Shares { get; set;}
 
         internal void RaiseCloseViewRequested()
         {

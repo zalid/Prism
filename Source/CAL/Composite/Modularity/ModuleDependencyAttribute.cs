@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -37,8 +37,9 @@ namespace Microsoft.Practices.Composite.Modularity
         }
 
         /// <summary>
-        /// The name of the module that this module is dependant upon.
+        /// Gets the name of the module that this module is dependant upon.
         /// </summary>
+        /// <value>The name of the module that this module is dependant upon.</value>
         public string ModuleName
         {
             get { return _moduleName; }

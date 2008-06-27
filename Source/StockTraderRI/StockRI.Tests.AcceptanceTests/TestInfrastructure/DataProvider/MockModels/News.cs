@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -36,15 +36,15 @@ namespace StockTraderRI.AcceptanceTests.TestInfrastructure.MockModels
         public News() { }
 
         public News(string symbol)
-            : this(symbol, String.Empty, String.Empty, String.Empty)
+            : this(symbol, null, String.Empty, String.Empty)
         { }
 
         public News(string symbol, string title)
-            : this(symbol, String.Empty, title, String.Empty)
+            : this(symbol, null, title, String.Empty)
         { }
 
         public News(string symbol, string title, string body)
-            : this(symbol, String.Empty, title, body)
+            : this(symbol, null, title, body)
         { }
 
         public News(string symbol, string iconUriPath, string title, string body)
@@ -88,7 +88,7 @@ namespace StockTraderRI.AcceptanceTests.TestInfrastructure.MockModels
             set { this.body = value; }
         }
 
-        public DateTime PublishedDate 
+        public DateTime PublishedDate
         {
             get { return this.publishedDate; }
             set { this.publishedDate = value; }

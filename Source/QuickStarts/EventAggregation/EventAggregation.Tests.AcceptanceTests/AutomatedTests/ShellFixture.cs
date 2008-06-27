@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -20,13 +20,13 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EventBroker.AcceptanceTests.TestInfrastructure;
-using EventBroker.AcceptanceTests.ApplicationObserver;
+using EventAggregation.AcceptanceTests.TestInfrastructure;
+using EventAggregation.AcceptanceTests.ApplicationObserver;
 using Core.UIItems.ListBoxItems;
 using Core.UIItems;
 using Core.UIItems.Finders;
 
-namespace EventBroker.AcceptanceTests
+namespace EventAggregation.AcceptanceTests
 {
     /// <summary>
     /// Summary description for UnitTest1
@@ -65,21 +65,21 @@ namespace EventBroker.AcceptanceTests
         public void ApplicationLaunch()
         {
             //check if the controls expected to be loaded on the Shell window is loaded properly, as expected
-            ComboBox customerCombobox = window.Get<ComboBox>(TestDataInfrastructure.GetControlId("CustomerCombobox"));
+            ComboBox customerCombobox = Window.Get<ComboBox>(TestDataInfrastructure.GetControlId("CustomerCombobox"));
             Assert.IsNotNull(customerCombobox);
 
-            ComboBox fundCombobox = window.Get<ComboBox>(TestDataInfrastructure.GetControlId("FundCombobox"));
+            ComboBox fundCombobox = Window.Get<ComboBox>(TestDataInfrastructure.GetControlId("FundCombobox"));
             Assert.IsNotNull(fundCombobox);
 
-            Button addButton = window.Get<Button>(TestDataInfrastructure.GetControlId("AddButton"));
+            Button addButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("AddButton"));
             Assert.IsNotNull(addButton);
 
-            Label activity1Label = (Label)window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("ActivityLabel"))
+            Label activity1Label = (Label)Window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("ActivityLabel"))
                                                             .AndByText(TestDataInfrastructure.GetTestInputData("Customer1ActivityLabelText"))
                                                             .AndControlType(typeof(Label)));
             Assert.IsNotNull(activity1Label);
 
-            Label activity2Label = (Label)window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("ActivityLabel"))
+            Label activity2Label = (Label)Window.Get(SearchCriteria.ByAutomationId(TestDataInfrastructure.GetControlId("ActivityLabel"))
                                                             .AndByText(TestDataInfrastructure.GetTestInputData("Customer2ActivityLabelText"))
                                                             .AndControlType(typeof(Label)));
             Assert.IsNotNull(activity2Label);

@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -38,7 +38,7 @@ namespace ModuleA
             fundOrder.TickerSymbol = View.Fund;
 
             if (!string.IsNullOrEmpty(fundOrder.CustomerId) && !string.IsNullOrEmpty(fundOrder.TickerSymbol))
-                eventAggregator.GetInstance<FundAddedEvent>().Publish(fundOrder);
+                eventAggregator.GetEvent<FundAddedEvent>().Publish(fundOrder);
         }
 
         public IAddFundView View

@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -41,8 +41,8 @@ namespace StockTraderRI.Modules.News.Controllers
 
         public void Run()
         {
-            this.regionManager.Regions["NewsRegion"].Add(articlePresentationModel.View);
-            eventAggregator.GetInstance<TickerSymbolSelectedEvent>().Subscribe(ShowNews, ThreadOption.UIThread);
+            this.regionManager.Regions[RegionNames.NewsRegion].Add(articlePresentationModel.View);
+            eventAggregator.GetEvent<TickerSymbolSelectedEvent>().Subscribe(ShowNews, ThreadOption.UIThread);
         }
 
         public NewsController(IRegionManager regionManager,

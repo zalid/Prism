@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -21,15 +21,15 @@ using System.Linq;
 using System.Text;
 using System.Windows.Automation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EventBroker.AcceptanceTests;
+using EventAggregation.AcceptanceTests;
 using Core.UIItems.ListBoxItems;
-using EventBroker.AcceptanceTests.TestInfrastructure;
+using EventAggregation.AcceptanceTests.TestInfrastructure;
 using Core.UIItems;
 using Core.UIItems.WindowItems;
 using Core.UIItems.Finders;
 
 
-namespace EventBroker_AcceptanceTests.AutomatedTests.ModuleFixtures
+namespace EventAggregation.AcceptanceTests.AutomatedTests.ModuleFixtures
 {
     /// <summary>
     /// Summary description for UnitTest1
@@ -78,23 +78,23 @@ namespace EventBroker_AcceptanceTests.AutomatedTests.ModuleFixtures
             Label activityLabel;
            
             //Get the handle of the Customer combo box and select Customer1
-            customer = window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("CustomerCombobox"));
+            customer = Window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("CustomerCombobox"));
             customer.Select(TestDataInfrastructure.GetTestInputData("DefaultCustomer").ToString());
 
             //Get the handle of the Fund combo box and select FundA
-            fund = window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("FundCombobox"));
+            fund = Window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("FundCombobox"));
             fund.Select(TestDataInfrastructure.GetTestInputData("DefaultFund"));
 
             //Get the handle of the Add button and click on it
-            addButton = window.Get<Button>(TestDataInfrastructure.GetControlId("AddButton"));
+            addButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("AddButton"));
             addButton.Click();
 
             //Get the handle of the Activity Label 
-            activityLabel = window.Get<Label>(TestDataInfrastructure.GetControlId("ActivityLabel"));          
+            activityLabel = Window.Get<Label>(TestDataInfrastructure.GetControlId("ActivityLabel"));          
                       
             //Check if the selected fund is added to the Activity View of the selected customer.
             Assert.AreEqual(activityLabel.Text, TestDataInfrastructure.GetTestInputData("Customer1ActivityLabelText"));
-            Assert.IsNotNull((Label)window.Get(SearchCriteria.ByText(TestDataInfrastructure.GetTestInputData("DefaultFund"))
+            Assert.IsNotNull((Label)Window.Get(SearchCriteria.ByText(TestDataInfrastructure.GetTestInputData("DefaultFund"))
                                                              .AndControlType(typeof(Label))));
         }
 
@@ -123,15 +123,15 @@ namespace EventBroker_AcceptanceTests.AutomatedTests.ModuleFixtures
             Label activityLabel;
 
             //Get the handle of the Customer combo box and select Customer1
-            customer = window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("CustomerCombobox"));
+            customer = Window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("CustomerCombobox"));
             customer.Select(TestDataInfrastructure.GetTestInputData("DefaultCustomer").ToString());
 
             //Get the handle of the Fund combo box and select FundA
-            fund = window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("FundCombobox"));
+            fund = Window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("FundCombobox"));
             fund.Select(TestDataInfrastructure.GetTestInputData("DefaultFund"));
 
             //Get the handle of the Add button and click on it
-            addButton = window.Get<Button>(TestDataInfrastructure.GetControlId("AddButton"));
+            addButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("AddButton"));
             addButton.Click();
 
             //select FundB in the Fund combo box and click on Add button
@@ -139,13 +139,13 @@ namespace EventBroker_AcceptanceTests.AutomatedTests.ModuleFixtures
             addButton.Click();
 
             //Get the handle of the Activity Label 
-            activityLabel = window.Get<Label>(TestDataInfrastructure.GetControlId("ActivityLabel"));
+            activityLabel = Window.Get<Label>(TestDataInfrastructure.GetControlId("ActivityLabel"));
 
             //Check if the Activity View of the selected customer displays all the added funds.
             Assert.AreEqual(activityLabel.Text, TestDataInfrastructure.GetTestInputData("Customer1ActivityLabelText"));
-            Assert.IsNotNull((Label)window.Get(SearchCriteria.ByText(TestDataInfrastructure.GetTestInputData("DefaultFund"))
+            Assert.IsNotNull((Label)Window.Get(SearchCriteria.ByText(TestDataInfrastructure.GetTestInputData("DefaultFund"))
                                                              .AndControlType(typeof(Label))));
-            Assert.IsNotNull((Label)window.Get(SearchCriteria.ByText(TestDataInfrastructure.GetTestInputData("AnotherFund"))
+            Assert.IsNotNull((Label)Window.Get(SearchCriteria.ByText(TestDataInfrastructure.GetTestInputData("AnotherFund"))
                                                             .AndControlType(typeof(Label))));
         }
 
@@ -175,15 +175,15 @@ namespace EventBroker_AcceptanceTests.AutomatedTests.ModuleFixtures
             int numberOfAddClicks = 3;
 
             //Get the handle of the Customer combo box and select Customer1
-            customer = window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("CustomerCombobox"));
+            customer = Window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("CustomerCombobox"));
             customer.Select(TestDataInfrastructure.GetTestInputData("DefaultCustomer").ToString());
 
             //Get the handle of the Fund combo box and select FundA
-            fund = window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("FundCombobox"));
+            fund = Window.Get<WPFComboBox>(TestDataInfrastructure.GetControlId("FundCombobox"));
             fund.Select(TestDataInfrastructure.GetTestInputData("DefaultFund"));
 
             //Get the handle of the Add button and click on it
-            addButton = window.Get<Button>(TestDataInfrastructure.GetControlId("AddButton"));
+            addButton = Window.Get<Button>(TestDataInfrastructure.GetControlId("AddButton"));
 
             //click the add button thrice
             addButton.Click();
@@ -191,7 +191,7 @@ namespace EventBroker_AcceptanceTests.AutomatedTests.ModuleFixtures
             addButton.Click();
 
             //Get the hanlde of the Activity Label
-            activityLabel = window.Get<Label>(TestDataInfrastructure.GetControlId("ActivityLabel"));
+            activityLabel = Window.Get<Label>(TestDataInfrastructure.GetControlId("ActivityLabel"));
 
             //check if the Article view displays the selected customer
             Assert.AreEqual(activityLabel.Text, TestDataInfrastructure.GetTestInputData("Customer1ActivityLabelText"));
@@ -199,7 +199,7 @@ namespace EventBroker_AcceptanceTests.AutomatedTests.ModuleFixtures
             //For every Add button click, Check if the selected fund is added to the selected customer repeatedly.
             for (int count = 0; count < numberOfAddClicks; count++)
             {
-                Assert.IsNotNull((Label)window.Get(SearchCriteria.ByText(TestDataInfrastructure.GetTestInputData("DefaultFund"))
+                Assert.IsNotNull((Label)Window.Get(SearchCriteria.ByText(TestDataInfrastructure.GetTestInputData("DefaultFund"))
                                                                  .AndControlType(typeof(Label))));
             }
         }

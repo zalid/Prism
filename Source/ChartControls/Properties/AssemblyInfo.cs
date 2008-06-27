@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -18,23 +18,21 @@
 #region Using directives
 
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Resources;
-using System.Globalization;
-using System.Windows;
 using System.Runtime.InteropServices;
+using System.Windows;
 
 #endregion
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Charts")]
+[assembly: AssemblyTitle("StockTraderRI.ChartControls")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Charts")]
-[assembly: AssemblyCopyright("Copyright @  2006")]
+[assembly: AssemblyCompany("Microsoft Corporation")]
+[assembly: AssemblyProduct("StockTraderRI")]
+[assembly: AssemblyCopyright("Copyright � Microsoft 2008")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]

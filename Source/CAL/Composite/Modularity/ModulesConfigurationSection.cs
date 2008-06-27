@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -27,6 +27,7 @@ namespace Microsoft.Practices.Composite.Modularity
         /// <summary>
         /// Gets or sets the collection of modules configuration.
         /// </summary>
+        /// <value>A <seealso cref="ModuleConfigurationElementCollection"/> of <seealso cref="ModuleConfigurationElement"/>.</value>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [ConfigurationProperty("", IsDefaultCollection = true, IsKey = false)]
         public ModuleConfigurationElementCollection Modules

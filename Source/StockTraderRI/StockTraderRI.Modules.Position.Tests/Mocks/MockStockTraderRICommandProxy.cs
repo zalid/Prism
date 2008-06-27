@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -28,10 +28,10 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
     {
         CompositeCommand _submitAllOrdersCommand = new CompositeCommand();
         CompositeCommand _cancelAllOrdersCommand = new CompositeCommand();
-        ActiveAwareCompositeCommand _submitOrderCommand = new ActiveAwareCompositeCommand();
-        ActiveAwareCompositeCommand _cancelOrderCommand = new ActiveAwareCompositeCommand();
+        CompositeCommand _submitOrderCommand = new CompositeCommand(true);
+        CompositeCommand _cancelOrderCommand = new CompositeCommand(true);
 
-        public override ActiveAwareCompositeCommand SubmitOrderCommand
+        public override CompositeCommand SubmitOrderCommand
         {
             get
             {
@@ -46,7 +46,7 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
                 return this._submitAllOrdersCommand;
             }
         }
-        public override ActiveAwareCompositeCommand CancelOrderCommand
+        public override CompositeCommand CancelOrderCommand
         {
             get
             {

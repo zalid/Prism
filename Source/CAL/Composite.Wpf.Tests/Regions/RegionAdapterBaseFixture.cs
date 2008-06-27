@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -17,10 +17,9 @@
 
 using System;
 using System.Windows;
-using Microsoft.Practices.Composite.Wpf.Tests.Mocks;
-using Microsoft.Practices.Composite;
 using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Composite.Wpf.Regions;
+using Microsoft.Practices.Composite.Wpf.Tests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Practices.Composite.Wpf.Tests.Regions
@@ -74,7 +73,7 @@ namespace Microsoft.Practices.Composite.Wpf.Tests.Regions
         {
             var objectToAdapt = new MockRegionTarget();
             var adapter = new TestableRegionAdapterBase();
-            var region = (NewMockRegion)adapter.Initialize(objectToAdapt);
+            var region = (MockRegion)adapter.Initialize(objectToAdapt);
             var activeAwareObject = new ActiveAwareObject();
             Assert.IsFalse(activeAwareObject.IsActive);
 
@@ -95,7 +94,7 @@ namespace Microsoft.Practices.Composite.Wpf.Tests.Regions
 
         class TestableRegionAdapterBase : RegionAdapterBase<MockRegionTarget>
         {
-            public IRegion CreateRegionReturnValue = new NewMockRegion();
+            public IRegion CreateRegionReturnValue = new MockRegion();
             public IRegion AdaptArgumentRegion;
             public MockRegionTarget adaptArgumentRegionTarget;
             public IRegion AttachBehaviorsArgumentRegion;

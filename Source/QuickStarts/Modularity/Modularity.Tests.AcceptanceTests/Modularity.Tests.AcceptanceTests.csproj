@@ -7,8 +7,8 @@
     <ProjectGuid>{C936E428-85CE-4264-8FA3-C6AF5F942220}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Modularity_AcceptanceTests</RootNamespace>
-    <AssemblyName>Modularity_AcceptanceTests</AssemblyName>
+    <RootNamespace>Modularity.Tests.AcceptanceTests</RootNamespace>
+    <AssemblyName>Modularity.Tests.AcceptanceTests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids></PropertyGroup>
@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -83,7 +84,7 @@
     <Compile Include="Helpers\ApplicationEnumeration.cs" />
     <Compile Include="Helpers\ConfigHandler.cs" />
     <Compile Include="Helpers\HelperExtensions.cs" />
-    <Compile Include="Helpers\ResxConfigHandler.cs" />
+    <Compile Include="Helpers\ResXConfigHandler.cs" />
     <Compile Include="Helpers\UIItemExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestData\ControlIdentifiers.Designer.cs">

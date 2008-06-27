@@ -19,7 +19,6 @@
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="FontFamily" Value="Franklin Gothic"/>
             <Setter Property="FontSize" Value="16"/>
-            <!--<Setter Property="FontWeight" Value="Normal"/>-->
             <Setter Property="Foreground" Value="#FF77B6EB"/>
             <Setter Property="TextAlignment" Value="Left"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -28,7 +27,7 @@
     <Grid>
         <StackPanel Orientation="Horizontal">
             <TextBox Name="AddWatchTextBox" MinWidth="100"/>
-            <Button Name="AddWatchButton" DockPanel.Dock="Right" Command="{Binding}" CommandParameter="{Binding Text, ElementName=AddWatchTextBox}">Add To Watchlist</Button>
+            <Button Name="AddWatchButton" DockPanel.Dock="Right" Command="{Binding}" CommandParameter="{Binding Text, ElementName=AddWatchTextBox}">Add To Watch List</Button>
         </StackPanel>
     </Grid>
 </UserControl>

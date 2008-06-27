@@ -1,6 +1,6 @@
 //===============================================================================
 // Microsoft patterns & practices
-// Composite WPF (PRISM)
+// Composite Application Guidance for Windows Presentation Foundation
 //===============================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY
@@ -16,11 +16,8 @@
 //===============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using StockTraderRI.Infrastructure.Interfaces;
-using System.Windows.Controls;
+using MarketHistoryCollection = StockTraderRI.Infrastructure.Models.MarketHistoryCollection;
 
 namespace StockTraderRI.Modules.Position.Tests.Mocks
 {
@@ -61,7 +58,7 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
     {
         #region ITrendLineView Members
 
-        public void UpdateLineChart(StockTraderRI.Infrastructure.PresentationModels.MarketHistoryCollection historyCollection)
+        public void UpdateLineChart(MarketHistoryCollection historyCollection)
         {
             throw new NotImplementedException();
         }
