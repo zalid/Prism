@@ -1,1 +1,0 @@
-@call "Quickstarts\Modularity\DefiningModulesInCodeQuickstart\DefiningModulesInCode.sln"

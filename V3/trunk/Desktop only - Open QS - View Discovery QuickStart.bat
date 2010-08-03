@@ -1,1 +1,0 @@
-@call "Quickstarts\UI Composition\ViewDiscovery\ViewDiscoveryComposition_desktop.sln"

@@ -1,1 +1,0 @@
-@call "Quickstarts\Modularity\ConfigurationModularity\ConfigurationModularity.sln"

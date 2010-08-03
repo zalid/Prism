@@ -1,1 +1,0 @@
-@call "Quickstarts\UI Composition\ViewInjection\ViewInjectionComposition_desktop.sln"

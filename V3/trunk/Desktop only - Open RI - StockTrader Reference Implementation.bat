@@ -1,1 +1,0 @@
-@call "RI\StockTraderRI_desktop.sln"
