@@ -93,6 +93,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions.Behaviors
         /// <returns>The item contained in the <paramref name="tabItem"/> if it was generated automatically by the behavior; otherwise <paramref name="tabItem"/>.</returns>
         protected virtual object GetContainedItem(TabItem tabItem)
         {
+            if (tabItem == null) throw new ArgumentNullException("tabItem");
             if ((bool)tabItem.GetValue(IsGeneratedProperty))
             {
                 return tabItem.Content;
@@ -130,6 +131,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions.Behaviors
         /// <param name="tabItem">The container element for the item.</param>
         protected virtual void ClearContainerForItem(TabItem tabItem)
         {
+            if (tabItem == null) throw new ArgumentNullException("tabItem");
             if ((bool)tabItem.GetValue(IsGeneratedProperty))
             {
                 tabItem.Content = null;
@@ -144,6 +146,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions.Behaviors
         /// <returns>The element that is used to display the given item.</returns>
         protected virtual TabItem GetContainerForItem(object item, ItemCollection itemCollection)
         {
+            if (itemCollection == null) throw new ArgumentNullException("itemCollection");
             TabItem container = item as TabItem;
             if (container != null && ((bool)container.GetValue(IsGeneratedProperty)) == false)
             {

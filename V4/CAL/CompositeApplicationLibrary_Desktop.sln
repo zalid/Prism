@@ -20,6 +20,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.Presentation.Desk
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.TestSupport", "Desktop\Composite.TestSupport\Composite.TestSupport.csproj", "{D1C75DE6-CB2B-401A-985C-033C4FABAD84}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.MefExtensions.Desktop", "Desktop\Composite.MefExtensions\Composite.MefExtensions.Desktop.csproj", "{6ED61550-8E7A-42C6-9B30-380C6F97ED55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.MefExtensions.Desktop.Tests", "Desktop\Composite.MefExtensions.Tests\Composite.MefExtensions.Desktop.Tests.csproj", "{B9BD4B23-8163-4EF3-955F-02B9578C45BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefModulesForTesting", "Desktop\MefModulesForTesting\MefModulesForTesting.csproj", "{F6443399-3E76-4B51-964A-95A166239D56}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = CAL.vsmdi
@@ -57,6 +63,18 @@ Global
 		{D1C75DE6-CB2B-401A-985C-033C4FABAD84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1C75DE6-CB2B-401A-985C-033C4FABAD84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1C75DE6-CB2B-401A-985C-033C4FABAD84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ED61550-8E7A-42C6-9B30-380C6F97ED55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ED61550-8E7A-42C6-9B30-380C6F97ED55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ED61550-8E7A-42C6-9B30-380C6F97ED55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ED61550-8E7A-42C6-9B30-380C6F97ED55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9BD4B23-8163-4EF3-955F-02B9578C45BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9BD4B23-8163-4EF3-955F-02B9578C45BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9BD4B23-8163-4EF3-955F-02B9578C45BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9BD4B23-8163-4EF3-955F-02B9578C45BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6443399-3E76-4B51-964A-95A166239D56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6443399-3E76-4B51-964A-95A166239D56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6443399-3E76-4B51-964A-95A166239D56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6443399-3E76-4B51-964A-95A166239D56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

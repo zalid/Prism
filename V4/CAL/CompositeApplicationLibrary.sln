@@ -8,7 +8,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{97044CFC-902C-4C82-9323-AE402F8439C1}"
 	ProjectSection(SolutionItems) = preProject
 		CompositeApplicationLibrary.ruleset = CompositeApplicationLibrary.ruleset
+		Local.testsettings = Local.testsettings
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.Silverlight", "Silverlight\Composite\Composite.Silverlight.csproj", "{CC79289A-2563-40B8-895C-3CDA56BA4956}"
@@ -39,9 +41,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.TestSupport", "De
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.Silverlight.TestSupport", "Silverlight\Composite.TestSupport\Composite.Silverlight.TestSupport.csproj", "{6B49E97E-944C-40C9-B0C7-369C2B195D98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.MefExtensions.Desktop", "Desktop\Composite.MefExtensions\Composite.MefExtensions.Desktop.csproj", "{6ED61550-8E7A-42C6-9B30-380C6F97ED55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.MefExtensions.Desktop.Tests", "Desktop\Composite.MefExtensions.Tests\Composite.MefExtensions.Desktop.Tests.csproj", "{B9BD4B23-8163-4EF3-955F-02B9578C45BA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F6443399-3E76-4B51-964A-95A166239D56} = {F6443399-3E76-4B51-964A-95A166239D56}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefModulesForTesting", "Desktop\MefModulesForTesting\MefModulesForTesting.csproj", "{F6443399-3E76-4B51-964A-95A166239D56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.MefExtensions.Silverlight", "Silverlight\Composite.MefExtensions\Composite.MefExtensions.Silverlight.csproj", "{064AB5E3-6931-4505-A766-5D80963D6F1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.MefExtensions.Silverlight.Tests", "Silverlight\Composite.MefExtensions.Tests\Composite.MefExtensions.Silverlight.Tests.csproj", "{A06FF57C-016C-40AB-8CA0-FC2EF676918B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F6443399-3E76-4B51-964A-95A166239D56} = {F6443399-3E76-4B51-964A-95A166239D56}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = CAL.vsmdi
+		CategoryFile = CompositeApplicationLibrary.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +122,26 @@ Global
 		{6B49E97E-944C-40C9-B0C7-369C2B195D98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B49E97E-944C-40C9-B0C7-369C2B195D98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B49E97E-944C-40C9-B0C7-369C2B195D98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ED61550-8E7A-42C6-9B30-380C6F97ED55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ED61550-8E7A-42C6-9B30-380C6F97ED55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ED61550-8E7A-42C6-9B30-380C6F97ED55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ED61550-8E7A-42C6-9B30-380C6F97ED55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9BD4B23-8163-4EF3-955F-02B9578C45BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9BD4B23-8163-4EF3-955F-02B9578C45BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9BD4B23-8163-4EF3-955F-02B9578C45BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9BD4B23-8163-4EF3-955F-02B9578C45BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6443399-3E76-4B51-964A-95A166239D56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6443399-3E76-4B51-964A-95A166239D56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6443399-3E76-4B51-964A-95A166239D56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6443399-3E76-4B51-964A-95A166239D56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{064AB5E3-6931-4505-A766-5D80963D6F1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{064AB5E3-6931-4505-A766-5D80963D6F1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{064AB5E3-6931-4505-A766-5D80963D6F1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{064AB5E3-6931-4505-A766-5D80963D6F1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A06FF57C-016C-40AB-8CA0-FC2EF676918B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A06FF57C-016C-40AB-8CA0-FC2EF676918B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A06FF57C-016C-40AB-8CA0-FC2EF676918B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A06FF57C-016C-40AB-8CA0-FC2EF676918B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,6 +154,9 @@ Global
 		{F807062D-6FC9-4FF0-A9F5-5F94653EDC4D} = {E6DD0FDE-35EE-46FA-BDB7-1D06A10D1609}
 		{BBC4F378-C99A-4F50-B0E6-E3B97B9F22CC} = {E6DD0FDE-35EE-46FA-BDB7-1D06A10D1609}
 		{D1C75DE6-CB2B-401A-985C-033C4FABAD84} = {E6DD0FDE-35EE-46FA-BDB7-1D06A10D1609}
+		{6ED61550-8E7A-42C6-9B30-380C6F97ED55} = {E6DD0FDE-35EE-46FA-BDB7-1D06A10D1609}
+		{B9BD4B23-8163-4EF3-955F-02B9578C45BA} = {E6DD0FDE-35EE-46FA-BDB7-1D06A10D1609}
+		{F6443399-3E76-4B51-964A-95A166239D56} = {E6DD0FDE-35EE-46FA-BDB7-1D06A10D1609}
 		{CC79289A-2563-40B8-895C-3CDA56BA4956} = {8BFA7998-E5F7-465C-8C6E-8DA947EF8D98}
 		{948D0452-B1DF-473B-A616-EC7259F1C0FC} = {8BFA7998-E5F7-465C-8C6E-8DA947EF8D98}
 		{BFEE6E53-23C2-46BB-8E6B-AE6398F39BB5} = {8BFA7998-E5F7-465C-8C6E-8DA947EF8D98}
@@ -123,5 +164,7 @@ Global
 		{E0D65CA9-810F-4FEC-9CB8-D8943FF28A9D} = {8BFA7998-E5F7-465C-8C6E-8DA947EF8D98}
 		{CD653E0D-E36A-4B68-8DC3-3112E4E4C1B3} = {8BFA7998-E5F7-465C-8C6E-8DA947EF8D98}
 		{6B49E97E-944C-40C9-B0C7-369C2B195D98} = {8BFA7998-E5F7-465C-8C6E-8DA947EF8D98}
+		{064AB5E3-6931-4505-A766-5D80963D6F1C} = {8BFA7998-E5F7-465C-8C6E-8DA947EF8D98}
+		{A06FF57C-016C-40AB-8CA0-FC2EF676918B} = {8BFA7998-E5F7-465C-8C6E-8DA947EF8D98}
 	EndGlobalSection
 EndGlobal

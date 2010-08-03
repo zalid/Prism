@@ -57,6 +57,8 @@ namespace Microsoft.Practices.Composite.Modularity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Catches Exception to handle any exception thrown during the initialization process with the HandleModuleInitializationError method.")]
         public void Initialize(ModuleInfo moduleInfo)
         {
+            if (moduleInfo == null) throw new ArgumentNullException("moduleInfo");
+
             IModule moduleInstance = null;
             try
             {
@@ -83,6 +85,9 @@ namespace Microsoft.Practices.Composite.Modularity
         /// <exception cref="ModuleInitializeException"></exception>
         public virtual void HandleModuleInitializationError(ModuleInfo moduleInfo, string assemblyName, Exception exception)
         {
+            if (moduleInfo == null) throw new ArgumentNullException("moduleInfo");
+            if (exception == null) throw new ArgumentNullException("exception");
+
             Exception moduleException;
 
             if (exception is ModuleInitializeException)

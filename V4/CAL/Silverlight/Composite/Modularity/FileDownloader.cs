@@ -27,15 +27,44 @@ namespace Microsoft.Practices.Composite.Modularity
     {
         private readonly WebClient webClient = new WebClient();
 
+        private event EventHandler<DownloadProgressChangedEventArgs> _downloadProgressChanged;
+        private event EventHandler<DownloadCompletedEventArgs> _downloadCompleted;
+
         /// <summary>
-        /// Event triggered when the file download is complete.
+        /// Raised whenever the download progress changes.
+        /// </summary>
+        public event EventHandler<DownloadProgressChangedEventArgs> DownloadProgressChanged
+        {
+            add
+            {
+                if (this._downloadProgressChanged == null)
+                {
+                    this.webClient.DownloadProgressChanged += this.WebClient_DownloadProgressChanged;
+                }
+
+                this._downloadProgressChanged += value;
+            }
+
+            remove
+            {
+                this._downloadProgressChanged -= value;
+                if (this._downloadProgressChanged == null)
+                {
+                    this.webClient.DownloadProgressChanged -= this.WebClient_DownloadProgressChanged;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Raised download is complete.
         /// </summary>
         public event EventHandler<DownloadCompletedEventArgs> DownloadCompleted
         {
             add
             {
                 if (this._downloadCompleted == null)
-                {
+                {                    
                     this.webClient.OpenReadCompleted += this.WebClient_OpenReadCompleted;
                 }
                 
@@ -50,9 +79,7 @@ namespace Microsoft.Practices.Composite.Modularity
                     this.webClient.OpenReadCompleted -= this.WebClient_OpenReadCompleted;
                 }
             }
-        }
-
-        private event EventHandler<DownloadCompletedEventArgs> _downloadCompleted;
+        }                
 
         /// <summary>
         /// Starts downloading asynchronously a file from <paramref name="uri"/>.
@@ -65,8 +92,13 @@ namespace Microsoft.Practices.Composite.Modularity
         }
 
         private static DownloadCompletedEventArgs ConvertArgs(OpenReadCompletedEventArgs args)
-        {
+        {            
             return new DownloadCompletedEventArgs(args.Error == null ? args.Result : null, args.Error, args.Cancelled, args.UserState);
+        }
+
+        void WebClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            this._downloadProgressChanged(this, e);
         }
 
         private void WebClient_OpenReadCompleted(object sender, OpenReadCompletedEventArgs e)

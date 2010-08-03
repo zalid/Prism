@@ -1,1 +1,1 @@
-@call "RI\StockTraderRI.sln"
+@call "StockTrader RI\StockTraderRI.sln"

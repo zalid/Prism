@@ -1,1 +1,1 @@
-@call "RI\StockTraderRI_desktop.sln"
+@call "StockTrader RI\StockTraderRI_desktop.sln"

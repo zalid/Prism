@@ -87,6 +87,9 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Desktop\Composite.Presentation\Bootstrapper.cs">
+      <Link>Bootstrapper.cs</Link>
+    </Compile>
     <Compile Include="..\..\Desktop\Composite.Presentation\Commands\ButtonBaseClickCommandBehavior.cs">
       <Link>Commands\ButtonBaseClickCommandBehavior.cs</Link>
     </Compile>
@@ -265,7 +268,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="F807062D-6FC9-4FF0-A9F5-5F94653EDC4D" />
+      <UserProperties ProjectLinkReference="F807062D-6FC9-4FF0-A9F5-5F94653EDC4D" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

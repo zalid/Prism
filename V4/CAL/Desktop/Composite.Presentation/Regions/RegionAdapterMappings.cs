@@ -67,6 +67,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions
         /// If there is no registered type for <paramref name="controlType"/> or any of its ancestors,
         /// an exception will be thrown.</remarks>
         /// <exception cref="KeyNotFoundException">When there is no registered type for <paramref name="controlType"/> or any of its ancestors.</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "controlType")]
         public IRegionAdapter GetMapping(Type controlType)
         {
             Type currentType = controlType;

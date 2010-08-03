@@ -32,8 +32,11 @@ namespace Microsoft.Practices.Composite
         /// <param name="locator">Locator to use in resolving.</param>
         /// <param name="type">Type to resolve.</param>
         /// <returns>T or null</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="locator"/> is <see langword="null"/>.</exception>
         public static object TryResolve(this IServiceLocator locator, Type type)
         {
+            if (locator == null) throw new ArgumentNullException("locator");
+
             try
             {
                 return locator.GetInstance(type);
@@ -53,7 +56,7 @@ namespace Microsoft.Practices.Composite
         /// <param name="locator">Locator to use in resolving.</param>
         /// <returns>T or null</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
-        public static T TryResolve<T>(this IServiceLocator locator) where T: class
+        public static T TryResolve<T>(this IServiceLocator locator) where T : class
         {
             return locator.TryResolve(typeof(T)) as T;
         }

@@ -44,6 +44,9 @@ namespace Microsoft.Practices.Composite.Presentation.Regions
         /// <param name="regionTarget">The object to adapt.</param>
         protected override void Adapt(IRegion region, ItemsControl regionTarget)
         {
+            if (region == null) throw new ArgumentNullException("region");
+            if (regionTarget == null) throw new ArgumentNullException("regionTarget");
+
             bool itemsSourceIsSet = regionTarget.ItemsSource != null;
 #if !SILVERLIGHT
             itemsSourceIsSet = itemsSourceIsSet || (BindingOperations.GetBinding(regionTarget, ItemsControl.ItemsSourceProperty) != null);

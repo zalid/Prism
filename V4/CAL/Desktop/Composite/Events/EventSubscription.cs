@@ -118,8 +118,11 @@ namespace Microsoft.Practices.Composite.Events
         /// </summary>
         /// <param name="action">The action to execute.</param>
         /// <param name="argument">The payload to pass <paramref name="action"/> while invoking it.</param>
+        /// <exception cref="ArgumentNullException">An <see cref="ArgumentNullException"/> is thrown if <paramref name="action"/> is null.</exception>
         public virtual void InvokeAction(Action<TPayload> action, TPayload argument)
         {
+            if (action == null) throw new System.ArgumentNullException("action");
+            
             action(argument);
         }
     }

@@ -20,6 +20,7 @@ using System.Reflection;
 using System.Threading;
 using Microsoft.Practices.Composite.Modularity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Net;
 
 namespace Microsoft.Practices.Composite.Tests.Modularity
 {
@@ -34,7 +35,7 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
             var moduleInfo = new ModuleInfo() { Ref = remoteModuleUri };
             XapModuleTypeLoader typeLoader = new TestableXapModuleTypeLoader(mockFileDownloader);
 
-            typeLoader.BeginLoadModuleType(moduleInfo, delegate { });
+            typeLoader.LoadModuleType(moduleInfo);
 
             Assert.IsTrue(mockFileDownloader.DownloadAsyncCalled);
             Assert.AreEqual(remoteModuleUri, mockFileDownloader.downloadAsyncArgumentUri.OriginalString);
@@ -49,13 +50,14 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
             XapModuleTypeLoader typeLoader = new TestableXapModuleTypeLoader(mockFileDownloader);
             ManualResetEvent callbackEvent = new ManualResetEvent(false);
             Exception error = null;
-            typeLoader.BeginLoadModuleType(
-                moduleInfo,
-                delegate(ModuleInfo callbackModuleInfo, Exception moduleError)
-                {
-                    error = moduleError;
-                    callbackEvent.Set();
-                });
+
+            typeLoader.LoadModuleCompleted += delegate(object sender, LoadModuleCompletedEventArgs e)
+            {
+                error = e.Error;
+                callbackEvent.Set();
+            };
+
+            typeLoader.LoadModuleType(moduleInfo);
             mockFileDownloader.InvokeOpenReadCompleted(new DownloadCompletedEventArgs(null, new InvalidOperationException("Mock Ex"), false, mockFileDownloader.DownloadAsyncArgumentUserToken));
             Assert.IsTrue(callbackEvent.WaitOne(500));
 
@@ -76,12 +78,13 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
             var moduleInfo = new ModuleInfo() { Ref = remoteModuleUri };
             XapModuleTypeLoader typeLoader = new TestableXapModuleTypeLoader(mockFileDownloader);
             ManualResetEvent callbackEvent = new ManualResetEvent(false);
-            typeLoader.BeginLoadModuleType(
-                moduleInfo,
-                delegate
-                {
-                    callbackEvent.Set();
-                });
+
+            typeLoader.LoadModuleCompleted += delegate(object sender, LoadModuleCompletedEventArgs e)
+            {
+                callbackEvent.Set();
+            };
+
+            typeLoader.LoadModuleType(moduleInfo);
 
             Assert.IsNull(Type.GetType(moduleTypeName));
 
@@ -101,43 +104,12 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
             var moduleInfo2 = new ModuleInfo() { Ref = remoteModuleUri };
             XapModuleTypeLoader typeLoader = new TestableXapModuleTypeLoader(mockFileDownloader);
 
-            typeLoader.BeginLoadModuleType(moduleInfo1, delegate { });
+            typeLoader.LoadModuleType(moduleInfo1);
             mockFileDownloader.DownloadAsyncCalled = false;
-            typeLoader.BeginLoadModuleType(moduleInfo2, delegate { });
+            typeLoader.LoadModuleType(moduleInfo2);
 
             Assert.IsFalse(mockFileDownloader.DownloadAsyncCalled);
-        }
-
-        [TestMethod]
-        public void ShouldFireAllCallbacksCorrespondingToSameUri()
-        {
-            var mockFileDownloader = new MockFileDownloader();
-            var remoteModuleUri = "http://MyPackage.xap";
-            var moduleInfo1 = new ModuleInfo() { Ref = remoteModuleUri };
-            var moduleInfo2 = new ModuleInfo() { Ref = remoteModuleUri };
-
-            XapModuleTypeLoader typeLoader = new TestableXapModuleTypeLoader(mockFileDownloader);
-            bool callback1Called = false;
-            bool callback2Called = false;
-            ModuleInfo callbackModuleInfo1 = null;
-            typeLoader.BeginLoadModuleType(moduleInfo1, (m, e) =>
-                                                           {
-                                                               callbackModuleInfo1 = m;
-                                                               callback1Called = true;
-                                                           });
-            ModuleInfo callbackModuleInfo2 = null;
-            typeLoader.BeginLoadModuleType(moduleInfo2, (m, e) =>
-                                                           {
-                                                               callbackModuleInfo2 = m;
-                                                               callback2Called = true;
-                                                           });
-            mockFileDownloader.InvokeOpenReadCompleted(new DownloadCompletedEventArgs(null, new Exception("Mock Ex"), false, mockFileDownloader.DownloadAsyncArgumentUserToken));
-
-            Assert.IsTrue(callback1Called);
-            Assert.IsTrue(callback2Called);
-            Assert.AreSame(moduleInfo1, callbackModuleInfo1);
-            Assert.AreSame(moduleInfo2, callbackModuleInfo2);
-        }
+        }        
     }
 
     internal class TestableXapModuleTypeLoader : XapModuleTypeLoader
@@ -160,6 +132,8 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
         public bool DownloadAsyncCalled;
         public Uri downloadAsyncArgumentUri;
         public object DownloadAsyncArgumentUserToken;
+
+        public event EventHandler<DownloadProgressChangedEventArgs> DownloadProgressChanged;
 
         public event EventHandler<DownloadCompletedEventArgs> DownloadCompleted;
 

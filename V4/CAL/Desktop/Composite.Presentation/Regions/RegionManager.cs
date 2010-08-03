@@ -66,6 +66,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions
         /// <param name="regionName">The name of the region to register.</param>
         public static void SetRegionName(DependencyObject regionTarget, string regionName)
         {
+            if (regionTarget == null) throw new ArgumentNullException("regionTarget");
             regionTarget.SetValue(RegionNameProperty, regionName);
         }
 
@@ -77,6 +78,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions
         /// <see cref="RegionManagerProperty"/> is also set in this element.</returns>
         public static string GetRegionName(DependencyObject regionTarget)
         {
+            if (regionTarget == null) throw new ArgumentNullException("regionTarget");
             return regionTarget.GetValue(RegionNameProperty) as string;
         }
 
@@ -96,6 +98,8 @@ namespace Microsoft.Practices.Composite.Presentation.Regions
         /// <returns>Wrapper that can hold an <see cref="IRegion"/> value and can notify when the <see cref="IRegion"/> value changes. </returns>
         public static ObservableObject<IRegion> GetObservableRegion(DependencyObject view)
         {
+            if (view == null) throw new ArgumentNullException("view");
+
             ObservableObject<IRegion> regionWrapper = view.GetValue(ObservableRegionProperty) as ObservableObject<IRegion>;
 
             if (regionWrapper == null)
@@ -144,6 +148,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions
         /// <returns>The <see cref="IRegionManager"/> attached to the <paramref name="target"/> element.</returns>
         public static IRegionManager GetRegionManager(DependencyObject target)
         {
+            if (target == null) throw new ArgumentNullException("target");
             return (IRegionManager)target.GetValue(RegionManagerProperty);
         }
 
@@ -154,6 +159,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions
         /// <param name="value">The value.</param>
         public static void SetRegionManager(DependencyObject target, IRegionManager value)
         {
+            if (target == null) throw new ArgumentNullException("target");
             target.SetValue(RegionManagerProperty, value);
         }
 
@@ -178,6 +184,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions
         /// <returns>The region context to pass to the contained views.</returns>
         public static object GetRegionContext(DependencyObject target)
         {
+            if (target == null) throw new ArgumentNullException("target");
             return target.GetValue(RegionContextProperty);
         }
 
@@ -188,6 +195,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions
         /// <param name="value">The value.</param>
         public static void SetRegionContext(DependencyObject target, object value)
         {
+            if (target == null) throw new ArgumentNullException("target");
             target.SetValue(RegionContextProperty, value);
         }
 
@@ -303,6 +311,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions
 
             public void Add(IRegion region)
             {
+                if (region == null) throw new ArgumentNullException("region");
                 UpdateRegions();
 
                 if (region.Name == null)

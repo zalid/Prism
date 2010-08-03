@@ -21,30 +21,45 @@ using Microsoft.Practices.Composite.Modularity;
 namespace Microsoft.Practices.Composite.Tests.Mocks
 {
     public class MockModuleTypeLoader : IModuleTypeLoader
-    {
-        private readonly Dictionary<ModuleInfo, ModuleTypeLoadedCallback> callbacks = new Dictionary<ModuleInfo, ModuleTypeLoadedCallback>();
-        public List<ModuleInfo> beginLoadModuleTypeCalls = new List<ModuleInfo>();
+    {        
+        public List<ModuleInfo> LoadedModules = new List<ModuleInfo>();
         public bool canLoadModuleTypeReturnValue = true;
-
-        public void BeginLoadModuleType(ModuleInfo moduleInfo, ModuleTypeLoadedCallback callback)
-        {
-            beginLoadModuleTypeCalls.Add(moduleInfo);
-            this.callbacks[moduleInfo] = callback;
-        }
-
-        public void RaiseCallbackForModule(ModuleInfo moduleInfo)
-        {
-            this.callbacks[moduleInfo](moduleInfo, null);
-        }
-
-        public void RaiseCallbackForModule(ModuleInfo moduleInfo, Exception error)
-        {
-            this.callbacks[moduleInfo](moduleInfo, error);
-        }
+        public Exception LoadCompletedError;
 
         public bool CanLoadModuleType(ModuleInfo moduleInfo)
         {
             return canLoadModuleTypeReturnValue;
+        }
+
+        public void LoadModuleType(ModuleInfo moduleInfo)
+        {
+            this.LoadedModules.Add(moduleInfo);
+            this.RaiseLoadModuleCompleted(new LoadModuleCompletedEventArgs(moduleInfo, this.LoadCompletedError));
+        }
+
+        public event EventHandler<ModuleDownloadProgressChangedEventArgs> ModuleDownloadProgressChanged;
+
+        public void RaiseLoadModuleProgressChanged(ModuleDownloadProgressChangedEventArgs e)
+        {
+            if (this.ModuleDownloadProgressChanged != null)
+            {
+                this.ModuleDownloadProgressChanged(this, e);
+            }
+        }
+
+        public event EventHandler<LoadModuleCompletedEventArgs> LoadModuleCompleted;
+
+        public void RaiseLoadModuleCompleted(ModuleInfo moduleInfo, Exception error)
+        {
+            this.RaiseLoadModuleCompleted(new LoadModuleCompletedEventArgs(moduleInfo, error));
+        }
+
+        public void RaiseLoadModuleCompleted(LoadModuleCompletedEventArgs e)
+        {
+            if (this.LoadModuleCompleted != null)
+            {                
+                this.LoadModuleCompleted(this, e);
+            }
         }
     }
 }

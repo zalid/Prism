@@ -19,428 +19,199 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using Microsoft.Practices.Composite.Events;
 using Microsoft.Practices.Composite.Logging;
 using Microsoft.Practices.Composite.Modularity;
 using Microsoft.Practices.Composite.Presentation.Regions;
-using Microsoft.Practices.Composite.Presentation.Regions.Behaviors;
 using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Composite.UnityExtensions.Tests.Mocks;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Practices.Composite.TestSupport;
+using Moq;
 
 namespace Microsoft.Practices.Composite.UnityExtensions.Tests
 {
     [TestClass]
-    public class UnityBootstrapperFixture
+    public class UnityBootstrapperFixture: BootstrapperFixtureBase
     {
+        [TestMethod]
+        public void ContainerDefaultsToNull()
+        {
+            var bootstrapper = new DefaultUnityBootstrapper();
+            var container = bootstrapper.BaseContainer;
+
+            Assert.IsNull(container);
+        }
+
         [TestMethod]
         public void CanCreateConcreteBootstrapper()
         {
-            new DefaultBootstrapper();
+            new DefaultUnityBootstrapper();
         }
 
         [TestMethod]
-        public void CanRunBootstrapper()
+        public void CreateContainerShouldInitializeContainer()
         {
-            var bootstrapper = new DefaultBootstrapper();
-            bootstrapper.Run();
-        }
+            var bootstrapper = new DefaultUnityBootstrapper();
 
-        [TestMethod]
-        public void ShouldInitializeContainer()
-        {
-            var bootstrapper = new DefaultBootstrapper();
-            var container = bootstrapper.GetBaseContainer();
-
-            Assert.IsNull(container);
-
-            bootstrapper.Run();
-
-            container = bootstrapper.GetBaseContainer();
+            IUnityContainer container = bootstrapper.CallCreateContainer();
 
             Assert.IsNotNull(container);
-            Assert.IsInstanceOfType(container, typeof(UnityContainer));
+            Assert.IsInstanceOfType(container, typeof(IUnityContainer));
         }
 
         [TestMethod]
-        public void ShouldCallInitializeModules()
+        public void ConfigureContainerAddsModuleCatalogToContainer()
         {
-            var bootstrapper = new DefaultBootstrapper();
+            var bootstrapper = new DefaultUnityBootstrapper();
             bootstrapper.Run();
 
-            Assert.IsTrue(bootstrapper.InitializeModulesCalled);
+            var returnedCatalog = bootstrapper.BaseContainer.Resolve<IModuleCatalog>();
+            Assert.IsNotNull(returnedCatalog);
+            Assert.IsTrue(returnedCatalog is ModuleCatalog);
         }
 
         [TestMethod]
-        public void ShouldRegisterDefaultMappings()
+        public void ConfigureContainerAddsLoggerFacadeToContainer()
         {
-            var bootstrapper = new DefaultBootstrapper();
+            var bootstrapper = new DefaultUnityBootstrapper();
             bootstrapper.Run();
 
-            Assert.IsNotNull(bootstrapper.DefaultRegionAdapterMappings);
-            Assert.IsNotNull(bootstrapper.DefaultRegionAdapterMappings.GetMapping(typeof(ItemsControl)));
-            Assert.IsNotNull(bootstrapper.DefaultRegionAdapterMappings.GetMapping(typeof(ContentControl)));
-            Assert.IsNotNull(bootstrapper.DefaultRegionAdapterMappings.GetMapping(typeof(Selector)));
-#if SILVERLIGHT
-            Assert.IsNotNull(bootstrapper.DefaultRegionAdapterMappings.GetMapping(typeof(TabControl)));
-#endif
+            var returnedCatalog = bootstrapper.BaseContainer.Resolve<ILoggerFacade>();
+            Assert.IsNotNull(returnedCatalog);
         }
 
         [TestMethod]
-        public void ShouldRegisterDefaultRegionBehaviorTypes()
+        public void RegisterFrameworkExceptionTypesShouldRegisterActivationException()
         {
-            var bootstrapper = new DefaultBootstrapper();
-            bootstrapper.Run();
+            var bootstrapper = new DefaultUnityBootstrapper();
 
-            Assert.IsTrue(bootstrapper.DefaultRegionBehaviorTypes.ContainsKey(AutoPopulateRegionBehavior.BehaviorKey));
-
-            Assert.IsTrue(bootstrapper.DefaultRegionBehaviorTypes.ContainsKey(BindRegionContextToDependencyObjectBehavior.BehaviorKey));
-
-            Assert.IsTrue(bootstrapper.DefaultRegionBehaviorTypes.ContainsKey(RegionActiveAwareBehavior.BehaviorKey));
-
-            Assert.IsTrue(bootstrapper.DefaultRegionBehaviorTypes.ContainsKey(SyncRegionContextWithHostBehavior.BehaviorKey));
-
-            Assert.IsTrue(bootstrapper.DefaultRegionBehaviorTypes.ContainsKey(RegionManagerRegistrationBehavior.BehaviorKey));
-
-            Assert.AreEqual(5, bootstrapper.DefaultRegionBehaviorTypes.Count());
-        }
-
-        [TestMethod]
-        public void ShouldCallConfigureRegionAdapterMappings()
-        {
-            var bootstrapper = new DefaultBootstrapper();
-
-            bootstrapper.Run();
-
-            Assert.IsTrue(bootstrapper.ConfigureRegionAdapterMappingsCalled);
-        }
-
-        [TestMethod]
-        public void ShouldAssignRegionManagerToReturnedShell()
-        {
-            var bootstrapper = new DefaultBootstrapper();
-            var shell = new UserControl();
-            bootstrapper.CreateShellReturnValue = shell;
-
-            Assert.IsNull(RegionManager.GetRegionManager(shell));
-
-            bootstrapper.Run();
-
-            Assert.IsNotNull(RegionManager.GetRegionManager(shell));
-        }
-
-        [TestMethod]
-        public void ShouldCallGetLogger()
-        {
-            var bootstrapper = new DefaultBootstrapper();
-
-            bootstrapper.Run();
-
-            Assert.IsTrue(bootstrapper.GetLoggerCalled);
-        }
-
-        [TestMethod]
-        public void ShouldCallGetCatalog()
-        {
-            var bootstrapper = new DefaultBootstrapper();
-
-            bootstrapper.Run();
-
-            Assert.IsTrue(bootstrapper.GetModuleCatalogCalled);
-        }
-
-        [TestMethod]
-        public void ShouldCallCreateShell()
-        {
-            var bootstrapper = new DefaultBootstrapper();
-
-            bootstrapper.Run();
-
-            Assert.IsTrue(bootstrapper.CreateShellCalled);
-        }
-
-        [TestMethod]
-        public void ShouldCallConfigureTypeMappings()
-        {
-            var bootstrapper = new DefaultBootstrapper();
-
-            bootstrapper.Run();
-
-            Assert.IsTrue(bootstrapper.ConfigureContainerCalled);
-        }
-
-        [TestMethod]
-        public void NullLoggerThrows()
-        {
-            var bootstrapper = new DefaultBootstrapper();
-            bootstrapper.ReturnNullDefaultLogger = true;
-
-            AssertExceptionThrownOnRun(bootstrapper, typeof(InvalidOperationException), "ILoggerFacade");
-        }
-
-        [TestMethod]
-        public void NullModuleCatalogThrowsOnDefaultModuleInitialization()
-        {
-            var bootstrapper = new DefaultBootstrapper();
-            bootstrapper.ModuleCatalog = null;
-
-            AssertExceptionThrownOnRun(bootstrapper, typeof(InvalidOperationException), "IModuleCatalog");
-        }
-
-        [TestMethod]
-        public void NotOvewrittenGetModuleCatalogThrowsOnDefaultModuleInitialization()
-        {
-            var bootstrapper = new DefaultBootstrapper();
-            bootstrapper.OverrideGetModuleCatalog = false;
-
-            AssertExceptionThrownOnRun(bootstrapper, typeof(InvalidOperationException), "IModuleCatalog");
-        }
-
-        [TestMethod]
-        public void GetLoggerShouldHaveDefault()
-        {
-            var bootstrapper = new DefaultBootstrapper();
-            Assert.IsNull(bootstrapper.DefaultLogger);
-            bootstrapper.Run();
-
-            Assert.IsNotNull(bootstrapper.DefaultLogger);
-            Assert.IsInstanceOfType(bootstrapper.DefaultLogger, typeof(TextLogger));
-        }
-
-        [TestMethod]
-        public void ShouldNotFailIfReturnedNullShell()
-        {
-            var bootstrapper = new DefaultBootstrapper();
-            bootstrapper.CreateShellReturnValue = null;
-            bootstrapper.Run();
-        }
-
-        [TestMethod]
-        public void ShouldRegisterDefaultTypeMappings()
-        {
-            var bootstrapper = new MockedBootstrapper();
-
-            bootstrapper.MockUnityContainer.ResolveBag.Add(typeof(UnityBootstrapperExtension), new UnityBootstrapperExtension());
-            bootstrapper.MockUnityContainer.ResolveBag.Add(typeof(IModuleCatalog), bootstrapper.ModuleCatalog);
-			bootstrapper.MockUnityContainer.ResolveBag.Add(typeof(IModuleInitializer), new MockModuleInitializer());
-			bootstrapper.MockUnityContainer.ResolveBag.Add(typeof(IModuleManager), new MockModuleManager());
-
-            bootstrapper.Run();
-
-            Assert.IsTrue(bootstrapper.MockUnityContainer.Instances.ContainsKey(typeof(ILoggerFacade)));
-            Assert.AreSame(bootstrapper.Logger, bootstrapper.MockUnityContainer.Instances[typeof(ILoggerFacade)]);
-
-            Assert.IsTrue(bootstrapper.MockUnityContainer.Types.ContainsKey(typeof(IServiceLocator)));
-            Assert.AreEqual(typeof(UnityServiceLocatorAdapter), bootstrapper.MockUnityContainer.Types[typeof(IServiceLocator)]);
-
-            Assert.IsTrue(bootstrapper.MockUnityContainer.Types.ContainsKey(typeof(IModuleInitializer)));
-            Assert.AreEqual(typeof(ModuleInitializer), bootstrapper.MockUnityContainer.Types[typeof(IModuleInitializer)]);
-
-            Assert.IsTrue(bootstrapper.MockUnityContainer.Instances.ContainsKey(typeof(IModuleCatalog)));
-            Assert.AreSame(bootstrapper.ModuleCatalog, bootstrapper.MockUnityContainer.Instances[typeof(IModuleCatalog)]);
-
-            Assert.IsTrue(bootstrapper.MockUnityContainer.Types.ContainsKey(typeof(IRegionManager)));
-            Assert.AreEqual(typeof(RegionManager), bootstrapper.MockUnityContainer.Types[typeof(IRegionManager)]);
-
-            Assert.IsTrue(bootstrapper.MockUnityContainer.Types.ContainsKey(typeof(RegionAdapterMappings)));
-            Assert.AreEqual(typeof(RegionAdapterMappings), bootstrapper.MockUnityContainer.Types[typeof(RegionAdapterMappings)]);
-
-            Assert.IsTrue(bootstrapper.MockUnityContainer.Types.ContainsKey(typeof(IRegionViewRegistry)));
-            Assert.AreEqual(typeof(RegionViewRegistry), bootstrapper.MockUnityContainer.Types[typeof(IRegionViewRegistry)]);
-
-            Assert.IsTrue(bootstrapper.MockUnityContainer.Types.ContainsKey(typeof(IRegionBehaviorFactory)));
-            Assert.AreEqual(typeof(RegionBehaviorFactory), bootstrapper.MockUnityContainer.Types[typeof(IRegionBehaviorFactory)]);
-
-            Assert.IsTrue(bootstrapper.MockUnityContainer.Types.ContainsKey(typeof(IEventAggregator)));
-            Assert.AreEqual(typeof(EventAggregator), bootstrapper.MockUnityContainer.Types[typeof(IEventAggregator)]);
-
-            Assert.AreEqual(8, bootstrapper.MockUnityContainer.Types.Count);
-
-        }
-
-        [TestMethod]
-		public void ShouldCallRunOnModuleManager()
-        {
-            var bootstrapper = new MockedBootstrapper();
-            bootstrapper.MockUnityContainer.ResolveBag.Add(typeof(UnityBootstrapperExtension), new UnityBootstrapperExtension());
-            
-            var moduleManager = new MockModuleManager();
-            bootstrapper.MockUnityContainer.ResolveBag.Add(typeof(IModuleManager), moduleManager);
-            
-            bootstrapper.Run();
-
-            Assert.IsTrue(moduleManager.RunCalled);
-        }
-
-        [TestMethod]
-        public void ReturningNullContainerThrows()
-        {
-            var bootstrapper = new MockedBootstrapper();
-            bootstrapper.MockUnityContainer = null;
-
-            AssertExceptionThrownOnRun(bootstrapper, typeof(InvalidOperationException), "IUnityContainer");
-        }
-
-        [TestMethod]
-        public void ShouldCallTheMethodsInOrder()
-        {
-            var bootstrapper = new TestableOrderedBootstrapper();
-            bootstrapper.Run();
-
-            Assert.IsTrue(CompareOrder("LoggerFacade", "CreateContainer", bootstrapper.OrderedMethodCallList) < 0);
-            Assert.IsTrue(CompareOrder("CreateContainer", "ConfigureContainer", bootstrapper.OrderedMethodCallList) < 0);
-            Assert.IsTrue(CompareOrder("ConfigureContainer", "GetModuleCatalog", bootstrapper.OrderedMethodCallList) < 0);
-            Assert.IsTrue(CompareOrder("GetModuleCatalog", "ConfigureRegionAdapterMappings", bootstrapper.OrderedMethodCallList) < 0);
-            Assert.IsTrue(CompareOrder("ConfigureRegionAdapterMappings", "CreateShell", bootstrapper.OrderedMethodCallList) < 0);
-            Assert.IsTrue(CompareOrder("CreateShell", "InitializeModules", bootstrapper.OrderedMethodCallList) < 0);
-        }
-
-        [TestMethod]
-        public void ShouldLogBootstrapperSteps()
-        {
-            var bootstrapper = new TestableOrderedBootstrapper();
-            bootstrapper.Run();
-            var messages = bootstrapper.Logger.Messages;
-
-            Assert.IsNotNull(messages.FirstOrDefault(msg => msg.Contains("Creating Unity container")));
-            Assert.IsNotNull(messages.FirstOrDefault(msg => msg.Contains("Configuring container")));
-            Assert.IsNotNull(messages.FirstOrDefault(msg => msg.Contains("Configuring region adapters")));
-            Assert.IsNotNull(messages.FirstOrDefault(msg => msg.Contains("Creating shell")));
-            Assert.IsNotNull(messages.FirstOrDefault(msg => msg.Contains("Initializing modules")));
-            Assert.IsNotNull(messages.FirstOrDefault(msg => msg.Contains("Bootstrapper sequence completed")));
-        }
-
-        [TestMethod]
-        public void ShouldNotRegisterDefaultServicesAndTypes()
-        {
-            var bootstrapper = new NonconfiguredBootstrapper();
-            bootstrapper.Run(false);
-#if !SILVERLIGHT
-            Assert.IsFalse(bootstrapper.HasRegisteredType(typeof(IEventAggregator)));
-#endif
-            Assert.IsFalse(bootstrapper.HasRegisteredType(typeof(IRegionManager)));
-            Assert.IsFalse(bootstrapper.HasRegisteredType(typeof(RegionAdapterMappings)));
-            Assert.IsFalse(bootstrapper.HasRegisteredType(typeof(IServiceLocator)));
-            Assert.IsFalse(bootstrapper.HasRegisteredType(typeof(IModuleInitializer)));
-        }
-
-        [TestMethod]
-        public void ShoudLogRegisterTypeIfMissingMessage()
-        {
-            var bootstrapper = new TestableOrderedBootstrapper();
-            bootstrapper.AddCustomTypeMappings = true;
-            bootstrapper.Run();
-            var messages = bootstrapper.Logger.Messages;
-
-            Assert.IsNotNull(messages.FirstOrDefault(msg => msg.Contains("Type 'IRegionManager' was already registered by the application")));
-        }
-
-        [TestMethod]
-        public void ShouldRegisterFrameworkExceptionTypes()
-        {
-            var bootstrapper = new DefaultBootstrapper();
-            bootstrapper.Run();
+            bootstrapper.CallRegisterFrameworkExceptionTypes();
 
             Assert.IsTrue(ExceptionExtensions.IsFrameworkExceptionRegistered(
-                typeof (Microsoft.Practices.ServiceLocation.ActivationException)));
+                typeof(Microsoft.Practices.ServiceLocation.ActivationException)));
+        }
+
+        [TestMethod]
+        public void RegisterFrameworkExceptionTypesShouldRegisterResolutionFailedException()
+        {
+            var bootstrapper = new DefaultUnityBootstrapper();
+
+            bootstrapper.CallRegisterFrameworkExceptionTypes();
 
             Assert.IsTrue(ExceptionExtensions.IsFrameworkExceptionRegistered(
                 typeof(Microsoft.Practices.Unity.ResolutionFailedException)));
         }
-
-        private static int CompareOrder(string firstString, string secondString, IList<string> list)
-        {
-            return list.IndexOf(firstString).CompareTo(list.IndexOf(secondString));
-        }
-
-        private static void AssertExceptionThrownOnRun(UnityBootstrapper bootstrapper, Type expectedExceptionType, string expectedExceptionMessageSubstring)
-        {
-            bool exceptionThrown = false;
-            try
-            {
-                bootstrapper.Run();
-            }
-            catch (Exception ex)
-            {
-                Assert.AreEqual(expectedExceptionType, ex.GetType());
-                StringAssert.Contains(ex.Message, expectedExceptionMessageSubstring);
-                exceptionThrown = true;
-            }
-
-            if (!exceptionThrown)
-            {
-                Assert.Fail("Exception not thrown.");
-            }
-        }
     }
 
-    internal class MockModuleManager : IModuleManager
+    internal class DefaultUnityBootstrapper : UnityBootstrapper
     {
-        public bool RunCalled;
+        public List<string> MethodCalls = new List<string>();
+        public bool InitializeModulesCalled;
+        public bool ConfigureRegionAdapterMappingsCalled;
+        public RegionAdapterMappings DefaultRegionAdapterMappings;
+        public bool CreateLoggerCalled;
+        public bool CreateModuleCatalogCalled;
+        public bool ConfigureContainerCalled;
+        public bool CreateShellCalled;
+        public bool CreateContainerCalled;
+        public bool ConfigureModuleCatalogCalled;
+        public bool InitializeShellCalled;
+        public bool ConfigureServiceLocatorCalled;
+        public bool ConfigureDefaultRegionBehaviorsCalled;
+        public DependencyObject ShellObject = new UserControl();
 
-        public void Run()
+        public DependencyObject BaseShell
         {
-            RunCalled = true;
+            get { return base.Shell; }
+        }
+        public IUnityContainer BaseContainer
+        {
+            get { return base.Container; }
+            set { base.Container = value; }
         }
 
-        public void LoadModule(string moduleName)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
+        public MockLoggerAdapter BaseLogger
+        { get { return base.Logger as MockLoggerAdapter; } }
 
-    class NonconfiguredBootstrapper : UnityBootstrapper
-    {
-        private MockUnityContainer mockContainer;
-
-        protected override void InitializeModules()
+        public IUnityContainer CallCreateContainer()
         {
+            return this.CreateContainer();
         }
 
         protected override IUnityContainer CreateContainer()
         {
-            mockContainer = new MockUnityContainer();
-            mockContainer.ResolveBag.Add(typeof(UnityBootstrapperExtension), new UnityBootstrapperExtension());
+            this.MethodCalls.Add(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            this.CreateContainerCalled = true;
+            return base.CreateContainer();
+        }
 
-            return mockContainer;
+        protected override void ConfigureContainer()
+        {
+            this.MethodCalls.Add(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            this.ConfigureContainerCalled = true;
+            base.ConfigureContainer();
+        }
+
+        protected override ILoggerFacade CreateLogger()
+        {
+            this.MethodCalls.Add(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            this.CreateLoggerCalled = true;
+            return new MockLoggerAdapter();
         }
 
         protected override DependencyObject CreateShell()
         {
-            return null;
+            this.MethodCalls.Add(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            this.CreateShellCalled = true;
+            return ShellObject;
         }
 
-        public bool HasRegisteredType(Type t)
+        protected override void ConfigureServiceLocator()
         {
-            return mockContainer.Types.ContainsKey(t);
+            this.MethodCalls.Add(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            this.ConfigureServiceLocatorCalled = true;
+            base.ConfigureServiceLocator();
         }
-    }
+        protected override IModuleCatalog CreateModuleCatalog()
+        {
+            this.MethodCalls.Add(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            this.CreateModuleCatalogCalled = true;
+            return base.CreateModuleCatalog();
+        }
 
-    internal class DefaultBootstrapper : UnityBootstrapper
-    {
-        public bool GetEnumeratorCalled;
-        public bool GetLoggerCalled;
-        public bool InitializeModulesCalled;
-        public bool CreateShellCalled;
-        public bool ReturnNullDefaultLogger;
-        public bool OverrideGetModuleCatalog = true;
-        public IModuleCatalog ModuleCatalog = new MockModuleCatalog();
-        public ILoggerFacade DefaultLogger;
-        public DependencyObject CreateShellReturnValue;
-        public bool ConfigureContainerCalled;
-        public bool GetModuleCatalogCalled;
-        public bool ConfigureRegionAdapterMappingsCalled;
-        public RegionAdapterMappings DefaultRegionAdapterMappings;
-        public IRegionBehaviorFactory DefaultRegionBehaviorTypes;
+        protected override void ConfigureModuleCatalog()
+        {
+            this.MethodCalls.Add(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            this.ConfigureModuleCatalogCalled = true;
+            base.ConfigureModuleCatalog();
+        }
 
-        public bool ConfigureDefaultRegionBehaviorsCalled;
+        protected override void InitializeShell()
+        {
+            this.MethodCalls.Add(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            this.InitializeShellCalled = true;
+            // no op
+        }
+
+        protected override void InitializeModules()
+        {
+            this.MethodCalls.Add(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            this.InitializeModulesCalled = true;
+            base.InitializeModules();
+        }
+
+        protected override IRegionBehaviorFactory ConfigureDefaultRegionBehaviors()
+        {
+            this.MethodCalls.Add(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            this.ConfigureDefaultRegionBehaviorsCalled = true;
+            return base.ConfigureDefaultRegionBehaviors();
+        }
 
         protected override RegionAdapterMappings ConfigureRegionAdapterMappings()
         {
+            this.MethodCalls.Add(System.Reflection.MethodBase.GetCurrentMethod().Name);
             ConfigureRegionAdapterMappingsCalled = true;
             var regionAdapterMappings = base.ConfigureRegionAdapterMappings();
 
@@ -449,180 +220,16 @@ namespace Microsoft.Practices.Composite.UnityExtensions.Tests
             return regionAdapterMappings;
         }
 
-        protected override IRegionBehaviorFactory ConfigureDefaultRegionBehaviors()
+        protected override void RegisterFrameworkExceptionTypes()
         {
-            ConfigureDefaultRegionBehaviorsCalled = true;
-            this.DefaultRegionBehaviorTypes = base.ConfigureDefaultRegionBehaviors();
-            return this.DefaultRegionBehaviorTypes;
+            this.MethodCalls.Add(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            base.RegisterFrameworkExceptionTypes();
         }
 
-        public IUnityContainer GetBaseContainer()
+        public void CallRegisterFrameworkExceptionTypes()
         {
-            return base.Container;
-        }
-
-        protected override void ConfigureContainer()
-        {
-            ConfigureContainerCalled = true;
-            base.ConfigureContainer();
-        }
-
-        protected override IModuleCatalog GetModuleCatalog()
-        {
-            GetModuleCatalogCalled = true;
-            if (OverrideGetModuleCatalog)
-            {
-                return ModuleCatalog;
-            }
-            else
-            {
-                return base.GetModuleCatalog();
-            }
-        }
-
-        protected override ILoggerFacade LoggerFacade
-        {
-            get
-            {
-                GetLoggerCalled = true;
-                if (ReturnNullDefaultLogger)
-                {
-                    return null;
-                }
-                else
-                {
-                    DefaultLogger = base.LoggerFacade;
-                    return DefaultLogger;
-                }
-            }
-        }
-
-        protected override void InitializeModules()
-        {
-            InitializeModulesCalled = true;
-            base.InitializeModules();
-        }
-
-        protected override DependencyObject CreateShell()
-        {
-            CreateShellCalled = true;
-
-            return CreateShellReturnValue;
+            base.RegisterFrameworkExceptionTypes();
         }
     }
-
-    internal class MockModuleCatalog : IModuleCatalog
-    {
-        public void Initialize()
-        {
-        }
-
-        public IEnumerable<ModuleInfo> Modules
-        {
-            get { return new List<ModuleInfo>(); }
-        }
-
-        public IEnumerable<ModuleInfo> CompleteListWithDependencies(IEnumerable<ModuleInfo> modules)
-        {
-            return new List<ModuleInfo>();
-        }
-
-        public IEnumerable<ModuleInfo> GetDependentModules(ModuleInfo moduleInfo)
-        {
-            return new List<ModuleInfo>();
-        }
-
-        public IModuleCatalog AddModule(ModuleInfo moduleInfo)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public IEnumerable<ModuleInfo> GetModulesWithDependencies(Func<ModuleInfo, bool> filter)
-        {
-            return new List<ModuleInfo>();
-        }
-    }
-
-    class MockedBootstrapper : UnityBootstrapper
-    {
-        public MockUnityContainer MockUnityContainer = new MockUnityContainer();
-        public MockModuleCatalog ModuleCatalog = new MockModuleCatalog();
-        public MockLoggerAdapter Logger = new MockLoggerAdapter();
-
-        protected override IUnityContainer CreateContainer()
-        {
-            return this.MockUnityContainer;
-        }
-
-        protected override ILoggerFacade LoggerFacade
-        {
-            get { return Logger; }
-        }
-
-        protected override IModuleCatalog GetModuleCatalog()
-        {
-            return ModuleCatalog;
-        }
-
-        protected override DependencyObject CreateShell()
-        {
-            return null;
-        }
-    }
-
-    class TestableOrderedBootstrapper : UnityBootstrapper
-    {
-        public IList<string> OrderedMethodCallList = new List<string>();
-        public MockLoggerAdapter Logger = new MockLoggerAdapter();
-        public bool AddCustomTypeMappings;
-
-        protected override IUnityContainer CreateContainer()
-        {
-            OrderedMethodCallList.Add("CreateContainer");
-            return base.CreateContainer();
-        }
-
-        protected override ILoggerFacade LoggerFacade
-        {
-            get
-            {
-                OrderedMethodCallList.Add("LoggerFacade");
-                return Logger;
-            }
-        }
-
-        protected override IModuleCatalog GetModuleCatalog()
-        {
-            OrderedMethodCallList.Add("GetModuleCatalog");
-            return new MockModuleCatalog();
-        }
-
-        protected override void ConfigureContainer()
-        {
-            OrderedMethodCallList.Add("ConfigureContainer");
-            if (AddCustomTypeMappings)
-            {
-                RegisterTypeIfMissing(typeof(IRegionManager), typeof(MockRegionManager), true);
-            }
-            base.ConfigureContainer();
-        }
-
-        protected override void InitializeModules()
-        {
-            OrderedMethodCallList.Add("InitializeModules");
-            base.InitializeModules();
-        }
-
-        protected override RegionAdapterMappings ConfigureRegionAdapterMappings()
-        {
-            OrderedMethodCallList.Add("ConfigureRegionAdapterMappings");
-            return base.ConfigureRegionAdapterMappings();
-        }
-
-        protected override DependencyObject CreateShell()
-        {
-            OrderedMethodCallList.Add("CreateShell");
-            return null;
-        }
-    }
+    
 }

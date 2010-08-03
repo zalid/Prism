@@ -37,10 +37,8 @@ namespace Microsoft.Practices.Composite.Modularity
                     Type moduleType,
                     params string[] dependsOn)
         {
-            if (moduleType == null)
-            {
-                throw new ArgumentNullException("moduleType");
-            }
+            if (moduleType == null) throw new ArgumentNullException("moduleType");
+            if (moduleInfoGroup == null) throw new ArgumentNullException("moduleInfoGroup");
 
             ModuleInfo moduleInfo = new ModuleInfo(moduleName, moduleType.AssemblyQualifiedName);
             moduleInfo.DependsOn.AddRange(dependsOn);
@@ -61,6 +59,7 @@ namespace Microsoft.Practices.Composite.Modularity
                     Type moduleType,
                     params string[] dependsOn)
         {
+            if (moduleType == null) throw new ArgumentNullException("moduleType");
             return AddModule(moduleInfoGroup, moduleType.Name, moduleType, dependsOn);
         }
     }

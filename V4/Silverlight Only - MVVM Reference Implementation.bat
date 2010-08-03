@@ -1,0 +1,1 @@
+@call "MVVM RI\MVVM.sln"

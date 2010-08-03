@@ -130,6 +130,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions.Behaviors
         /// <returns>The created <see cref="IRegion"/></returns>
         protected virtual IRegion CreateRegion(DependencyObject targetElement, string regionName)
         {
+            if (targetElement == null) throw new ArgumentNullException("targetElement");
             try
             {
                 // Build the region

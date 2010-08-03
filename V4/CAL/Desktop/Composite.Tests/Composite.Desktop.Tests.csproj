@@ -65,6 +65,9 @@
       <HintPath>..\..\..\LIB\Desktop\CommonServiceLocation\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Moq">
+      <HintPath>..\..\..\LIB\Desktop\Moq\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -125,7 +128,7 @@
     </Compile>
     <Compile Include="Modularity\ConfigurationStoreFixture.cs" />
     <Compile Include="Modularity\DirectoryModuleCatalogFixture.Desktop.cs" />
-    <Compile Include="Modularity\FileModuleRetrieverFixture.Desktop.cs" />
+    <Compile Include="Modularity\FileModuleTypeLoaderFixture.Desktop.cs" />
     <Compile Include="Modularity\ModuleCatalogFixture.cs" />
     <Compile Include="Modularity\ModuleInfoGroupExtensionsFixture.cs" />
     <Compile Include="Modularity\ModuleInfoGroupFixture.cs">

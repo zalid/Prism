@@ -21,6 +21,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Resources;
 using System.Xml;
+using System.Net;
 
 namespace Microsoft.Practices.Composite.Modularity
 {
@@ -31,7 +32,39 @@ namespace Microsoft.Practices.Composite.Modularity
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Xap")]
     public class XapModuleTypeLoader : IModuleTypeLoader
     {
-        private readonly Dictionary<Uri, List<ModuleTypeLoaderCallbackMetadata>> typeLoadingCallbacks = new Dictionary<Uri, List<ModuleTypeLoaderCallbackMetadata>>();
+        private Dictionary<Uri, ModuleInfo> downloadingModules = new Dictionary<Uri, ModuleInfo>();
+        private HashSet<Uri> downloadedUris = new HashSet<Uri>();
+
+        /// <summary>
+        /// Raised repeatedly to provide progress as modules are loaded in the background.
+        /// </summary>
+        public event EventHandler<ModuleDownloadProgressChangedEventArgs> ModuleDownloadProgressChanged;
+
+        private void RaiseModuleDownloadProgressChanged(ModuleDownloadProgressChangedEventArgs e)
+        {
+            if (this.ModuleDownloadProgressChanged != null)
+            {
+                this.ModuleDownloadProgressChanged(this, e);
+            }
+        }
+
+        /// <summary>
+        /// Raised when a module is loaded or fails to load.
+        /// </summary>
+        public event EventHandler<LoadModuleCompletedEventArgs> LoadModuleCompleted;
+
+        private void RaiseLoadModuleCompleted(ModuleInfo moduleInfo, Exception error)
+        {
+            this.RaiseLoadModuleCompleted(new LoadModuleCompletedEventArgs(moduleInfo, error));
+        }
+
+        private void RaiseLoadModuleCompleted(LoadModuleCompletedEventArgs e)
+        {
+            if (this.LoadModuleCompleted != null)
+            {
+                this.LoadModuleCompleted(this, e);
+            }
+        }
 
         /// <summary>
         /// Evaluates the <see cref="ModuleInfo.Ref"/> property to see if the current typeloader will be able to retrieve the <paramref name="moduleInfo"/>.
@@ -40,45 +73,51 @@ namespace Microsoft.Practices.Composite.Modularity
         /// <returns><see langword="true"/> if the current typeloader is able to retrieve the module, otherwise <see langword="false"/>.</returns>
         public bool CanLoadModuleType(ModuleInfo moduleInfo)
         {
+            if (moduleInfo == null) throw new ArgumentNullException("moduleInfo");
             if (!string.IsNullOrEmpty(moduleInfo.Ref))
             {
-                Uri uriRef;
-                return Uri.TryCreate(moduleInfo.Ref, UriKind.RelativeOrAbsolute, out uriRef);
+                Uri uri;
+                return Uri.TryCreate(moduleInfo.Ref, UriKind.RelativeOrAbsolute, out uri);
             }
 
             return false;
         }
 
         /// <summary>
-        /// Starts retrieving the <paramref name="moduleInfo"/> and calls the <paramref name="callback"/> when it is done.
+        /// Retrieves the <paramref name="moduleInfo"/>.
         /// </summary>
         /// <param name="moduleInfo">Module that should have it's type loaded.</param>
-        /// <param name="callback">Delegate to be called when typeloading process completes or fails.</param>
-        public void BeginLoadModuleType(ModuleInfo moduleInfo, ModuleTypeLoadedCallback callback)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Error is sent to completion event")]
+        public void LoadModuleType(ModuleInfo moduleInfo)
         {
-            Uri uriRef = new Uri(moduleInfo.Ref, UriKind.RelativeOrAbsolute);
-            lock (this.typeLoadingCallbacks)
+            if (moduleInfo == null)
             {
-                ModuleTypeLoaderCallbackMetadata callbackMetadata = new ModuleTypeLoaderCallbackMetadata()
-                                                                 {
-                                                                     Callback = callback,
-                                                                     ModuleInfo = moduleInfo
-                                                                 };
-
-                List<ModuleTypeLoaderCallbackMetadata> callbacks;
-                if (this.typeLoadingCallbacks.TryGetValue(uriRef, out callbacks))
-                {
-                    callbacks.Add(callbackMetadata);
-                    return;
-                }
-
-                this.typeLoadingCallbacks[uriRef] = new List<ModuleTypeLoaderCallbackMetadata> { callbackMetadata };
+                throw new System.ArgumentNullException("moduleInfo");
             }
 
-            IFileDownloader downloader = this.CreateDownloader();
-            downloader.DownloadCompleted += this.OnDownloadCompleted;
+            try
+            {
+                Uri uri = new Uri(moduleInfo.Ref, UriKind.RelativeOrAbsolute);
 
-            downloader.DownloadAsync(uriRef, uriRef);
+                // If this module has already been downloaded, I fire the completed event.
+                if (this.IsSuccessfullyDownloaded(uri))
+                {
+                    this.RaiseLoadModuleCompleted(moduleInfo, null);
+                }
+                else if (!this.IsDownloading(uri))
+                {
+                    this.RecordDownloading(uri, moduleInfo);
+
+                    IFileDownloader downloader = this.CreateDownloader();
+                    downloader.DownloadProgressChanged += this.IFileDownloader_DownloadProgressChanged;
+                    downloader.DownloadCompleted += this.IFileDownloader_DownloadCompleted;
+                    downloader.DownloadAsync(uri, uri);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.RaiseLoadModuleCompleted(moduleInfo, ex);
+            }
         }
 
         /// <summary>
@@ -90,36 +129,162 @@ namespace Microsoft.Practices.Composite.Modularity
             return new FileDownloader();
         }
 
+        void IFileDownloader_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            // I ensure the download completed is on the UI thread so that types can be loaded into the application domain.
+            if (!Deployment.Current.Dispatcher.CheckAccess())
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(new Action<DownloadProgressChangedEventArgs>(this.HandleModuleDownloadProgressChanged), e);
+            }
+            else
+            {
+                this.HandleModuleDownloadProgressChanged(e);
+            }
+        }
+
+        private void HandleModuleDownloadProgressChanged(DownloadProgressChangedEventArgs e)
+        {
+            Uri uri = (Uri)e.UserState;
+            ModuleInfo moduleInfo = this.GetDownloadingModule(uri);
+            this.RaiseModuleDownloadProgressChanged(new ModuleDownloadProgressChangedEventArgs(moduleInfo, e.BytesReceived, e.TotalBytesToReceive));
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        private void IFileDownloader_DownloadCompleted(object sender, DownloadCompletedEventArgs e)
+        {
+            // A new IFileDownloader instance is created for each download.
+            // I unregister the event to allow for garbage collection.
+            IFileDownloader fileDownloader = (IFileDownloader)sender;
+            fileDownloader.DownloadProgressChanged -= this.IFileDownloader_DownloadProgressChanged;
+            fileDownloader.DownloadCompleted -= this.IFileDownloader_DownloadCompleted;
+
+            // I ensure the download completed is on the UI thread so that types can be loaded into the application domain.
+            if (!Deployment.Current.Dispatcher.CheckAccess())
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(new Action<DownloadCompletedEventArgs>(this.HandleModuleDownloaded), e);
+            }
+            else
+            {
+                this.HandleModuleDownloaded(e);
+            }
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Exception sent to completion event")]
+        private void HandleModuleDownloaded(DownloadCompletedEventArgs e)
+        {
+            Uri uri = (Uri)e.UserState;
+            ModuleInfo moduleInfo = this.GetDownloadingModule(uri);
+
+            Exception error = e.Error;
+            if (error == null)
+            {
+                try
+                {
+                    this.RecordDownloadComplete(uri);
+
+                    Debug.Assert(!e.Cancelled, "Download should not be cancelled");
+                    Stream stream = e.Result;
+
+                    foreach (AssemblyPart part in GetParts(stream))
+                    {
+                        LoadAssemblyFromStream(stream, part);
+                    }
+
+                    this.RecordDownloadSuccess(uri);
+                }
+                catch (Exception ex)
+                {
+                    error = ex;
+                }
+                finally
+                {
+                    e.Result.Close();
+                }
+            }
+
+            this.RaiseLoadModuleCompleted(moduleInfo, error);
+        }
+
+        private bool IsDownloading(Uri uri)
+        {
+            lock (this.downloadingModules)
+            {
+                return this.downloadingModules.ContainsKey(uri);
+            }
+        }
+
+        private void RecordDownloading(Uri uri, ModuleInfo moduleInfo)
+        {
+            lock (this.downloadingModules)
+            {
+                if (!this.downloadingModules.ContainsKey(uri))
+                {
+                    this.downloadingModules.Add(uri, moduleInfo);
+                }
+            }
+        }
+
+        private ModuleInfo GetDownloadingModule(Uri uri)
+        {
+            lock (this.downloadingModules)
+            {
+                return this.downloadingModules[uri];
+            }
+        }
+
+        private void RecordDownloadComplete(Uri uri)
+        {
+            lock (this.downloadingModules)
+            {
+                if (!this.downloadingModules.ContainsKey(uri))
+                {
+                    this.downloadingModules.Remove(uri);
+                }
+            }
+        }
+
+        private bool IsSuccessfullyDownloaded(Uri uri)
+        {
+            lock (this.downloadedUris)
+            {
+                return this.downloadedUris.Contains(uri);
+            }
+        }
+
+        private void RecordDownloadSuccess(Uri uri)
+        {
+            lock (this.downloadedUris)
+            {
+                this.downloadedUris.Add(uri);
+            }
+        }
+
         private static IEnumerable<AssemblyPart> GetParts(Stream stream)
         {
             List<AssemblyPart> assemblyParts = new List<AssemblyPart>();
 
-            using (var streamReader = new StreamReader(Application.GetResourceStream(
-                                                           new StreamResourceInfo(stream, null),
-                                                           new Uri("AppManifest.xaml", UriKind.Relative)).Stream))
+            var streamReader = new StreamReader(Application.GetResourceStream(new StreamResourceInfo(stream, null), new Uri("AppManifest.xaml", UriKind.Relative)).Stream);
+            using (XmlReader xmlReader = XmlReader.Create(streamReader))
             {
-                using (XmlReader xmlReader = XmlReader.Create(streamReader))
+                xmlReader.MoveToContent();
+                while (xmlReader.Read())
                 {
-                    xmlReader.MoveToContent();
-                    while (xmlReader.Read())
+                    if (xmlReader.NodeType == XmlNodeType.Element && xmlReader.Name == "Deployment.Parts")
                     {
-                        if (xmlReader.NodeType == XmlNodeType.Element && xmlReader.Name == "Deployment.Parts")
+                        using (XmlReader xmlReaderAssemblyParts = xmlReader.ReadSubtree())
                         {
-                            using (XmlReader xmlReaderAssemblyParts = xmlReader.ReadSubtree())
+                            while (xmlReaderAssemblyParts.Read())
                             {
-                                while (xmlReaderAssemblyParts.Read())
+                                if (xmlReaderAssemblyParts.NodeType == XmlNodeType.Element && xmlReaderAssemblyParts.Name == "AssemblyPart")
                                 {
-                                    if (xmlReaderAssemblyParts.NodeType == XmlNodeType.Element && xmlReaderAssemblyParts.Name == "AssemblyPart")
-                                    {
-                                        AssemblyPart assemblyPart = new AssemblyPart();
-                                        assemblyPart.Source = xmlReaderAssemblyParts.GetAttribute("Source");
-                                        assemblyParts.Add(assemblyPart);
-                                    }
+                                    AssemblyPart assemblyPart = new AssemblyPart();
+                                    assemblyPart.Source = xmlReaderAssemblyParts.GetAttribute("Source");
+                                    assemblyParts.Add(assemblyPart);
                                 }
                             }
-
-                            break;
                         }
+
+                        break;
                     }
                 }
             }
@@ -134,55 +299,6 @@ namespace Microsoft.Practices.Composite.Modularity
                 new Uri(assemblyPart.Source, UriKind.Relative)).Stream;
 
             assemblyPart.Load(assemblyStream);
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        private void OnDownloadCompleted(object o, DownloadCompletedEventArgs e)
-        {
-            ((IFileDownloader)o).DownloadCompleted -= this.OnDownloadCompleted;
-            Exception error = e.Error;
-            if (e.Error == null)
-            {
-                try
-                {
-                    Debug.Assert(!e.Cancelled, "Download should not be cancelled");
-                    Stream stream = e.Result;
-
-                    foreach (AssemblyPart part in GetParts(stream))
-                    {
-                        LoadAssemblyFromStream(stream, part);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    error = ex;
-                }
-                finally
-                {
-                    e.Result.Close();
-                }
-            }
-
-            List<ModuleTypeLoaderCallbackMetadata> callbacks;
-            lock (this.typeLoadingCallbacks)
-            {
-                Uri requestUri = (Uri)e.UserState;
-                Debug.Assert(requestUri != null, "UserState should hold a reference to the request uri");
-                callbacks = this.typeLoadingCallbacks[requestUri];
-                this.typeLoadingCallbacks.Remove(requestUri);
-            }
-
-            foreach (ModuleTypeLoaderCallbackMetadata loaderCallbackMetadata in callbacks)
-            {
-                loaderCallbackMetadata.Callback(loaderCallbackMetadata.ModuleInfo, error);
-            }
-        }
-
-        private class ModuleTypeLoaderCallbackMetadata
-        {
-            public ModuleTypeLoadedCallback Callback { get; set; }
-
-            public ModuleInfo ModuleInfo { get; set; }
         }
     }
 }

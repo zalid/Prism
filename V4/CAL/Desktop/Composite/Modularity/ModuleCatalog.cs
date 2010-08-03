@@ -66,6 +66,7 @@ namespace Microsoft.Practices.Composite.Modularity
         public ModuleCatalog(IEnumerable<ModuleInfo> modules)
             : this()
         {
+            if (modules == null) throw new System.ArgumentNullException("modules");
             foreach (ModuleInfo moduleInfo in modules)
             {
                 this.Items.Add(moduleInfo);
@@ -188,18 +189,7 @@ namespace Microsoft.Practices.Composite.Modularity
             this.EnsureCatalogValidated();
 
             return this.GetDependentModulesInner(moduleInfo);
-        }
-
-        /// <summary>
-        /// Adds a <see cref="ModuleInfo"/> to the <see cref="ModuleCatalog"/>.
-        /// </summary>
-        /// <param name="moduleInfo">The <see cref="ModuleInfo"/> to add.</param>
-        /// <returns>The <see cref="ModuleCatalog"/> for easily adding multiple modules.</returns>
-        public virtual IModuleCatalog AddModule(ModuleInfo moduleInfo)
-        {
-            this.Items.Add(moduleInfo);
-            return this;
-        }
+        }       
 
         /// <summary>
         /// Returns a list of <see cref="ModuleInfo"/>s that contain both the <see cref="ModuleInfo"/>s in 
@@ -256,6 +246,16 @@ namespace Microsoft.Practices.Composite.Modularity
         }
 
         /// <summary>
+        /// Adds a <see cref="ModuleInfo"/> to the <see cref="ModuleCatalog"/>.
+        /// </summary>
+        /// <param name="moduleInfo">The <see cref="ModuleInfo"/> to add.</param>
+        /// <returns>The <see cref="ModuleCatalog"/> for easily adding multiple modules.</returns>
+        public virtual void AddModule(ModuleInfo moduleInfo)
+        {
+            this.Items.Add(moduleInfo);
+        }
+
+        /// <summary>
         /// Adds a groupless <see cref="ModuleInfo"/> to the catalog.
         /// </summary>
         /// <param name="moduleType"><see cref="Type"/> of the module to be added.</param>
@@ -275,6 +275,7 @@ namespace Microsoft.Practices.Composite.Modularity
         /// <returns>The same <see cref="ModuleCatalog"/> instance with the added module.</returns>
         public ModuleCatalog AddModule(Type moduleType, InitializationMode initializationMode, params string[] dependsOn)
         {
+            if (moduleType == null) throw new System.ArgumentNullException("moduleType");
             return this.AddModule(moduleType.Name, moduleType.AssemblyQualifiedName, initializationMode, dependsOn);
         }
 
@@ -356,6 +357,8 @@ namespace Microsoft.Practices.Composite.Modularity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Infos")]
         public virtual ModuleCatalog AddGroup(InitializationMode initializationMode, string refValue, params ModuleInfo[] moduleInfos)
         {
+            if (moduleInfos == null) throw new System.ArgumentNullException("moduleInfos");
+
             ModuleInfoGroup newGroup = new ModuleInfoGroup();
             newGroup.InitializationMode = initializationMode;
             newGroup.Ref = refValue;
@@ -377,6 +380,8 @@ namespace Microsoft.Practices.Composite.Modularity
         /// <returns></returns>
         protected static string[] SolveDependencies(IEnumerable<ModuleInfo> modules)
         {
+            if (modules == null) throw new System.ArgumentNullException("modules");
+
             ModuleDependencySolver solver = new ModuleDependencySolver();
 
             foreach (ModuleInfo data in modules)
@@ -409,8 +414,11 @@ namespace Microsoft.Practices.Composite.Modularity
         /// Throws if a <see cref="ModuleInfo"/> in <paramref name="modules"/> depends on a module that's 
         /// not in <paramref name="modules"/>.
         /// </exception>
+        /// <exception cref="System.ArgumentNullException">Throws if <paramref name="modules"/> is <see langword="null"/>.</exception>
         protected static void ValidateDependencies(IEnumerable<ModuleInfo> modules)
         {
+            if (modules == null) throw new System.ArgumentNullException("modules");
+
             var moduleNames = modules.Select(m => m.ModuleName).ToList();
             foreach (ModuleInfo moduleInfo in modules)
             {

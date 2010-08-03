@@ -37,6 +37,8 @@ namespace Microsoft.Practices.Composite.Regions
         /// <returns>The RegionManager, to easily add several views. </returns>
         public static IRegionManager AddToRegion(this IRegionManager regionManager, string regionName, object view)
         {
+            if (regionManager == null) throw new ArgumentNullException("regionManager");
+
             if (!regionManager.Regions.ContainsRegionWithName(regionName))
             {
                 throw new ArgumentException(
@@ -89,9 +91,14 @@ namespace Microsoft.Practices.Composite.Regions
         /// </summary>
         /// <param name="regionCollection">The regionmanager's collection of regions.</param>
         /// <param name="regionName">The name to be given to the region.</param>
-        /// <param name="region">The region to be added to the regionmanager.</param>
+        /// <param name="region">The region to be added to the regionmanager.</param>        
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="region"/> or <paramref name="regionCollection"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="regionName"/> and <paramref name="region"/>'s name do not match and the <paramref name="region"/> <see cref="IRegion.Name"/> is not <see langword="null"/>.</exception>
         public static void Add(this IRegionCollection regionCollection, string regionName, IRegion region)
         {
+            if (region == null) throw new ArgumentNullException("region");
+            if (regionCollection == null) throw new ArgumentNullException("regionCollection");
+
             if (region.Name != null && region.Name != regionName)
             {
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.RegionManagerWithDifferentNameException, region.Name, regionName), "regionName");

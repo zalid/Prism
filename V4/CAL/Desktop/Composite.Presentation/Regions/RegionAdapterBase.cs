@@ -89,6 +89,9 @@ namespace Microsoft.Practices.Composite.Presentation.Regions
         /// <param name="regionTarget">The object to adapt.</param>
         protected virtual void AttachDefaultBehaviors(IRegion region, T regionTarget)
         {
+            if (region == null) throw new ArgumentNullException("region");
+            if (regionTarget == null) throw new ArgumentNullException("regionTarget");
+
             IRegionBehaviorFactory behaviorFactory = this.RegionBehaviorFactory;
             if (behaviorFactory != null)
             {

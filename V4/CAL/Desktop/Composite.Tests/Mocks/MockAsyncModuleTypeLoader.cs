@@ -33,21 +33,42 @@ namespace Microsoft.Practices.Composite.Tests.Mocks
 
         public Exception CallbackArgumentError { get; set; }
 
-        public void BeginLoadModuleType(ModuleInfo moduleInfo, ModuleTypeLoadedCallback callback)
+        public bool CanLoadModuleType(ModuleInfo moduleInfo)
+        {
+            return true;
+        }
+
+        public void LoadModuleType(ModuleInfo moduleInfo)
         {
             Thread retrieverThread = new Thread(() =>
             {
                 Thread.Sleep(SleepTimeOut);
-                callback(moduleInfo, CallbackArgumentError);
 
+                this.RaiseLoadModuleCompleted(new LoadModuleCompletedEventArgs(moduleInfo, CallbackArgumentError));
                 callbackEvent.Set();
             });
             retrieverThread.Start();
         }
 
-        public bool CanLoadModuleType(ModuleInfo moduleInfo)
+        
+        public event EventHandler<ModuleDownloadProgressChangedEventArgs> ModuleDownloadProgressChanged;
+
+        private void RaiseLoadModuleProgressChanged(ModuleDownloadProgressChangedEventArgs e)
         {
-            throw new NotImplementedException();
+            if (this.ModuleDownloadProgressChanged != null)
+            {
+                this.ModuleDownloadProgressChanged(this, e);
+            }
+        }
+
+        public event EventHandler<LoadModuleCompletedEventArgs> LoadModuleCompleted;
+
+        private void RaiseLoadModuleCompleted(LoadModuleCompletedEventArgs e)
+        {
+            if (this.LoadModuleCompleted != null)
+            {
+                this.LoadModuleCompleted(this, e);
+            }
         }
     }
 }

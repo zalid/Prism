@@ -73,8 +73,10 @@ namespace Microsoft.Practices.Composite.Modularity
         /// to <paramref name="moduleInfo"/>.
         /// </summary>
         /// <param name="moduleInfo">The module info to forward values to.</param>
+        /// <exception cref="ArgumentNullException">An <see cref="ArgumentNullException"/> is thrown if <paramref name="moduleInfo"/> is <see langword="null"/>.</exception>
         protected void ForwardValues(ModuleInfo moduleInfo)
         {
+            if (moduleInfo == null) throw new System.ArgumentNullException("moduleInfo");
             if (moduleInfo.Ref == null)
             {
                 moduleInfo.Ref = this.Ref;

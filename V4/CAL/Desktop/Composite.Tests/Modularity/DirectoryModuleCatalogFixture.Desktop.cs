@@ -255,7 +255,10 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
 
             ModuleInfo[] modules = catalog.Modules.ToArray();
 
-            Assembly loadedAssembly = Array.Find<Assembly>(AppDomain.CurrentDomain.GetAssemblies(), assembly => assembly.Location.Equals(modules[0].Ref, StringComparison.InvariantCultureIgnoreCase));
+            // filtering out dynamic assemblies due to using a dynamic mocking framework.
+            Assembly loadedAssembly = AppDomain.CurrentDomain.GetAssemblies().Where(assembly => !assembly.IsDynamic)
+                .Where(assembly => assembly.Location.Equals(modules[0].Ref, StringComparison.InvariantCultureIgnoreCase))
+                .FirstOrDefault();
             Assert.IsNull(loadedAssembly);
         }
 

@@ -15,16 +15,10 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System;
+using System.Net;
 
 namespace Microsoft.Practices.Composite.Modularity
 {
-    /// <summary>
-    /// Callback to be called when module's type is loaded.
-    /// </summary>
-    /// <param name="moduleInfo">The retrieved module.</param>
-    /// <param name="error">Exception ocurred during module group retrieval or null if no error ocurred.</param>
-    public delegate void ModuleTypeLoadedCallback(ModuleInfo moduleInfo, Exception error);
-
     /// <summary>
     /// Defines the interface for moduleTypeLoaders
     /// </summary>
@@ -35,13 +29,22 @@ namespace Microsoft.Practices.Composite.Modularity
         /// </summary>
         /// <param name="moduleInfo">Module that should have it's type loaded.</param>
         /// <returns><see langword="true"/> if the current typeloader is able to retrieve the module, otherwise <see langword="false"/>.</returns>
-        bool CanLoadModuleType(ModuleInfo moduleInfo);
+        bool CanLoadModuleType(ModuleInfo moduleInfo);      
 
         /// <summary>
-        /// Starts retrieving the <paramref name="moduleInfo"/> and calls the <paramref name="callback"/> when it is done.
+        /// Retrieves the <paramref name="moduleInfo"/>.
         /// </summary>
         /// <param name="moduleInfo">Module that should have it's type loaded.</param>
-        /// <param name="callback">Delegate to be called when typeloading process completes or fails.</param>
-        void BeginLoadModuleType(ModuleInfo moduleInfo, ModuleTypeLoadedCallback callback);
+        void LoadModuleType(ModuleInfo moduleInfo);
+   
+        /// <summary>
+        /// Raised repeatedly to provide progress as modules are downloaded in the background.
+        /// </summary>
+        event EventHandler<ModuleDownloadProgressChangedEventArgs> ModuleDownloadProgressChanged;
+
+        /// <summary>
+        /// Raised when a module is loaded or fails to load.
+        /// </summary>
+        event EventHandler<LoadModuleCompletedEventArgs> LoadModuleCompleted;
     }
 }

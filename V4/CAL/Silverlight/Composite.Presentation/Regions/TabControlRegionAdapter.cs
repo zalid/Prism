@@ -56,6 +56,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions
         /// <returns>Value of the <see cref="ItemContainerStyleProperty"/> property.</returns>
         public static Style GetItemContainerStyle(DependencyObject target)
         {
+            if (target == null) throw new ArgumentNullException("target");
             return (Style)target.GetValue(ItemContainerStyleProperty);
         }
 
@@ -66,6 +67,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions
         /// <param name="value">Value to be set on the <see cref="ItemContainerStyleProperty"/> property.</param>
         public static void SetItemContainerStyle(DependencyObject target, Style value)
         {
+            if (target == null) throw new ArgumentNullException("target");
             target.SetValue(ItemContainerStyleProperty, value);
         }
 
@@ -76,6 +78,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions
         /// <param name="regionTarget">The object to adapt.</param>
         protected override void Adapt(IRegion region, TabControl regionTarget)
         {
+            if (regionTarget == null) throw new ArgumentNullException("regionTarget");
             bool itemsSourceIsSet = regionTarget.ItemsSource != null;
 
             if (itemsSourceIsSet)
@@ -95,6 +98,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions
         /// </remarks>
         protected override void AttachBehaviors(IRegion region, TabControl regionTarget)
         {
+            if (region == null) throw new ArgumentNullException("region");
             base.AttachBehaviors(region, regionTarget);
             if (!region.Behaviors.ContainsKey(TabControlRegionSyncBehavior.BehaviorKey))
             {

@@ -40,9 +40,8 @@ namespace Microsoft.Practices.Composite.UnityExtensions
     /// This class must be overriden to provide application specific configuration.
     /// </remarks>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
-    public abstract class UnityBootstrapper
+    public abstract class UnityBootstrapper : Bootstrapper
     {
-        private readonly ILoggerFacade loggerFacade = new TextLogger();
         private bool useDefaultConfiguration = true;
 
         /// <summary>
@@ -50,78 +49,92 @@ namespace Microsoft.Practices.Composite.UnityExtensions
         /// </summary>
         /// <value>The default <see cref="IUnityContainer"/> instance.</value>
         [CLSCompliant(false)]
-        public IUnityContainer Container { get; private set; }
+        public IUnityContainer Container { get; protected set; }
 
-        /// <summary>
-        /// Gets the default <see cref="ILoggerFacade"/> for the application.
-        /// </summary>
-        /// <value>A <see cref="ILoggerFacade"/> instance.</value>
-        protected virtual ILoggerFacade LoggerFacade
-        {
-            get { return this.loggerFacade; }
-        }
-
-        /// <summary>
-        /// Runs the bootstrapper process.
-        /// </summary>
-        public void Run()
-        {
-            this.Run(true);
-        }
 
         /// <summary>
         /// Run the bootstrapper process.
         /// </summary>
         /// <param name="runWithDefaultConfiguration">If <see langword="true"/>, registers default Composite Application Library services in the container. This is the default behavior.</param>
-        public void Run(bool runWithDefaultConfiguration)
+        public override void Run(bool runWithDefaultConfiguration)
         {
             this.useDefaultConfiguration = runWithDefaultConfiguration;
-            ILoggerFacade logger = this.LoggerFacade;
-            if (logger == null)
+
+            this.Logger = this.CreateLogger();
+            if (this.Logger == null)
             {
                 throw new InvalidOperationException(Resources.NullLoggerFacadeException);
             }
 
-            logger.Log("Creating Unity container", Category.Debug, Priority.Low);
+            this.Logger.Log(Resources.LoggerCreatedSuccessfully, Category.Debug, Priority.Low);
+
+            this.Logger.Log(Resources.CreatingModuleCatalog, Category.Debug, Priority.Low);
+            this.ModuleCatalog = this.CreateModuleCatalog();
+            if (this.ModuleCatalog == null)
+            {
+                throw new InvalidOperationException(Resources.NullModuleCatalogException);
+            }
+
+            this.Logger.Log(Resources.ConfiguringModuleCatalog, Category.Debug, Priority.Low);
+            this.ConfigureModuleCatalog();
+
+            this.Logger.Log(Resources.CreatingUnityContainer, Category.Debug, Priority.Low);
             this.Container = this.CreateContainer();
             if (this.Container == null)
             {
                 throw new InvalidOperationException(Resources.NullUnityContainerException);
             }
 
-
-            logger.Log("Configuring container", Category.Debug, Priority.Low);
-            this.Container.AddNewExtension<UnityBootstrapperExtension>();
+            this.Logger.Log(Resources.ConfiguringUnityContainer, Category.Debug, Priority.Low);
             this.ConfigureContainer();
 
-            logger.Log("Configuring region adapters", Category.Debug, Priority.Low);
+            this.Logger.Log(Resources.ConfiguringServiceLocatorSingleton, Category.Debug, Priority.Low);
+            this.ConfigureServiceLocator();
 
+            this.Logger.Log(Resources.ConfiguringRegionAdapters, Category.Debug, Priority.Low);
             this.ConfigureRegionAdapterMappings();
+
+            this.Logger.Log(Resources.ConfiguringDefaultRegionBehaviors, Category.Debug, Priority.Low);
             this.ConfigureDefaultRegionBehaviors();
+
+            this.Logger.Log(Resources.RegisteringFrameworkExceptionTypes, Category.Debug, Priority.Low);
             this.RegisterFrameworkExceptionTypes();
 
-            logger.Log("Creating shell", Category.Debug, Priority.Low);
-            DependencyObject shell = this.CreateShell();
-            if (shell != null)
+            this.Logger.Log(Resources.CreatingShell, Category.Debug, Priority.Low);
+            this.Shell = this.CreateShell();
+            if (this.Shell != null)
             {
-                RegionManager.SetRegionManager(shell, this.Container.Resolve<IRegionManager>());
-                RegionManager.UpdateRegions();
-            }
+                this.Logger.Log(Resources.SettingTheRegionManager, Category.Debug, Priority.Low);
+                RegionManager.SetRegionManager(this.Shell, this.Container.Resolve<IRegionManager>());
 
-            logger.Log("Initializing modules", Category.Debug, Priority.Low);
+                this.Logger.Log(Resources.UpdatingRegions, Category.Debug, Priority.Low);
+                RegionManager.UpdateRegions();
+
+                this.Logger.Log(Resources.InitializingShell, Category.Debug, Priority.Low);
+                this.InitializeShell();
+            }
+            
+            this.Logger.Log(Resources.InitializingModules, Category.Debug, Priority.Low);
             this.InitializeModules();
 
-            logger.Log("Bootstrapper sequence completed", Category.Debug, Priority.Low);
+            this.Logger.Log(Resources.BootstrapperSequenceCompleted, Category.Debug, Priority.Low);
+        }
+
+        /// <summary>
+        /// Configures the LocatorProvider for the <see cref="ServiceLocator" />.
+        /// </summary>
+        protected override void ConfigureServiceLocator()
+        {
+            ServiceLocator.SetLocatorProvider(() => this.Container.Resolve<IServiceLocator>());
         }
 
         /// <summary>
         /// Registers in the <see cref="IUnityContainer"/> the <see cref="Type"/> of the Exceptions
         /// that are not considered root exceptions by the <see cref="ExceptionExtensions"/>.
         /// </summary>
-        protected virtual void RegisterFrameworkExceptionTypes()
+        protected override void RegisterFrameworkExceptionTypes()
         {
-            ExceptionExtensions.RegisterFrameworkExceptionType(
-                typeof(Microsoft.Practices.ServiceLocation.ActivationException));
+            base.RegisterFrameworkExceptionTypes();
 
             ExceptionExtensions.RegisterFrameworkExceptionType(
                 typeof(Microsoft.Practices.Unity.ResolutionFailedException));
@@ -133,18 +146,13 @@ namespace Microsoft.Practices.Composite.UnityExtensions
         /// </summary>
         protected virtual void ConfigureContainer()
         {
-            Container.RegisterInstance<ILoggerFacade>(LoggerFacade);
+            this.Logger.Log(Resources.AddingUnityBootstrapperExtensionToContainer, Category.Debug, Priority.Low);
+            this.Container.AddNewExtension<UnityBootstrapperExtension>();
 
-            // We register the container with an ExternallyControlledLifetimeManager to avoid
-            // recursive calls if Container.Dispose() is called.
-            //Container.RegisterInstance<IUnityContainer>(Container);
+            Container.RegisterInstance<ILoggerFacade>(Logger);
 
-            IModuleCatalog catalog = GetModuleCatalog();
-            if (catalog != null)
-            {
-                this.Container.RegisterInstance(catalog);
-            }
-
+            this.Container.RegisterInstance(this.ModuleCatalog);
+            
             if (useDefaultConfiguration)
             {
                 RegisterTypeIfMissing(typeof(IServiceLocator), typeof(UnityServiceLocatorAdapter), true);
@@ -155,67 +163,13 @@ namespace Microsoft.Practices.Composite.UnityExtensions
                 RegisterTypeIfMissing(typeof(IEventAggregator), typeof(EventAggregator), true);
                 RegisterTypeIfMissing(typeof(IRegionViewRegistry), typeof(RegionViewRegistry), true);
                 RegisterTypeIfMissing(typeof(IRegionBehaviorFactory), typeof(RegionBehaviorFactory), true);
-
-                ServiceLocator.SetLocatorProvider(() => this.Container.Resolve<IServiceLocator>());
             }
-        }
-
-        /// <summary>
-        /// Configures the default region adapter mappings to use in the application, in order
-        /// to adapt UI controls defined in XAML to use a region and register it automatically.
-        /// May be overwritten in a derived class to add specific mappings required by the application.
-        /// </summary>
-        /// <returns>The <see cref="RegionAdapterMappings"/> instance containing all the mappings.</returns>
-        protected virtual RegionAdapterMappings ConfigureRegionAdapterMappings()
-        {
-            RegionAdapterMappings regionAdapterMappings = Container.TryResolve<RegionAdapterMappings>();
-            if (regionAdapterMappings != null)
-            {
-#if SILVERLIGHT
-                regionAdapterMappings.RegisterMapping(typeof(TabControl), this.Container.Resolve<TabControlRegionAdapter>());
-#endif
-                regionAdapterMappings.RegisterMapping(typeof(Selector), this.Container.Resolve<SelectorRegionAdapter>());
-                regionAdapterMappings.RegisterMapping(typeof(ItemsControl), this.Container.Resolve<ItemsControlRegionAdapter>());
-                regionAdapterMappings.RegisterMapping(typeof(ContentControl), this.Container.Resolve<ContentControlRegionAdapter>());
-            }
-
-            return regionAdapterMappings;
-        }
-
-        /// <summary>
-        /// Configures the <see cref="IRegionBehaviorFactory"/>. This will be the list of default
-        /// behaviors that will be added to a region. 
-        /// </summary>
-        protected virtual IRegionBehaviorFactory ConfigureDefaultRegionBehaviors()
-        {
-            var defaultRegionBehaviorTypesDictionary = Container.TryResolve<IRegionBehaviorFactory>();
-
-            if (defaultRegionBehaviorTypesDictionary != null)
-            {
-                defaultRegionBehaviorTypesDictionary.AddIfMissing(AutoPopulateRegionBehavior.BehaviorKey, 
-                    typeof(AutoPopulateRegionBehavior));
-
-                defaultRegionBehaviorTypesDictionary.AddIfMissing(BindRegionContextToDependencyObjectBehavior.BehaviorKey,
-                    typeof(BindRegionContextToDependencyObjectBehavior));
-
-                defaultRegionBehaviorTypesDictionary.AddIfMissing(RegionActiveAwareBehavior.BehaviorKey,
-                    typeof(RegionActiveAwareBehavior));
-
-                defaultRegionBehaviorTypesDictionary.AddIfMissing(SyncRegionContextWithHostBehavior.BehaviorKey,
-                    typeof(SyncRegionContextWithHostBehavior));
-
-                defaultRegionBehaviorTypesDictionary.AddIfMissing(RegionManagerRegistrationBehavior.BehaviorKey,
-                    typeof(RegionManagerRegistrationBehavior));
-
-            }
-            return defaultRegionBehaviorTypesDictionary;
-
         }
 
         /// <summary>
         /// Initializes the modules. May be overwritten in a derived class to use a custom Modules Catalog
         /// </summary>
-        protected virtual void InitializeModules()
+        protected override void InitializeModules()
         {
             IModuleManager manager;
 
@@ -237,19 +191,6 @@ namespace Microsoft.Practices.Composite.UnityExtensions
         }
 
         /// <summary>
-        /// Returns the module catalog that will be used to initialize the modules.
-        /// </summary>
-        /// <remarks>
-        /// When using the default initialization behavior, this method must be overwritten by a derived class.
-        /// </remarks>
-        /// <returns>An instance of <see cref="IModuleCatalog"/> that will be used to initialize the modules.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
-        protected virtual IModuleCatalog GetModuleCatalog()
-        {
-            return null;
-        }
-
-        /// <summary>
         /// Creates the <see cref="IUnityContainer"/> that will be used as the default container.
         /// </summary>
         /// <returns>A new instance of <see cref="IUnityContainer"/>.</returns>
@@ -267,11 +208,17 @@ namespace Microsoft.Practices.Composite.UnityExtensions
         /// <param name="registerAsSingleton">Registers the type as a singleton.</param>
         protected void RegisterTypeIfMissing(Type fromType, Type toType, bool registerAsSingleton)
         {
-            ILoggerFacade logger = LoggerFacade;
-
+            if (fromType == null)
+            {
+                throw new ArgumentNullException("fromType");
+            }
+            if (toType == null)
+            {
+                throw new ArgumentNullException("toType");
+            }
             if (Container.IsTypeRegistered(fromType))
             {
-                logger.Log(
+                Logger.Log(
                     String.Format(CultureInfo.CurrentCulture,
                                   Resources.TypeMappingAlreadyRegistered,
                                   fromType.Name), Category.Debug, Priority.Low);
@@ -288,18 +235,5 @@ namespace Microsoft.Practices.Composite.UnityExtensions
                 }
             }
         }
-
-        /// <summary>
-        /// Creates the shell or main window of the application.
-        /// </summary>
-        /// <returns>The shell of the application.</returns>
-        /// <remarks>
-        /// If the returned instance is a <see cref="DependencyObject"/>, the
-        /// <see cref="UnityBootstrapper"/> will attach the default <seealso cref="IRegionManager"/> of
-        /// the application in its <see cref="RegionManager.RegionManagerProperty"/> attached property
-        /// in order to be able to add regions by using the <seealso cref="RegionManager.RegionNameProperty"/>
-        /// attached property from XAML.
-        /// </remarks>
-        protected abstract DependencyObject CreateShell();
     }
 }

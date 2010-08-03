@@ -47,6 +47,8 @@ namespace Microsoft.Practices.Composite.Presentation.Regions
         /// <returns>Wrapper around the Regioncontext value. </returns>
         public static ObservableObject<object> GetObservableContext(DependencyObject view)
         {
+            if (view == null) throw new ArgumentNullException("view");
+
             ObservableObject<object> context = view.GetValue(ObservableRegionContextProperty) as ObservableObject<object>;
 
             if (context == null)

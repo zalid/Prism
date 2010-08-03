@@ -42,6 +42,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions
         /// the RegionManager is also set in this element.</returns>
         public string GetRegionName(DependencyObject element)
         {
+            if (element == null) throw new ArgumentNullException("element");
             return element.GetValue(RegionManager.RegionNameProperty) as string;
         }
 
@@ -52,6 +53,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions
         /// <returns>The <see cref="IRegionManager"/> attached to the <paramref name="element"/> element.</returns>
         public IRegionManager GetRegionManager(DependencyObject element)
         {
+            if (element == null) throw new ArgumentNullException("element");
             return element.GetValue(RegionManager.RegionManagerProperty) as IRegionManager;
         }
     }

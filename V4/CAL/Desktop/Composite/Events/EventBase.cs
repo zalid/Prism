@@ -46,6 +46,8 @@ namespace Microsoft.Practices.Composite.Events
         /// </remarks>
         protected virtual SubscriptionToken InternalSubscribe(IEventSubscription eventSubscription)
         {
+            if (eventSubscription == null) throw new System.ArgumentNullException("eventSubscription");
+
             eventSubscription.SubscriptionToken = new SubscriptionToken();
             lock (Subscriptions)
             {

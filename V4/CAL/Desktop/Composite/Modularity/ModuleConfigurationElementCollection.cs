@@ -37,9 +37,11 @@ namespace Microsoft.Practices.Composite.Modularity
         /// Initializes a new <see cref="ModuleConfigurationElementCollection"/>.
         /// </summary>
         /// <param name="modules">The initial set of <see cref="ModuleConfigurationElement"/>.</param>
+        /// <exception cref="ArgumentNullException">An <see cref="ArgumentNullException"/> is thrown if <paramref name="modules"/> is <see langword="null"/>.</exception>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ModuleConfigurationElementCollection(ModuleConfigurationElement[] modules)
         {
+            if (modules == null) throw new System.ArgumentNullException("modules");
             foreach (ModuleConfigurationElement module in modules)
             {
                 BaseAdd(module);
@@ -112,8 +114,11 @@ namespace Microsoft.Practices.Composite.Modularity
         /// </summary>
         /// <param name="match">A <see cref="Predicate{T}"/> that implements the match test.</param>
         /// <returns>A <see cref="List{T}"/> with the successful matches.</returns>
+        /// <exception cref="ArgumentNullException">An <see cref="ArgumentNullException"/> is thrown if <paramref name="match"/> is null.</exception>
         public IList<ModuleConfigurationElement> FindAll(Predicate<ModuleConfigurationElement> match)
         {
+            if (match == null) throw new System.ArgumentNullException("match");
+
             IList<ModuleConfigurationElement> found = new List<ModuleConfigurationElement>();
             foreach (ModuleConfigurationElement moduleElement in this)
             {

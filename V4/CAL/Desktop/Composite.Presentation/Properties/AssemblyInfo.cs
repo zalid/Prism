@@ -28,7 +28,7 @@ using System.Windows.Markup;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft Corporation")]
 [assembly: AssemblyProduct("Composite Application Library")]
-[assembly: AssemblyCopyright("Copyright (c) 2008,2009 Microsoft Corporation.  All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright (c) 2008,2009,2010 Microsoft Corporation.  All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -46,9 +46,9 @@ using System.Windows.Markup;
 //      Minor Version 
 //      Build Number
 //      Revision
-//
-[assembly: AssemblyVersion("2.0.1.0")]
-[assembly: AssemblyFileVersion("2.0.1.0")]
+[assembly: AssemblyVersion("4.0.0.0")]
+[assembly: AssemblyFileVersion("4.0.0.0")]
 [assembly: CLSCompliant(true)]
 [assembly: XmlnsDefinition("http://www.codeplex.com/CompositeWPF", "Microsoft.Practices.Composite.Presentation.Regions")]
+[assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Composite.Presentation.Regions")]
 [assembly: NeutralResourcesLanguage("en")]

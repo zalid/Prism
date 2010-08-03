@@ -97,6 +97,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\LIB\Silverlight\UnitTestFramework\Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.dll</HintPath>
     </Reference>
+    <Reference Include="Moq.Silverlight">
+      <HintPath>..\..\..\LIB\Silverlight\Moq\Moq.Silverlight.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
@@ -105,6 +108,9 @@
     <Reference Include="System.Windows.Controls, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Desktop\Composite.UnityExtensions.Tests\BootstrapperFixtureBase.cs">
+      <Link>BootstrapperFixtureBase.cs</Link>
+    </Compile>
     <Compile Include="..\..\Desktop\Composite.UnityExtensions.Tests\Mocks\DependantA.cs">
       <Link>Mocks\DependantA.cs</Link>
     </Compile>
@@ -128,6 +134,18 @@
     </Compile>
     <Compile Include="..\..\Desktop\Composite.UnityExtensions.Tests\UnityBootstrapperFixture.cs">
       <Link>UnityBootstrapperFixture.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Desktop\Composite.UnityExtensions.Tests\UnityBootstrapperNullContainerFixture.cs">
+      <Link>UnityBootstrapperNullContainerFixture.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Desktop\Composite.UnityExtensions.Tests\UnityBootstrapperNullLoggerFixture.cs">
+      <Link>UnityBootstrapperNullLoggerFixture.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Desktop\Composite.UnityExtensions.Tests\UnityBootstrapperNullModuleCatalogFixture.cs">
+      <Link>UnityBootstrapperNullModuleCatalogFixture.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Desktop\Composite.UnityExtensions.Tests\UnityBootstrapperRunMethodFixture.cs">
+      <Link>UnityBootstrapperRunMethodFixture.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\Composite.UnityExtensions.Tests\UnityContainerExtensionFixture.cs">
       <Link>UnityContainerExtensionFixture.cs</Link>

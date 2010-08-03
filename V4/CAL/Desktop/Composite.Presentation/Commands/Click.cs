@@ -63,6 +63,7 @@ namespace Microsoft.Practices.Composite.Presentation.Commands
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "Only works for buttonbase")]
         public static void SetCommand(ButtonBase buttonBase, ICommand command)
         {
+            if (buttonBase == null) throw new System.ArgumentNullException("buttonBase");
             buttonBase.SetValue(CommandProperty, command);
         }
 
@@ -74,6 +75,7 @@ namespace Microsoft.Practices.Composite.Presentation.Commands
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "Only works for buttonbase")]
         public static ICommand GetCommand(ButtonBase buttonBase)
         {
+            if (buttonBase == null) throw new System.ArgumentNullException("buttonBase");
             return buttonBase.GetValue(CommandProperty) as ICommand;
         }
 
@@ -85,6 +87,7 @@ namespace Microsoft.Practices.Composite.Presentation.Commands
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "Only works for buttonbase")]
         public static void SetCommandParameter(ButtonBase buttonBase, object parameter)
         {
+            if (buttonBase == null) throw new System.ArgumentNullException("buttonBase");
             buttonBase.SetValue(CommandParameterProperty, parameter);
         }
 
@@ -96,6 +99,7 @@ namespace Microsoft.Practices.Composite.Presentation.Commands
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Justification = "Only works for buttonbase")]
         public static object GetCommandParameter(ButtonBase buttonBase)
         {
+            if (buttonBase == null) throw new System.ArgumentNullException("buttonBase");
             return buttonBase.GetValue(CommandParameterProperty);
         }
 

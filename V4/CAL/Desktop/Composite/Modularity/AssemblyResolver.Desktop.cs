@@ -28,8 +28,6 @@ namespace Microsoft.Practices.Composite.Modularity
     /// Handles AppDomain's AssemblyResolve event to be able to load assemblies dynamically in 
     /// the LoadFrom context, but be able to reference the type from assemblies loaded in the Load context.
     /// </summary>
-    [SecurityPermission(SecurityAction.LinkDemand)]
-    [SecurityPermission(SecurityAction.InheritanceDemand)]
     public class AssemblyResolver : IAssemblyResolver, IDisposable
     {
         private readonly List<AssemblyInfo> registeredAssemblies = new List<AssemblyInfo>();

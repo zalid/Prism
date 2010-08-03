@@ -23,6 +23,10 @@ if not exist %silverlightDll% echo Could not find %silverlightDll%. Trying for S
  
 REM Trying for Silverlight 3 assemblies
 if not exist %silverlightDll% set silverlightDll="%ProgramFiles%\Reference Assemblies\Microsoft\Framework\Silverlight\v3.0\mscorlib.dll"
+if not exist %silverlightDll% echo Could not find %silverlightDll%. Trying for Silverlight 4 assemblies.
+
+REM Trying for Silverlight 4 assemblies
+if not exist %silverlightDll% set silverlightDll="%ProgramFiles%\Reference Assemblies\Microsoft\Framework\Silverlight\v4.0\mscorlib.dll"
 if not exist %silverlightDll% echo ERROR. Could not find %silverlightDll%
 if not exist %silverlightDll% goto Error
 

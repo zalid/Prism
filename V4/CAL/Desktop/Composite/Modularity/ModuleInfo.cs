@@ -38,8 +38,11 @@ namespace Microsoft.Practices.Composite.Modularity
         /// <param name="name">The module's name.</param>
         /// <param name="type">The module <see cref="Type"/>'s AssemblyQualifiedName.</param>
         /// <param name="dependsOn">The modules this instance depends on.</param>
+        /// <exception cref="ArgumentNullException">An <see cref="ArgumentNullException"/> is thrown if <paramref name="dependsOn"/> is <see langword="null"/>.</exception>
         public ModuleInfo(string name, string type, params string[] dependsOn)
         {
+            if (dependsOn == null) throw new System.ArgumentNullException("dependsOn");
+
             this.ModuleName = name;
             this.ModuleType = type;
             this.DependsOn = new Collection<string>();
@@ -86,7 +89,7 @@ namespace Microsoft.Practices.Composite.Modularity
         /// Reference to the location of the module assembly.
         /// <example>The following are examples of valid <see cref="ModuleInfo.Ref"/> values:
         /// http://myDomain/ClientBin/MyModules.xap for remote module in Silverlight
-        /// file:///c:/MyProject/Modules/MyModule.dll for a loose DLL in WPF.
+        /// file://c:/MyProject/Modules/MyModule.dll for a loose DLL in WPF.
         /// </example>
         /// </summary>
         public string Ref { get; set; }

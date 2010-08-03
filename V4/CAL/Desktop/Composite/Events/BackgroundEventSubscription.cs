@@ -14,8 +14,8 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+using System.Threading;
 using System;
-using System.ComponentModel;
 
 namespace Microsoft.Practices.Composite.Events
 {
@@ -39,17 +39,13 @@ namespace Microsoft.Practices.Composite.Events
         }
 
         /// <summary>
-        /// Invokes the specified <see cref="System.Action{TPayload}"/> in an asynchronous thread by using a <see cref="BackgroundWorker"/>.
+        /// Invokes the specified <see cref="System.Action{TPayload}"/> in an asynchronous thread by using a <see cref="ThreadPool"/>.
         /// </summary>
         /// <param name="action">The action to execute.</param>
         /// <param name="argument">The payload to pass <paramref name="action"/> while invoking it.</param>
         public override void InvokeAction(Action<TPayload> action, TPayload argument)
         {
-            BackgroundWorker worker = new BackgroundWorker();
-            worker.DoWork += (sender, e) => action((TPayload)e.Argument);
-
-            // handle worker.RunWorkerCompleted and log exceptions?
-            worker.RunWorkerAsync(argument);
+            ThreadPool.QueueUserWorkItem( (o) => action(argument) );
         }
     }
 }

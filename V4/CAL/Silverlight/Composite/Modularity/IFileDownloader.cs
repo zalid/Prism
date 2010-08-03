@@ -15,6 +15,7 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System;
+using System.Net;
 
 namespace Microsoft.Practices.Composite.Modularity
 {
@@ -24,7 +25,12 @@ namespace Microsoft.Practices.Composite.Modularity
     public interface IFileDownloader
     {
         /// <summary>
-        /// Event triggered when the file download is complete.
+        /// Raised whenever the download progress changes.
+        /// </summary>
+        event EventHandler<DownloadProgressChangedEventArgs> DownloadProgressChanged;
+
+        /// <summary>
+        /// Raised download is complete.
         /// </summary>
         event EventHandler<DownloadCompletedEventArgs> DownloadCompleted;
 

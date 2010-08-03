@@ -53,5 +53,12 @@ namespace Microsoft.Practices.Composite.Modularity
         /// Initializes the catalog, which may load and validate the modules.
         /// </summary>
         void Initialize();
+
+        /// <summary>
+        /// Adds a <see cref="ModuleInfo"/> to the <see cref="ModuleCatalog"/>.
+        /// </summary>
+        /// <param name="moduleInfo">The <see cref="ModuleInfo"/> to add.</param>
+        /// <returns>The <see cref="ModuleCatalog"/> for easily adding multiple modules.</returns>
+        void AddModule(ModuleInfo moduleInfo);
     }
 }

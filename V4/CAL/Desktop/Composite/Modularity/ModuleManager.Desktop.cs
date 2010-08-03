@@ -18,9 +18,11 @@ using System.Collections.Generic;
 
 namespace Microsoft.Practices.Composite.Modularity
 {
+    /// <summary>
+    /// Component responsible for coordinating the modules' type loading and module initialization process. 
+    /// </summary>
     public partial class ModuleManager
     {
-
         /// <summary>
         /// Returns the list of registered <see cref="IModuleTypeLoader"/> instances that will be 
         /// used to load the types of modules. 

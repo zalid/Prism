@@ -35,6 +35,7 @@ namespace Microsoft.Practices.Composite.Presentation.Commands
         /// <param name="clickableObject">The clickable object.</param>
         public ButtonBaseClickCommandBehavior(ButtonBase clickableObject) : base(clickableObject)
         {
+            if (clickableObject == null) throw new System.ArgumentNullException("clickableObject");
             clickableObject.Click += OnClick;
         }
       

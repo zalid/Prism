@@ -39,8 +39,6 @@ namespace Microsoft.Practices.Composite.Modularity
     /// 
     /// The diretory catalog does not continue to monitor the directory after it has created the initialze catalog.
     /// </remarks>
-    [SecurityPermission(SecurityAction.LinkDemand)]
-    [SecurityPermission(SecurityAction.InheritanceDemand)]
     public class DirectoryModuleCatalog : ModuleCatalog
     {
         /// <summary>
@@ -76,7 +74,7 @@ namespace Microsoft.Practices.Composite.Modularity
 
                 loadedAssemblies.AddRange(assemblies);
 
-                Type loaderType = typeof (InnerModuleInfoLoader);
+                Type loaderType = typeof(InnerModuleInfoLoader);
 
                 if (loaderType.Assembly != null)
                 {
@@ -108,8 +106,11 @@ namespace Microsoft.Practices.Composite.Modularity
         /// create the domain that the application is actually executing in. This will 
         /// need to be Full Trust for Composite Application Library applications.
         /// </remarks>
+        /// <exception cref="ArgumentNullException">An <see cref="ArgumentNullException"/> is thrown if <paramref name="parentDomain"/> is null.</exception>
         protected virtual AppDomain BuildChildDomain(AppDomain parentDomain)
         {
+            if (parentDomain == null) throw new System.ArgumentNullException("parentDomain");
+
             Evidence evidence = new Evidence(parentDomain.Evidence);
             AppDomainSetup setup = parentDomain.SetupInformation;
             return AppDomain.CreateDomain("DiscoveryRegion", evidence, setup);
@@ -129,8 +130,8 @@ namespace Microsoft.Practices.Composite.Modularity
 
                 Assembly moduleReflectionOnlyAssembly =
                     AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies().First(
-                        asm => asm.FullName == typeof (IModule).Assembly.FullName);
-                Type IModuleType = moduleReflectionOnlyAssembly.GetType(typeof (IModule).FullName);
+                        asm => asm.FullName == typeof(IModule).Assembly.FullName);
+                Type IModuleType = moduleReflectionOnlyAssembly.GetType(typeof(IModule).FullName);
 
                 IEnumerable<ModuleInfo> modules = GetNotAllreadyLoadedModuleInfos(directory, IModuleType);
 
@@ -139,7 +140,7 @@ namespace Microsoft.Practices.Composite.Modularity
                 return array;
             }
 
-            private IEnumerable<ModuleInfo> GetNotAllreadyLoadedModuleInfos(DirectoryInfo directory, Type IModuleType)
+            private static IEnumerable<ModuleInfo> GetNotAllreadyLoadedModuleInfos(DirectoryInfo directory, Type IModuleType)
             {
                 Assembly[] alreadyLoadedAssemblies = AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies();
                 return directory.GetFiles("*.dll")
@@ -156,7 +157,7 @@ namespace Microsoft.Practices.Composite.Modularity
                                             .Select(type => CreateModuleInfo(type)));
             }
 
-            private Assembly OnReflectionOnlyResolve(ResolveEventArgs args, DirectoryInfo directory)
+            private static Assembly OnReflectionOnlyResolve(ResolveEventArgs args, DirectoryInfo directory)
             {
                 Assembly loadedAssembly = AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies().FirstOrDefault(
                     asm => string.Equals(asm.FullName, args.Name, StringComparison.OrdinalIgnoreCase));
@@ -196,7 +197,7 @@ namespace Microsoft.Practices.Composite.Modularity
                 bool onDemand = false;
                 var moduleAttribute =
                     CustomAttributeData.GetCustomAttributes(type).FirstOrDefault(
-                        cad => cad.Constructor.DeclaringType.FullName == typeof (ModuleAttribute).FullName);
+                        cad => cad.Constructor.DeclaringType.FullName == typeof(ModuleAttribute).FullName);
 
                 if (moduleAttribute != null)
                 {
@@ -222,7 +223,7 @@ namespace Microsoft.Practices.Composite.Modularity
 
                 var moduleDependencyAttributes =
                     CustomAttributeData.GetCustomAttributes(type).Where(
-                        cad => cad.Constructor.DeclaringType.FullName == typeof (ModuleDependencyAttribute).FullName);
+                        cad => cad.Constructor.DeclaringType.FullName == typeof(ModuleDependencyAttribute).FullName);
 
                 foreach (CustomAttributeData cad in moduleDependencyAttributes)
                 {

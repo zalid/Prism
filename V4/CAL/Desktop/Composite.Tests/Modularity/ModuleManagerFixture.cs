@@ -20,6 +20,7 @@ using Microsoft.Practices.Composite.Logging;
 using Microsoft.Practices.Composite.Modularity;
 using Microsoft.Practices.Composite.Tests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Microsoft.Practices.Composite.Tests.Modularity
 {
@@ -45,19 +46,7 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
         public void NullLoggerThrows()
         {
             new ModuleManager(new MockModuleInitializer(), new MockModuleCatalog(), null);
-        }
-
-        [TestMethod]
-        public void ShouldNotInitializeModulesSynchronously()
-        {
-            var loader = new MockModuleInitializer();
-            var catalog = new MockModuleCatalog { Modules = { CreateModuleInfo("ModuleThatNeedsRetrieval", InitializationMode.WhenAvailable) } };
-            ModuleManager manager = new ModuleManager(loader, catalog, new MockLogger());
-            manager.ModuleTypeLoaders = new List<IModuleTypeLoader> { new MockModuleTypeLoader() };
-            manager.Run();
-
-            Assert.IsFalse(loader.LoadCalled);
-        }
+        }       
 
         [TestMethod]
         public void ShouldInvokeRetrieverForModules()
@@ -71,7 +60,7 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
 
             manager.Run();
 
-            Assert.IsTrue(moduleTypeLoader.beginLoadModuleTypeCalls.Contains(moduleInfo));
+            Assert.IsTrue(moduleTypeLoader.LoadedModules.Contains(moduleInfo));
         }
 
         [TestMethod]
@@ -82,15 +71,14 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
             var catalog = new MockModuleCatalog { Modules = { backgroungModuleInfo } };
             ModuleManager manager = new ModuleManager(loader, catalog, new MockLogger());
             var moduleTypeLoader = new MockModuleTypeLoader();
-            manager.ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader };
+            manager.ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader };            
+            Assert.IsFalse(loader.InitializeCalled);
+
             manager.Run();
-            Assert.IsFalse(loader.LoadCalled);
 
-            moduleTypeLoader.RaiseCallbackForModule(backgroungModuleInfo);
-
-            Assert.IsTrue(loader.LoadCalled);
-            Assert.AreEqual(1, loader.LoadedModules.Count);
-            Assert.AreEqual(backgroungModuleInfo, loader.LoadedModules[0]);
+            Assert.IsTrue(loader.InitializeCalled);
+            Assert.AreEqual(1, loader.InitializedModules.Count);
+            Assert.AreEqual(backgroungModuleInfo, loader.InitializedModules[0]);
         }
 
         [TestMethod]
@@ -104,18 +92,15 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
             manager.ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleRetriever };
             manager.Run();
 
-            Assert.IsFalse(loader.LoadCalled);
-            Assert.AreEqual(0, moduleRetriever.beginLoadModuleTypeCalls.Count);
+            Assert.IsFalse(loader.InitializeCalled);
+            Assert.AreEqual(0, moduleRetriever.LoadedModules.Count);
 
             manager.LoadModule("NeedsRetrieval");
 
-            Assert.AreEqual(1, moduleRetriever.beginLoadModuleTypeCalls.Count);
-
-            moduleRetriever.RaiseCallbackForModule(onDemandModule);
-
-            Assert.IsTrue(loader.LoadCalled);
-            Assert.AreEqual(1, loader.LoadedModules.Count);
-            Assert.AreEqual(onDemandModule, loader.LoadedModules[0]);
+            Assert.AreEqual(1, moduleRetriever.LoadedModules.Count);
+            Assert.IsTrue(loader.InitializeCalled);
+            Assert.AreEqual(1, loader.InitializedModules.Count);
+            Assert.AreEqual(onDemandModule, loader.InitializedModules[0]);
         }
 
         [TestMethod]
@@ -128,6 +113,7 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
 
             ModuleManager manager = new ModuleManager(loader, catalog, new MockLogger());
             var moduleTypeLoader = new MockModuleTypeLoader();
+
             manager.ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader };
             manager.Run();
 
@@ -153,19 +139,19 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
         public void ShouldNotLoadTypeIfModuleInitialized()
         {
             var loader = new MockModuleInitializer();
-            var alreadedPresentModule = CreateModuleInfo(typeof(MockModule), InitializationMode.WhenAvailable);
-            alreadedPresentModule.State = ModuleState.ReadyForInitialization;
-            var catalog = new MockModuleCatalog { Modules = { alreadedPresentModule } };
+            var alreadyPresentModule = CreateModuleInfo(typeof(MockModule), InitializationMode.WhenAvailable);
+            alreadyPresentModule.State = ModuleState.ReadyForInitialization;
+            var catalog = new MockModuleCatalog { Modules = { alreadyPresentModule } };
             var manager = new ModuleManager(loader, catalog, new MockLogger());
             var moduleTypeLoader = new MockModuleTypeLoader();
             manager.ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader };
 
             manager.Run();
 
-            Assert.IsFalse(moduleTypeLoader.beginLoadModuleTypeCalls.Contains(alreadedPresentModule));
-            Assert.IsTrue(loader.LoadCalled);
-            Assert.AreEqual(1, loader.LoadedModules.Count);
-            Assert.AreEqual(alreadedPresentModule, loader.LoadedModules[0]);
+            Assert.IsFalse(moduleTypeLoader.LoadedModules.Contains(alreadyPresentModule));
+            Assert.IsTrue(loader.InitializeCalled);
+            Assert.AreEqual(1, loader.InitializedModules.Count);
+            Assert.AreEqual(alreadyPresentModule, loader.InitializedModules[0]);
         }
 
         [TestMethod]
@@ -177,10 +163,10 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
             var manager = new ModuleManager(loader, catalog, new MockLogger());
             manager.Run();
             manager.LoadModule("MockModule");
-            loader.LoadCalled = false;
+            loader.InitializeCalled = false;
             manager.LoadModule("MockModule");
 
-            Assert.IsFalse(loader.LoadCalled);
+            Assert.IsFalse(loader.InitializeCalled);
         }
 
         [TestMethod]
@@ -194,12 +180,12 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
             manager.ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader };
             manager.Run();
             manager.LoadModule("ModuleThatNeedsRetrieval");
-            moduleTypeLoader.RaiseCallbackForModule(onDemandModule);
-            loader.LoadCalled = false;
+            moduleTypeLoader.RaiseLoadModuleCompleted(new LoadModuleCompletedEventArgs(onDemandModule, null));
+            loader.InitializeCalled = false;
 
             manager.LoadModule("ModuleThatNeedsRetrieval");
 
-            Assert.IsFalse(loader.LoadCalled);
+            Assert.IsFalse(loader.InitializeCalled);
         }
 
         [TestMethod]
@@ -244,16 +230,16 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
 
             manager.Run();
 
-            moduleTypeLoader.RaiseCallbackForModule(dependantModuleInfo);
+            moduleTypeLoader.RaiseLoadModuleCompleted(new LoadModuleCompletedEventArgs(dependantModuleInfo, null));            
 
-            Assert.IsFalse(loader.LoadCalled);
-            Assert.AreEqual(0, loader.LoadedModules.Count);
+            Assert.IsFalse(loader.InitializeCalled);
+            Assert.AreEqual(0, loader.InitializedModules.Count);
         }
 
         [TestMethod]
         public void ShouldInitializeIfDependenciesAreMet()
         {
-            var loader = new MockModuleInitializer();
+            var initializer = new MockModuleInitializer();
             var requiredModule = CreateModuleInfo("ModuleThatNeedsRetrieval1", InitializationMode.WhenAvailable);
             requiredModule.ModuleName = "RequiredModule";
             var dependantModuleInfo = CreateModuleInfo("ModuleThatNeedsRetrieval2", InitializationMode.WhenAvailable, "RequiredModule");
@@ -267,17 +253,14 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
                                                       return null;
                                               };
 
-            ModuleManager manager = new ModuleManager(loader, catalog, new MockLogger());
+            ModuleManager manager = new ModuleManager(initializer, catalog, new MockLogger());
             var moduleTypeLoader = new MockModuleTypeLoader();
             manager.ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader };
 
             manager.Run();
 
-            moduleTypeLoader.RaiseCallbackForModule(dependantModuleInfo);
-            moduleTypeLoader.RaiseCallbackForModule(requiredModule);
-
-            Assert.IsTrue(loader.LoadCalled);
-            Assert.AreEqual(2, loader.LoadedModules.Count);
+            Assert.IsTrue(initializer.InitializeCalled);
+            Assert.AreEqual(2, initializer.InitializedModules.Count);
         }
 
         [TestMethod]
@@ -288,15 +271,16 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
             var catalog = new MockModuleCatalog { Modules = { moduleInfo } };
             ModuleManager manager = new ModuleManager(loader, catalog, new MockLogger());
             var moduleTypeLoader = new MockModuleTypeLoader();
-            manager.ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader };
-            manager.Run();
-            Assert.IsFalse(loader.LoadCalled);
 
             Exception retrieverException = new Exception();
+            moduleTypeLoader.LoadCompletedError = retrieverException;
+
+            manager.ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader };            
+            Assert.IsFalse(loader.InitializeCalled);
 
             try
             {
-                moduleTypeLoader.RaiseCallbackForModule(moduleInfo, retrieverException);
+                manager.Run();
             }
             catch (Exception ex)
             {
@@ -330,12 +314,12 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
             var logger = new MockLogger();
             ModuleManager manager = new ModuleManager(loader, catalog, logger);
             var moduleTypeLoader = new MockModuleTypeLoader();
+            moduleTypeLoader.LoadCompletedError = new Exception();
             manager.ModuleTypeLoaders = new List<IModuleTypeLoader> { moduleTypeLoader };
-            manager.Run();
 
             try
             {
-                moduleTypeLoader.RaiseCallbackForModule(moduleInfo, new Exception());
+                manager.Run();
             }
             catch
             {
@@ -375,7 +359,86 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
             Assert.IsTrue(onDemandModuleWasInitialized);
         }
 
+        
+        [TestMethod]
+        public void ModuleManagerIsDisposable()
+        {
+            Mock<IModuleInitializer> mockInit = new Mock<IModuleInitializer>(); 
+            var moduleInfo = CreateModuleInfo("needsRetrieval", InitializationMode.WhenAvailable);
+            var catalog = new Mock<IModuleCatalog>();
+            ModuleManager manager = new ModuleManager(mockInit.Object, catalog.Object, new MockLogger());
 
+            IDisposable disposableManager = manager as IDisposable;
+            Assert.IsNotNull(disposableManager);
+        }
+        
+        [TestMethod]
+        public void DisposeDoesNotThrowWithNonDisposableTypeLoaders()
+        {
+            Mock<IModuleInitializer> mockInit = new Mock<IModuleInitializer>();
+            var moduleInfo = CreateModuleInfo("needsRetrieval", InitializationMode.WhenAvailable);
+            var catalog = new Mock<IModuleCatalog>();
+            ModuleManager manager = new ModuleManager(mockInit.Object, catalog.Object, new MockLogger());
+
+            var mockTypeLoader = new Mock<IModuleTypeLoader>();
+            manager.ModuleTypeLoaders = new List<IModuleTypeLoader> {mockTypeLoader.Object};
+
+            try
+            {
+                manager.Dispose();
+            }
+            catch(Exception)
+            {
+                Assert.Fail();
+            }
+        }
+
+        [TestMethod]
+        public void DisposeCleansUpDisposableTypeLoaders()
+        {
+            Mock<IModuleInitializer> mockInit = new Mock<IModuleInitializer>();
+            var moduleInfo = CreateModuleInfo("needsRetrieval", InitializationMode.WhenAvailable);
+            var catalog = new Mock<IModuleCatalog>();
+            ModuleManager manager = new ModuleManager(mockInit.Object, catalog.Object, new MockLogger());
+
+            var mockTypeLoader = new Mock<IModuleTypeLoader>();
+            var disposableMockTypeLoader = mockTypeLoader.As<IDisposable>();
+            disposableMockTypeLoader.Setup(loader => loader.Dispose());
+
+            manager.ModuleTypeLoaders = new List<IModuleTypeLoader> { mockTypeLoader.Object };
+
+            manager.Dispose();
+
+            disposableMockTypeLoader.Verify(loader => loader.Dispose(), Times.Once());
+        }
+
+        [TestMethod]
+        public void DisposeDoesNotThrowWithMixedTypeLoaders()
+        {
+            Mock<IModuleInitializer> mockInit = new Mock<IModuleInitializer>();
+            var moduleInfo = CreateModuleInfo("needsRetrieval", InitializationMode.WhenAvailable);
+            var catalog = new Mock<IModuleCatalog>();
+            ModuleManager manager = new ModuleManager(mockInit.Object, catalog.Object, new MockLogger());
+
+            var mockTypeLoader1 = new Mock<IModuleTypeLoader>();
+
+            var mockTypeLoader = new Mock<IModuleTypeLoader>();
+            var disposableMockTypeLoader = mockTypeLoader.As<IDisposable>();
+            disposableMockTypeLoader.Setup(loader => loader.Dispose());
+
+            manager.ModuleTypeLoaders = new List<IModuleTypeLoader>() { mockTypeLoader1.Object, mockTypeLoader.Object };
+            
+            try
+            {
+                manager.Dispose();
+            }
+            catch (Exception)
+            {
+                Assert.Fail();
+            }
+
+            disposableMockTypeLoader.Verify(loader => loader.Dispose(), Times.Once());
+        }
         private static ModuleInfo CreateModuleInfo(string name, InitializationMode initializationMode, params string[] dependsOn)
         {
             ModuleInfo moduleInfo = new ModuleInfo(name, name);
@@ -436,17 +499,23 @@ namespace Microsoft.Practices.Composite.Tests.Modularity
                 return CompleteListWithDependencies(modules);
             return modules;
         }
+
+
+        public void AddModule(ModuleInfo moduleInfo)
+        {
+            this.Modules.Add(moduleInfo);
+        }
     }
 
     internal class MockModuleInitializer : IModuleInitializer
     {
-        public bool LoadCalled;
-        public List<ModuleInfo> LoadedModules = new List<ModuleInfo>();
+        public bool InitializeCalled;
+        public List<ModuleInfo> InitializedModules = new List<ModuleInfo>();
 
         public void Initialize(ModuleInfo moduleInfo)
         {
-            LoadCalled = true;
-            this.LoadedModules.Add(moduleInfo);
+            InitializeCalled = true;            
+            this.InitializedModules.Add(moduleInfo);
         }
     }
 

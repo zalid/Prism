@@ -22,9 +22,7 @@ using Microsoft.Practices.Unity;
 namespace Microsoft.Practices.Composite.UnityExtensions
 {
     /// <summary>
-    /// Defines a <seealso cref="IUnityContainer"/> adapter for
-    /// the <see cref="IServiceLocator"/> interface
-    /// to be used by the Composite Application Library.
+    /// Defines a <seealso cref="IUnityContainer"/> adapter for the <see cref="IServiceLocator"/> interface to be used by the Composite Application Library.
     /// </summary>
     public class UnityServiceLocatorAdapter : ServiceLocatorImplBase
     {

@@ -91,7 +91,7 @@ namespace Microsoft.Practices.Composite.Presentation.Regions.Behaviors
             {
                 if (RegionManager.GetRegionContext(this.HostControl) != this.Region.Context)
                 {
-                    // Setting this DP will automatically also change the HostControlRegionContext.Value
+                    // Setting this Dependency Property will automatically also change the HostControlRegionContext.Value
                     // (see RegionManager.OnRegionContextChanged())
                     RegionManager.SetRegionContext(this.hostControl, this.Region.Context);
                 }
