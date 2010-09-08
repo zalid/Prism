@@ -18,9 +18,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Windows.Input;
-using Microsoft.Practices.Composite.Presentation.Commands;
+using Microsoft.Practices.Prism.Commands;
 
-namespace SimpleMVVMApp
+namespace BasicMVVMApp
 {
     public class QuestionnaireViewModel
     {

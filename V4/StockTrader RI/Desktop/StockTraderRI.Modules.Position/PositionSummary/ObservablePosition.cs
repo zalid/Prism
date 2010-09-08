@@ -15,12 +15,11 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System.Collections.Generic;
-using System.Linq;
 using System.Collections.ObjectModel;
-using StockTraderRI.Infrastructure.Interfaces;
-using Microsoft.Practices.Composite.Events;
-using Microsoft.Practices.Composite.Presentation.Events;
+using System.Linq;
+using Microsoft.Practices.Prism.Events;
 using StockTraderRI.Infrastructure;
+using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Infrastructure.Models;
 
 namespace StockTraderRI.Modules.Position.PositionSummary
@@ -40,7 +39,7 @@ namespace StockTraderRI.Modules.Position.PositionSummary
             this.marketFeedService = marketFeedService;
 
             eventAggregator.GetEvent<MarketPricesUpdatedEvent>().Subscribe(MarketPricesUpdated, ThreadOption.UIThread);
-           
+
             PopulateItems();
 
             this.accountPositionService.Updated += PositionSummaryItems_Updated;

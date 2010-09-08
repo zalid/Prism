@@ -16,11 +16,11 @@
 //===================================================================================
 using System;
 using System.Linq;
+using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using MVVM.Client.Infrastructure;
 using MVVM.Client.Infrastructure.StateManagement;
-using MVVM.Client.Infrastructure.ViewModels;
 using MVVM.Client.Tests.Mocks;
 using MVVM.Client.ViewModels;
 using MVVM.Questionnaires.Model;

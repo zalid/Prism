@@ -17,8 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Microsoft.Practices.Composite.Modularity;
-using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Prism.Modularity;
+using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,7 +28,7 @@ using StockTraderRI.Modules.Watch.Controllers;
 using StockTraderRI.Modules.Watch.Services;
 using StockTraderRI.Modules.Watch.WatchList;
 using StockTraderRI.Modules.WatchList.Tests.Mocks;
-using Microsoft.Practices.Composite.TestSupport;
+using Microsoft.Practices.Prism.TestSupport;
 
 namespace StockTraderRI.Modules.WatchList.Tests
 {

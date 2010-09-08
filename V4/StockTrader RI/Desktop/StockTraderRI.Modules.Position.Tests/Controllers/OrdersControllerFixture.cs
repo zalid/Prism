@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
-using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockTraderRI.Infrastructure;
@@ -28,7 +28,7 @@ using StockTraderRI.Modules.Position.Orders;
 using StockTraderRI.Modules.Position.Tests.Mocks;
 using StockTraderRI.Modules.Position.Tests.Orders;
 using StockTraderRI.Infrastructure.Interfaces;
-using Microsoft.Practices.Composite.TestSupport;
+using Microsoft.Practices.Prism.TestSupport;
 
 namespace StockTraderRI.Modules.Position.Tests.Controllers
 {
@@ -234,14 +234,14 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
             container.ResolveBag.Add(typeof(IOrderCompositePresentationModel), buyOrder);
             controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
 
-            Assert.IsTrue(controller.SubmitAllVoteOnlyCommand.CanExecute(null));
+            Assert.IsTrue(controller.SubmitAllVoteOnlyCommand.CanExecute());
 
             var sellOrder = new MockOrderCompositePresentationModel() { Shares = 200 };
 			container.ResolveBag[typeof(IOrderCompositePresentationModel)] = sellOrder;
             controller.InvokeStartOrder(TransactionType.Sell, "STOCK01");
 
             //Should not be able to sell even though owned shares==100, buy==100 and sell==200
-            Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute(null));
+            Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute());
         }
 
         [TestMethod]
@@ -258,13 +258,13 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
             container.ResolveBag.Add(typeof(IOrderCompositePresentationModel), sellOrder1);
             controller.InvokeStartOrder(TransactionType.Sell, "STOCK01");
 
-            Assert.IsTrue(controller.SubmitAllVoteOnlyCommand.CanExecute(null));
+            Assert.IsTrue(controller.SubmitAllVoteOnlyCommand.CanExecute());
 
             var sellOrder2 = new MockOrderCompositePresentationModel() { Shares = 100 };
 			container.ResolveBag[typeof(IOrderCompositePresentationModel)] = sellOrder2;
             controller.InvokeStartOrder(TransactionType.Sell, "stock01");
 
-            Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute(null));
+            Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute());
         }
 
         [TestMethod]
@@ -280,7 +280,7 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
 
             controller.InvokeStartOrder(TransactionType.Sell, "NOTOWNED");
 
-            Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute(null));
+            Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute());
         }
 
         [TestMethod]
@@ -288,7 +288,7 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
         {
             var controller = new TestableOrdersController(new MockRegionManager(), new MockUnityContainer(), new MockStockTraderRICommandProxy(), new MockAccountPositionService());
 
-            Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute(null));
+            Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute());
         }
 
         [TestMethod]
@@ -311,7 +311,7 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
                                                                  {
                                                                      canExecuteChangedCalled = true;
                                                                      canExecuteResult =
-                                                                         controller.SubmitAllVoteOnlyCommand.CanExecute(null);
+                                                                         controller.SubmitAllVoteOnlyCommand.CanExecute();
                                                                  };
             buyOrder.RaiseCloseViewRequested();
 
@@ -368,10 +368,10 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
 
         public bool SubmitAllCommandCalled = false;
 
-        protected override bool SubmitAllCanExecute(object parameter)
+        protected override bool SubmitAllCanExecute()
         {
             SubmitAllCommandCalled = true;
-            return base.SubmitAllCanExecute(parameter);
+            return base.SubmitAllCanExecute();
         }
     }
 

@@ -20,9 +20,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
+using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
+using Microsoft.Practices.Prism.ViewModel;
 using MVVM.Client.Infrastructure;
 using MVVM.Client.Infrastructure.StateManagement;
-using MVVM.Client.Infrastructure.ViewModels;
 using MVVM.Questionnaires.Model;
 using MVVM.Questionnaires.Services;
 using MVVM.Repository;
@@ -39,7 +40,7 @@ namespace MVVM.Client.ViewModels
     /// </remarks>
     [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class QuestionnaireViewModel : ViewModel
+    public class QuestionnaireViewModel : NotificationObject
     {
         private readonly IQuestionnaireRepository questionnaireRepository;
         private readonly ISingleViewUIService uiService;

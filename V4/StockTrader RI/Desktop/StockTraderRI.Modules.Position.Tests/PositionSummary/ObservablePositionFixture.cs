@@ -17,14 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Microsoft.Practices.Prism.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using StockTraderRI.Infrastructure;
+using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.Position.PositionSummary;
 using StockTraderRI.Modules.Position.Tests.Mocks;
-using StockTraderRI.Infrastructure.Models;
-using StockTraderRI.Infrastructure;
-using Microsoft.Practices.Composite.Presentation.Events;
-using Microsoft.Practices.Composite.Events;
 
 namespace StockTraderRI.Modules.Position.Tests.PositionSummary
 {
@@ -149,9 +147,9 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
         }
     }
 
-/*
- * updates view when position added/removed
- * 
- * presentationModel does NOT update view when market feed does not relate to positions (filtering)
- */
+    /*
+     * updates view when position added/removed
+     * 
+     * presentationModel does NOT update view when market feed does not relate to positions (filtering)
+     */
 }

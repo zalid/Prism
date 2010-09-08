@@ -16,9 +16,8 @@
 //===================================================================================
 using System.Collections.Specialized;
 using System.Windows;
-using Microsoft.Practices.Composite.Presentation.Regions;
-using Microsoft.Practices.Composite.Presentation.Regions.Behaviors;
-using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Prism.Regions;
+using Microsoft.Practices.Prism.Regions.Behaviors;
 
 namespace StockTraderRI.Infrastructure.Behaviors
 {

@@ -15,8 +15,8 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System.Windows;
-using Microsoft.Practices.Composite.Modularity;
-using Microsoft.Practices.Composite.UnityExtensions;
+using Microsoft.Practices.Prism.Modularity;
+using Microsoft.Practices.Prism.UnityExtensions;
 using UIComposition.Modules.Employee;
 using UIComposition.Modules.Project;
 using Microsoft.Practices.Unity;

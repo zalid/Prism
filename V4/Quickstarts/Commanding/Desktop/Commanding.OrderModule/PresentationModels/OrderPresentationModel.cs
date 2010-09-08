@@ -19,8 +19,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using Commanding.Modules.Order.Properties;
-using Microsoft.Practices.Composite.Events;
-using Microsoft.Practices.Composite.Presentation.Commands;
+using Microsoft.Practices.Prism.Events;
+using Microsoft.Practices.Prism.Commands;
 
 namespace Commanding.Modules.Order.PresentationModels
 {

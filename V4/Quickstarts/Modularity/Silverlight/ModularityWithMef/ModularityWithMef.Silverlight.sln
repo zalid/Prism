@@ -5,14 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModularityWithMef.Silverlig
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModularityWithMef.Silverlight", "ModularityWithMef.Silverlight\ModularityWithMef.Silverlight.csproj", "{41F01C5A-A5E0-4D86-86B0-CAADA3DDCFF2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CAL", "CAL", "{22291E18-C83D-47AC-80E4-0689063C5B68}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.MefExtensions.Silverlight", "..\..\..\..\CAL\Silverlight\Composite.MefExtensions\Composite.MefExtensions.Silverlight.csproj", "{064AB5E3-6931-4505-A766-5D80963D6F1C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.Silverlight", "..\..\..\..\CAL\Silverlight\Composite\Composite.Silverlight.csproj", "{CC79289A-2563-40B8-895C-3CDA56BA4956}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite.Presentation.Silverlight", "..\..\..\..\CAL\Silverlight\Composite.Presentation\Composite.Presentation.Silverlight.csproj", "{E0D65CA9-810F-4FEC-9CB8-D8943FF28A9D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleA", "ModuleA\ModuleA.csproj", "{19AB48B0-82F2-473A-9670-6A9DCEF79D85}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleTracking", "ModuleTracking\ModuleTracking.csproj", "{2A9D519F-7219-46E0-9BFC-D7BCCB2BF9CB}"
@@ -41,18 +33,6 @@ Global
 		{41F01C5A-A5E0-4D86-86B0-CAADA3DDCFF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41F01C5A-A5E0-4D86-86B0-CAADA3DDCFF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41F01C5A-A5E0-4D86-86B0-CAADA3DDCFF2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{064AB5E3-6931-4505-A766-5D80963D6F1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{064AB5E3-6931-4505-A766-5D80963D6F1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{064AB5E3-6931-4505-A766-5D80963D6F1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{064AB5E3-6931-4505-A766-5D80963D6F1C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CC79289A-2563-40B8-895C-3CDA56BA4956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CC79289A-2563-40B8-895C-3CDA56BA4956}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CC79289A-2563-40B8-895C-3CDA56BA4956}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CC79289A-2563-40B8-895C-3CDA56BA4956}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E0D65CA9-810F-4FEC-9CB8-D8943FF28A9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0D65CA9-810F-4FEC-9CB8-D8943FF28A9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0D65CA9-810F-4FEC-9CB8-D8943FF28A9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0D65CA9-810F-4FEC-9CB8-D8943FF28A9D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{19AB48B0-82F2-473A-9670-6A9DCEF79D85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{19AB48B0-82F2-473A-9670-6A9DCEF79D85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19AB48B0-82F2-473A-9670-6A9DCEF79D85}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -84,10 +64,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{064AB5E3-6931-4505-A766-5D80963D6F1C} = {22291E18-C83D-47AC-80E4-0689063C5B68}
-		{CC79289A-2563-40B8-895C-3CDA56BA4956} = {22291E18-C83D-47AC-80E4-0689063C5B68}
-		{E0D65CA9-810F-4FEC-9CB8-D8943FF28A9D} = {22291E18-C83D-47AC-80E4-0689063C5B68}
 	EndGlobalSection
 EndGlobal

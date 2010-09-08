@@ -1,6 +1,6 @@
 				--------------------------------------------------------------------------
 				Prism 4.0 (formerly known as Composite Application Guidance) - Readme file 
-											CTP - August 2010
+											Drop 7th - September 2010
 				--------------------------------------------------------------------------
 				
 This file provides information that supplements the Prism documentation and can be useful when using the guidance.
@@ -14,12 +14,14 @@ CONTENTS
 	1.2 Major Changes in This Drop
 	1.3 System Requirements
 	1.4 Installation
-	1.5 Please Note - Known Issues
-	1.6 Prism Library and Code Access Security
+	1.5 Compiling the Prism Library 
+	1.6 Please Note - Known Issues
+	1.7 Prism Library and Code Access Security
 
 2.> PRISM LIBRARY BREAKING CHANGES
-	2.1 New Assemblies
-	2.2 Bootstrapper API Changes
+	2.1 Namespace and Assembly Breaking Changes
+	2.2 New Assemblies
+	2.3 Bootstrapper API Changes
 
 3.> BASIC MODEL-VIEW-VIEWMODEL QUICKSTART
 	3.1 Overview
@@ -36,15 +38,20 @@ CONTENTS
 	5.2 Scenario
 	5.3 Running Instructions
 
-6.> MODEL-VIEW-VIEWMODEL REFERENCE IMPLEMENTATION
+6.> STATE-BASED NAVIGATION QUICKSTARTS
 	6.1 Overview
 	6.2 Scenario
 	6.3 Running Instructions
 
-7.> STOCK TRADER REFERENCE IMPLEMENTATION
+7.> MODEL-VIEW-VIEWMODEL REFERENCE IMPLEMENTATION
 	7.1 Overview
 	7.2 Scenario
 	7.3 Running Instructions
+
+8.> STOCK TRADER REFERENCE IMPLEMENTATION
+	8.1 Overview
+	8.2 Scenario
+	8.3 Running Instructions
 	
 	
 --------------------
@@ -62,7 +69,9 @@ CONTENTS
 	  New or updated QuickStarts in Prism 4.0:
 		- Basic MVVM QuickStart
 		- MVVM QuickStart
-		- Modularity QuickStarts		
+		- Modularity QuickStarts
+		- State-Based Navigation QuickStart
+		- View-Switching Navigation QuickStart
       QuickStarts ported from Prism 2.x:
 		- Commanding QuickStarts
 		- Event Aggregation QuickStarts
@@ -71,20 +80,18 @@ CONTENTS
 		- UI Composition - ViewDiscovery QuickStarts
 		- UI Composition - ViewInjection QuickStarts
 
-     With the exception of the MVVM QuickStarts, there are two solutions for each QuickStart, 
+     With the exception of the MVVM and Navigation QuickStarts, there are two solutions for each QuickStart, 
      one targeting the desktop and one targeting Silverlight.
       
 	
 	1.2 >>> Major Changes in This Drop <<<
 	--------------------------------------
-	• MVVM RI: Implemented a template-based approach for displaying pop-up windows
-	• MVVM RI: Renamed the INotification interface to IInteractionRequest
-	• MVVM RI: Added code comments for InteractionRequest classes
-	• MVVM RI: Implemented the ViewFactory class to avoid composing the container in itself
-	• Added more acceptance tests for the MVVM RI
-	• Renamed the Simple MVVM QuickStart to Basic MVVM QuickStart
-	• Updated documentation for modularity and MVVM topics
-	• Bug fixes
+	• Added View-Switching Navigation QuickStart. This QuickStart shows an approach that uses Silverlight's Visual State Manager to define the views (states) and the allowed transitions.
+	• Updated the State-based Navigation QuickStart to display an image upon disconnection and to reference the new Prism.Interactivity namespace.
+	• Created the Prism.Interactivity namespace, that holds Interaction Request behavior, among other reusable behaviors.
+	• Added Prism 4.0 Installation Guide.
+	• Added State-Based Navigation QuickStart documentation.
+	• Bug fixes.
 
 
 	1.3 >>> System Requirements <<<
@@ -99,57 +106,81 @@ CONTENTS
 	• Microsoft Visual Studio 2010
 	• Microsoft .NET Framework 4.0 (the .NET Framework 4.0 includes WPF): http://www.microsoft.com/downloads/details.aspx?familyid=9CFB2D51-5FF4-4491-B0E5-B386F32C0992&displaylang=en
 	• Microsoft Silverlight 4 (this is required only if you are creating Silverlight applications): http://www.microsoft.com/silverlight/
-	• Microsoft Silverlight 4 Tools for Visual Studio 2010 (this is required only if you are creating Silverlight applications): 
-	http://www.microsoft.com/downloads/details.aspx?FamilyID=eff8a0da-0a4d-48e8-8366-6ddf2ecad801&displaylang=en
-	• MOQ (Moq.4.0.10531.7-bin.zip - includes Silverlight): http://code.google.com/p/moq/ 
+	• Microsoft Silverlight 4 Tools for Visual Studio 2010 (this is required only if you are creating Silverlight applications, however, updates to the WPF and Silverlight Designer for Visual Studio 2010 are also included here so you would benefit from this whether you are building Silverlight or WPF applications): 
+	http://www.microsoft.com/downloads/en/details.aspx?FamilyID=b3deb194-ca86-4fb6-a716-b67c2604a139&displayLang=en
+	• MOQ (Moq.4.0.10827.zip - includes Silverlight): http://code.google.com/p/moq/downloads/detail?name=Moq.4.0.10827.zip&can=2&q=
+	  The tests have been build and run against Moq 4.0 Beta 2.
+	  Note: After you download the MOQ library, make sure its usage is not blocked before you use it with the Prism Library. 
+	  To check whether it is blocked, check the file properties. To do this, right-click the file name, click Properties, click the General tab, and then click the Unblock button under Security.
 		
 	You may also want to install the following:
 	• Microsoft Expression Blend 4: http://www.microsoft.com/expression/products/Blend_Overview.aspx
-	• Microsoft Visual Studio 2010 SDK to compile Project Linker: http://www.microsoft.com/downloads/details.aspx?FamilyID=47305cf4-2bea-43c0-91cd-1b853602dcc5&displaylang=en
 	• Microsoft Silverlight Unit Test Framework to run the unit tests in Silverlight: http://silverlight.codeplex.com/releases/view/43528
 
 	1.4 >>> Installation <<<
 	------------------------
 	To install the Prism assets, run the Prism.Source.exe file to extract the source into any folder of your choice.
-	NOTE: In order to compile from source, you will need to add the Silverlight Unit Testing Framework files to the LIB\Silverlight\UnitTestFramework folder. For the files, see http://code.msdn.microsoft.com/silverlightut for the files.
-	
-	1.5 >>> Please Note - Known Issues <<<
-	------------------------------------
+		
+	1.5 >>> Compiling the Prism Library <<<
+    ---------------------------------------
+    In order to run the QuickStarts and reference implementations, you need to first compile the Prism Library.
+     
+    To compile the solution
+    1. In Windows Explorer, double-click the following batch file to open the Prism Library solution in Visual Studio:
+    Desktop & Silverlight - Open Prism Library.bat
+    2. Build the solution. The Prism Library assemblies will be placed in the folder Lib\<Desktop or Silverlight>\Prism\
+   
+	1.6 >>> Please Note - Known Issues <<<
+	--------------------------------------
 	The Modularity with Unity – Silverlight QuickStart does not load Modules A and C with the application; also they are not clickable.
 	
 	Several links in the Prism documentation may not be working and some sections and images may be outdated. This will be solved in the final release of the guidance.
 	
 	Some items are still under construction and might change in future drops.
 
-	1.6 >>> Prism Library and Code Access Security <<<
+	1.7 >>> Prism Library and Code Access Security <<<
 	--------------------------------------------------
 	The Prism Library uses all the default .NET Framework settings with respect to signing assemblies and code access security. It is a recommended practice to strong name all your assemblies, including the Prism Library assemblies, shell assembly, and any modules you might want to create. This is not a requirement. It is possible to load assemblies that have not been signed into a (signed or unsigned) Prism Library application. You can change this behavior by applying a .NET security policy that disallows the use of unsigned assemblies or one that changes the trust level of an assembly. Please note that the .NET Framework does not allow you to load partially trusted assemblies, unless you add the AllowPartiallyTrustedCallers attribute to the Prism Library assemblies. 
 
 	For more information, see "Code Access Security" in the ".NET Framework Developer’s Guide" on MSDN (http://msdn.microsoft.com/en-us/library/930b76w0.aspx).
 
 
+
 -----------------------------------------
 2.> PRISM LIBRARY BREAKING CHANGES
 -----------------------------------------
 
-	2.1 >>> New Assemblies <<<
+	2.1 >>> Namespace and Assembly Breaking Changes <<<
+	------------------------------------
+	The "Composite" and "Composite.Presentation" portion of the namespaces were removed and the Composite and Composite.Presentation assemblies collapsed into a single assembly named Microsoft.Practices.Prism. 
+	This change was done to simplify deployment and adoption and to facilitate alignment with the MVVM support in Prism 4.0.
+
+	The following namespace prefix was changed across all assemblies:
+	Microsoft.Practices.Composite  -> Microsoft.Practices.Prism
+	Microsoft.Practices.Composite.Presentation -> Microsoft.Practices.Prism
+
+	The assembly/namespace change also affects the MEF and Unity extensions.
+
+	In future drops, we will provide a script to help update your projects for this change. The documents have not been updated to reflect this change yet.
+	
+	2.2 >>> New Assemblies <<<
 	------------------------------------
 	With the addition of supporting the Managed Extensibility Framework (MEF), there were several changes to the Prism Library. You can now use MEF as the dependency injection container.  This new functionality required two new assemblies in the Prism Library solution: Composite.MefExtensions.Desktop and Composite.MefExtensions.Silverlight. These assemblies are matched with new unit test assemblies.
 	For more information about dependency injection containers and how to use MEF, see the topic "Dependency Injection Container and Services" in the Prism4.chm file.
 
-  2.2 >>> Bootstrapper API Changes <<<
+	2.3 >>> Bootstrapper API Changes <<<
 	------------------------------------
 	With the addition of supporting MEF, there were several changes to the Prism Library's bootstrapper.  These changes include:
-  • A new Bootstrapper base class was added to the Microsoft.Practices.Composite.Modularity namespace in the Composite.Presentation.Desktop and Composite.Presentation.Silverlight assemblies.  
-    - The UnityBootstrapper class (in the Composite.UnityExtensions.Desktop and Composite.UnityExtensions.Silverlight assemblies) extends the new Bootstrapper base class.
-    - A new MefBootstrapper class (in the Composite.MefExtensions.Desktop and Composite.MefExtensions.Silverlight assemblies) extends the new Bootstrapper base class.
-  • To facilitate the addition of the Bootstrapper base class several properties and methods changed names for consistency:
-    - The LoggerFacade property was renamed to Logger.  
-    - The Logger property is set in the Run method of the different bootstrappers using the result of the CreateLogger method rather than the get property on the Logger.
-    - The GetModuleCatalog method in the UnityBootstrapper is now called CreateModuleCatalog.
-  • Several new methods were added to better separate concepts:
-    - The virtual ConfigureModuleCatalog was added to allow modifying the catalog after creation as part of the bootstrapping process.
-    - The virtual ConfigureServiceLocator method was added to allow overriding the configuration of the ServiceLocator.
+	• A new Bootstrapper base class was added to the Microsoft.Practices.Composite.Modularity namespace in the Composite.Presentation.Desktop and Composite.Presentation.Silverlight assemblies.  
+		- The UnityBootstrapper class (in the Composite.UnityExtensions.Desktop and Composite.UnityExtensions.Silverlight assemblies) extends the new Bootstrapper base class.
+		- A new MefBootstrapper class (in the Composite.MefExtensions.Desktop and Composite.MefExtensions.Silverlight assemblies) extends the new Bootstrapper base class.
+	• To facilitate the addition of the Bootstrapper base class several properties and methods changed names for consistency:
+		- The LoggerFacade property was renamed to Logger.  
+		- The Logger property is set in the Run method of the different bootstrappers using the result of the CreateLogger method rather than the get property on the Logger.
+		- The GetModuleCatalog method in the UnityBootstrapper is now called CreateModuleCatalog.
+	• Several new methods were added to better separate concepts:
+		- The virtual ConfigureModuleCatalog was added to allow modifying the catalog after creation as part of the bootstrapping process.
+		- The virtual ConfigureServiceLocator method was added to allow overriding the configuration of the ServiceLocator.
     
 	For more information on the Bootstrapper classes, see the topic "Bootstrapper: Starting Your Prism Application" in the Prism4.chm file.  For a full API description of the Bootstrapper, UnityBootstrapper, and MEFBootstrapper, see the Prism4ApiReference.chm
 
@@ -168,6 +199,7 @@ CONTENTS
 	
 	3.3 >>> Running Instructions <<<
 	--------------------------------
+	First, you need to compile the Prism Library. See "1.5 Compiling the Prism Library" for details.
 	To load the Basic Model-View-ViewModel QuickStart, open the file Quickstarts\BasicMVVM\BasicMVVMQuickStart.sln in Visual Studio.
 	To run the QuickStart, set the "BasicMVVMApp.Web" project as the startup project, set BasicMVVMAppTestPage.html as the start page, and then press F5.
 
@@ -186,6 +218,7 @@ CONTENTS
 	
 	4.3 >>> Running Instructions <<<
 	--------------------------------
+	First, you need to compile the Prism Library. See "1.5 Compiling the Prism Library" for details.
 	To load the Model-View-ViewModel QuickStart, open the solution file Quickstarts\MVVM\MVVM.sln in Visual Studio.
 	To run the QuickStart, set the "MVVM" project as the startup project, and then press F5.
 
@@ -203,6 +236,8 @@ CONTENTS
 	
 	5.3 >>> Running Instructions <<<
 	--------------------------------
+	First, you need to compile the Prism Library. See "1.5 Compiling the Prism Library" for details.
+	
 	WPF versions:
 		>> To load and run the MEF version of the QuickStart, open the solution file Quickstarts\Modularity\Desktop\ModularityWithMef\ModularityWithMef.Desktop.sln in Visual Studio,
 		set the ModularityWithMef.Desktop project as the startup project, and then press F5.
@@ -215,40 +250,63 @@ CONTENTS
 		>> To load and run the Unity version of the QuickStart, open the solution file Quickstarts\Modularity\Silverlight\ModularityWithUnity\ModularityWithUnity.Silverlight.sln in Visual Studio,
 		set the "ModularityWithUnity.Silverlight.Web" project as the startup project, and then press F5.
 
-
--------------------------------------------------
-6.> MODEL-VIEW-VIEWMODEL REFERENCE IMPLEMENTATION
--------------------------------------------------	
+-------------------------------------
+6.> STATE-BASED NAVIGATION QUICKSTART
+-------------------------------------
 
 	6.1 >>> Overview <<<
 	--------------------
-	The Model-View-ViewModel application is a reference implementation that illustrates a complete survey application and demonstrates complex challenges that developers face when creating applications using the MVVM pattern. 
-	
+	The State-based Navigation QuickStart demonstrates an approach to define the navigation of a simple application (or possibly a portion of a more complicated one).
+		
 	6.2 >>> Scenario <<<
 	--------------------
-	The Model-View-ViewModel Reference Implementation (MVVM RI) represents a survey application. The main window shows a list of available questionnaires; when one is selected, an empty survey with different types of questions is shown. After the questionnaire is completed, it can be submitted. After that, the user is returned to the list of available questionnaires.
+    The main window of the State-based Navigation QuickStart represents a subset of a chat application. In this window, the list of contacts of the user is shown. The user can alternate among different views of their contacts: list, avatars, or contact detail. The messages of the user's contacts are displayed as they arrive. In the detail view of a contact, you can send a message to that user.
 	
 	6.3 >>> Running Instructions <<<
 	--------------------------------
-	To load the MVVM RI, open the solution file MVVM RI\MVVM.sln in Visual Studio.
-	To run the reference implementation, set the MVVM.Web project as the startup project, and then press F5.
-	
------------------------------------------
-7.> STOCK TRADER REFERENCE IMPLEMENTATION
------------------------------------------	
+	First, you need to compile the Prism Library. See "1.5 Compiling the Prism Library" for details.
+	To load the State-based Navigation QuickStart, open the solution file Quickstarts\MVVM VSM Navigation\MVVM VSM Navigation.sln in Visual Studio.
+	To run the QuickStart, set the "MVVM VSM Navigation.Web" project as the startup project, and then press F5.
+
+-------------------------------------------------
+7.> MODEL-VIEW-VIEWMODEL REFERENCE IMPLEMENTATION
+-------------------------------------------------	
 
 	7.1 >>> Overview <<<
+	--------------------
+	The Model-View-ViewModel application is a reference implementation that illustrates a complete survey application and demonstrates complex challenges that developers face when creating applications using the MVVM pattern. 
+	
+	7.2 >>> Scenario <<<
+	--------------------
+	The Model-View-ViewModel Reference Implementation (MVVM RI) represents a survey application. The main window shows a list of available questionnaires; when one is selected, an empty survey with different types of questions is shown. After the questionnaire is completed, it can be submitted. After that, the user is returned to the list of available questionnaires.
+	
+	7.3 >>> Running Instructions <<<
+	--------------------------------
+	First, you need to compile the Prism Library. See "1.5 Compiling the Prism Library" for details.
+	To load the MVVM RI, open the solution file MVVM RI\MVVM.sln in Visual Studio.
+	To run the reference implementation, set the MVVM.Web project as the startup project, and then press F5.
+
+
+	Known Issue: The Calendar View has an issue when clicking on the "End" column header and will cause an unhandled exception to be thrown.  
+	For this release, do not attempt to sort by the "End" date at run-time, this issue will be fix in the next public drop.
+
+-----------------------------------------
+8.> STOCK TRADER REFERENCE IMPLEMENTATION
+-----------------------------------------	
+
+	8.1 >>> Overview <<<
 	--------------------
 	The Stock Trader application is a reference implementation that illustrates the baseline architecture. Within the application, you will see solutions for common, and recurrent, challenges that developers face when creating composite WPF applications. 
 	It is a reference for building composite applications.
 	
-	7.2 >>> Scenario <<<
+	8.2 >>> Scenario <<<
 	--------------------
 	The Stock Trader RI illustrates a fictitious, but realistic financial investments scenario. Contoso Financial Investments (CFI) is a fictional financial organization that is modeled after real financial organizations.
 	CFI is building a new composite application to be used by their stock traders.
 	
-	7.3 >>> Running Instructions <<<
+	8.3 >>> Running Instructions <<<
 	--------------------------------
+	First, you need to compile the Prism Library. See "1.5 Compiling the Prism Library" for details.
 	To load the Stock Trader RI open the solution file StockTrader RI\StockTraderRI.sln in Visual Studio.
 	To run the WPF version of the reference implementation, set the StockTraderRI project (located at the Desktop solution folder) as the startup project, and then press F5.
 	To run the Silverlight version of the reference implementation, set the StockTraderRI project (located at the Silverlight solution folder) as the startup project, and then press F5.

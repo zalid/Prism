@@ -14,7 +14,7 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
 using UIComposition.Modules.Project.Services;
 

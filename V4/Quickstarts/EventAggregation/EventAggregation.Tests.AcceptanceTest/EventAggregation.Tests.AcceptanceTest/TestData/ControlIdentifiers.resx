@@ -225,4 +225,16 @@
   <data name="FundCombo" xml:space="preserve">
     <value>FundCbx</value>
   </data>
+  <data name="ActivityLabel" xml:space="preserve">
+    <value>ActivityLabel</value>
+  </data>
+  <data name="ActivityLabelTextValue" xml:space="preserve">
+    <value>Activity for:</value>
+  </data>
+  <data name="Customer1_Wpf" xml:space="preserve">
+    <value>Customer1</value>
+  </data>
+  <data name="Customer2_Wpf" xml:space="preserve">
+    <value>Customer2</value>
+  </data>
 </root>

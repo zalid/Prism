@@ -72,6 +72,14 @@
     <Reference Include="System.Net" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Windows.Browser" />
+    <Reference Include="Microsoft.Practices.Prism.MefExtensions">
+      <HintPath>..\..\..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.MefExtensions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism">
+      <HintPath>..\..\..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
@@ -82,16 +90,6 @@
     <None Include="Properties\AppManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\CAL\Silverlight\Composite.MefExtensions\Composite.MefExtensions.Silverlight.csproj">
-      <Project>{064AB5E3-6931-4505-A766-5D80963D6F1C}</Project>
-      <Name>Composite.MefExtensions.Silverlight</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\CAL\Silverlight\Composite\Composite.Silverlight.csproj">
-      <Project>{CC79289A-2563-40B8-895C-3CDA56BA4956}</Project>
-      <Name>Composite.Silverlight</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\ModuleTracking\ModuleTracking.csproj">
       <Project>{2A9D519F-7219-46E0-9BFC-D7BCCB2BF9CB}</Project>
       <Name>ModuleTracking</Name>

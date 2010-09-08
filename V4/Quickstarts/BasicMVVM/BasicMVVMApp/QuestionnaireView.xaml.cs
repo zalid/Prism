@@ -16,7 +16,7 @@
 //===================================================================================
 using System.Windows.Controls;
 
-namespace SimpleMVVMApp
+namespace BasicMVVMApp
 {
     public partial class QuestionnaireView : UserControl
     {

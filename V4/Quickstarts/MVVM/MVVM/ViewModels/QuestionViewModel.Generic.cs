@@ -24,8 +24,7 @@ namespace MVVM.ViewModels
        where T : Question
     {
         private readonly T question;
-        private bool hasChanges;
-
+        
         protected QuestionViewModel(T question)
         {
             if (question == null)
@@ -35,14 +34,6 @@ namespace MVVM.ViewModels
 
             this.question = question;
             this.question.PropertyChanged += this.OnQuestionPropertyChanged;
-        }
-
-        public override bool HasChanges
-        {
-            get
-            {
-                return this.hasChanges;
-            }
         }
 
         public T Question
@@ -58,10 +49,6 @@ namespace MVVM.ViewModels
         protected virtual void OnQuestionPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
         }
-
-        protected void SetHasChanges()
-        {
-            this.hasChanges = true;
-        }
+              
     }
 }

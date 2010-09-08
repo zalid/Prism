@@ -27,7 +27,7 @@
             <summary>
             Defines the method that determines whether the command can execute in its current state.
             </summary>
-            <param name="parameter">Data used by the command.  If the command does not require data to be passed, this object can be set to null.</param>
+            <param name="parameter">Data used by the command.  If the command does not require data to be passed, then this object can be set to null.</param>
             <returns>
             Always returns true.
             </returns>
@@ -36,7 +36,7 @@
             <summary>
             Defines the method to be called when the command is invoked.
             </summary>
-            <param name="parameter">Data used by the command.  If the command does not require data to be passed, this object can be set to null.</param>
+            <param name="parameter">Data used by the command.  If the command does not require data to be passed, then this object can be set to null.</param>
         </member>
         <member name="E:Microsoft.Expression.Interactivity.Core.ActionCommand.System#Windows#Input#ICommand#CanExecuteChanged">
             <summary>
@@ -52,7 +52,7 @@
             <summary>
             Invokes the action.
             </summary>
-            <param name="parameter">The parameter to the action. If the Action does not require a parameter, the parameter may be set to a null reference.</param>
+            <param name="parameter">The parameter of the action. If the action does not require a parameter, the parameter may be set to a null reference.</param>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Core.CallMethodAction.OnAttached">
             <summary>
@@ -90,7 +90,7 @@
             <summary>
             Invokes the action.
             </summary>
-            <param name="parameter">The parameter to the action. If the Action does not require a parameter, the parameter may be set to a null reference.</param>
+            <param name="parameter">The parameter of the action. If the action does not require a parameter, then the parameter may be set to a null reference.</param>
             <exception cref="T:System.ArgumentException">A property with <c cref="P:Microsoft.Expression.Interactivity.Core.ChangePropertyAction.PropertyName"/> could not be found on the Target.</exception>
             <exception cref="T:System.ArgumentException">Could not set <c cref="P:Microsoft.Expression.Interactivity.Core.ChangePropertyAction.PropertyName"/> to the value specified by <c cref="P:Microsoft.Expression.Interactivity.Core.ChangePropertyAction.Value"/>.</exception>
         </member>
@@ -124,74 +124,74 @@
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Core.ComparisonCondition">
             <summary>
-            Represent one ternary condition
+            Represents one ternary condition.
             </summary>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Core.ComparisonCondition.Evaluate">
             <summary>
-            Method that evaluate the condition. Note that this method can throw ArgumentException if the operator is
-            incompatible with the type. For instance, operator LessThan, LessThanOrEqual, GreaterThan, GreaterThanOrEqual
+            Method that evaluates the condition. Note that this method can throw ArgumentException if the operator is
+            incompatible with the type. For instance, operators LessThan, LessThanOrEqual, GreaterThan, and GreaterThanOrEqual
             require both operators to implement IComparable. 
             </summary>
-            <returns>return true if the condition has been met, false otherwise</returns>
+            <returns>Returns true if the condition has been met; otherwise, returns false.</returns>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Core.ComparisonCondition.EnsureBindingUpToDate">
             <summary>
-            Ensure that any binding on DP operands are up to date.  
+            Ensure that any binding on DP operands are up-to-date.  
             </summary>
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Core.ComparisonCondition.LeftOperand">
             <summary>
-            Get or Set the left operand
+            Gets or sets the left operand.
             </summary>
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Core.ComparisonCondition.RightOperand">
             <summary>
-            Get or Set the right operand
+            Gets or sets the right operand.
             </summary>
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Core.ComparisonCondition.Operator">
             <summary>
-            Get or Set the comparison operator. 
+            Gets or sets the comparison operator. 
             </summary>
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Core.ComparisonConditionType">
             <summary>
-            enumeration of different comparison operator
+            Enumeration of different comparison operators.
             </summary>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.ComparisonLogic.EvaluateImpl(System.Object,Microsoft.Expression.Interactivity.Core.ComparisonConditionType,System.Object)">
             <summary>
-            This method evaluates operands 
+            This method evaluates operands. 
             </summary>
-            <param name="leftOperand">left operand from the LeftOperand property</param>
-            <param name="operatorType">operator from Operator property</param>
-            <param name="rightOperand">right operand from the RightOperand property</param>
-            <returns>return true if the condition is met, false otherwise</returns>
+            <param name="leftOperand">Left operand from the LeftOperand property.</param>
+            <param name="operatorType">Operator from Operator property.</param>
+            <param name="rightOperand">Right operand from the RightOperand property.</param>
+            <returns>Returns true if the condition is met; otherwise, returns false.</returns>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.ComparisonLogic.EvaluateComparable(System.IComparable,Microsoft.Expression.Interactivity.Core.ComparisonConditionType,System.IComparable)">
             <summary>
-            Evalute operands that both implement IComparable interface
+            Evaluates both operands that implement the IComparable interface.
             </summary>
-            <param name="leftOperand">left operand from the LeftOperand property</param>
-            <param name="operatorType">operator from Operator property</param>
-            <param name="rightOperand">right operand from the LeftOperand property</param>
-            <returns>true if the condition is met, false otherwise</returns>
+            <param name="leftOperand">Left operand from the LeftOperand property.</param>
+            <param name="operatorType">Operator from Operator property.</param>
+            <param name="rightOperand">Right operand from the RightOperand property.</param>
+            <returns>Returns true if the condition is met; otherwise, returns false.</returns>
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Core.ForwardChaining">
             <summary>
-            Forward chaining
+            Forward chaining.
             </summary>
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Core.ConditionalExpression">
             <summary>
-            Represent a conditional expression that we set on a ConditionBehavior.Condition property. 
-            Contains a list of conditions that gets evaluated in order return true or false for ICondition.Evaluate(). 
+            Represents a conditional expression that is set on a ConditionBehavior.Condition property. 
+            Contains a list of conditions that gets evaluated in order to return true or false for ICondition.Evaluate().
             </summary>
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Core.ICondition">
             <summary>
-            Interface that a given object must implement in order to be 
+            An interface that a given object must implement in order to be 
             set on a ConditionBehavior.Condition property. 
             </summary>
         </member>
@@ -202,26 +202,26 @@
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Core.ConditionalExpression.Evaluate">
             <summary>
-            Goes through the Conditions collection and evalute each condition based on 
+            Goes through the Conditions collection and evalutes each condition based on 
             ForwardChaining property.
             </summary>
-            <returns>true, conditions are met, false conditions are not met</returns>
+            <returns>Returns true if conditions are met; otherwise, returns false.</returns>
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Core.ConditionalExpression.ForwardChaining">
             <summary>
-            Get or set forward chaining for the conditions
+            Gets or sets forward chaining for the conditions.
             If forward chaining is set to ForwardChaining.And, all conditions must be met.
-            If forward chaining is set to ForwardChaining.or, only one condition must be met.
+            If forward chaining is set to ForwardChaining.Or, only one condition must be met.		
             </summary>
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Core.ConditionalExpression.Conditions">
             <summary>
-            Return the Condition collections
+            Return the Condition collections.
             </summary>
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Core.ConditionBehavior">
             <summary>
-            A behavior that attach to a trigger and control the conditions
+            A behavior that attaches to a trigger and controls the conditions
             to fire the actions. 
             </summary>
             
@@ -233,31 +233,31 @@
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Core.ConditionBehavior.OnPreviewInvoke(System.Object,System.Windows.Interactivity.PreviewInvokeEventArgs)">
             <summary>
-            Event handler listening to the preview invoke event fired by 
-            the trigger. Setting PreviewInvokeEventArgs.Cancelling to true will
+            The event handler that is listening to the preview invoke event that is fired by 
+            the trigger. Setting PreviewInvokeEventArgs.Cancelling to True will
             cancel the invocation.
             </summary>
-            <param name="sender">the trigger base objec</param>
-            <param name="e">object of type PreviewInvokeEventArgs where e.Cancelling can be set to true</param>
+            <param name="sender">The trigger base object.</param>
+            <param name="e">An object of type PreviewInvokeEventArgs where e.Cancelling can be set to True.</param>
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Core.ConditionBehavior.Condition">
             <summary>
-            Get or Set the IConditon object on behavior
+            Gets or sets the IConditon object on behavior.
             </summary>
             <value>The name of the condition to change.</value>
         </member>
         <member name="T:Microsoft.Expression.Interactivity.DataBindingHelper">
             <summary>
-            Helper class for managing binding expression on dependency objects
+            Helper class for managing binding expressions on dependency objects.
             </summary>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.DataBindingHelper.EnsureDataBindingUpToDateOnMembers(System.Windows.DependencyObject)">
             <summary>
-            Ensure that all DP on an action with binding expression are
+            Ensure that all DP on an action with binding expressions are
             up to date. DataTrigger fires during data binding phase. Since
             actions are children of the trigger, any bindings on the action
-            may not be up to date. This routine is called before the action
-            is invoked in order to guarantee that all bindings are up to date
+            may not be up-to-date. This routine is called before the action
+            is invoked in order to guarantee that all bindings are up-to-date
             with the most current data. 
             </summary>
         </member>
@@ -268,8 +268,8 @@
         </member>
         <member name="M:Microsoft.Expression.Interactivity.DataBindingHelper.EnsureBindingUpToDate(System.Windows.DependencyObject,System.Windows.DependencyProperty)">
             <summary>
-             This helper function ensures that if a dependency property on a dependency object
-             has a binding expression, the binding expression is up to date. 
+             This helper function ensures that, if a dependency property on a dependency object
+             has a binding expression, the binding expression is up-to-date. 
             </summary>
             <param name="target"></param>
             <param name="dp"></param>
@@ -287,10 +287,10 @@
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Core.DataStateBehavior.IsElementLoaded(System.Windows.FrameworkElement)">
             <summary>
-            A helper function to take the place of FrameworkElement.IsLoaded, as Silverlight doesn't have a property like that.
+            A helper function to take the place of FrameworkElement.IsLoaded, as this property isn't available in Silverlight.
             </summary>
             <param name="element">The element of interest.</param>
-            <returns>True if the element has been loaded; otherwise, false</returns>
+            <returns>Returns true if the element has been loaded; otherwise, returns false.</returns>
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Core.DataStateBehavior.Binding">
             <summary>
@@ -314,7 +314,7 @@
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Core.DataStoreChangedTrigger">
             <summary>
-            Trigger designed to be binded on a data store property. Fires when the property changes
+            Trigger designed to be bound to a data store property. Fires when the property changes.
             </summary>
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Core.PropertyChangedTrigger">
@@ -344,7 +344,7 @@
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Core.PropertyChangedTrigger.Binding">
              <summary>
-             Binding object the trigger will listen to and fire on change.  
+             A binding object that the trigger will listen to, and that causes the trigger to fire when it changes.
              </summary>
             UA_REVIEW:chabiss
         </member>
@@ -380,7 +380,7 @@
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.UseFluidLayoutProperty">
             <summary>
-            A VisualStateGroup can use Fluid Layout or not.
+            A VisualStateGroup that can use FluidLayout or not.
             </summary>
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.RuntimeVisibilityPropertyProperty">
@@ -423,6 +423,11 @@
             The cached background in use during the state change.
             </summary>
         </member>
+        <member name="F:Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.CachedEffectProperty">
+            <summary>
+            The cached background in use during the state change.
+            </summary>
+        </member>
         <member name="F:Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.MovingElements">
             <summary>
             This is the set of elements that are currently in motion.
@@ -451,19 +456,19 @@
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.FindTransition(System.Windows.VisualStateGroup,System.Windows.VisualState,System.Windows.VisualState)">
             <summary>
-            Locate the transition that VisualStateManager will use to animate the change, so that the layout animation can match the duration and ease.
+            Locate the transition that VisualStateManager will use to animate the change, so that the layout animation can match the duration and easing.
             </summary>
-            <param name="group">The group in which the transition is taking place</param>
-            <param name="previousState">The state that you are coming from</param>
-            <param name="state">The state you are going to</param>
+            <param name="group">The group in which the transition is taking place.</param>
+            <param name="previousState">The state that you are coming from.</param>
+            <param name="state">The state you are going to.</param>
             <returns>The transition</returns>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.ExtractLayoutStoryboard(System.Windows.VisualState)">
             <summary>
             Remove all layout-affecting properties from the Storyboard for the state and cache them in an attached property.
             </summary>
-            <param name="state">The state you are moving to</param>
-            <returns>A Storyboard containing the layout properties in that state</returns>
+            <param name="state">The state you are moving to.</param>
+            <returns>A Storyboard containing the layout properties in that state.</returns>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.FindTargetElements(System.Windows.FrameworkElement,System.Windows.FrameworkElement,System.Windows.Media.Animation.Storyboard,System.Collections.Generic.List{Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.OriginalLayoutValueRecord},System.Collections.Generic.List{System.Windows.FrameworkElement})">
             <summary>
@@ -474,34 +479,34 @@
              
             Subsequent code will check these rectangles both before and after the layout change.
             </summary>
-            <param name="control">The control whose layout is changing state</param>
-            <param name="layoutStoryboard">The storyboard containing the layout changes</param>
-            <param name="originalValueRecords">Any previous values from previous state navigations that might be reverted</param>
-            <param name="movingElements">The set of elements currently in motion, if there is a state change transition ongoing</param>
-            <returns>The full set of elements whose layout may have changed</returns>
+            <param name="control">The control whose layout is changing state.</param>
+            <param name="layoutStoryboard">The storyboard containing the layout changes.</param>
+            <param name="originalValueRecords">Any previous values from previous state navigations that might be reverted.</param>
+            <param name="movingElements">The set of elements currently in motion, if there is a state change transition ongoing.</param>
+            <returns>The full set of elements whose layout may have changed.</returns>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.GetRectsOfTargets(System.Collections.Generic.List{System.Windows.FrameworkElement},System.Collections.Generic.List{System.Windows.FrameworkElement})">
             <summary>
-            Get a set of rectangles for all the elements in the target list.
+            Gets a set of rectangles for all the elements in the target list.
             </summary>
-            <param name="targets">The set of elements to consider</param>
-            <param name="movingElements">The set of elements currently in motion</param>
-            <returns>A Dictionary mapping elements to their rects</returns>
+            <param name="targets">The set of elements to consider.</param>
+            <param name="movingElements">The set of elements currently in motion.</param>
+            <returns>A Dictionary mapping elements to their Rects.</returns>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.GetLayoutRect(System.Windows.FrameworkElement)">
             <summary>
             Get the layout rectangle of an element, by getting the layout slot and then computing which portion of the slot is being used.
             </summary>
-            <param name="element">The element whose rect we want to get</param>
-            <returns>The layout rect of that element</returns>
+            <param name="element">The element whose layout Rect will be retrieved.</param>
+            <returns>The layout Rect of that element.</returns>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.GetOldOpacities(System.Windows.FrameworkElement,System.Windows.FrameworkElement,System.Windows.Media.Animation.Storyboard,System.Collections.Generic.List{Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.OriginalLayoutValueRecord},System.Collections.Generic.List{System.Windows.FrameworkElement})">
             <summary>
             Get the opacities of elements at the time of the state change, instead of visibilities, because the state change may be in process and the current value is the most important.
             </summary>
-            <param name="control">The control whose state is changing</param>
-            <param name="layoutStoryboard">The storyboard with the layout properties</param>
-            <param name="originalValueRecords">The set of original values</param>
+            <param name="control">The control whose state is changing.</param>
+            <param name="layoutStoryboard">The storyboard with the layout properties.</param>
+            <param name="originalValueRecords">The set of original values.</param>
             <returns></returns>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.SetLayoutStoryboardProperties(System.Windows.FrameworkElement,System.Windows.FrameworkElement,System.Windows.Media.Animation.Storyboard,System.Collections.Generic.List{Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.OriginalLayoutValueRecord})">
@@ -510,39 +515,39 @@
             ticking the timeline, which would cause a render.
             All values that are overwritten will be stored in the collection of OriginalValueRecords so that they can be replaced later.
             </summary>
-            <param name="control">The control whose state is changing</param>
-            <param name="layoutStoryboard">The storyboard holding the layout properties</param>
-            <param name="originalValueRecords">The store of original values</param>
+            <param name="control">The control whose state is changing.</param>
+            <param name="layoutStoryboard">The Storyboard holding the layout properties.</param>
+            <param name="originalValueRecords">The store of original values.</param>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.WrapMovingElementsInCanvases(System.Collections.Generic.List{System.Windows.FrameworkElement},System.Collections.Generic.Dictionary{System.Windows.FrameworkElement,System.Windows.Rect},System.Collections.Generic.Dictionary{System.Windows.FrameworkElement,System.Windows.Rect})">
             <summary>
-            Take all the elements that will be moving as a result of the layout animation, and wrap them in Canvases so that
+            Take all the elements that will be moving as a result of the layout animation, and wrap them in Canvas panels so that
             they do not affect their sibling elements.
             </summary>
-            <param name="movingElements">The set of elements that will be moving</param>
+            <param name="movingElements">The set of elements that will be moving.</param>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.UnwrapMovingElementsFromCanvases(System.Collections.Generic.List{System.Windows.FrameworkElement})">
             <summary>
-            Take all the elements that have been moving as a result of the layout animation, and unwrap them from their Canvases.
+            Take all the elements that have been moving as a result of the layout animation, and unwrap them from their Canvas panels.
             </summary>
-            <param name="movingElements">The set of elements that have been moving</param>
+            <param name="movingElements">The set of elements that have been moving.</param>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.CopyLayoutProperties(System.Windows.FrameworkElement,System.Windows.FrameworkElement,System.Boolean)">
             <summary>
             Copy the layout properties from the source element to the target element, clearing them from the source.
             </summary>
-            <param name="source">The source of the layout properties</param>
-            <param name="target">The destination of the layout properties</param>
+            <param name="source">The source of the layout properties.</param>
+            <param name="target">The destination of the layout properties.</param>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.CreateLayoutTransitionStoryboard(System.Windows.VisualTransition,System.Collections.Generic.List{System.Windows.FrameworkElement},System.Collections.Generic.Dictionary{System.Windows.FrameworkElement,System.Double})">
             <summary>
-            Create the actual storyboard that will be used to animate the transition. Use all previously calculated results.
+            Create the actual Storyboard that will be used to animate the transition. Use all previously calculated results.
             </summary>
-            <param name="duration">The duration of the animation</param>
-            <param name="ease">The easing function to be used in the animation</param>
-            <param name="movingElements">The set of elements that will be moving</param>
-            <param name="oldOpacities">The old opacities of the elements whose viisibility is changing</param>
-            <returns>The storyboard</returns>
+            <param name="duration">The duration of the animation.</param>
+            <param name="ease">The easing function to be used in the animation.</param>
+            <param name="movingElements">The set of elements that will be moving.</param>
+            <param name="oldOpacities">The old opacities of the elements whose visibility properties are changing.</param>
+            <returns>The Storyboard.</returns>
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Core.ExtendedVisualStateManager.OriginalLayoutValueRecord">
             <summary>
@@ -553,7 +558,7 @@
             <summary>
             This enumerated type indicates whether a FluidMoveBehavior applies to the element to which it is attached, or to the children of that element.
             "Self" is useful when there is a single element that should behave in a special manner; "Children" is useful when the same behavior should apply to all
-            children of a WrapPanel or to the ItemsHost Panel of an ItemsControl.
+            children of a WrapPanel or to the ItemsHost panel of an ItemsControl.
             </summary>
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Layout.TagType">
@@ -564,22 +569,22 @@
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Layout.FluidMoveBehaviorBase.AppliesToProperty">
             <summary>
-            DependencyProperty for the scope of the behavior. See FluidMoveScope for more details.
+            Dependency property for the scope of the behavior. See FluidMoveScope for more details.
             </summary>
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Layout.FluidMoveBehaviorBase.IsActiveProperty">
             <summary>
-            DependencyProperty for the active state of the behavior.
+            Dependency property for the active state of the behavior.
             </summary>
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Layout.FluidMoveBehaviorBase.TagProperty">
             <summary>
-            DependencyProperty for ability to use the element as its own tag, or the binding on the element.
+            Dependency property that provides the ability to use the element as its own tag, or the binding on the element.
             </summary>
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Layout.FluidMoveBehaviorBase.TagPathProperty">
             <summary>
-            DependencyProperty for the extra path to add to the binding when UsaBindingAsTag is true.
+            Dependency property for the extra path to add to the binding when UsaBindingAsTag is true.
             </summary>
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Layout.FluidMoveBehaviorBase.IdentityTagProperty">
@@ -599,7 +604,7 @@
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Layout.FluidMoveBehaviorBase.Tag">
             <summary>
-            Indicates whether to use the element as its own tag, or use the binding on the element as the tag.
+            Indicates whether to use the element as its own tag, or to use the binding on the element as the tag.
             </summary>
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Layout.FluidMoveBehaviorBase.TagPath">
@@ -609,7 +614,7 @@
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Layout.FluidMoveBehaviorBase.TagData">
             <summary>
-            Private structure that stores all relevant data pertaining to a tagged item
+            Private structure that stores all relevant data pertaining to a tagged item.
             </summary>
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Layout.FluidMoveBehavior">
@@ -620,17 +625,17 @@
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Layout.FluidMoveBehavior.DurationProperty">
             <summary>
-            DependencyProperty for the duration of the move.
+            Dependency property for the duration of the move.
             </summary>
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Layout.FluidMoveBehavior.InitialTagProperty">
             <summary>
-            DependencyProperty for the tag type to use just before the object is loaded.
+            Dependency property for the tag type to use just before the object is loaded.
             </summary>
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Layout.FluidMoveBehavior.InitialTagPathProperty">
             <summary>
-            DependencyProperty for the extra path to add to the binding when UsaBindingAsTag is true.
+            Dependency property for the extra path to add to the binding when UsaBindingAsTag is true.
             </summary>
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Layout.FluidMoveBehavior.InitialIdentityTagProperty">
@@ -640,27 +645,27 @@
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Layout.FluidMoveBehavior.FloatAboveProperty">
             <summary>
-            DependencyProperty for the FloatAbove flag.
+            Dependency property for the FloatAbove flag.
             </summary>
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Layout.FluidMoveBehavior.EaseXProperty">
             <summary>
-            DependencyProperty for the EasingFunction to use for the horizontal component of the move.
+            Dependency property for the EasingFunction to use for the horizontal component of the move.
             </summary>
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Layout.FluidMoveBehavior.EaseYProperty">
             <summary>
-            DependencyProperty for the EasingFunction to use for the vertical component of the move.
+            Dependency property for the EasingFunction to use for the vertical component of the move.
             </summary>
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Layout.FluidMoveBehavior.OverlayProperty">
             <summary>
-            Remember the popup/adorner being used, in case of element motion between containers with FloatAbove = true.
+            Remember the popup/adorner being used, in case of element motion between containers when FloatAbove is true.
             </summary>
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Layout.FluidMoveBehavior.CacheDuringOverlayProperty">
             <summary>
-            Opacity cache used when floating a popup.
+            Opacity cache used when floating a Popup.
             </summary>
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Layout.FluidMoveBehavior.HasTransformWrapperProperty">
@@ -725,7 +730,7 @@
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Core.GoToStateAction.UseTransitions">
             <summary>
-            Whether or not to use a VisualTransition to transition between states.
+            Determines whether or not to use a VisualTransition to transition between states.
             </summary>
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Core.GoToStateAction.StateName">
@@ -765,17 +770,17 @@
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Input.KeyTrigger.Key">
             <summary>
-            The Key that must be pressed for the Trigger to fire.
+            The key that must be pressed for the trigger to fire.
             </summary>
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Input.KeyTrigger.Modifiers">
             <summary>
-            The Modifiers that must be active for the Trigger to fire (the default is no modifiers pressed).
+            The modifiers that must be active for the trigger to fire (the default is no modifiers pressed).
             </summary>
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Input.KeyTrigger.FiredOn">
             <summary>
-            Whether to listen to the KeyDown or KeyUp event.
+            Determines whether or not to listen to the KeyDown or KeyUp event.
             </summary>
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Layout.MouseDragElementBehavior">
@@ -785,17 +790,17 @@
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Layout.MouseDragElementBehavior.XProperty">
             <summary>
-            DependencyProperty for the X position of the dragged element, relative to the left of the root element.
+            Dependency property for the X position of the dragged element, relative to the left of the root element.
             </summary>
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Layout.MouseDragElementBehavior.YProperty">
             <summary>
-            DependencyProperty for the Y position of the dragged element, relative to the top of the root element.
+            Dependency property for the Y position of the dragged element, relative to the top of the root element.
             </summary>
         </member>
         <member name="F:Microsoft.Expression.Interactivity.Layout.MouseDragElementBehavior.ConstrainToParentBoundsProperty">
             <summary>
-            DependencyProperty for the ConstrainToParentBounds property. If true, the dragged element will be constrained to stay within the bounds of its parent container.
+            Dependency property for the ConstrainToParentBounds property. If true, the dragged element will be constrained to stay within the bounds of its parent container.
             </summary>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Layout.MouseDragElementBehavior.UpdatePosition(System.Windows.Point)">
@@ -837,7 +842,7 @@
             </summary>
             <param name="rect1">The containing Rect.</param>
             <param name="rect2">The contained Rect.</param>
-            <returns><c>true</c> if rect1 contains rect2; otherwise, <c>false</c></returns>
+            <returns><c>True</c> if rect1 contains rect2; otherwise, <c>False</c>.</returns>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Layout.MouseDragElementBehavior.TransformAsVector(System.Windows.Media.GeneralTransform,System.Double,System.Double)">
             <summary>
@@ -846,7 +851,7 @@
             <param name="transform">The transform.</param>
             <param name="x">The X component of the vector.</param>
             <param name="y">The Y component of the vector.</param>
-            <returns>A Point containing the values of X and Y transformed by transform as a Vector.</returns>
+            <returns>A point containing the values of X and Y transformed by transform as a vector.</returns>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Layout.MouseDragElementBehavior.GetTransformOffset(System.Windows.Media.GeneralTransform)">
             <summary>
@@ -897,7 +902,7 @@
             Gets or sets a value indicating whether the dragged element is constrained to stay within the bounds of its parent container. This is a dependency property.
             </summary>
             <value>
-            	<c>true</c> if the dragged element should be constrained to its parents bounds; otherwise, <c>false</c>.
+            	<c>True</c> if the dragged element should be constrained to its parents bounds; otherwise, <c>False</c>.
             </value>
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Layout.MouseDragElementBehavior.ActualPosition">
@@ -931,10 +936,10 @@
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Media.PlaySoundAction">
             <summary>
-            An Action that will play a sound to completion.
+            An action that will play a sound to completion.
             </summary>
             <remarks>
-            This Action is intended for use with short sound effects that don't need to be stopped or controlled. If you're trying 
+            This action is intended for use with short sound effects that don't need to be stopped or controlled. If you're trying 
             to create a music player or game, it may not meet your needs.
             </remarks>
         </member>
@@ -945,10 +950,10 @@
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Media.PlaySoundAction.SetMediaElementProperties(System.Windows.Controls.MediaElement)">
             <summary>
-            When the Action is invoked, this method is used to customize the dynamically created MediaElement.
+            When the action is invoked, this method is used to customize the dynamically created MediaElement.
             </summary>
             <remarks>
-            This method may be useful for Action authors who wish to extend PlaySoundAction. If you wanted to control the 
+            This method may be useful for Action authors who wish to extend PlaySoundAction. If you want to control the 
             MediaElement Balance property, you could inherit from PlaySoundAction and override this method.
             </remarks>
             <param name="mediaElement"></param>
@@ -958,39 +963,39 @@
             This method is called when some criteria are met and the action should be invoked. 
             </summary>
             <remarks>
-            Each invocation of the Action plays a new sound.  Although the implementation is subject-to-change, the caller should 
-            anticipate that this will create a new MediaElement, which will be cleaned up when the sound completes or if the media 
+            Each invocation of the Action plays a new sound. Although the implementation is subject-to-change, the caller should 
+            anticipate that this will create a new MediaElement that will be cleaned up when the sound completes or if the media 
             fails to play.
             </remarks>
             <param name="parameter"></param>
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Media.PlaySoundAction.Source">
             <summary>
-            A Uri defining the location of the sound file.  This is used to set the source property of the MediaElement. This is a dependency property.
+            A Uri defining the location of the sound file. This is used to set the source property of the MediaElement. This is a dependency property.
             </summary>
             <remarks>
-            The sound can be any file format supported by MediaElement.  In the case of a video, it will only play the
+            The sound can be any file format supported by MediaElement. In the case of a video, it will play only the
             audio portion.
             </remarks>
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Media.PlaySoundAction.Volume">
             <summary>
-            Control the volume of the sound.  This is used to set the Volume property of the MediaElement.  This is a dependency property.
+            Control the volume of the sound. This is used to set the Volume property of the MediaElement. This is a dependency property.
             </summary>
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Core.RemoveElementAction">
             <summary>
-            An Action that will remove the targeted element from the tree when invoked.
+            An action that will remove the targeted element from the tree when invoked.
             </summary>
             <remarks>
-            This Action may fail. The Action understands how to remove elements from common parents but not from custom collections or direct manipulation
+            This action may fail. The action understands how to remove elements from common parents but not from custom collections or direct manipulation
             of the visual tree.
             </remarks>
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Core.SetDataStoreValueAction">
             <summary>
             An action that will change the value of a property from a data store object.
-            This class is identical to ChangePropertyAction. The only difference is that we load the data store picker
+            This class is identical to ChangePropertyAction. The only difference is that the data store picker is loaded 
             for this action.
             </summary>
         </member>
@@ -999,8 +1004,8 @@
             An abstract class that provides the ability to target a Storyboard.
             </summary>
             <remarks>
-            For Action authors, this class provides a standard way to target a Storyboard.  Design tools may choose to provide a 
-            special editing experience for classes that inherit from this Action, thereby improving the designer experience. 
+            For action authors, this class provides a standard way to target a Storyboard. Design tools may choose to provide a 
+            special editing experience for classes that inherit from this action, thereby improving the designer experience.
             </remarks>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Media.StoryboardAction.OnStoryboardChanged(System.Windows.DependencyPropertyChangedEventArgs)">
@@ -1011,7 +1016,7 @@
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Media.StoryboardAction.Storyboard">
             <summary>
-            The targeted Storyboard.  This is a dependency property.
+            The targeted Storyboard. This is a dependency property.
             </summary>
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Media.ControlStoryboardAction">
@@ -1031,8 +1036,8 @@
             An abstract class that provides the ability to target a Storyboard.
             </summary>
             <remarks>
-            For Trigger authors, this class provides a standard way to target a Storyboard.  Design tools may choose to provide a 
-            special editing experience for classes that inherit from this Trigger, thereby improving the designer experience. 
+            For Trigger authors, this class provides a standard way to target a Storyboard. Design tools may choose to provide a 
+            special editing experience for classes that inherit from this trigger, thereby improving the designer experience. 
             </remarks>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Media.StoryboardTrigger.OnStoryboardChanged(System.Windows.DependencyPropertyChangedEventArgs)">
@@ -1042,7 +1047,7 @@
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Media.StoryboardTrigger.Storyboard">
             <summary>
-            The targeted Storyboard.  This is a dependency property.
+            The targeted Storyboard. This is a dependency property.
             </summary>
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Media.StoryboardCompletedTrigger">
@@ -1057,7 +1062,7 @@
         </member>
         <member name="T:Microsoft.Expression.Interactivity.Core.TimerTrigger">
             <summary>
-            A Trigger that is triggered by a specified event occurring on its source and fires after a delay when that event is fired.
+            A trigger that is triggered by a specified event occurring on its source and fires after a delay when that event is fired.
             </summary>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.Core.TimerTrigger.#ctor">
@@ -1072,31 +1077,31 @@
         </member>
         <member name="P:Microsoft.Expression.Interactivity.Core.TimerTrigger.TotalTicks">
             <summary>
-            Gets or sets the total number of ticks to be fired before the Trigger is finished.  This is a dependency property.
+            Gets or sets the total number of ticks to be fired before the trigger is finished.  This is a dependency property.
             </summary>
         </member>
         <member name="T:Microsoft.Expression.Media.Effects.TransitionEffect">
             <summary>
             Defines a transition effect shader that transitions from one visual to another visual
-            using an interpolated value between 0 and 1
+            using an interpolated value between 0 and 1.
             </summary>
         </member>
         <member name="F:Microsoft.Expression.Media.Effects.TransitionEffect.InputProperty">
             <summary>
-            Brush-valued properties turn into sampler-property in the shader.
-            Represents the image present in the final state of the transition
+            Brush-valued properties that turn into sampler-properties in the shader.
+            Represents the image present in the final state of the transition.
             </summary>
         </member>
         <member name="F:Microsoft.Expression.Media.Effects.TransitionEffect.OldImageProperty">
             <summary>
-            Brush-valued properties turn into sampler-property in the shader.
-            Represents the image present in the initial state of the transition
+            Brush-valued properties that turn into sampler-properties in the shader.
+            Represents the image present in the initial state of the transition.
             </summary>
         </member>
         <member name="F:Microsoft.Expression.Media.Effects.TransitionEffect.ProgressProperty">
             <summary>
-            Using a DependencyProperty as the backing store for Progress.  This enables animation, styling, binding, etc...
-            Double used to represent state of Transition from start to finish (range between 0 and 1)
+            A Dependency property as the backing store for Progress.
+            Also used to represent the state of a transition from start to finish (range between 0 and 1).
             </summary>
         </member>
         <member name="M:Microsoft.Expression.Media.Effects.TransitionEffect.CloneCurrentValue">
@@ -1132,7 +1137,7 @@
         </member>
         <member name="T:Microsoft.Expression.Interactivity.VisualStateUtilities">
             <summary>
-            This class provides various platform agnostic standard operations for working with the visual state manager.
+            This class provides various platform agnostic standard operations for working with VisualStateManager.
             </summary>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.VisualStateUtilities.GoToState(System.Windows.FrameworkElement,System.String,System.Boolean)">
@@ -1141,10 +1146,10 @@
             </summary>
             <param name="element">The element to transition between states.</param>
             <param name="stateName">The state to transition to.</param>
-            <param name="useTransitions">true to use a System.Windows.VisualTransition to transition between states; otherwise, false.</param>
-            <returns>true if the control successfully transitioned to the new state; otherwise, false.</returns>
-            <exception cref="T:System.ArgumentNullException">control is null</exception>
-            <exception cref="T:System.ArgumentNullException">stateName is null</exception>
+            <param name="useTransitions">True to use a System.Windows.VisualTransition to transition between states; otherwise, false.</param>
+            <returns>True if the control successfully transitioned to the new state; otherwise, false.</returns>
+            <exception cref="T:System.ArgumentNullException">Control is null.</exception>
+            <exception cref="T:System.ArgumentNullException">StateName is null.</exception>
         </member>
         <member name="M:Microsoft.Expression.Interactivity.VisualStateUtilities.GetVisualStateGroups(System.Windows.FrameworkElement)">
             <summary>
@@ -1158,8 +1163,8 @@
             Find the nearest parent which contains visual states.
             </summary>
             <param name="contextElement">The element from which to find the nearest stateful control.</param>
-            <param name="resolvedControl">The nearest stateful control if true; else null.</param>
-            <returns>True if a parent contains visual states; else false.</returns>
+            <param name="resolvedControl">The nearest stateful control if True; else null.</param>
+            <returns>True if a parent contains visual states; else False.</returns>
         </member>
         <member name="T:Microsoft.Expression.Interactivity.ExceptionStringTable">
             <summary>
@@ -1194,7 +1199,7 @@
         </member>
         <member name="P:Microsoft.Expression.Interactivity.ExceptionStringTable.ChangePropertyActionCannotFindPropertyNameExceptionMessage">
             <summary>
-              Looks up a localized string similar to Cannot find a property named &quot;{0}&quot; on type &quot;{1}.&quot;.
+              Looks up a localized string similar to Cannot find a property named &quot;{0}&quot; on type &quot;{1}&quot;..
             </summary>
         </member>
         <member name="P:Microsoft.Expression.Interactivity.ExceptionStringTable.ChangePropertyActionCannotIncrementAnimatedPropertyChangeExceptionMessage">
@@ -1219,7 +1224,7 @@
         </member>
         <member name="P:Microsoft.Expression.Interactivity.ExceptionStringTable.DataStateBehaviorStateNameNotFoundExceptionMessage">
             <summary>
-              Looks up a localized string similar to Cannot find state named &apos;{0}&apos; on type &apos;{1}.&apos; Ensure that the state exists and that it can be accessed from this context..
+              Looks up a localized string similar to Cannot find state named &apos;{0}&apos; on type &apos;{1}&apos;. Ensure that the state exists and that it can be accessed from this context..
             </summary>
         </member>
         <member name="P:Microsoft.Expression.Interactivity.ExceptionStringTable.GoToStateActionTargetHasNoStateGroups">
@@ -1234,7 +1239,7 @@
         </member>
         <member name="P:Microsoft.Expression.Interactivity.ExceptionStringTable.InvalidOperands">
             <summary>
-              Looks up a localized string similar to LeftOperand of type &quot;{1}&quot;  and RightOperand of type &quot;{0}&quot; cannot be used with operator &quot;{2}&quot;..
+              Looks up a localized string similar to LeftOperand of type &quot;{1}&quot; and RightOperand of type &quot;{0}&quot; cannot be used with operator &quot;{2}&quot;..
             </summary>
         </member>
         <member name="P:Microsoft.Expression.Interactivity.ExceptionStringTable.InvalidRightOperand">

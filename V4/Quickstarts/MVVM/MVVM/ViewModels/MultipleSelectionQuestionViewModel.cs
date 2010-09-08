@@ -58,7 +58,6 @@ namespace MVVM.ViewModels
         {
             if (e.PropertyName == "Response")
             {
-                this.SetHasChanges();
                 this.OnResponseChanged();
             }
         }

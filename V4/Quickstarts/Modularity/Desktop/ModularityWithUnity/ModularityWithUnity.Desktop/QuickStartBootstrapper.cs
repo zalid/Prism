@@ -18,20 +18,18 @@ namespace ModularityWithUnity.Desktop
 {
     using System;
     using System.Windows;
-    using Microsoft.Practices.Composite.Logging;
-    using Microsoft.Practices.Composite.UnityExtensions;
-    using Microsoft.Practices.Unity;
-    using Microsoft.Practices.Composite.Modularity;
-    using Microsoft.Practices.Composite.Presentation.Regions;
-    using Microsoft.Practices.Composite.Regions;
-    using ModuleTracking;
+    using Microsoft.Practices.Prism.Logging;
+    using Microsoft.Practices.Prism.Modularity;
+    using Microsoft.Practices.Prism.UnityExtensions;
     using Microsoft.Practices.ServiceLocation;
+    using Microsoft.Practices.Unity;
+    using ModuleTracking;
 
     /// <summary>
     /// Initializes Prism to start this quickstart Prism application to use Unity.
     /// </summary>
     public class QuickStartBootstrapper : UnityBootstrapper
-    {        
+    {
         private readonly CallbackLogger callbackLogger = new CallbackLogger();
 
         /// <summary>
@@ -90,7 +88,7 @@ namespace ModularityWithUnity.Desktop
             this.RegisterTypeIfMissing(typeof(IModuleTracker), typeof(ModuleTracker), true);
 
             this.Container.RegisterInstance<CallbackLogger>(this.callbackLogger);
-        }              
+        }
 
         /// <summary>
         /// Returns the module catalog that will be used to initialize the modules.
@@ -101,9 +99,9 @@ namespace ModularityWithUnity.Desktop
         /// <remarks>
         /// When using the default initialization behavior, this method must be overwritten by a derived class.
         /// </remarks>
-        protected override IModuleCatalog  CreateModuleCatalog()
+        protected override IModuleCatalog CreateModuleCatalog()
         {
-            return new AggregateModuleCatalog();                        
+            return new AggregateModuleCatalog();
         }
 
         protected override void ConfigureModuleCatalog()

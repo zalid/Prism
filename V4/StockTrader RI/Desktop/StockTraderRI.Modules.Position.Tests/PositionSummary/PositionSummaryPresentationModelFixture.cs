@@ -14,18 +14,11 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using Microsoft.Practices.Composite.Events;
+using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockTraderRI.Infrastructure;
-using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.Position.PositionSummary;
 using StockTraderRI.Modules.Position.Tests.Mocks;
-using Microsoft.Practices.Composite.Presentation.Events;
-using System.Collections.ObjectModel;
 
 namespace StockTraderRI.Modules.Position.Tests.PositionSummary
 {
@@ -104,7 +97,7 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
 
         private PositionSummaryPresentationModel CreatePresentationModel()
         {
-            return new PositionSummaryPresentationModel(view 
+            return new PositionSummaryPresentationModel(view
                                                 , ordersController
                                                 , eventAggregator
                                                 , observablePosition);

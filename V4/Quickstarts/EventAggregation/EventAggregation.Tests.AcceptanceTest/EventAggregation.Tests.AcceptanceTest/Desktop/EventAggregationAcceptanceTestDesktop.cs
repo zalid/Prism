@@ -30,24 +30,12 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Windows.Automation;
-using System.Windows.Automation.Peers;
-using System.Windows.Automation.Text;
-using System.Windows.Automation.Provider;
 using AcceptanceTestLibrary.Common.Desktop;
-using System.Diagnostics;
 using EventAggregation.Tests.AcceptanceTest.TestEntities.Page;
 using AcceptanceTestLibrary.Common;
 using AcceptanceTestLibrary.ApplicationHelper;
 using EventAggregation.Tests.AcceptanceTest.TestEntities.Assertion;
-using System.Collections.Specialized;
-using AcceptanceTestLibrary.ApplicationObserver;
-using System.Globalization;
 using System.Reflection;
 using System.Threading;
 

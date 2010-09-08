@@ -16,7 +16,7 @@
 //===================================================================================
 using System.ComponentModel;
 
-namespace SimpleMVVMApp
+namespace BasicMVVMApp
 {
     public class Questionnaire : INotifyPropertyChanged
     {

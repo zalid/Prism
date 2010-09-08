@@ -15,8 +15,7 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System;
-using Microsoft.Practices.Composite.Events;
-using Microsoft.Practices.Composite.Presentation.Events;
+using Microsoft.Practices.Prism.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Modules.Market.Tests.Mocks;
@@ -52,7 +51,7 @@ namespace StockTraderRI.Modules.Market.Tests.TrendLineView
             TrendLinePresentationModel presentationModel = new TrendLinePresentationModel(new MockTrendLineView(), historyService, eventAggregator);
 
             tickerSymbolSelected.SubscribeArgumentAction("MyTickerSymbol");
-            
+
             Assert.IsTrue(historyService.GetPriceHistoryCalled);
             Assert.AreEqual("MyTickerSymbol", historyService.GetPriceHistoryArgument);
             Assert.IsNotNull(presentationModel.HistoryCollection);

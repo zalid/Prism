@@ -19,8 +19,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Windows.Input;
 using Microsoft.Expression.Interactivity.Core;
+using Microsoft.Practices.Prism.ViewModel;
 using MVVM.Client.Infrastructure;
-using MVVM.Client.Infrastructure.ViewModels;
 using MVVM.Questionnaires.Model;
 using MVVM.Repository;
 
@@ -35,7 +35,7 @@ namespace MVVM.Client.ViewModels
     /// </remarks>
     [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class AvailableQuestionnaireTemplatesListViewModel : ViewModel
+    public class AvailableQuestionnaireTemplatesListViewModel : NotificationObject
     {
         private readonly ISingleViewUIService uiService;
         private readonly IQuestionnaireRepository questionnaireRepository;

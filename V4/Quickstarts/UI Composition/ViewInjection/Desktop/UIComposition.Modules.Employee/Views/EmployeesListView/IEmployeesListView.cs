@@ -16,7 +16,7 @@
 //===================================================================================
 using System;
 using System.Collections.ObjectModel;
-using Microsoft.Practices.Composite.Events;
+using Microsoft.Practices.Prism.Events;
 
 namespace UIComposition.Modules.Employee
 {

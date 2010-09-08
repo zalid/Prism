@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -15,8 +14,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <SilverlightApplication>true</SilverlightApplication>
-    <SupportedCultures>
-    </SupportedCultures>
+    <SupportedCultures></SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
     <XapFilename>ModularityWithMef.Silverlight.xap</XapFilename>
@@ -29,8 +27,7 @@
     <OutOfBrowserSettingsFile>Properties\OutOfBrowserSettings.xml</OutOfBrowserSettingsFile>
     <UsePlatformExtensions>false</UsePlatformExtensions>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
-    <LinkedServerProject>
-    </LinkedServerProject></PropertyGroup>
+    <LinkedServerProject></LinkedServerProject></PropertyGroup>
   <!-- This property group is only here to support building this project using the 
        MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
        to set the TargetFrameworkVersion to v3.5 -->
@@ -76,6 +73,12 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Windows.Browser" />
+    <Reference Include="Microsoft.Practices.Prism.MefExtensions">
+      <HintPath>..\..\..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.MefExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism">
+      <HintPath>..\..\..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -123,18 +126,6 @@
     <None Include="Properties\AppManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\CAL\Silverlight\Composite.MefExtensions\Composite.MefExtensions.Silverlight.csproj">
-      <Project>{064AB5E3-6931-4505-A766-5D80963D6F1C}</Project>
-      <Name>Composite.MefExtensions.Silverlight</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\CAL\Silverlight\Composite.Presentation\Composite.Presentation.Silverlight.csproj">
-      <Project>{E0D65CA9-810F-4FEC-9CB8-D8943FF28A9D}</Project>
-      <Name>Composite.Presentation.Silverlight</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\CAL\Silverlight\Composite\Composite.Silverlight.csproj">
-      <Project>{CC79289A-2563-40B8-895C-3CDA56BA4956}</Project>
-      <Name>Composite.Silverlight</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ModuleA\ModuleA.csproj">
       <Project>{19AB48B0-82F2-473A-9670-6A9DCEF79D85}</Project>
       <Name>ModuleA</Name>

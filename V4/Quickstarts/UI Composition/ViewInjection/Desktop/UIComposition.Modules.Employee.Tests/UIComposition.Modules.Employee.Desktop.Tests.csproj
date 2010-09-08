@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -13,8 +12,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
+    <FileUpgradeFlags></FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <PublishUrl>publish\</PublishUrl>
@@ -74,6 +72,9 @@
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Microsoft.Practices.Prism">
+      <HintPath>..\..\..\..\..\LIB\Desktop\Prism\Microsoft.Practices.Prism.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EmployeeModuleFixture.cs" />
@@ -96,13 +97,9 @@
     <Compile Include="Services\EmployeeServiceFixture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\CAL\Desktop\Composite.TestSupport\Composite.TestSupport.csproj">
+    <ProjectReference Include="..\..\..\..\..\PrismLibrary\Desktop\Prism.TestSupport\Prism.TestSupport.csproj">
       <Project>{D1C75DE6-CB2B-401A-985C-033C4FABAD84}</Project>
-      <Name>Composite.TestSupport</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\CAL\Desktop\Composite\Composite.Desktop.csproj">
-      <Project>{77138947-1D13-4E22-AEE0-5D0DD046CA34}</Project>
-      <Name>Composite.Desktop</Name>
+      <Name>Prism.TestSupport</Name>
     </ProjectReference>
     <ProjectReference Include="..\UIComposition.Infrastructure\UIComposition.Infrastructure.Desktop.csproj">
       <Project>{4511B435-FF23-484C-B5FE-9C4057F380C0}</Project>

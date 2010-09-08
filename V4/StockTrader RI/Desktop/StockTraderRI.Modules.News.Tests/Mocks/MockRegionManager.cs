@@ -18,7 +18,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Prism.Regions;
 
 namespace StockTraderRI.Modules.News.Tests.Mocks
 {
@@ -37,6 +37,11 @@ namespace StockTraderRI.Modules.News.Tests.Mocks
         }
 
         public IRegionManager CreateRegionManager()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Navigate(Uri source)
         {
             throw new NotImplementedException();
         }
@@ -158,5 +163,10 @@ namespace StockTraderRI.Modules.News.Tests.Mocks
         #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public void RequestNavigate(Uri source, Action<NavigationResult> navigationCallback)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

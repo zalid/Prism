@@ -14,8 +14,9 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+using System;
 using System.ComponentModel;
-using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Prism.Regions;
 
 namespace StockTraderRI.Modules.News.Tests.Mocks
 {
@@ -96,5 +97,10 @@ namespace StockTraderRI.Modules.News.Tests.Mocks
         }
 
         #endregion
+
+        public void RequestNavigate(Uri source, Action<NavigationResult> navigationCallback)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

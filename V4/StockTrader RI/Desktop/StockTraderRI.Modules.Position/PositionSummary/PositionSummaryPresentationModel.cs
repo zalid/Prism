@@ -15,12 +15,11 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System.ComponentModel;
-using Microsoft.Practices.Composite.Events;
-using Microsoft.Practices.Composite.Presentation.Events;
-using StockTraderRI.Infrastructure;
-using StockTraderRI.Modules.Position.Interfaces;
 using System.Windows.Input;
+using Microsoft.Practices.Prism.Events;
+using StockTraderRI.Infrastructure;
 using StockTraderRI.Modules.Position.Controllers;
+using StockTraderRI.Modules.Position.Interfaces;
 
 namespace StockTraderRI.Modules.Position.PositionSummary
 {

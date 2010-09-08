@@ -16,7 +16,7 @@
 //===================================================================================
 using System;
 using UIComposition.Modules.Employee.Controllers;
-using Microsoft.Practices.Composite.Events;
+using Microsoft.Practices.Prism.Events;
 
 namespace UIComposition.Modules.Employee
 {

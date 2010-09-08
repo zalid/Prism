@@ -17,7 +17,7 @@
 namespace ModuleC
 {
     using System;
-    using Microsoft.Practices.Composite.Modularity;
+    using Microsoft.Practices.Prism.Modularity;
     using ModuleTracking;
 
     /// <summary>

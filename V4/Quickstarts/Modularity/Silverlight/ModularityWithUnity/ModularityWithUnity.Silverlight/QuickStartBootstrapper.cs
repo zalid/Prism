@@ -18,13 +18,13 @@ namespace ModularityWithUnity.Silverlight
 {
     using System;
     using System.Windows;
-    using Microsoft.Practices.Composite.Logging;
-    using Microsoft.Practices.Composite.Modularity;
-    using Microsoft.Practices.Composite.UnityExtensions;
+    using Microsoft.Practices.Prism.Logging;
+    using Microsoft.Practices.Prism.Modularity;
+    using Microsoft.Practices.Prism.UnityExtensions;
     using Microsoft.Practices.ServiceLocation;
     using Microsoft.Practices.Unity;
     using ModuleTracking;
-    using Modularity = Microsoft.Practices.Composite.Modularity;
+    using Modularity = Microsoft.Practices.Prism.Modularity;
 
     /// <summary>
     /// Initializes Prism to start this quickstart Prism application to use Unity.
@@ -88,7 +88,7 @@ namespace ModularityWithUnity.Silverlight
             this.RegisterTypeIfMissing(typeof(IModuleTracker), typeof(ModuleTracker), true);
 
             this.Container.RegisterInstance<CallbackLogger>(this.callbackLogger);
-        } 
+        }
 
         /// <summary>
         /// Creates the <see cref="IModuleCatalog"/> used by Prism.
@@ -100,7 +100,7 @@ namespace ModularityWithUnity.Silverlight
         protected override IModuleCatalog CreateModuleCatalog()
         {
             // Module B, D, E and F are defined in XAML.
-            return Modularity.ModuleCatalog.CreateFromXaml(new Uri("/ModularityWithUnity.Silverlight;component/ModulesCatalog.xaml", UriKind.Relative));            
+            return Modularity.ModuleCatalog.CreateFromXaml(new Uri("/ModularityWithUnity.Silverlight;component/ModulesCatalog.xaml", UriKind.Relative));
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace ModularityWithUnity.Silverlight
             // Module A is defined in the code.
             Type moduleAType = typeof(ModuleA.ModuleA);
             this.ModuleCatalog.AddModule(new ModuleInfo(moduleAType.Name, moduleAType.AssemblyQualifiedName, WellKnownModuleNames.ModuleD));
-            
+
             // Module C is defined in the code.
             Type moduleCType = typeof(ModuleC.ModuleC);
             ModuleCatalog.AddModule(new ModuleInfo()
@@ -119,8 +119,8 @@ namespace ModularityWithUnity.Silverlight
                 ModuleName = moduleCType.Name,
                 ModuleType = moduleCType.AssemblyQualifiedName,
                 InitializationMode = InitializationMode.OnDemand
-            });            
-        }        
+            });
+        }
     }
 }
 

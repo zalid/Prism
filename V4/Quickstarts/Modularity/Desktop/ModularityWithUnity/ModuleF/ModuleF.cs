@@ -15,7 +15,7 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System;
-using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Prism.Modularity;
 using ModuleTracking;
 
 namespace ModularityWithUnity.Desktop

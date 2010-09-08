@@ -16,7 +16,7 @@
 //===================================================================================
 using System;
 using EventAggregation.Infrastructure;
-using Microsoft.Practices.Composite.Events;
+using Microsoft.Practices.Prism.Events;
 
 namespace ModuleA
 {

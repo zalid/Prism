@@ -16,7 +16,7 @@
 //===================================================================================
 using System;
 using System.Collections.Generic;
-using Microsoft.Practices.Composite.Logging;
+using Microsoft.Practices.Prism.Logging;
 
 namespace ModularityWithMef.Silverlight
 {

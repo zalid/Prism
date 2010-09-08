@@ -9,8 +9,8 @@
     <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SimpleMVVMApp</RootNamespace>
-    <AssemblyName>SimpleMVVMApp</AssemblyName>
+    <RootNamespace>BasicMVVMApp</RootNamespace>
+    <AssemblyName>BasicMVVMApp</AssemblyName>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
@@ -19,9 +19,9 @@
     </SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
-    <XapFilename>SimpleMVVMApp.xap</XapFilename>
+    <XapFilename>BasicMVVMApp.xap</XapFilename>
     <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
-    <SilverlightAppEntry>SimpleMVVMApp.App</SilverlightAppEntry>
+    <SilverlightAppEntry>BasicMVVMApp.App</SilverlightAppEntry>
     <TestPageFileName>HowToSimpleMVVMApp_BeforeTestPage.html</TestPageFileName>
     <CreateTestPage>true</CreateTestPage>
     <ValidateXaml>true</ValidateXaml>
@@ -73,6 +73,9 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Windows.Browser" />
+    <Reference Include="Microsoft.Practices.Prism">
+      <HintPath>..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -112,16 +115,7 @@
   <ItemGroup>
     <Resource Include="Images\info.png" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\CAL\Silverlight\Composite.Presentation\Composite.Presentation.Silverlight.csproj">
-      <Project>{E0D65CA9-810F-4FEC-9CB8-D8943FF28A9D}</Project>
-      <Name>Composite.Presentation.Silverlight</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\CAL\Silverlight\Composite\Composite.Silverlight.csproj">
-      <Project>{CC79289A-2563-40B8-895C-3CDA56BA4956}</Project>
-      <Name>Composite.Silverlight</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

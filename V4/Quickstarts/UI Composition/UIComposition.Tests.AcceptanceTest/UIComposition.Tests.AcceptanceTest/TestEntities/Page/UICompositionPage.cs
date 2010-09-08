@@ -57,9 +57,40 @@ namespace UIComposition.Tests.AcceptanceTest.TestEntities.Page
             get { return PageBase<TApp>.FindControlByAutomationId("GarageImgAutomation"); }
         }
 
+        //public static AutomationElementCollection EmployeesListGrid1
+        //{
+
+        //    get
+        //    {
+        //        AutomationElement elementList = null;
+        //        // Set up the CacheRequest.
+        //        CacheRequest cacheRequest = new CacheRequest();
+        //        cacheRequest.Add(AutomationElement.ControlTypeProperty);
+        //        cacheRequest.TreeScope = TreeScope.Element | TreeScope.Children;
+
+        //        using (cacheRequest.Activate())
+        //        {
+        //            PropertyCondition c = new PropertyCondition(
+        //                AutomationElement.ControlTypeProperty, ControlType.DataGrid);
+        //            PropertyCondition c1 = new PropertyCondition(AutomationElement.AutomationIdProperty,
+        //                "EmployeesListGrid");
+
+        //            AndCondition andCond = new AndCondition(c, c1);
+
+        //            elementList = Window.FindFirst(TreeScope.Descendants, andCond);
+        //        }
+        //        return elementList.CachedChildren;
+        //    }
+               
+        //}
         public static AutomationElement EmployeesListGrid
         {
-            get { return PageBase<TApp>.FindControlByAutomationId("EmployeesList"); }
+
+            get
+            {
+                return PageBase<TApp>.FindControlByAutomationId("EmployeesList");
+            }
+
         }
         public static AutomationElement EmployeeDetailsTabControl
         {

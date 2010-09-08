@@ -18,7 +18,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Xml.Linq;
-using Microsoft.Practices.Composite.Logging;
+using Microsoft.Practices.Prism.Logging;
 using StockTraderRI.Modules.Position.Interfaces;
 using StockTraderRI.Modules.Position.Models;
 using StockTraderRI.Modules.Position.Properties;

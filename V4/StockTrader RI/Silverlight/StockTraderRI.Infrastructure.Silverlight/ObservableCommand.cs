@@ -15,7 +15,7 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System.Windows.Input;
-using Microsoft.Practices.Composite.Presentation;
+using Microsoft.Practices.Prism;
 
 namespace StockTraderRI.Infrastructure
 {

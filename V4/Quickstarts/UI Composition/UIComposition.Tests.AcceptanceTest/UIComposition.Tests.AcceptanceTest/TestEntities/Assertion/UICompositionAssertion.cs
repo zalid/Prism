@@ -31,20 +31,14 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using AcceptanceTestLibrary.Common;
 using UIComposition.Tests.AcceptanceTest.TestInfrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AcceptanceTestLibrary.Common.Desktop;
 using UIComposition.Tests.AcceptanceTest.TestEntities.Page;
-using AcceptanceTestLibrary.ApplicationHelper;
 using System.Windows.Automation;
 using System.Drawing;
 using System.Threading;
-using System.Windows.Automation.Peers;
-using System.Windows.Automation.Text;
 using AcceptanceTestLibrary.UIAWrapper;
 
 namespace UIComposition.Tests.AcceptanceTest.TestEntities.Assertion
@@ -58,17 +52,9 @@ namespace UIComposition.Tests.AcceptanceTest.TestEntities.Assertion
         public static void AssertEmployeeSelection()
         {
             //select first row (employee)
-
-            AutomationElementCollection employeeList = UICompositionPage<WpfAppLauncher>.EmployeesList;
-            // UICompositionPage<WpfAppLauncher>.EmployeesList[1].Click();
-            System.Windows.Point Point = new System.Windows.Point((int)Math.Floor(employeeList[1].Current.BoundingRectangle.X + employeeList[1].Current.BoundingRectangle.X / 4), (int)Math.Floor(employeeList[1].Current.BoundingRectangle.Y + 5));
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point.X, (int)Point.Y);
-            Thread.Sleep(1000);
-            MouseEvents.Click();
-            Thread.Sleep(2000);
-            MouseEvents.Click();
-            Thread.Sleep(2000);
-            MouseEvents.Click();
+            AutomationElementCollection employeeList = UICompositionPage<WpfAppLauncher>.EmployeesList;           
+            employeeList[1].SetFocus();
+            employeeList[1].Select();
             Thread.Sleep(7000);
             //validate details view
             empDetailsTab = UICompositionPage<WpfAppLauncher>.EmployeeDetailsTab;
@@ -92,17 +78,10 @@ namespace UIComposition.Tests.AcceptanceTest.TestEntities.Assertion
         public static void AssertEmployeeGeneralData()
         {
             //select employee by name
-            AutomationElementCollection employeeList = UICompositionPage<WpfAppLauncher>.EmployeesList;
-            // UICompositionPage<WpfAppLauncher>.EmployeesList[1].Click();
-            System.Windows.Point Point = new System.Windows.Point((int)Math.Floor(employeeList[1].Current.BoundingRectangle.X + employeeList[1].Current.BoundingRectangle.X/4), (int)Math.Floor(employeeList[1].Current.BoundingRectangle.Y+5));
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point.X, (int)Point.Y);
-            Thread.Sleep(1000);
-            MouseEvents.Click();
-            //Thread.Sleep(2000);
-            //MouseEvents.Click();
-            //Thread.Sleep(2000);
-            //MouseEvents.Click();
-            Thread.Sleep(17000);
+            AutomationElementCollection employeeList = UICompositionPage<WpfAppLauncher>.EmployeesList;            
+            employeeList[1].SetFocus();
+            employeeList[1].Select();
+            Thread.Sleep(7000);
             Employee emp = GetEmployeeId();
             ValidateEmployeeDetailsGeneralTabData(emp);
         }
@@ -110,30 +89,18 @@ namespace UIComposition.Tests.AcceptanceTest.TestEntities.Assertion
         public static void AssertEmployeeLocationData()
         {
             Thread.Sleep(3000);
-            AutomationElementCollection employeeList = UICompositionPage<WpfAppLauncher>.EmployeesList;
-            System.Windows.Point Point = new System.Windows.Point((int)Math.Floor(employeeList[1].Current.BoundingRectangle.X + employeeList[1].Current.BoundingRectangle.X/4), (int)Math.Floor(employeeList[1].Current.BoundingRectangle.Y+5));
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point.X, (int)Point.Y);
-            Thread.Sleep(1000);
-            MouseEvents.Click();
-            Thread.Sleep(2000);
-            MouseEvents.Click();
-            Thread.Sleep(2000);
-            MouseEvents.Click();
+            AutomationElementCollection employeeList = UICompositionPage<WpfAppLauncher>.EmployeesList;           
+            employeeList[1].SetFocus();
+            employeeList[1].Select();
             Thread.Sleep(7000);
             ValidateEmployeeDetailsLocationTabData();
         }
 
         public static void AssertEmployeeProjectsData()
         {           
-            AutomationElementCollection employeeList = UICompositionPage<WpfAppLauncher>.EmployeesList;
-            System.Windows.Point Point = new System.Windows.Point((int)Math.Floor(employeeList[1].Current.BoundingRectangle.X + employeeList[1].Current.BoundingRectangle.X/4), (int)Math.Floor(employeeList[1].Current.BoundingRectangle.Y+5));
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point.X, (int)Point.Y);
-            Thread.Sleep(1000);
-            MouseEvents.Click();
-            Thread.Sleep(2000);
-            MouseEvents.Click();
-            Thread.Sleep(2000);
-            MouseEvents.Click();
+            AutomationElementCollection employeeList = UICompositionPage<WpfAppLauncher>.EmployeesList;           
+            employeeList[1].SetFocus();
+            employeeList[1].Select();
             Thread.Sleep(7000);
 
             ValidateEmployeeDetailsCurrentProjectsTabData();
@@ -147,14 +114,14 @@ namespace UIComposition.Tests.AcceptanceTest.TestEntities.Assertion
             System.Windows.Point Point = new System.Windows.Point((int)Math.Floor(employeesListGrid.Current.BoundingRectangle.X + 75), (int)Math.Floor(employeesListGrid.Current.BoundingRectangle.Y + 55));
             System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point.X, (int)Point.Y);
             System.Threading.Thread.Sleep(1000);
-            MouseEvents.Click();
+            MouseEvents.Click();            
             Thread.Sleep(2000);
             Assert.IsNotNull(employeesListGrid, "Could not find employees list grid");
         }
 
         public static void AssertSilverLightEmployeeGeneralData()
         {
-            AutomationElement employeesListGrid = UICompositionPage<TApp>.EmployeesListGrid;           
+            AutomationElement employeesListGrid = UICompositionPage<TApp>.EmployeesListGrid;
             System.Windows.Point Point = new System.Windows.Point((int)Math.Floor(employeesListGrid.Current.BoundingRectangle.X + 75), (int)Math.Floor(employeesListGrid.Current.BoundingRectangle.Y + 55));
             System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point.X, (int)Point.Y);
             System.Threading.Thread.Sleep(1000);
@@ -181,14 +148,14 @@ namespace UIComposition.Tests.AcceptanceTest.TestEntities.Assertion
 
         public static void AssertSilverLightEmployeeCurrentProjects()
         {
-            AutomationElement employeesListGrid = UICompositionPage<TApp>.EmployeesListGrid;           
+            AutomationElement employeesListGrid = UICompositionPage<TApp>.EmployeesListGrid;
             System.Windows.Point Point = new System.Windows.Point((int)Math.Floor(employeesListGrid.Current.BoundingRectangle.X + 75), (int)Math.Floor(employeesListGrid.Current.BoundingRectangle.Y + 35));
             System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point.X, (int)Point.Y);
             System.Threading.Thread.Sleep(1000);
             MouseEvents.Click();
             Thread.Sleep(5000);
 
-            AutomationElement employeeTab = UICompositionPage<TApp>.EmployeeDetailsTabControl;           
+            AutomationElement employeeTab = UICompositionPage<TApp>.EmployeeDetailsTabControl;
             System.Windows.Point Point1 = new System.Windows.Point((int)Math.Floor(employeeTab.Current.BoundingRectangle.X + 100), (int)Math.Floor(employeeTab.Current.BoundingRectangle.Y + 10));
             System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point1.X, (int)Point1.Y);
             System.Threading.Thread.Sleep(2000);
@@ -206,11 +173,10 @@ namespace UIComposition.Tests.AcceptanceTest.TestEntities.Assertion
 
         private static void ValidateGeneralTabControls()
         {
-            empDetailsTab = UICompositionPage<WpfAppLauncher>.EmployeeDetailsTab;            
-            System.Windows.Point Point1 = new System.Windows.Point((int)Math.Floor(empDetailsTab[0].Current.BoundingRectangle.X), (int)Math.Floor(empDetailsTab[0].Current.BoundingRectangle.Y + 10));
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point1.X, (int)Point1.Y);
-            System.Threading.Thread.Sleep(2000);
-            MouseEvents.Click();
+            empDetailsTab = UICompositionPage<WpfAppLauncher>.EmployeeDetailsTab;         
+            empDetailsTab[0].SetFocus();
+            empDetailsTab[0].Select();
+            Thread.Sleep(2000);
 
             //check all Labels (TextBlocks)
             
@@ -232,23 +198,20 @@ namespace UIComposition.Tests.AcceptanceTest.TestEntities.Assertion
             //in the Live Search Maps displayed in a HTML frame control.This method is the right place
             //to do any assertions for Employee Location displayed in HTML frame control.
 
-            empDetailsTab = UICompositionPage<WpfAppLauncher>.EmployeeDetailsTab;          
-            System.Windows.Point Point1 = new System.Windows.Point((int)Math.Floor(empDetailsTab[1].Current.BoundingRectangle.X), (int)Math.Floor(empDetailsTab[1].Current.BoundingRectangle.Y + 10));
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point1.X, (int)Point1.Y);
-            System.Threading.Thread.Sleep(2000);
-            MouseEvents.Click();
-
+            empDetailsTab = UICompositionPage<WpfAppLauncher>.EmployeeDetailsTab;     
+            empDetailsTab[1].SetFocus();
+            empDetailsTab[1].Select();
+            Thread.Sleep(2000);
             
         }
 
         private static void ValidateCurrentProjectsTabControls()
         {
             //select the "Current Projects" tab
-            empDetailsTab = UICompositionPage<WpfAppLauncher>.EmployeeDetailsTab;          
-            System.Windows.Point Point1 = new System.Windows.Point((int)Math.Floor(empDetailsTab[2].Current.BoundingRectangle.X), (int)Math.Floor(empDetailsTab[2].Current.BoundingRectangle.Y + 10));
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point1.X, (int)Point1.Y);
-            System.Threading.Thread.Sleep(2000);
-            MouseEvents.Click();
+            empDetailsTab = UICompositionPage<WpfAppLauncher>.EmployeeDetailsTab;
+            empDetailsTab[2].SetFocus();
+            empDetailsTab[2].Select();
+            Thread.Sleep(2000);
             Assert.IsNotNull(UICompositionPage<WpfAppLauncher>.ProjectsLabel);
             Assert.IsNotNull(UICompositionPage<WpfAppLauncher>.ProjectsList);
         }
@@ -269,13 +232,9 @@ namespace UIComposition.Tests.AcceptanceTest.TestEntities.Assertion
             //in the Live Search Maps displayed in a HTML frame control.This method is the right place
             //to do any assertions for Employee Location displayed in HTML frame control.
 
-           empDetailsTab = UICompositionPage<WpfAppLauncher>.EmployeeDetailsTab;            
-            System.Windows.Point Point = new System.Windows.Point((int)Math.Floor(empDetailsTab[1].Current.BoundingRectangle.X + empDetailsTab[1].Current.BoundingRectangle.X / 4), (int)Math.Floor(empDetailsTab[1].Current.BoundingRectangle.Y+5));
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point.X, (int)Point.Y);
-            Thread.Sleep(2000);
-            MouseEvents.Click();
-            Thread.Sleep(2000);
-            MouseEvents.Click();
+           empDetailsTab = UICompositionPage<WpfAppLauncher>.EmployeeDetailsTab;
+           empDetailsTab[1].SetFocus();
+           empDetailsTab[1].Select();
             Thread.Sleep(2000);
 
             
@@ -285,13 +244,8 @@ namespace UIComposition.Tests.AcceptanceTest.TestEntities.Assertion
         {
             empDetailsTab = UICompositionPage<WpfAppLauncher>.EmployeeDetailsTab;
             Thread.Sleep(2000);
-         
-            System.Windows.Point Point = new System.Windows.Point((int)Math.Floor(empDetailsTab[2].Current.BoundingRectangle.X + empDetailsTab[2].Current.BoundingRectangle.X/4), (int)Math.Floor(empDetailsTab[2].Current.BoundingRectangle.Y+5));
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point.X, (int)Point.Y);
-            Thread.Sleep(2000);
-            MouseEvents.Click();
-            Thread.Sleep(2000);
-            MouseEvents.Click();
+            empDetailsTab[2].SetFocus();
+            empDetailsTab[2].Select();
             Thread.Sleep(2000);
 
            // ListView projectsList = UICompositionPage<WpfAppLauncher>.ProjectsList;

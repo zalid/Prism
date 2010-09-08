@@ -93,6 +93,9 @@
     <Reference Include="mscorlib" />
     <Reference Include="system" />
     <Reference Include="System.Windows.Browser" />
+    <Reference Include="Microsoft.Practices.Prism">
+      <HintPath>..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Desktop\StockTraderRI.Infrastructure.Tests\Behaviors\DialogActivationBehaviorFixture.cs">
@@ -133,13 +136,9 @@
     <None Include="Properties\AppManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CAL\Silverlight\Composite.Presentation\Composite.Presentation.Silverlight.csproj">
-      <Project>{E0D65CA9-810F-4FEC-9CB8-D8943FF28A9D}</Project>
-      <Name>Composite.Presentation.Silverlight</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\CAL\Silverlight\Composite\Composite.Silverlight.csproj">
-      <Project>{CC79289A-2563-40B8-895C-3CDA56BA4956}</Project>
-      <Name>Composite.Silverlight</Name>
+    <ProjectReference Include="..\..\..\PrismLibrary\Silverlight\Prism.TestSupport\Prism.Silverlight.TestSupport.csproj">
+      <Project>{6B49E97E-944C-40C9-B0C7-369C2B195D98}</Project>
+      <Name>Prism.Silverlight.TestSupport</Name>
     </ProjectReference>
     <ProjectReference Include="..\StockTraderRI.Infrastructure.Silverlight\StockTraderRI.Infrastructure.Silverlight.csproj">
       <Project>{1C3517FB-89B0-4726-9D78-3C7E28C9E49E}</Project>
@@ -179,7 +178,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkerExcludeFilter="\\desktop;\\silverlight;\.desktop;\.silverlight;\.xaml" ProjectLinkReference="51b1879c-b50f-444e-bcb6-2a103c24e4ed" />
+      <UserProperties ProjectLinkReference="51b1879c-b50f-444e-bcb6-2a103c24e4ed" ProjectLinkerExcludeFilter="\\desktop;\\silverlight;\.desktop;\.silverlight;\.xaml" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

@@ -15,7 +15,7 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System.ComponentModel;
-using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Prism.Modularity;
 
 namespace ModularityWithMef.Silverlight
 {

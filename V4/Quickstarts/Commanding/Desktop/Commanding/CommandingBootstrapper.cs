@@ -16,8 +16,8 @@
 //===================================================================================
 using System.Windows;
 using Commanding.Modules.Order;
-using Microsoft.Practices.Composite.Modularity;
-using Microsoft.Practices.Composite.UnityExtensions;
+using Microsoft.Practices.Prism.Modularity;
+using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.Unity;
 
 namespace Commanding

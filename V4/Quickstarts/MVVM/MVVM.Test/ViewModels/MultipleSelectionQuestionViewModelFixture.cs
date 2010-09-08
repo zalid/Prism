@@ -35,7 +35,7 @@ namespace MVVM.Test.ViewModels
                 new MultipleSelectionQuestionViewModel(null);
                 Assert.Fail("should have thrown");
             }
-            catch (ArgumentException)
+            catch(ArgumentException)
             {
                 // expected
             }
@@ -109,7 +109,9 @@ namespace MVVM.Test.ViewModels
             var question = new MultipleSelectionQuestion { Range = new[] { "a", "b", "c" }, MaxSelections = 2 };
             var viewModel = new MultipleSelectionQuestionViewModel(question);
 
-            Assert.IsFalse(viewModel.HasChanges);
+            bool hasChanges = false;
+            viewModel.ResponseChanged += (o, e) => { hasChanges = true; };            
+            Assert.IsFalse(hasChanges);
         }
 
         [TestMethod]
@@ -122,7 +124,7 @@ namespace MVVM.Test.ViewModels
 
             viewModel.Selections.Add("a");
 
-            Assert.IsTrue(viewModel.HasChanges);
+            Assert.IsTrue(responseChanges > 0);
         }
     }
 }

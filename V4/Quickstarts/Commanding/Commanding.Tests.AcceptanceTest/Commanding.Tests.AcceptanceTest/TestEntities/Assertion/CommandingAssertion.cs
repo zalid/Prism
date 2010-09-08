@@ -30,22 +30,14 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AcceptanceTestLibrary.Common;
 using AcceptanceTestLibrary.UIAWrapper;
 using AcceptanceTestLibrary.ApplicationHelper;
-
 using System.Windows.Automation;
-//using System.Windows.Automation;
-using System.Windows.Automation.Text;
-using System.Windows.Automation.Provider;
 using Commanding.Tests.AcceptanceTest.TestEntities.Page;
 using System.Globalization;
-using System.Diagnostics;
+using System.Threading;
 
 namespace Commanding.Tests.AcceptanceTest.TestEntities.Assertion
 {
@@ -117,9 +109,9 @@ namespace Commanding.Tests.AcceptanceTest.TestEntities.Assertion
             //Select the orders in the list view one by one and POpulate valid order details for every order
             while (count < orderCount)
             {
-                orderView[count].SetFocus();
-                System.Windows.Forms.SendKeys.SendWait(" ");
-                System.Windows.Forms.SendKeys.SendWait(" ");
+                orderView[count].SetFocus();              
+                orderView[count].Select();
+                Thread.Sleep(2000);
                 AutomationElement orderNameLabel = CommandingPage<TApp>.OrderNameLabel;
                 Assert.IsNotNull(orderNameLabel);
                 PopulateOrderDetailsWithData();
@@ -154,8 +146,8 @@ namespace Commanding.Tests.AcceptanceTest.TestEntities.Assertion
             while (count < orderCount)
             {
                 orderView[count].SetFocus();
-                System.Windows.Forms.SendKeys.SendWait(" ");
-                System.Windows.Forms.SendKeys.SendWait(" ");               
+                orderView[count].Select();
+                Thread.Sleep(2000);                            
                 AutomationElement orderNameLabel = CommandingPage<TApp>.OrderNameLabel;
                 Assert.IsNotNull(orderNameLabel,"Order Name is Null");
                 PopulateOrderDetailsWithData();
@@ -265,20 +257,15 @@ namespace Commanding.Tests.AcceptanceTest.TestEntities.Assertion
             System.Threading.Thread.Sleep(2000);
             Assert.IsTrue(orderviews.Count == 3, "Total order Items Count is Not equal to Three");
             //Populate Order 1 with Valid Data
-            SLPopulateOrderDetailsWithData();
-           // Core.InputDevices.Mouse.Instance.Location = new System.Windows.Point((int)Math.Floor(orderviews[0].Current.BoundingRectangle.X), (int)Math.Floor(orderviews[0].Current.BoundingRectangle.Y));
-            System.Windows.Point Point = new System.Windows.Point((int)Math.Floor(orderviews[0].Current.BoundingRectangle.X), (int)Math.Floor(orderviews[0].Current.BoundingRectangle.Y));
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point.X, (int)Point.Y);
-            System.Threading.Thread.Sleep(2000);
-            SelectionItemPattern pattern = orderviews[1].GetCurrentPattern(SelectionItemPattern.Pattern) as SelectionItemPattern;
-            pattern.Select();
+            SLPopulateOrderDetailsWithData();          
+            orderviews[1].SetFocus();
+            orderviews[1].Select();
+            Thread.Sleep(2000);
             //Populate Order 2 with Valid Data
-            SLPopulateOrderDetailsWithData();
-            System.Windows.Point Point1 = new System.Windows.Point((int)Math.Floor(orderviews[1].Current.BoundingRectangle.X), (int)Math.Floor(orderviews[1].Current.BoundingRectangle.Y));
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point1.X, (int)Point1.Y);
-            System.Threading.Thread.Sleep(2000);
-            pattern = orderviews[2].GetCurrentPattern(SelectionItemPattern.Pattern) as SelectionItemPattern;
-            pattern.Select();
+            SLPopulateOrderDetailsWithData();         
+            orderviews[2].SetFocus();
+            orderviews[2].Select();
+            Thread.Sleep(2000);
             //Populate Order 3 with Valid Data
             SLPopulateOrderDetailsWithData();
             System.Threading.Thread.Sleep(2000);
@@ -298,19 +285,15 @@ namespace Commanding.Tests.AcceptanceTest.TestEntities.Assertion
             System.Threading.Thread.Sleep(2000);
             Assert.IsTrue(orderviews.Count == 3, "Total order Items Count is Not equal to Three");
             //Populate Order 1 with Valid Data
-            SLPopulateOrderDetailsWithData();
-            System.Windows.Point Point = new System.Windows.Point((int)Math.Floor(orderviews[0].Current.BoundingRectangle.X), (int)Math.Floor(orderviews[0].Current.BoundingRectangle.Y));
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point.X, (int)Point.Y);
-            System.Threading.Thread.Sleep(4000);
-            SelectionItemPattern pattern = orderviews[1].GetCurrentPattern(SelectionItemPattern.Pattern) as SelectionItemPattern;
-            pattern.Select();
+            SLPopulateOrderDetailsWithData();           
+            orderviews[1].SetFocus();
+            orderviews[1].Select();
+            Thread.Sleep(2000);
             //Populate Order 2 with InValid Data
-            SLPopulateOrderDetailsWithInvalidData();
-            System.Windows.Point Point1 = new System.Windows.Point((int)Math.Floor(orderviews[1].Current.BoundingRectangle.X), (int)Math.Floor(orderviews[1].Current.BoundingRectangle.Y));
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point1.X, (int)Point.Y);
-            System.Threading.Thread.Sleep(2000);
-            pattern = orderviews[2].GetCurrentPattern(SelectionItemPattern.Pattern) as SelectionItemPattern;
-            pattern.Select();
+            SLPopulateOrderDetailsWithInvalidData();           
+            orderviews[2].SetFocus();
+            orderviews[2].Select();
+            Thread.Sleep(2000);
             //Populate Order 3 with Valid Data
             SLPopulateOrderDetailsWithData();
             Assert.IsFalse(aeSaveAllButton.Current.IsEnabled, "Save All Button Enabled for one of an Invalid Order details");            

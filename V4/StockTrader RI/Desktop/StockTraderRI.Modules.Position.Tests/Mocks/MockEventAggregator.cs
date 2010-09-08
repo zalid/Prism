@@ -16,7 +16,7 @@
 //===================================================================================
 using System;
 using System.Collections.Generic;
-using Microsoft.Practices.Composite.Events;
+using Microsoft.Practices.Prism.Events;
 
 namespace StockTraderRI.Modules.Position.Tests.Mocks
 {

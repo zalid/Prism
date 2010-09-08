@@ -20,7 +20,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
-using Microsoft.Practices.Composite.Events;
+using Microsoft.Practices.Prism.Events;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Modules.Market.Properties;

@@ -16,7 +16,7 @@
 //===================================================================================
 using System.ComponentModel;
 using System.Windows.Controls;
-using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Prism.Regions;
 
 namespace UIComposition.Modules.Project.Tests.Mocks
 {
@@ -94,5 +94,12 @@ namespace UIComposition.Modules.Project.Tests.Mocks
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+
+
+        public void RequestNavigate(System.Uri source, System.Action<NavigationResult> navigationCallback)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -79,6 +79,15 @@ namespace EventAggregation.Tests.AcceptanceTest.TestData {
         /// <summary>
         ///   Looks up a localized string similar to ActivityLabel.
         /// </summary>
+        internal static string ActivityLabel {
+            get {
+                return ResourceManager.GetString("ActivityLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ActivityLabel.
+        /// </summary>
         internal static string ActivityLabel_Silverlight {
             get {
                 return ResourceManager.GetString("ActivityLabel_Silverlight", resourceCulture);
@@ -109,6 +118,15 @@ namespace EventAggregation.Tests.AcceptanceTest.TestData {
         internal static string ActivityLabelText_Silverlight {
             get {
                 return ResourceManager.GetString("ActivityLabelText_Silverlight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activity for:.
+        /// </summary>
+        internal static string ActivityLabelTextValue {
+            get {
+                return ResourceManager.GetString("ActivityLabelTextValue", resourceCulture);
             }
         }
         
@@ -194,6 +212,15 @@ namespace EventAggregation.Tests.AcceptanceTest.TestData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Customer1.
+        /// </summary>
+        internal static string Customer1_Wpf {
+            get {
+                return ResourceManager.GetString("Customer1_Wpf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Customer1ComboItem.
         /// </summary>
         internal static string Customer1ComboItem_Wpf {
@@ -208,6 +235,15 @@ namespace EventAggregation.Tests.AcceptanceTest.TestData {
         internal static string Customer2_Silverlight {
             get {
                 return ResourceManager.GetString("Customer2_Silverlight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customer2.
+        /// </summary>
+        internal static string Customer2_Wpf {
+            get {
+                return ResourceManager.GetString("Customer2_Wpf", resourceCulture);
             }
         }
         

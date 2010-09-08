@@ -20,7 +20,7 @@ namespace ModularityWithMef.Desktop
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
-    using Microsoft.Practices.Composite.Modularity;
+    using Microsoft.Practices.Prism.Modularity;
 
     /// <summary>
     /// Interaction logic for ModuleControl.xaml

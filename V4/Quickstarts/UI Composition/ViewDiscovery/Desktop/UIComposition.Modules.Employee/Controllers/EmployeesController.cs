@@ -15,7 +15,7 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System.Globalization;
-using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 
 namespace UIComposition.Modules.Employee.Controllers

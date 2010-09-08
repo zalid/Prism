@@ -59,6 +59,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Practices.Prism">
+      <HintPath>..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Interactivity">
+      <HintPath>..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Silverlight.Testing">
       <HintPath>..\..\LIB\Silverlight\UnitTestFramework\Microsoft.Silverlight.Testing.dll</HintPath>
     </Reference>
@@ -85,13 +91,10 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AssertExtensions.cs" />
-    <Compile Include="Infrastructure\NotificationFixture.cs" />
-    <Compile Include="Infrastructure\PopupChildWindowActionFixture.cs" />
     <Compile Include="Infrastructure\StateHandlerFixture.cs" />
     <Compile Include="Infrastructure\StateManagementFixture.cs" />
     <Compile Include="Infrastructure\SynchronizeSelectedItemsFixture.cs" />
     <Compile Include="Infrastructure\ViewFactoryFixture.cs" />
-    <Compile Include="Infrastructure\ViewModelFixture.cs" />
     <Compile Include="Infrastructure\WeakEventListenerFixture.cs" />
     <Compile Include="Mocks\MockControl.cs" />
     <Compile Include="Mocks\MockQuestionnaireService.cs" />

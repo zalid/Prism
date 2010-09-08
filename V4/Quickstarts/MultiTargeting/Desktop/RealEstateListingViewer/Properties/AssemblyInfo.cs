@@ -16,7 +16,7 @@
 //===================================================================================
 //===================================================================================
 // Microsoft patterns & practices
-// Composite Application Guidance for Windows Presentation Foundation and Silverlight
+// Prism Guidance for Windows Presentation Foundation and Silverlight
 //===================================================================================
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY

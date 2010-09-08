@@ -15,15 +15,14 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System;
-using Microsoft.Practices.Composite.Events;
-using Microsoft.Practices.Composite.Presentation.Events;
+using Microsoft.Practices.Prism.Events;
+using Microsoft.Practices.Prism.Regions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.News.Article;
 using StockTraderRI.Modules.News.Controllers;
 using StockTraderRI.Modules.News.Tests.Mocks;
-using Microsoft.Practices.Composite.Regions;
 
 namespace StockTraderRI.Modules.News.Tests.Controllers
 {

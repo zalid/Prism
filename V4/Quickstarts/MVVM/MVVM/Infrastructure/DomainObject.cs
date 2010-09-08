@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.Practices.Prism.ViewModel;
 
 namespace MVVM.Infrastructure
 {

@@ -24,13 +24,14 @@ namespace AcceptanceTestLibrary.UIAWrapper
 {
     public static class InvokePatternExtensions
     {
-        public static void Click(this AutomationElement buttonControl)
+        public static void Click(this AutomationElement Control)
         {
-            //check if the buttonControl is indeed a handle to a button-based control
-            InvokePattern invPattern = ValidateButtonControl(buttonControl);
-            
-            //click the button control
-            invPattern.Invoke();
+                //check if the buttonControl is indeed a handle to a button-based control
+                InvokePattern invPattern = ValidateButtonControl(Control);
+
+                //click the button control
+                invPattern.Invoke();                 
+         
         }
 
         private static InvokePattern ValidateButtonControl(AutomationElement element)

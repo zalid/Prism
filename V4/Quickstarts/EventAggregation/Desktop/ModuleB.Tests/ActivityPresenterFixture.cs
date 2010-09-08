@@ -16,10 +16,10 @@
 //===================================================================================
 using System;
 using EventAggregation.Infrastructure;
-using Microsoft.Practices.Composite.Presentation.Events;
+using Microsoft.Practices.Prism.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModuleB.Tests.Mocks;
-using SubscriptionToken = Microsoft.Practices.Composite.Events.SubscriptionToken;
+using SubscriptionToken = Microsoft.Practices.Prism.Events.SubscriptionToken;
 
 namespace ModuleB.Tests
 {
@@ -106,12 +106,12 @@ namespace ModuleB.Tests
 
         public void SetTitle(string title)
         {
-            
+
         }
 
         public void SetCustomerId(string customerId)
         {
-            
+
         }
 
         public void AddContent(string content)

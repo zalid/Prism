@@ -15,7 +15,7 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System.Collections.Specialized;
-using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Prism.Regions;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Modules.Watch.WatchList;
 

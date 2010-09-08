@@ -16,7 +16,7 @@
 //===================================================================================
 using System.ComponentModel;
 using System.Windows.Controls;
-using Microsoft.Practices.Composite.Presentation.Regions;
+using Microsoft.Practices.Prism.Regions;
 
 namespace UIComposition.Modules.Project
 {

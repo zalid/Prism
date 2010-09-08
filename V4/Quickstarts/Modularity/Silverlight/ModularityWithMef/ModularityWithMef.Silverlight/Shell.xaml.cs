@@ -20,8 +20,8 @@ namespace ModularityWithMef.Silverlight
     using System.ComponentModel.Composition;
     using System.Globalization;
     using System.Windows.Controls;
-    using Microsoft.Practices.Composite.Logging;
-    using Microsoft.Practices.Composite.Modularity;
+    using Microsoft.Practices.Prism.Logging;
+    using Microsoft.Practices.Prism.Modularity;
     using ModuleTracking;
 
     /// <summary>

@@ -18,8 +18,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
-using Microsoft.Practices.Composite.Presentation.Regions;
-using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockTraderRI.Infrastructure.Behaviors;
@@ -74,6 +73,11 @@ namespace StockTraderRI.Infrastructure.Tests.Behaviors
             }
 
             #endregion
+
+            public bool Navigate(Uri source)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         internal class MockRegions : IRegionCollection

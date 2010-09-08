@@ -15,7 +15,7 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System;
-using Microsoft.Practices.Composite.Presentation.Commands;
+using Microsoft.Practices.Prism.Commands;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Modules.Position.Models;
 using StockTraderRI.Modules.Position.Orders;

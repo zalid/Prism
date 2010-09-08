@@ -85,6 +85,9 @@
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Microsoft.Practices.Prism">
+      <HintPath>..\..\..\LIB\Desktop\Prism\Microsoft.Practices.Prism.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountPositionModelFixture.cs" />
@@ -115,17 +118,9 @@
     <Compile Include="Services\XmlOrdersServiceFixture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CAL\Desktop\Composite.Presentation\Composite.Presentation.Desktop.csproj">
-      <Project>{F807062D-6FC9-4FF0-A9F5-5F94653EDC4D}</Project>
-      <Name>Composite.Presentation.Desktop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\CAL\Desktop\Composite.TestSupport\Composite.TestSupport.csproj">
+    <ProjectReference Include="..\..\..\PrismLibrary\Desktop\Prism.TestSupport\Prism.TestSupport.csproj">
       <Project>{D1C75DE6-CB2B-401A-985C-033C4FABAD84}</Project>
-      <Name>Composite.TestSupport</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\CAL\Desktop\Composite\Composite.Desktop.csproj">
-      <Project>{77138947-1D13-4E22-AEE0-5D0DD046CA34}</Project>
-      <Name>Composite.Desktop</Name>
+      <Name>Prism.TestSupport</Name>
     </ProjectReference>
     <ProjectReference Include="..\StockTraderRI.Infrastructure\StockTraderRI.Infrastructure.csproj">
       <Project>{0A123C1B-F316-447D-99A5-44CCF8023683}</Project>

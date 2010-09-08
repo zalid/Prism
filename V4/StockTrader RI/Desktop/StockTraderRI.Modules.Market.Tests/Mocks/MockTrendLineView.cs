@@ -14,7 +14,7 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-using Microsoft.Practices.Composite.Presentation;
+using Microsoft.Practices.Prism;
 using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.Market.TrendLine;
 

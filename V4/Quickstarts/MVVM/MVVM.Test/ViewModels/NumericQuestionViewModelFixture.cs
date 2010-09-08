@@ -32,7 +32,7 @@ namespace MVVM.Test.ViewModels
                 new NumericQuestionViewModel(null);
                 Assert.Fail("should have thrown");
             }
-            catch (ArgumentNullException)
+            catch(ArgumentNullException)
             {
                 // expected
             }
@@ -91,6 +91,7 @@ namespace MVVM.Test.ViewModels
             viewModel.HasBindingError = true;
             int responseChanges = 0;
             viewModel.ResponseChanged += (s, e) => { responseChanges++; };
+
             question.Response = 15;
 
             // Assertions
@@ -104,8 +105,11 @@ namespace MVVM.Test.ViewModels
             var question = new NumericQuestion { MaxValue = 100 };
             var viewModel = new NumericQuestionViewModel(question);
 
+            bool hasChanges = false;
+            viewModel.ResponseChanged += (o, e) => { hasChanges = true; };
+
             // Assertions
-            Assert.IsFalse(viewModel.HasChanges);
+            Assert.IsFalse(hasChanges);
         }
 
         [TestMethod]
@@ -114,10 +118,13 @@ namespace MVVM.Test.ViewModels
             var question = new NumericQuestion { MaxValue = 100 };
             var viewModel = new NumericQuestionViewModel(question);
 
+            bool hasChanges = false;
+            viewModel.ResponseChanged += (o, e) => { hasChanges = true; };
+
             question.Response = 15;
 
             // Assertions
-            Assert.IsTrue(viewModel.HasChanges);
+            Assert.IsTrue(hasChanges);
         }
 
         [TestMethod]

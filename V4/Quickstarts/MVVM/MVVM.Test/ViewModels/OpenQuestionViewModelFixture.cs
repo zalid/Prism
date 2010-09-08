@@ -90,8 +90,9 @@ namespace MVVM.Test.ViewModels
         {
             var question = new OpenQuestion { QuestionText = "Question", MaxLength = 25 };
             var viewModel = new OpenQuestionViewModel(question);
-
-            Assert.IsFalse(viewModel.HasChanges);
+            bool hasChanges = false;
+            viewModel.ResponseChanged += (o,e) => { hasChanges = true; };            
+            Assert.IsFalse(hasChanges);
         }
 
         [TestMethod]
@@ -100,9 +101,12 @@ namespace MVVM.Test.ViewModels
             var question = new OpenQuestion { QuestionText = "Question", MaxLength = 25 };
             var viewModel = new OpenQuestionViewModel(question);
 
+            bool hasChanges = false;
+            viewModel.ResponseChanged += (o, e) => { hasChanges = true; };            
+
             question.Response = "1234567890";
 
-            Assert.IsTrue(viewModel.HasChanges);
+            Assert.IsTrue(hasChanges);
         }
     }
 }

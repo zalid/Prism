@@ -84,8 +84,7 @@ namespace MVVM.ViewModels
             if (e.PropertyName == "Response")
             {
                 // Silently reset the HasBindingError, as the notification for ResponseChanged will already be raised.
-                this.hasBindingError = false;
-                this.SetHasChanges();
+                this.hasBindingError = false;                
                 this.OnResponseChanged();
             }
         }

@@ -14,7 +14,7 @@
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Horizontal">
                 <TextBlock HorizontalAlignment="Left" Width="Auto" Text="MVVM" FontWeight="Bold" Foreground="#FFFFFFFF" FontSize="24" FontFamily="Comic Sans MS" Margin="5"/>
-                <TextBlock HorizontalAlignment="Left" Width="Auto" Text="Survey App" FontWeight="Normal" Foreground="#FFFFFFFF" FontSize="24" FontFamily="Comic Sans MS" VerticalAlignment="Center"/>
+                <TextBlock HorizontalAlignment="Left" Width="Auto" Text="Survey Application" FontWeight="Normal" Foreground="#FFFFFFFF" FontSize="24" FontFamily="Comic Sans MS" VerticalAlignment="Center"/>
             </StackPanel>
             <ContentControl x:Name="ClientArea" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1"/>
         </Grid>

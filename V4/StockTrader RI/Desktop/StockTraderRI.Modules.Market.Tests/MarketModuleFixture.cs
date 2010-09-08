@@ -16,13 +16,13 @@
 //===================================================================================
 using System;
 using System.Collections.Generic;
-using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Modules.Market.Tests.Mocks;
 using StockTraderRI.Modules.Market.TrendLine;
-using Microsoft.Practices.Composite.TestSupport;
+using Microsoft.Practices.Prism.TestSupport;
 
 namespace StockTraderRI.Modules.Market.Tests
 {
@@ -118,5 +118,10 @@ namespace StockTraderRI.Modules.Market.Tests
         }
 
         #endregion
+
+        public bool Navigate(Uri source)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -24,7 +24,7 @@ namespace MVVM.Client.Infrastructure
     /// MEF Metadata attribute to ensure views are registered appropriately
     /// </summary>
     /// <remarks>
-    /// This works in conjunction with <see cref="ViewFactory"/> to locate views from the <see cref="CompositionContainer"/>
+    /// This works in conjunction with <see cref="ViewFactory"/> to locate views from the <see cref="System.ComponentModel.Composition.Hosting.CompositionContainer"/>
     /// </remarks>
     [MetadataAttribute]
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]

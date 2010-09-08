@@ -18,7 +18,7 @@ namespace ModularityWithUnity.Silverlight
 {
     using System;
     using System.Collections.Generic;
-    using Microsoft.Practices.Composite.Logging;
+    using Microsoft.Practices.Prism.Logging;
 
     /// <summary>
     /// A logger that holds on to log entries until a callback delegate is set, then plays back log entries and sends new log entries.

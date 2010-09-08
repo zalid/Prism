@@ -15,19 +15,17 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System;
-using MVVM.Infrastructure.ViewModels;
+using Microsoft.Practices.Prism.ViewModel;
 
 namespace MVVM.ViewModels
 {
-    public abstract class QuestionViewModel : ViewModel
+    public abstract class QuestionViewModel : NotificationObject
     {
         protected QuestionViewModel()
         {
         }
 
         public event EventHandler<EventArgs> ResponseChanged;
-
-        public abstract bool HasChanges { get; }
 
         public abstract bool ResponseComplete { get; }
 

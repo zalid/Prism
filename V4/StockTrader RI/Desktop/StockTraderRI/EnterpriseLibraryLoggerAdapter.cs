@@ -14,7 +14,7 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-using Microsoft.Practices.Composite.Logging;
+using Microsoft.Practices.Prism.Logging;
 using Microsoft.Practices.EnterpriseLibrary.Logging;
 
 namespace StockTraderRI

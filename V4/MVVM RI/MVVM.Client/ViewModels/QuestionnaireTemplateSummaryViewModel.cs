@@ -14,13 +14,13 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-using MVVM.Client.Infrastructure.ViewModels;
+using Microsoft.Practices.Prism.ViewModel;
 using MVVM.Questionnaires.Model;
 using MVVM.Repository;
 
 namespace MVVM.Client.ViewModels
 {
-    public class QuestionnaireTemplateSummaryViewModel : ViewModel
+    public class QuestionnaireTemplateSummaryViewModel : NotificationObject
     {
         private readonly IQuestionnaireRepository questionnaireRepository;
         private QuestionnaireTemplate selectedQuestionnaireTemplate;

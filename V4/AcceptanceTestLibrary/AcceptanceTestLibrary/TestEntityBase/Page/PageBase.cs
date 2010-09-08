@@ -90,6 +90,15 @@ namespace AcceptanceTestLibrary.TestEntityBase
             aeControl = window.GetAllHandlesByContent<TApp>(content);
             return aeControl;
         }
+
+        public static AutomationElementCollection FindControlsByParent(AutomationElement parent)
+        {
+            AutomationElementCollection aeControlCollection;
+
+            //find control using AutomationElement of window 
+            aeControlCollection = window.GetHandleByParent<TApp>(parent);
+            return aeControlCollection;
+        }
         /// <summary>
         /// This method disposes the static variable window.
         /// </summary>

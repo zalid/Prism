@@ -21,7 +21,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Prism.Regions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockTraderRI.Infrastructure.Behaviors;
 
@@ -256,7 +256,13 @@ namespace StockTraderRI.Infrastructure.Tests.Behaviors
                 get { throw new System.NotImplementedException(); }
             }
 
+   
             #endregion
+
+            public void RequestNavigate(Uri source, Action<NavigationResult> navigationCallback)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         internal class MockViewsCollection : IViewsCollection

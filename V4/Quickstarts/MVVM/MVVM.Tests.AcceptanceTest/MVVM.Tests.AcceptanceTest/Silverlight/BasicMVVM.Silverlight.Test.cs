@@ -152,13 +152,16 @@ namespace MVVMTests.AcceptanceTest.Silverlight
             AutomationElementCollection aeQuestion2 = BasicMVVMPage<SilverlightAppLauncher>.CheckBox;
             Assert.IsNotNull(aeQuestion2[1], "Choice 2 is not loaded");
             aeQuestion2[1].SetFocus();
-            System.Windows.Forms.SendKeys.SendWait(" ");
+            aeQuestion2[1].Toggle();
+           // System.Windows.Forms.SendKeys.SendWait(" ");
             Thread.Sleep(1000);
             aeQuestion2[2].SetFocus();
-            System.Windows.Forms.SendKeys.SendWait(" ");
+            aeQuestion2[2].Toggle();
+            //System.Windows.Forms.SendKeys.SendWait(" ");
             Thread.Sleep(1000);
             aeQuestion2[3].SetFocus();
-            System.Windows.Forms.SendKeys.SendWait(" ");
+            aeQuestion2[3].Toggle();
+           // System.Windows.Forms.SendKeys.SendWait(" ");
             Thread.Sleep(1000);
 
             AutomationElement aeValidateQuestion2 = BasicMVVMPage<SilverlightAppLauncher>.ValidationMultipleQ;
@@ -271,7 +274,8 @@ namespace MVVMTests.AcceptanceTest.Silverlight
             AutomationElementCollection aeQuestion2 = BasicMVVMPage<SilverlightAppLauncher>.CheckBox;
             Assert.IsNotNull(aeQuestion2[1], "Choice 2 is not loaded");
             aeQuestion2[1].SetFocus();
-            System.Windows.Forms.SendKeys.SendWait(" ");
+            aeQuestion2[1].Toggle();
+            //System.Windows.Forms.SendKeys.SendWait(" ");
             Thread.Sleep(1000);
 
             String textwithSpecChar = new ResXConfigHandler(ConfigHandler.GetValue("TestDataInputFile")).GetValue("TextWithSpecChars");

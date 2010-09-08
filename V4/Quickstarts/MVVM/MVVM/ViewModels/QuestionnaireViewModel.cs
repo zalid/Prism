@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using MVVM.Infrastructure.ViewModels;
+using Microsoft.Practices.Prism.ViewModel;
 using MVVM.Model;
 
 namespace MVVM.ViewModels
@@ -33,7 +33,7 @@ namespace MVVM.ViewModels
     /// This model wraps properties from the underlying model (Name and Age) and properties that represent state for the view
     /// (UnansweredQuestions, CurrentState, and CanSubmit)
     /// </remarks>
-    public class QuestionnaireViewModel : ViewModel
+    public class QuestionnaireViewModel : NotificationObject
     {
         private readonly IQuestionnaireRepository questionnaireRepository;
         private Questionnaire questionnaire;
@@ -154,7 +154,7 @@ namespace MVVM.ViewModels
 
         private void UpdateCurrentState(string value)
         {
-            ExecuteOnUIThread(() => this.CurrentState = value);
+            this.CurrentState = value;            
         }
 
         private void GetNewQuestionnaireInstance()
@@ -183,6 +183,8 @@ namespace MVVM.ViewModels
             {
                 this.Questions.Add(this.CreateQuestionViewModel(q));
             }
+
+            this.RaisePropertyChanged(() => this.CanSubmit);
         }
 
         private void OnQuestionnairePropertyChanged(object sender, PropertyChangedEventArgs args)

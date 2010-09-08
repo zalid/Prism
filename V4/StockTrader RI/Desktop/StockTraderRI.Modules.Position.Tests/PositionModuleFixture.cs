@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
-using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,7 +28,7 @@ using StockTraderRI.Modules.Position.Orders;
 using StockTraderRI.Modules.Position.PositionSummary;
 using StockTraderRI.Modules.Position.Services;
 using StockTraderRI.Modules.Position.Tests.Mocks;
-using Microsoft.Practices.Composite.TestSupport;
+using Microsoft.Practices.Prism.TestSupport;
 
 namespace StockTraderRI.Modules.Position.Tests
 {

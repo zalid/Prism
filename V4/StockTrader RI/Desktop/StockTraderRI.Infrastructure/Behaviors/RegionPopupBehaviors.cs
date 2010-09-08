@@ -16,8 +16,7 @@
 //===================================================================================
 using System.ComponentModel;
 using System.Windows;
-using Microsoft.Practices.Composite.Presentation.Regions;
-using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.ServiceLocation;
 
 namespace StockTraderRI.Infrastructure.Behaviors

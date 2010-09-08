@@ -16,8 +16,8 @@
 //===================================================================================
 using System.ComponentModel.Composition;
 using System.Globalization;
-using Microsoft.Practices.Composite.Logging;
-using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Prism.Logging;
+using Microsoft.Practices.Prism.Modularity;
 using ModuleTracking;
 
 namespace ModularityWithMef.Silverlight

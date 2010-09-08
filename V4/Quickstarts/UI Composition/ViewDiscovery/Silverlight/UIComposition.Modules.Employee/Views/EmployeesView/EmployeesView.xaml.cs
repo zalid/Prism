@@ -14,11 +14,7 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-using System.ComponentModel;
 using System.Windows.Controls;
-using Microsoft.Practices.Composite.Presentation.Regions;
-using Microsoft.Practices.Composite.Presentation.Regions.Behaviors;
-using Microsoft.Practices.Composite.Regions;
 using UIComposition.Modules.Employee.PresentationModels;
 
 namespace UIComposition.Modules.Employee

@@ -30,10 +30,6 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using AcceptanceTestLibrary.Common;
 using System.Windows.Automation;
 using AcceptanceTestLibrary.TestEntityBase;
@@ -44,20 +40,7 @@ namespace EventAggregation.Tests.AcceptanceTest.TestEntities.Page
     public static class EventAggregationPage<TApp>
        where TApp : AppLauncherBase, new()
     {
-        #region Desktop
-        //private static Application app;
-        //public static void LaunchApplication(string applicationPath, string windowTitle)
-        //{
-        //    try
-        //    {
-        //        app = Application.Launch(applicationPath);
-        //        DesktopWindow = app.GetWindow(windowTitle, Core.Factory.InitializeOption.NoCache);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        DisposeApplication();
-        //    }
-        //}
+        #region Desktop      
 
         private static AutomationElement window;
 
@@ -99,10 +82,12 @@ namespace EventAggregation.Tests.AcceptanceTest.TestEntities.Page
 
         public static AutomationElement GetFundsLabelByAutomationId(string fundsText, string automationId)
         {
-            //return (Label)window.Get(SearchCriteria.ByAutomationId(automationId).
-            //            AndByText(fundsText).AndControlType(typeof(Label)));
-
-            return PageBase<TApp>.FindControlByContent(fundsText);
+           
+            PropertyCondition cond = new PropertyCondition(AutomationElement.NameProperty,
+                  fundsText);
+            PropertyCondition cond1 = new PropertyCondition(AutomationElement.AutomationIdProperty, automationId);
+            AndCondition andCond = new AndCondition(cond, cond1);
+            return Window.FindFirst(TreeScope.Descendants, andCond);         
 
         }
 
@@ -129,8 +114,7 @@ namespace EventAggregation.Tests.AcceptanceTest.TestEntities.Page
         }
 
         public static AutomationElementCollection CustomerCombo
-        {
-            //get { return PageBase<TApp>.FindControlByAutomationId("CustomerCombo"); } 
+        {           
             get { return Window.FindAll(TreeScope.Descendants, new PropertyCondition(AutomationElement.AutomationIdProperty, GetDataFromResourceFile("CustomerCombo"))); } 
         }
 

@@ -5,8 +5,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"  
     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-    xmlns:Infra="clr-namespace:MVVM.Infrastructure"
-    xmlns:Views="clr-namespace:MVVM.Views" xmlns:basicvm="clr-namespace:MVVM.ViewModels" mc:Ignorable="d"
+    xmlns:prism="http://www.codeplex.com/prism"
+    xmlns:Views="clr-namespace:MVVM.Views" xmlns:basicvm="clr-namespace:MVVM.ViewModels"     
+    mc:Ignorable="d"
     x:Class="MVVM.Views.QuestionnaireView"
     d:DesignWidth="640" d:DesignHeight="480" >
 
@@ -140,8 +141,8 @@
                 <ItemsControl Grid.Row="1" IsTabStop="False" ItemsSource="{Binding Questions}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Infra:DataTemplateSelector Content="{Binding}" HorizontalContentAlignment="Stretch" IsTabStop="False">
-                                <Infra:DataTemplateSelector.Resources>
+                            <prism:DataTemplateSelector Content="{Binding}" HorizontalContentAlignment="Stretch" IsTabStop="False">
+                                <prism:DataTemplateSelector.Resources>
                                     <DataTemplate x:Key="OpenQuestionViewModel">
                                         <Views:OpenQuestionView DataContext="{Binding}"/>
                                     </DataTemplate>
@@ -153,8 +154,8 @@
                                     <DataTemplate x:Key="NumericQuestionViewModel">
                                         <Views:NumericQuestionView DataContext="{Binding}"/>
                                     </DataTemplate>
-                                </Infra:DataTemplateSelector.Resources>
-                            </Infra:DataTemplateSelector>
+                                </prism:DataTemplateSelector.Resources>
+                            </prism:DataTemplateSelector>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

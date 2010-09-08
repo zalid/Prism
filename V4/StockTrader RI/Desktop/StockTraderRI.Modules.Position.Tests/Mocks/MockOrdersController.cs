@@ -15,7 +15,7 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using StockTraderRI.Modules.Position.Controllers;
-using Microsoft.Practices.Composite.Presentation.Commands;
+using Microsoft.Practices.Prism.Commands;
 
 namespace StockTraderRI.Modules.Position.Tests.Mocks
 {

@@ -17,7 +17,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Microsoft.Practices.Composite.Presentation.Commands;
+using Microsoft.Practices.Prism.Commands;
 using StockTraderRI.Modules.Watch.Services;
 
 namespace StockTraderRI.Modules.WatchList.Tests.Mocks

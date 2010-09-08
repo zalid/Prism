@@ -17,8 +17,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using EventAggregation.Infrastructure;
-using Microsoft.Practices.Composite.Events;
-using Microsoft.Practices.Composite.Presentation.Events;
+using Microsoft.Practices.Prism.Events;
 using ModuleB.Properties;
 
 namespace ModuleB

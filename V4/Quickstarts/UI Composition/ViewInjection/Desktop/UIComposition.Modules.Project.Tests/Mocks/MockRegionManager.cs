@@ -17,7 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Prism.Regions;
 
 namespace UIComposition.Modules.Project.Tests.Mocks
 {
@@ -43,6 +43,11 @@ namespace UIComposition.Modules.Project.Tests.Mocks
         }
 
         #endregion
+
+        public bool Navigate(Uri source)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     internal class MockRegionCollection : IRegionCollection

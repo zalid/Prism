@@ -16,7 +16,7 @@
 //===================================================================================
 using System;
 using System.Windows.Controls;
-using Microsoft.Practices.Composite.Events;
+using Microsoft.Practices.Prism.Events;
 using StockTraderRI.Modules.Position.Interfaces;
 
 namespace StockTraderRI.Modules.Position.PositionSummary

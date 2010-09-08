@@ -68,6 +68,12 @@
     <Reference Include="Microsoft.Expression.Interactions">
       <HintPath>..\..\..\LIB\Silverlight\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.Prism">
+      <HintPath>..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Interactivity">
+      <HintPath>..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -88,10 +94,7 @@
     </Compile>
     <Compile Include="Infrastructure\Behaviors\SynchronizeSelectedItems.cs" />
     <Compile Include="Infrastructure\Behaviors\ValidateObject.cs" />
-    <Compile Include="Infrastructure\DataTemplateSelector.cs" />
     <Compile Include="Infrastructure\DomainObject.cs" />
-    <Compile Include="Infrastructure\ErrorsContainer.cs" />
-    <Compile Include="Infrastructure\PropertySupport.cs" />
     <Compile Include="Infrastructure\StringExtensions.cs" />
     <Compile Include="Infrastructure\WeakEventListener.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -118,7 +121,6 @@
     <Compile Include="ViewModels\QuestionnaireViewModel.cs" />
     <Compile Include="ViewModels\QuestionViewModel.cs" />
     <Compile Include="ViewModels\MultipleSelectionQuestionViewModel.cs" />
-    <Compile Include="Infrastructure\ViewModels\ViewModel.cs" />
     <Compile Include="ViewModels\QuestionViewModel.Generic.cs" />
     <Compile Include="Views\MultipleSelectionView.xaml.cs">
       <DependentUpon>MultipleSelectionView.xaml</DependentUpon>
@@ -132,7 +134,6 @@
     <Compile Include="Views\QuestionnaireView.xaml.cs">
       <DependentUpon>QuestionnaireView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\Behaviors\UpdateTextBindingOnPropertyChanged.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

@@ -15,7 +15,7 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System.Windows.Controls;
-using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Prism.Regions;
 using UIComposition.Modules.Employee.PresentationModels;
 
 namespace UIComposition.Modules.Employee.Tests.Mocks

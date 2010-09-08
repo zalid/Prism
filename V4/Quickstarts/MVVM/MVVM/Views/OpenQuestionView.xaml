@@ -3,8 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Behaviors="clr-namespace:MVVM.Infrastructure.Behaviors" 
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+    xmlns:prism="http://www.codeplex.com/prism" 
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="400">
 
@@ -34,7 +34,7 @@
                  MaxLength="{Binding Question.MaxLength}"
                  Text="{Binding Question.Response, Mode=TwoWay, UpdateSourceTrigger=Explicit}" AutomationProperties.AutomationId="OpenQuestionAutomationId">
             <i:Interaction.Behaviors>
-                <Behaviors:UpdateTextBindingOnPropertyChanged/>
+                <prism:UpdateTextBindingOnPropertyChanged/>
             </i:Interaction.Behaviors>
         </TextBox>
         <TextBlock Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right"><Run Text="{Binding AvailableLength}"/><Run Text=" chars remaining"/></TextBlock>

@@ -17,7 +17,7 @@
 namespace ModularityWithUnity.Silverlight
 {
     using System.ComponentModel;
-    using Microsoft.Practices.Composite.Modularity;
+    using Microsoft.Practices.Prism.Modularity;
 
     /// <summary>
     /// Provides tracking of a module's state for the quickstart.

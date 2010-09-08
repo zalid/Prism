@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
@@ -17,11 +16,9 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
-    <ThrowErrorsInValidation>false</ThrowErrorsInValidation><FileUpgradeFlags>
-    </FileUpgradeFlags>
+    <ThrowErrorsInValidation>false</ThrowErrorsInValidation><FileUpgradeFlags></FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
+    <UpgradeBackupLocation></UpgradeBackupLocation>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <PublishUrl>publish\</PublishUrl>
@@ -53,8 +50,7 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRules>
-    </CodeAnalysisRules>
+    <CodeAnalysisRules></CodeAnalysisRules>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>Migrated rules for StockTraderRI.Modules.Market.Silverlight.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -68,8 +64,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisRules>
-    </CodeAnalysisRules>
+    <CodeAnalysisRules></CodeAnalysisRules>
     <CodeAnalysisRuleSet>Migrated rules for StockTraderRI.Modules.Market.Silverlight.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
@@ -91,6 +86,9 @@
     <Reference Include="System.Net" />
     <Reference Include="System.Windows.Browser" />
     <Reference Include="System.Xml.Linq, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.Prism">
+      <HintPath>..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Market\MarketModule.cs">
@@ -130,14 +128,6 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CAL\Silverlight\Composite.Presentation\Composite.Presentation.Silverlight.csproj">
-      <Project>{E0D65CA9-810F-4FEC-9CB8-D8943FF28A9D}</Project>
-      <Name>Composite.Presentation.Silverlight</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\CAL\Silverlight\Composite\Composite.Silverlight.csproj">
-      <Project>{CC79289A-2563-40B8-895C-3CDA56BA4956}</Project>
-      <Name>Composite.Silverlight</Name>
-    </ProjectReference>
     <ProjectReference Include="..\StockTraderRI.Infrastructure.Silverlight\StockTraderRI.Infrastructure.Silverlight.csproj">
       <Project>{1C3517FB-89B0-4726-9D78-3C7E28C9E49E}</Project>
       <Name>StockTraderRI.Infrastructure.Silverlight</Name>

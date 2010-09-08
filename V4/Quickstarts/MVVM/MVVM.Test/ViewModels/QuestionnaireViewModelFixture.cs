@@ -16,12 +16,12 @@
 //===================================================================================
 using System;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using MVVM.Model;
 using MVVM.Test.Mocks;
 using MVVM.Test.ViewModels.Utility;
 using MVVM.ViewModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace MVVM.Test.ViewModels
 {
@@ -328,11 +328,14 @@ namespace MVVM.Test.ViewModels
             viewModel.Submit();
             Assert.AreEqual("Submitting", viewModel.CurrentState);
 
+            var tracker = new PropertyChangeTracker(viewModel);
+
             // Responds as the service would.
             submitCallback(new Mock<IOperationResult>().Object);
             callback(CreateQuestionnaireResult());
 
             Assert.AreEqual("Normal", viewModel.CurrentState);
+            CollectionAssert.Contains(tracker.ChangedProperties, "CanSubmit");
         }
 
         [TestMethod]
@@ -386,9 +389,12 @@ namespace MVVM.Test.ViewModels
             AnswerAllQuestions(viewModel);
 
             viewModel.Reset();
+
+            var tracker = new PropertyChangeTracker(viewModel);
             callback(CreateQuestionnaireResult());
 
             CollectionAssert.AreNotEquivalent(originalQuestions, viewModel.Questions.ToArray());
+            CollectionAssert.Contains(tracker.ChangedProperties, "CanSubmit");
         }
 
         [TestMethod]

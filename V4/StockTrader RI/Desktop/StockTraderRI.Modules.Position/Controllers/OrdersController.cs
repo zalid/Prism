@@ -17,8 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Microsoft.Practices.Composite.Presentation.Commands;
-using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Interfaces;
@@ -46,7 +46,7 @@ namespace StockTraderRI.Modules.Position.Controllers
             this.commandProxy = commandProxy;
             BuyCommand = new DelegateCommand<string>(OnBuyExecuted);
             SellCommand = new DelegateCommand<string>(OnSellExecuted);
-            SubmitAllVoteOnlyCommand = new DelegateCommand<object>(null, SubmitAllCanExecute);
+            SubmitAllVoteOnlyCommand = new DelegateCommand(()=>{}, SubmitAllCanExecute);
             OrderModels = new List<IOrderCompositePresentationModel>();
             commandProxy.SubmitAllOrdersCommand.RegisterCommand(SubmitAllVoteOnlyCommand);
             
@@ -62,7 +62,7 @@ namespace StockTraderRI.Modules.Position.Controllers
             StartOrder(parameter, TransactionType.Buy);
         }
 
-        virtual protected bool SubmitAllCanExecute(object parameter)
+        virtual protected bool SubmitAllCanExecute()
         {
             Dictionary<string,long> sellOrderShares = new Dictionary<string, long>();
 
@@ -166,7 +166,7 @@ namespace StockTraderRI.Modules.Position.Controllers
 
         public DelegateCommand<string> BuyCommand { get; private set; }
         public DelegateCommand<string> SellCommand { get; private set; }
-        public DelegateCommand<object> SubmitAllVoteOnlyCommand{ get; private set; }
+        public DelegateCommand SubmitAllVoteOnlyCommand{ get; private set; }
 
         private List<IOrderCompositePresentationModel> OrderModels { get; set;}
 

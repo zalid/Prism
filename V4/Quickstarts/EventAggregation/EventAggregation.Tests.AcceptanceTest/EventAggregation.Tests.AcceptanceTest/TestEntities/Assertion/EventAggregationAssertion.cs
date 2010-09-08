@@ -31,21 +31,13 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AcceptanceTestLibrary.Common;
 using AcceptanceTestLibrary.UIAWrapper;
 using AcceptanceTestLibrary.ApplicationHelper;
-
 using System.Windows.Automation;
-using System.Windows.Automation.Peers;
-using System.Windows.Automation.Text;
-using System.Windows.Automation.Provider;
 using EventAggregation.Tests.AcceptanceTest.TestEntities.Page;
 using System.Globalization;
-using System.Diagnostics;
 using System.Threading;
 
 namespace EventAggregation.Tests.AcceptanceTest.TestEntities.Assertion
@@ -63,11 +55,8 @@ namespace EventAggregation.Tests.AcceptanceTest.TestEntities.Assertion
             customerCombobox.Expand();
             Thread.Sleep(2000);
 
-            AutomationElementCollection customerComboItems = EventAggregationPage<TApp>.CustomerComboItems;
-            System.Windows.Point Point = new System.Windows.Point((int)Math.Floor(customerComboItems[0].Current.BoundingRectangle.X), (int)Math.Floor(customerComboItems[0].Current.BoundingRectangle.Y));
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point.X, (int)Point.Y);
-            Thread.Sleep(2000);
-            MouseEvents.Click();
+            AutomationElementCollection customerComboItems = EventAggregationPage<TApp>.CustomerComboItems;                       
+            customerComboItems[0].Select();
             Thread.Sleep(2000);    
 
 
@@ -78,12 +67,8 @@ namespace EventAggregation.Tests.AcceptanceTest.TestEntities.Assertion
             fundCombobox.Expand();
 
             AutomationElementCollection fundComboItems = EventAggregationPage<TApp>.FundComboItems;
-            Assert.IsNotNull(fundComboItems, "Could not find items in fund combobox");
-
-            System.Windows.Point Point1 = new System.Windows.Point((int)Math.Floor(fundComboItems[0].Current.BoundingRectangle.X), (int)Math.Floor(fundComboItems[0].Current.BoundingRectangle.Y));
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point1.X, (int)Point1.Y);
-            Thread.Sleep(2000);
-            MouseEvents.Click();
+            Assert.IsNotNull(fundComboItems, "Could not find items in fund combobox");          
+            fundComboItems[0].Select();
             Thread.Sleep(2000);              
 
             
@@ -96,6 +81,17 @@ namespace EventAggregation.Tests.AcceptanceTest.TestEntities.Assertion
             Thread.Sleep(2000);
             //4. Get the handle of Activity Label and check the content
             Assert.AreEqual(EventAggregationPage<TApp>.ActivityLabelElement.Current.Name, GetDataFromTestDataFile("Customer1ActivityLabelText"));
+            bool isTextFound = false;
+            foreach (AutomationElement textBox in EventAggregationPage<TApp>.AllTextBoxes)
+            {
+                if (textBox.Current.Name.Equals(GetDataFromTestDataFile("DefaultFund"), StringComparison.CurrentCulture))
+                {
+                    isTextFound = true;
+                    break;
+                }
+            }
+
+            Assert.IsTrue(isTextFound, "FundA is not added");
 
         }
 
@@ -109,18 +105,10 @@ namespace EventAggregation.Tests.AcceptanceTest.TestEntities.Assertion
             customerCombobox.Expand();
             System.Threading.Thread.Sleep(3000);
 
-            AutomationElementCollection customerComboItems = EventAggregationPage<TApp>.CustomerComboItems;
-           // AutomationElement customerItem = customerCombobox.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.NameProperty, GetDataFromTestDataFile("DefaultCustomer")));
-            Assert.IsNotNull(customerComboItems, "Could not find items in customer combobox");
-            
-            System.Windows.Point Point1 = new System.Windows.Point((int)Math.Floor(customerComboItems[0].Current.BoundingRectangle.X), (int)Math.Floor(customerComboItems[0].Current.BoundingRectangle.Y));
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point1.X, (int)Point1.Y);
-            Thread.Sleep(2000);
-            MouseEvents.Click();
-            Thread.Sleep(2000);
-            MouseEvents.Click();
-            Thread.Sleep(2000);        
-
+            AutomationElementCollection customerComboItems = EventAggregationPage<TApp>.CustomerComboItems;          
+            Assert.IsNotNull(customerComboItems, "Could not find items in customer combobox");         
+            customerComboItems[0].Select();
+            Thread.Sleep(2000);   
 
 
             //2. Get the handle of the Fund combo box and select FundA
@@ -132,11 +120,7 @@ namespace EventAggregation.Tests.AcceptanceTest.TestEntities.Assertion
 
             AutomationElementCollection fundComboItems = EventAggregationPage<TApp>.FundComboItems;            
             Assert.IsNotNull(fundComboItems, "Could not find items in fund combobox");
-
-            System.Windows.Point Point = new System.Windows.Point((int)Math.Floor(fundComboItems[0].Current.BoundingRectangle.X), (int)Math.Floor(fundComboItems[0].Current.BoundingRectangle.Y));
-            System.Windows.Forms.Cursor.Position = new System.Drawing.Point((int)Point.X, (int)Point.Y);
-            Thread.Sleep(2000);
-            MouseEvents.Click();
+            fundComboItems[0].Select();
             Thread.Sleep(2000);                
 
 
@@ -173,21 +157,19 @@ namespace EventAggregation.Tests.AcceptanceTest.TestEntities.Assertion
         public static void DesktopAssertAddMultipleFundsToCustomer()
         {
             //Add Default fund to default customer
-            AutomationElement aeCustComboBox = EventAggregationPage<TApp>.CustomerComboBox;
-            aeCustComboBox.SetFocus();
-            System.Windows.Forms.SendKeys.SendWait(GetDataFromTestDataFile("DefaultCustomer"));
-            //<TApp>.CustomerComboBox.SetValue(GetDataFromTestDataFile("DefaultCustomer"));
-            Thread.Sleep(4000);
-            EventAggregationPage<TApp>.FundComboBox.SetFocus();
-            System.Windows.Forms.SendKeys.SendWait(GetDataFromTestDataFile("DefaultFund"));
-            Thread.Sleep(4000);
+            AutomationElementCollection aeCustItems = EventAggregationPage<TApp>.CustomerComboItems;
+            aeCustItems[1].Select();       
+           
+            Thread.Sleep(2000);
+            AutomationElementCollection aeFundItems = EventAggregationPage<TApp>.FundComboItems;
+            aeFundItems[1].Select();            
+            Thread.Sleep(2000);
             EventAggregationPage<TApp>.AddButton.Click();
 
             //Select another fund to default customer
-            Thread.Sleep(4000);
-            EventAggregationPage<TApp>.FundComboBox.SetFocus();
-            System.Windows.Forms.SendKeys.SendWait(GetDataFromTestDataFile("AnotherFund"));
-            Thread.Sleep(4000);
+            Thread.Sleep(2000);
+            EventAggregationPage<TApp>.FundComboItems[2].Select();            
+            Thread.Sleep(2000);
             EventAggregationPage<TApp>.AddButton.Click();
 
             //Assert Activity View
@@ -204,16 +186,16 @@ namespace EventAggregation.Tests.AcceptanceTest.TestEntities.Assertion
             int numberOfAddClicks = 3;
 
             //Add Default fund to default customer repeatedly.
-            EventAggregationPage<TApp>.CustomerComboBox.SetFocus();
-            System.Windows.Forms.SendKeys.SendWait(GetDataFromTestDataFile("DefaultCustomer"));
-            Thread.Sleep(4000);
-            EventAggregationPage<TApp>.FundComboBox.SetFocus();
-            System.Windows.Forms.SendKeys.SendWait(GetDataFromTestDataFile("DefaultFund"));
-            Thread.Sleep(4000);
+            EventAggregationPage<TApp>.CustomerComboBox.Expand();
+            Thread.Sleep(2000);
+            EventAggregationPage<TApp>.CustomerComboItems[1].Select();          
+            Thread.Sleep(2000);
+            EventAggregationPage<TApp>.FundComboItems[1].Select();           
+            Thread.Sleep(2000);
             EventAggregationPage<TApp>.AddButton.Click();
-            Thread.Sleep(4000);
+            Thread.Sleep(2000);
             EventAggregationPage<TApp>.AddButton.Click();
-            Thread.Sleep(4000);
+            Thread.Sleep(2000);
             EventAggregationPage<TApp>.AddButton.Click();
 
             Assert.AreEqual(EventAggregationPage<TApp>.ActivityLabel.Current.Name, GetDataFromTestDataFile("Customer1ActivityLabelText"));
@@ -225,12 +207,13 @@ namespace EventAggregation.Tests.AcceptanceTest.TestEntities.Assertion
 
         public static void DesktopAssertEachCustomerShouldHaveAnActivityView()
         {
-
+            AutomationElementCollection aeCustomers = EventAggregationPage<TApp>.CustomerComboItems;
             //For every customer in the customer combo box,check if a corresponding article view is displayed
-            for (int count = 0; count < 1; count++)
+            for (int count = 1; count < aeCustomers.Count -1; count++)
             {
-               // Assert.IsNotNull(EventAggregationPage<TApp>.GetFundsLabelByAutomationId(GetDataFromResourceFile("ActivityLabelTextValue") + " " + EventAggregationPage<TApp>.CustomerComboBox.Items[count].Text, GetDataFromResourceFile("ActivityLabel")));
+                Assert.IsNotNull(EventAggregationPage<TApp>.GetFundsLabelByAutomationId(GetDataFromResourceFile("ActivityLabelTextValue") + " " + aeCustomers[count].Current.Name, GetDataFromResourceFile("ActivityLabel")));
             }
+                
         }
 
         public static void DesktopAssertSelectedFundIsAddedOnlyToTheSelectedCustomer()
@@ -255,7 +238,7 @@ namespace EventAggregation.Tests.AcceptanceTest.TestEntities.Assertion
                 EventAggregationPage<TApp>.AddButton.Click();
             }
 
-            int counter = 0;
+            //int counter = 0;
             //foreach (AutomationElement element in EventAggregationPage<TApp>.ElementsInActivityView)
             //{
             //    if (counter < CUSTOMERS_IN_DROPDOWN)

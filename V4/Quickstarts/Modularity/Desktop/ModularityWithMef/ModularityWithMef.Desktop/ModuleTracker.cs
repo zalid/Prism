@@ -15,8 +15,8 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System.ComponentModel.Composition;
-using Microsoft.Practices.Composite.Logging;
-using Microsoft.Practices.Composite.Modularity;
+using Microsoft.Practices.Prism.Logging;
+using Microsoft.Practices.Prism.Modularity;
 using ModuleTracking;
 
 namespace ModularityWithMef.Desktop

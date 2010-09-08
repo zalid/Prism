@@ -98,6 +98,8 @@
     <Compile Include="UIAWrapper\ExpandCollapsePatternExtensions.cs" />
     <Compile Include="UIAWrapper\InvokePatternExtensions.cs" />
     <Compile Include="UIAWrapper\MouseEvents.cs" />
+    <Compile Include="UIAWrapper\SelectPatternExtensions.cs" />
+    <Compile Include="UIAWrapper\TogglePatternExtensions.cs" />
     <Compile Include="UIAWrapper\ValuePatternExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

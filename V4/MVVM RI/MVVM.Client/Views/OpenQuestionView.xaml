@@ -4,8 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Behaviors="clr-namespace:MVVM.Client.Infrastructure.Behaviors" 
-    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
-    mc:Ignorable="d"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:prism="http://www.codeplex.com/prism" mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="400">	
     <Grid Margin="5" d:DesignWidth="431" d:DesignHeight="353">
         <Grid.RowDefinitions>
@@ -39,7 +38,7 @@
                  MaxLength="{Binding Question.MaxLength}"
                  Text="{Binding Question.Response, Mode=TwoWay, UpdateSourceTrigger=Explicit}" AutomationProperties.AutomationId="OpenQuestionAutomationId">
             <i:Interaction.Behaviors>
-                <Behaviors:UpdateTextBindingOnPropertyChanged/>
+                <prism:UpdateTextBindingOnPropertyChanged/>
             </i:Interaction.Behaviors>
         </TextBox>
         <TextBlock Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right"><Run Text="{Binding AvailableLength}"/><Run Text=" chars remaining"/></TextBlock>

@@ -16,8 +16,8 @@
 //===================================================================================
 using Commanding.Modules.Order.PresentationModels;
 using Commanding.Modules.Order.Services;
-using Microsoft.Practices.Composite.Modularity;
-using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.Prism.Modularity;
+using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 
 namespace Commanding.Modules.Order

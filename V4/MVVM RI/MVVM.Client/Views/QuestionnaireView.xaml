@@ -5,12 +5,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"  
     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-    xmlns:Infra="clr-namespace:MVVM.Client.Infrastructure"
     xmlns:behaviors="clr-namespace:MVVM.Client.Infrastructure.Behaviors"
     xmlns:Views="clr-namespace:MVVM.Client.Views" 
-    xmlns:basicvm="clr-namespace:MVVM.Client.ViewModels" 
-    xmlns:Behaviors="clr-namespace:MVVM.Client.Infrastructure.Behaviors"          
-    mc:Ignorable="d"
+    xmlns:prism="http://www.codeplex.com/prism" mc:Ignorable="d"
     x:Class="MVVM.Client.Views.QuestionnaireView"
     d:DesignWidth="640" d:DesignHeight="480">
 
@@ -31,13 +28,13 @@
 
     <i:Interaction.Triggers>
 
-        <behaviors:InteractionRequestTrigger SourceObject="{Binding SubmitErrorInteractionRequest}">
-            <behaviors:PopupChildWindowAction ContentTemplate="{StaticResource SubmitWindowTemplate}"/>
-        </behaviors:InteractionRequestTrigger>
+        <prism:InteractionRequestTrigger SourceObject="{Binding SubmitErrorInteractionRequest}">
+            <prism:PopupChildWindowAction ContentTemplate="{StaticResource SubmitWindowTemplate}"/>
+        </prism:InteractionRequestTrigger>
 
-        <behaviors:InteractionRequestTrigger SourceObject="{Binding CancelConfirmationInteractionRequest}">
-            <behaviors:PopupChildWindowAction ContentTemplate="{StaticResource ConfirmWindowTemplate}"/>
-        </behaviors:InteractionRequestTrigger>
+        <prism:InteractionRequestTrigger SourceObject="{Binding CancelConfirmationInteractionRequest}">
+            <prism:PopupChildWindowAction ContentTemplate="{StaticResource ConfirmWindowTemplate}"/>
+        </prism:InteractionRequestTrigger>
 
     </i:Interaction.Triggers>
 
@@ -103,8 +100,8 @@
             <TextBlock Foreground="White" HorizontalAlignment="Right">Implementation Notes</TextBlock>
             <ToggleButton Style="{StaticResource InfoTipToggleButtonStyle}">
                 <i:Interaction.Behaviors>
-                    <Behaviors:ToggleInfoTipBehavior >
-                        <Behaviors:ToggleInfoTipBehavior.ContentTemplate>
+                    <behaviors:ToggleInfoTipBehavior >
+                        <behaviors:ToggleInfoTipBehavior.ContentTemplate>
                             <DataTemplate>
                                 <StackPanel MaxWidth="500">
                                     <TextBlock TextWrapping="Wrap">This Reference Implementation demonstrates the following challenges:</TextBlock>
@@ -115,8 +112,8 @@
                                     <TextBlock TextWrapping="Wrap">• Triggering animations based on the view model state. When submitting the questionnaire, an animation is triggered. For more information, see the Submit button notes.</TextBlock>
                                 </StackPanel>
                             </DataTemplate>
-                        </Behaviors:ToggleInfoTipBehavior.ContentTemplate>
-                    </Behaviors:ToggleInfoTipBehavior>
+                        </behaviors:ToggleInfoTipBehavior.ContentTemplate>
+                    </behaviors:ToggleInfoTipBehavior>
                 </i:Interaction.Behaviors>
             </ToggleButton>            
         </StackPanel>
@@ -163,8 +160,8 @@
                 <ItemsControl Grid.Row="2" IsTabStop="False" ItemsSource="{Binding Questions}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Infra:DataTemplateSelector Content="{Binding}" HorizontalContentAlignment="Stretch" IsTabStop="False">
-                                <Infra:DataTemplateSelector.Resources>
+                            <prism:DataTemplateSelector Content="{Binding}" HorizontalContentAlignment="Stretch" IsTabStop="False">
+                                <prism:DataTemplateSelector.Resources>
                                     <DataTemplate x:Key="OpenQuestionViewModel">
                                         <Views:OpenQuestionView DataContext="{Binding}"/>
                                     </DataTemplate>
@@ -176,8 +173,8 @@
                                     <DataTemplate x:Key="NumericQuestionViewModel">
                                         <Views:NumericQuestionView DataContext="{Binding}"/>
                                     </DataTemplate>
-                                </Infra:DataTemplateSelector.Resources>
-                            </Infra:DataTemplateSelector>
+                                </prism:DataTemplateSelector.Resources>
+                            </prism:DataTemplateSelector>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -195,8 +192,8 @@
             </Button>
             <ToggleButton Style="{StaticResource InfoTipToggleButtonStyle}">
                 <i:Interaction.Behaviors>
-                    <Behaviors:ToggleInfoTipBehavior >
-                        <Behaviors:ToggleInfoTipBehavior.ContentTemplate>
+                    <behaviors:ToggleInfoTipBehavior >
+                        <behaviors:ToggleInfoTipBehavior.ContentTemplate>
                             <DataTemplate>
                                 <StackPanel MaxWidth="500">
                                     <TextBlock TextWrapping="Wrap">• The Submit button uses the CallMethodAction Blend behavior to execute the Submit method on the QuestionnaireViewModel view model.</TextBlock>
@@ -204,8 +201,8 @@
                                     <TextBlock TextWrapping="Wrap">• DataTriggers are used to set the VisualStateManager state depending on the CurrentState property of the QuestionnaireViewModel, thus triggering the submitting animation.</TextBlock>
                                 </StackPanel>
                             </DataTemplate>
-                        </Behaviors:ToggleInfoTipBehavior.ContentTemplate>
-                    </Behaviors:ToggleInfoTipBehavior>
+                        </behaviors:ToggleInfoTipBehavior.ContentTemplate>
+                    </behaviors:ToggleInfoTipBehavior>
                 </i:Interaction.Behaviors>
             </ToggleButton>           
         </StackPanel>

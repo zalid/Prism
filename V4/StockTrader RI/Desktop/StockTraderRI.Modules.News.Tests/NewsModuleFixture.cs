@@ -21,7 +21,7 @@ using StockTraderRI.Modules.News.Article;
 using StockTraderRI.Modules.News.Controllers;
 using StockTraderRI.Modules.News.Services;
 using StockTraderRI.Modules.News.Tests.Mocks;
-using Microsoft.Practices.Composite.TestSupport;
+using Microsoft.Practices.Prism.TestSupport;
 
 namespace StockTraderRI.Modules.News.Tests
 {

@@ -48,6 +48,17 @@ namespace AcceptanceTestLibrary.ApplicationHelper
             return tw.GetFirstChild(ae);
         }
 
+        public static AutomationElementCollection FindAllChildElements(this AutomationElement ae, AutomationElement parent)
+        {
+            if (parent == null || ae == null)
+            {
+                throw new InvalidOperationException("invalid operation");
+            }
+            Condition c1 = new PropertyCondition(AutomationElement.IsControlElementProperty, true);       
+          // Find all children that match the specified conditions.
+            return parent.FindAll(TreeScope.Children, c1);
+        }
+
         public static AutomationElementCollection FindElementByControlType(this AutomationElement ae, string controlType)
         {
             Condition c = null;
@@ -87,6 +98,12 @@ namespace AcceptanceTestLibrary.ApplicationHelper
                         // Set a property condition that will be used to find the control.
                         c = new PropertyCondition(
                         AutomationElement.ControlTypeProperty, ControlType.Tab);
+                        elementList = ae.FindFirst(TreeScope.Descendants, c);
+                        break;
+                    case "Combo":
+                        // Set a property condition that will be used to find the control.
+                        c = new PropertyCondition(
+                        AutomationElement.ControlTypeProperty, ControlType.ComboBox);
                         elementList = ae.FindFirst(TreeScope.Descendants, c);
                         break;
 
@@ -194,6 +211,18 @@ namespace AcceptanceTestLibrary.ApplicationHelper
                 new ResXConfigHandler(ConfigHandler.GetValue("ControlIdentifiersFile")).GetValue(controlId));
         }
 
+        public static AutomationElementCollection GetHandleByParent(this AutomationElement ae, AutomationElement parent)
+        {
+            if (parent == null || ae == null)
+            {
+                throw new InvalidOperationException("invalid operation");
+            }
+
+            return ae.FindAllChildElements(parent);
+        }
+
+      
+
         public static AutomationElementCollection GetHandleByControlType(this AutomationElement ae, string controlType)
         {
             if (ae == null || String.IsNullOrEmpty(controlType))
@@ -229,6 +258,17 @@ namespace AcceptanceTestLibrary.ApplicationHelper
             return ae.GetHandleById(controlId);
         }
 
+        public static AutomationElementCollection GetHandleByParent<TApp>(this AutomationElement ae, AutomationElement parent)
+          where TApp : AppLauncherBase
+        {
+            if (ae == null || parent == null)
+            {
+                throw new InvalidOperationException("invalid operation");
+            }
+
+          //  controlId = GetAppSpecificString<TApp>(controlId);
+            return ae.GetHandleByParent(parent);
+        }
 
         public static AutomationElementCollection GetHandleByControlType<TApp>(this AutomationElement ae, string controlType)
             where TApp : AppLauncherBase

@@ -18,7 +18,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Commanding.Modules.Order.Services;
 using Commanding.Modules.Order.Views;
-using Microsoft.Practices.Composite.Events;
+using Microsoft.Practices.Prism.Events;
 
 namespace Commanding.Modules.Order.PresentationModels
 {

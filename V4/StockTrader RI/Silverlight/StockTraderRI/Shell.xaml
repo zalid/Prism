@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="StockTraderRI.Shell"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-    xmlns:Regions="clr-namespace:Microsoft.Practices.Composite.Presentation.Regions;assembly=Microsoft.Practices.Composite.Presentation"
+    xmlns:Regions="http://www.codeplex.com/prism"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
     xmlns:Controls="clr-namespace:StockTraderRI.Controls"
@@ -158,12 +158,12 @@
                         <TranslateTransform/>
                     </TransformGroup>
                 </Grid.RenderTransform>
-                            
-                 <Controls:ResearchControl Regions:RegionManager.RegionName="ResearchRegion">
+
+                <Controls:ResearchControl Regions:RegionManager.RegionName="ResearchRegion">
                     <Controls:ResearchControl.Template>
                         <ControlTemplate TargetType="Controls:ResearchControl">
-                           
-                                <Grid>
+
+                            <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
@@ -179,13 +179,13 @@
                                 </Border>
                                 <Controls:RoundedBox Grid.Row="1" />
                                 <ScrollViewer Width="285" Grid.Row="1" d:LayoutOverrides="Margin" Style="{StaticResource ScrollViewerStyle}" VerticalScrollBarVisibility="Auto">
-                                	<ItemsPresenter Width="285" d:LayoutOverrides="Margin" />
+                                    <ItemsPresenter Width="285" d:LayoutOverrides="Margin" />
                                 </ScrollViewer>
-                            </Grid>                     
+                            </Grid>
                         </ControlTemplate>
                     </Controls:ResearchControl.Template>
                 </Controls:ResearchControl>
-              
+
             </Grid>
 
             <!-- details -->

@@ -17,9 +17,9 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
-using Microsoft.Practices.Composite.Events;
-using Microsoft.Practices.Composite.Presentation;
-using Microsoft.Practices.Composite.Presentation.Regions;
+using Microsoft.Practices.Prism.Events;
+using Microsoft.Practices.Prism;
+using Microsoft.Practices.Prism.Regions;
 
 namespace UIComposition.Modules.Employee.Tests.Mocks
 {

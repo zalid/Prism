@@ -19,9 +19,9 @@ namespace ModularityWithMef.Desktop
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.Windows;
-    using Microsoft.Practices.Composite.Logging;
-    using Microsoft.Practices.Composite.MefExtensions;
-    using Microsoft.Practices.Composite.Modularity;    
+    using Microsoft.Practices.Prism.Logging;
+    using Microsoft.Practices.Prism.MefExtensions;
+    using Microsoft.Practices.Prism.Modularity;    
 
     /// <summary>
     /// Initializes Prism to start this quickstart Prism application to use Managed Extensibility Framework (MEF).

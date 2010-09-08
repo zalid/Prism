@@ -62,7 +62,8 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>Bin\Release\MVVM.Client.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Expression.Drawing, Version=4.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -70,6 +71,12 @@
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions">
       <HintPath>..\..\LIB\Silverlight\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism">
+      <HintPath>..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Interactivity">
+      <HintPath>..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -89,19 +96,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\Behaviors\PopupChildWindowActionBase.cs" />
     <Compile Include="Infrastructure\Behaviors\ToggleInfoTipBehavior.cs" />
-    <Compile Include="Infrastructure\ViewModels\Confirmation.cs" />
     <Compile Include="Infrastructure\ExportViewAttribute.cs" />
     <Compile Include="Infrastructure\StateManagement\StateHandler.cs" />
     <Compile Include="Infrastructure\ViewFactory.cs" />
-    <Compile Include="Infrastructure\ViewModels\IInteractionRequest.cs" />
-    <Compile Include="Infrastructure\Behaviors\InteractionRequestTrigger.cs" />
-    <Compile Include="Infrastructure\Behaviors\PopupChildWindowAction.cs" />
     <Compile Include="Infrastructure\Behaviors\SynchronizeSelectedItems.cs" />
-    <Compile Include="Infrastructure\Behaviors\UpdateTextBindingOnPropertyChanged.cs" />
     <Compile Include="Infrastructure\Behaviors\ValidateObject.cs" />
-    <Compile Include="Infrastructure\DataTemplateSelector.cs" />
     <Compile Include="Infrastructure\IMainView.cs" />
     <Compile Include="Infrastructure\ISingleViewUIService.cs" />
     <Compile Include="Infrastructure\StateManagement\CurrentState.cs" />
@@ -110,18 +110,8 @@
     <Compile Include="Infrastructure\StateManagement\State.cs" />
     <Compile Include="Infrastructure\StringExtensions.cs" />
     <Compile Include="Infrastructure\SingleViewUIService.cs" />
-    <Compile Include="Infrastructure\ViewModels\InteractionRequest.cs" />
-    <Compile Include="Infrastructure\ViewModels\InteractionRequestedEventArgs.cs" />
-    <Compile Include="Infrastructure\ViewModels\Notification.cs" />
-    <Compile Include="Infrastructure\ViewModels\ViewModel.cs" />
-    <Compile Include="Infrastructure\Views\ConfirmationChildWindow.xaml.cs">
-      <DependentUpon>ConfirmationChildWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Infrastructure\Views\InfoTipView.xaml.cs">
       <DependentUpon>InfoTipView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Infrastructure\Views\NotificationChildWindow.xaml.cs">
-      <DependentUpon>NotificationChildWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\WeakEventHandler.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -170,15 +160,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="Infrastructure\Views\ConfirmationChildWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Infrastructure\Views\InfoTipView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Infrastructure\Views\NotificationChildWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
