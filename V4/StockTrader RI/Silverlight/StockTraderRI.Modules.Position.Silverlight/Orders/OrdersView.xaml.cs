@@ -14,11 +14,14 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using StockTraderRI.Modules.Position.Interfaces;
 
 namespace StockTraderRI.Modules.Position.Orders
 {
+    [Export(typeof(IOrdersView))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class OrdersView : UserControl, IOrdersView
     {
         public OrdersView()
@@ -26,9 +29,10 @@ namespace StockTraderRI.Modules.Position.Orders
             InitializeComponent();
         }
 
-        public void SetModel(IOrdersPresentationModel model)
+        [Import]
+        public IOrdersViewModel Model
         {
-            this.DataContext = model;
+            set { this.DataContext = value; }
         }
     }
 }

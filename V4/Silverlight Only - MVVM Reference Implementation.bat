@@ -1,1 +1,1 @@
-@call "MVVM RI\MVVM.sln"
+@call "MVVM RI\MVVM RI.sln"

@@ -29,6 +29,44 @@ namespace Microsoft.Practices.Prism.Tests.Commands
     public class DelegateCommandFixture
     {
         [TestMethod]
+        public void WhenConstructedWithGenericTypeOfObject_InitializesValues()
+        {
+            // Prepare
+
+            // Act
+            var actual = new DelegateCommand<object>(param => { });
+
+            // verify
+            Assert.IsNotNull(actual);
+        }
+
+        [TestMethod]
+        public void WhenConstructedWithGenericTypeOfNullable_InitializesValues()
+        {
+            // Prepare
+
+            // Act
+            var actual = new DelegateCommand<int?>(param => {});
+
+            // verify
+            Assert.IsNotNull(actual);
+        }
+
+#if !WINDOWS_PHONE
+        [TestMethod]
+        [ExpectedException(typeof(InvalidCastException))]
+        public void WhenConstructedWithGenericTypeIsNonNullableValueType_Throws()
+        {
+            // Prepare
+
+            // Act
+            var actual = new DelegateCommand<int>(param => { });
+
+            // verify
+        }
+#endif
+
+        [TestMethod]
         public void ExecuteCallsPassedInExecuteDelegate()
         {
             var handlers = new DelegateHandlers();
@@ -159,9 +197,9 @@ namespace Microsoft.Practices.Prism.Tests.Commands
             handlers = null;
 
             GC.Collect();
-            command.RaiseCanExecuteChanged();
 
             Assert.IsTrue(weakHandlerRef.IsAlive);
+            Assert.IsNotNull(command); // Only here to ensure command survives optimizations and the GC.Collect
         }
       
 #else
@@ -179,6 +217,7 @@ namespace Microsoft.Practices.Prism.Tests.Commands
             command.RaiseCanExecuteChanged();
 
             Assert.IsFalse(weakHandlerRef.IsAlive);
+            Assert.IsNotNull(command); // Only here to ensure command survives optimizations and the GC.Collect
         }
 
 #endif

@@ -92,7 +92,9 @@
     <Reference Include="Microsoft.Expression.Interactions">
       <HintPath>..\..\..\..\..\LIB\Desktop\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\LIB\Desktop\CommonServiceLocation\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\..\..\..\LIB\Desktop\Unity\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
@@ -113,10 +115,10 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Microsoft.Practices.Prism.UnityExtensions">
-      <HintPath>..\..\..\..\..\LIB\Desktop\Prism\Microsoft.Practices.Prism.UnityExtensions.dll</HintPath>
+      <HintPath>..\..\..\..\..\Bin\Desktop\Microsoft.Practices.Prism.UnityExtensions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\..\..\..\LIB\Desktop\Prism\Microsoft.Practices.Prism.dll</HintPath>
+      <HintPath>..\..\..\..\..\Bin\Desktop\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

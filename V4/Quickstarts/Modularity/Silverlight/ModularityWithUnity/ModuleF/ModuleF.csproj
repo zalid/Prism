@@ -64,7 +64,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Windows.Browser" />
     <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+      <HintPath>..\..\..\..\..\Bin\Silverlight\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

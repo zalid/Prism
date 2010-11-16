@@ -14,8 +14,10 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-
 using System;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using System.Linq;
 using Microsoft.Practices.Prism.Logging;
 using Microsoft.Practices.Prism.MefExtensions.Modularity;
 using Microsoft.Practices.Prism.Modularity;
@@ -67,6 +69,126 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
                 Assert.AreEqual("loggerFacade", ex.GetParameterName());
             }
         }
+
+        [TestMethod]
+        public void UnknownExportedModuleIsAddedAndInitializedByModuleInitializer()
+        {
+            var aggregateCatalog = new AggregateCatalog();
+            var compositionContainer = new CompositionContainer(aggregateCatalog);
+
+            var moduleCatalog = new ModuleCatalog();
+
+            var mockModuleTypeLoader = new Mock<MefXapModuleTypeLoader>(new DownloadedPartCatalogCollection());
+
+            compositionContainer.ComposeExportedValue<IModuleCatalog>(moduleCatalog);
+            compositionContainer.ComposeExportedValue<MefXapModuleTypeLoader>(mockModuleTypeLoader.Object);
+
+            bool wasInit = false;
+            var mockModuleInitializer = new Mock<IModuleInitializer>();
+            mockModuleInitializer.Setup(x => x.Initialize(It.IsAny<ModuleInfo>())).Callback(() => wasInit = true);
+
+            var mockLoggerFacade = new Mock<ILoggerFacade>();
+
+            var moduleManager =
+                new MefModuleManager(mockModuleInitializer.Object, moduleCatalog, mockLoggerFacade.Object);
+
+            aggregateCatalog.Catalogs.Add(new TypeCatalog(typeof(TestMefModule)));
+
+            compositionContainer.SatisfyImportsOnce(moduleManager);
+
+            moduleManager.Run();
+
+            Assert.IsTrue(wasInit);
+            Assert.IsTrue(moduleCatalog.Modules.Any(mi => mi.ModuleName == "TestMefModule"));
+        }
+
+        [TestMethod]
+        public void DeclaredModuleWithoutTypeInUnreferencedAssemblyIsUpdatedWithTypeNameFromExportAttribute()
+        {
+            var aggregateCatalog = new AggregateCatalog();
+            var compositionContainer = new CompositionContainer(aggregateCatalog);
+
+            var mockModuleTypeLoader = new Mock<MefXapModuleTypeLoader>(new DownloadedPartCatalogCollection());
+            mockModuleTypeLoader.Setup(tl => tl.CanLoadModuleType(It.IsAny<ModuleInfo>())).Returns(true);
+
+            var moduleCatalog = new ModuleCatalog();
+            var moduleInfo = new ModuleInfo { ModuleName = "TestMefModule" };
+            moduleCatalog.AddModule(moduleInfo);
+
+            compositionContainer.ComposeExportedValue<IModuleCatalog>(moduleCatalog);
+            compositionContainer.ComposeExportedValue<MefXapModuleTypeLoader>(mockModuleTypeLoader.Object);
+
+            bool wasInit = false;
+            var mockModuleInitializer = new Mock<IModuleInitializer>();
+            mockModuleInitializer.Setup(x => x.Initialize(It.IsAny<ModuleInfo>())).Callback(() => wasInit = true);
+
+            var mockLoggerFacade = new Mock<ILoggerFacade>();
+
+            var moduleManager =
+                new MefModuleManager(mockModuleInitializer.Object, moduleCatalog, mockLoggerFacade.Object);
+
+            compositionContainer.SatisfyImportsOnce(moduleManager);
+            moduleManager.Run();
+
+            Assert.IsFalse(wasInit);
+
+            aggregateCatalog.Catalogs.Add(new TypeCatalog(typeof(TestMefModule)));
+
+            compositionContainer.SatisfyImportsOnce(moduleManager);
+
+            mockModuleTypeLoader.Raise(tl => tl.LoadModuleCompleted += null, new LoadModuleCompletedEventArgs(moduleInfo, null));
+
+            Assert.AreEqual(typeof(TestMefModule).AssemblyQualifiedName, moduleInfo.ModuleType);
+            Assert.IsTrue(wasInit);
+        }
+
+        [TestMethod]
+        public void DeclaredModuleWithTypeInUnreferencedAssemblyIsUpdatedWithTypeNameFromExportAttribute()
+        {
+            var aggregateCatalog = new AggregateCatalog();
+            var compositionContainer = new CompositionContainer(aggregateCatalog);
+
+            var mockModuleTypeLoader = new Mock<MefXapModuleTypeLoader>(new DownloadedPartCatalogCollection());
+            mockModuleTypeLoader.Setup(tl => tl.CanLoadModuleType(It.IsAny<ModuleInfo>())).Returns(true);
+
+            var moduleCatalog = new ModuleCatalog();
+            var moduleInfo = new ModuleInfo { ModuleName = "TestMefModule", ModuleType = "some type" };
+            moduleCatalog.AddModule(moduleInfo);
+
+            compositionContainer.ComposeExportedValue<IModuleCatalog>(moduleCatalog);
+            compositionContainer.ComposeExportedValue<MefXapModuleTypeLoader>(mockModuleTypeLoader.Object);
+
+            bool wasInit = false;
+            var mockModuleInitializer = new Mock<IModuleInitializer>();
+            mockModuleInitializer.Setup(x => x.Initialize(It.IsAny<ModuleInfo>())).Callback(() => wasInit = true);
+
+            var mockLoggerFacade = new Mock<ILoggerFacade>();
+
+            var moduleManager =
+                new MefModuleManager(mockModuleInitializer.Object, moduleCatalog, mockLoggerFacade.Object);
+
+            compositionContainer.SatisfyImportsOnce(moduleManager);
+            moduleManager.Run();
+
+            Assert.IsFalse(wasInit);
+
+            aggregateCatalog.Catalogs.Add(new TypeCatalog(typeof(TestMefModule)));
+
+            compositionContainer.SatisfyImportsOnce(moduleManager);
+
+            mockModuleTypeLoader.Raise(tl => tl.LoadModuleCompleted += null, new LoadModuleCompletedEventArgs(moduleInfo, null));
+
+            Assert.AreEqual(typeof(TestMefModule).AssemblyQualifiedName, moduleInfo.ModuleType);
+            Assert.IsTrue(wasInit);
+        }
+    }
+
+    [ModuleExport(typeof(TestMefModule))]
+    public class TestMefModule : IModule
+    {
+        public void Initialize()
+        {
+        }
     }
 
     public static class ArgumentNullExceptionExtensions
@@ -77,7 +199,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
             string message = exception.Message;
             int index = message.LastIndexOf(markerText);
 
-            string parameterName = message.Substring(index+markerText.Length);
+            string parameterName = message.Substring(index + markerText.Length);
 
             return parameterName;
         }

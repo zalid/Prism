@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.Practices.Prism
 {
@@ -27,6 +28,7 @@ namespace Microsoft.Practices.Prism
     /// <remarks>
     /// This class can be used to parse a query string to access 
     /// </remarks>
+    [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     public class UriQuery : IEnumerable<KeyValuePair<string, string>>
     {
         private readonly List<KeyValuePair<string, string>> entries = new List<KeyValuePair<string, string>>();
@@ -44,43 +46,46 @@ namespace Microsoft.Practices.Prism
         /// <param name="query">The query string.</param>
         public UriQuery(string query)
         {
-            int num = (query != null) ? query.Length : 0;
-            for (int i = ((query != null) && (query.Length > 0) && (query[0] == '?')) ? 1 : 0; i < num; i++)
+            if (query != null)
             {
-                int startIndex = i;
-                int num4 = -1;
-                while (i < num)
+                int num = query.Length;
+                for (int i = ((query.Length > 0) && (query[0] == '?')) ? 1 : 0; i < num; i++)
                 {
-                    char ch = query[i];
-                    if (ch == '=')
+                    int startIndex = i;
+                    int num4 = -1;
+                    while (i < num)
                     {
-                        if (num4 < 0)
+                        char ch = query[i];
+                        if (ch == '=')
                         {
-                            num4 = i;
+                            if (num4 < 0)
+                            {
+                                num4 = i;
+                            }
                         }
+                        else if (ch == '&')
+                        {
+                            break;
+                        }
+                        i++;
                     }
-                    else if (ch == '&')
+                    string str = null;
+                    string str2 = null;
+                    if (num4 >= 0)
                     {
-                        break;
+                        str = query.Substring(startIndex, num4 - startIndex);
+                        str2 = query.Substring(num4 + 1, (i - num4) - 1);
                     }
-                    i++;
-                }
-                string str = null;
-                string str2 = null;
-                if (num4 >= 0)
-                {
-                    str = query.Substring(startIndex, num4 - startIndex);
-                    str2 = query.Substring(num4 + 1, (i - num4) - 1);
-                }
-                else
-                {
-                    str2 = query.Substring(startIndex, i - startIndex);
-                }
+                    else
+                    {
+                        str2 = query.Substring(startIndex, i - startIndex);
+                    }
 
-                this.Add(str != null ? Uri.UnescapeDataString(str) : null, Uri.UnescapeDataString(str2));
-                if ((i == (num - 1)) && (query[i] == '&'))
-                {
-                    this.Add(null, "");
+                    this.Add(str != null ? Uri.UnescapeDataString(str) : null, Uri.UnescapeDataString(str2));
+                    if ((i == (num - 1)) && (query[i] == '&'))
+                    {
+                        this.Add(null, "");
+                    }
                 }
             }
         }
@@ -88,7 +93,7 @@ namespace Microsoft.Practices.Prism
         /// <summary>
         /// Gets the <see cref="System.String"/> with the specified key.
         /// </summary>
-        /// <value>The value for the specified key.</value>
+        /// <returns>The value for the specified key, or <see langword="null"/> if the query does not contain such a key.</returns>
         public string this[string key]
         {
             get

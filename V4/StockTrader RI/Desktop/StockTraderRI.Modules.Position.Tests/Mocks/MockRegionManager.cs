@@ -80,6 +80,8 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
         {
             throw new System.NotImplementedException();
         }
+
+        public event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged;
     }
 
     public class MockRegion : IRegion
@@ -159,6 +161,26 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
         public void RequestNavigate(Uri source, Action<NavigationResult> navigationCallback)
         {
             throw new NotImplementedException();
+        }
+
+
+        public IRegionNavigationService NavigationService
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new System.NotImplementedException(); }
+        }
+
+
+        public Comparison<object> SortComparison
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 

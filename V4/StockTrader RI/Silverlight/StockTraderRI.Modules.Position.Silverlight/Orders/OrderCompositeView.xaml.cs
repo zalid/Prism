@@ -15,20 +15,17 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System.Windows.Controls;
-using StockTraderRI.Modules.Position.Interfaces;
 
 namespace StockTraderRI.Modules.Position.Orders
 {
-    public partial class OrderCompositeView : UserControl, IOrderCompositeView
+    /// <summary>
+    /// Interaction logic for OrderCompositeView.xaml
+    /// </summary>
+    public partial class OrderCompositeView : UserControl
     {
         public OrderCompositeView()
         {
             InitializeComponent();
-        }
-
-        public void SetModel(IOrderCompositePresentationModel model)
-        {
-            DataContext = model;
         }
     }
 }

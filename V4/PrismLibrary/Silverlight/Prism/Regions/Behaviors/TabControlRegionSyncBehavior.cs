@@ -163,6 +163,7 @@ namespace Microsoft.Practices.Prism.Regions.Behaviors
                 }
             }
 
+
             return null;
         }
 
@@ -245,10 +246,11 @@ namespace Microsoft.Practices.Prism.Regions.Behaviors
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
+                int startingIndex = e.NewStartingIndex;
                 foreach (object newItem in e.NewItems)
                 {
                     TabItem tabItem = this.PrepareContainerForItem(newItem, this.hostControl);
-                    this.hostControl.Items.Add(tabItem);
+                    this.hostControl.Items.Insert(startingIndex, tabItem);
                 }
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove)

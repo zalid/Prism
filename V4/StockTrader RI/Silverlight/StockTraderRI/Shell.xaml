@@ -168,7 +168,7 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <Border Grid.Row="0" Height="30" CornerRadius="12,12,12,12" Margin="0,0,0,10" BorderBrush="#FFFFFFFF" BorderThickness="2,2,2,2" x:Name="rightHeader" Canvas.ZIndex="1" Opacity="0.9" Background="{StaticResource headerBarBG}">
+                                <Border Grid.Row="0" Height="30" CornerRadius="12,12,12,12" Margin="0,0,0,10" BorderBrush="#FFFFFFFF" BorderThickness="2,2,2,2" x:Name="rightHeader" Canvas.ZIndex="1" Opacity="0.9" Background="{StaticResource sideBarHeaderBarBG}">
                                     <ItemsControl ItemsSource="{TemplateBinding Headers}" HorizontalAlignment="Center">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>

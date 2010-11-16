@@ -27,19 +27,19 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Lib\Silverlight\Prism\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\..\..\Lib\Silverlight\Prism\Microsoft.Practices.Prism.MefExtensions.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Microsoft.Practices.Prism.MefExtensions.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Lib\Silverlight\Prism\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
@@ -47,7 +47,8 @@
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\..\..\Lib\Silverlight\Prism\Microsoft.Practices.Prism.MefExtensions.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Microsoft.Practices.Prism.MefExtensions.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation">
@@ -79,6 +80,9 @@
     </Compile>
     <Compile Include="..\..\Desktop\Prism.MefExtensions\MefServiceLocatorAdapter.cs">
       <Link>MefServiceLocatorAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Desktop\Prism.MefExtensions\Modularity\DownloadedPartCatalogCollection.cs">
+      <Link>Modularity\DownloadedPartCatalogCollection.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\Prism.MefExtensions\Modularity\IModuleExport.cs">
       <Link>Modularity\IModuleExport.cs</Link>
@@ -116,6 +120,9 @@
     <Compile Include="..\..\Desktop\Prism.MefExtensions\Regions\Behaviors\MefRegionManagerRegistrationBehavior.cs">
       <Link>Regions\Behaviors\MefRegionManagerRegistrationBehavior.cs</Link>
     </Compile>
+    <Compile Include="..\..\Desktop\Prism.MefExtensions\Regions\Behaviors\MefRegionMemberLifetimeBehavior.cs">
+      <Link>Regions\Behaviors\MefRegionMemberLifetimeBehavior.cs</Link>
+    </Compile>
     <Compile Include="..\..\Desktop\Prism.MefExtensions\Regions\Behaviors\MefSelectorItemsSourceSyncBehavior.cs">
       <Link>Regions\Behaviors\MefSelectorItemsSourceSyncBehavior.cs</Link>
     </Compile>
@@ -128,9 +135,6 @@
     <Compile Include="..\..\Desktop\Prism.MefExtensions\Regions\MefItemsControlRegionAdapter.cs">
       <Link>Regions\MefItemsControlRegionAdapter.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\Prism.MefExtensions\Regions\MefNavigationTargetHandler.cs">
-      <Link>Regions\MefNavigationTargetHandler.cs</Link>
-    </Compile>
     <Compile Include="..\..\Desktop\Prism.MefExtensions\Regions\MefRegionAdapterMappings.cs">
       <Link>Regions\MefRegionAdapterMappings.cs</Link>
     </Compile>
@@ -139,6 +143,9 @@
     </Compile>
     <Compile Include="..\..\Desktop\Prism.MefExtensions\Regions\MefRegionManager.cs">
       <Link>Regions\MefRegionManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Desktop\Prism.MefExtensions\Regions\MefRegionNavigationContentLoader.cs">
+      <Link>Regions\MefRegionNavigationContentLoader.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\Prism.MefExtensions\Regions\MefRegionNavigationJournal.cs">
       <Link>Regions\MefRegionNavigationJournal.cs</Link>
@@ -182,7 +189,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkReference="6ed61550-8e7a-42c6-9b30-380c6f97ed55" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="6ed61550-8e7a-42c6-9b30-380c6f97ed55" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

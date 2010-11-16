@@ -63,7 +63,7 @@
     <CodeAnalysisRules>
     </CodeAnalysisRules>
     <NoWarn>0067, 0649, 0219, 0612</NoWarn>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Prism.TestProjects.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -79,7 +79,7 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
-    <CodeAnalysisRuleSet>Migrated rules for Prism.Silverlight.Tests (2).ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Prism.TestProjects.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -97,6 +97,7 @@
     <Reference Include="Moq.Silverlight">
       <HintPath>..\..\..\LIB\Silverlight\Moq\Moq.Silverlight.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
     <Reference Include="system" />
@@ -216,6 +217,9 @@
     <Compile Include="..\..\Desktop\Prism.Tests\Mocks\MockServiceLocator.cs">
       <Link>Mocks\MockServiceLocator.cs</Link>
     </Compile>
+    <Compile Include="..\..\Desktop\Prism.Tests\Mocks\MockSortableViews.cs">
+      <Link>Mocks\MockSortableViews.cs</Link>
+    </Compile>
     <Compile Include="..\..\Desktop\Prism.Tests\Mocks\MockViewsCollection.cs">
       <Link>Mocks\MockViewsCollection.cs</Link>
     </Compile>
@@ -255,6 +259,9 @@
     <Compile Include="..\..\Desktop\Prism.Tests\Regions\Behaviors\RegionManagerRegistrationBehaviorFixture.cs">
       <Link>Regions\Behaviors\RegionManagerRegistrationBehaviorFixture.cs</Link>
     </Compile>
+    <Compile Include="..\..\Desktop\Prism.Tests\Regions\Behaviors\RegionMemberLifetimeBehaviorFixture.cs">
+      <Link>Regions\Behaviors\RegionMemberLifetimeBehaviorFixture.cs</Link>
+    </Compile>
     <Compile Include="..\..\Desktop\Prism.Tests\Regions\Behaviors\SelectorItemsSourceSyncRegionBehaviorFixture.cs">
       <Link>Regions\Behaviors\SelectorItemsSourceSyncRegionBehaviorFixture.cs</Link>
     </Compile>
@@ -269,6 +276,9 @@
     </Compile>
     <Compile Include="..\..\Desktop\Prism.Tests\Regions\LocatorNavigationTargetHandlerFixture.cs">
       <Link>Regions\LocatorNavigationTargetHandlerFixture.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Desktop\Prism.Tests\Regions\NavigationAsyncExtensionsFixture.cs">
+      <Link>Regions\NavigationAsyncExtensionsFixture.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\Prism.Tests\Regions\NavigationContextFixture.cs">
       <Link>Regions\NavigationContextFixture.cs</Link>
@@ -407,6 +417,11 @@
       <Name>Prism.Silverlight</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Desktop\Prism.Tests\Modularity\NotAValidDotNetDll.txt.dll">
+      <Link>Modularity\NotAValidDotNetDll.txt.dll</Link>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -424,6 +439,6 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PreBuildEvent>"$(ProjectDir)Mocks\Modules\CreateXap.bat" "$(TargetDir)..\..\..\..\..\Lib\Silverlight\Prism\"</PreBuildEvent>
+    <PreBuildEvent>"$(ProjectDir)Mocks\Modules\CreateXap.bat" $(ConfigurationName)</PreBuildEvent>
   </PropertyGroup>
 </Project>

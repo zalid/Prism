@@ -15,7 +15,6 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StockTraderRI.Modules.Position.Interfaces;
 using StockTraderRI.Modules.Position.PositionSummary;
 
 namespace StockTraderRI.Modules.Position.Tests.PositionSummary
@@ -26,18 +25,11 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
         [TestMethod]
         public void ShouldBuildCorrectly()
         {
-            var view = new MockPositionPieChartView();
             var observablePosition = new MockObservablePosition();
 
-            PositionPieChartPresentationModel model = new PositionPieChartPresentationModel(view, observablePosition);
+            PositionPieChartViewModel model = new PositionPieChartViewModel(observablePosition);
 
-            Assert.AreSame(view, model.View);
             Assert.AreSame(observablePosition, model.Position);
-        }
-
-        private class MockPositionPieChartView : IPositionPieChartView
-        {
-            public IPositionPieChartPresentationModel Model { get; set; }
         }
     }
 }

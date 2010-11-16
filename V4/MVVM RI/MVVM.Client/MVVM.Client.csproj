@@ -31,7 +31,7 @@
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
     <LinkedServerProject>
     </LinkedServerProject><Utf8Output>true</Utf8Output>
-    <ExpressionBlendVersion>4.0.20310.0</ExpressionBlendVersion>
+    <ExpressionBlendVersion>4.0.20525.0</ExpressionBlendVersion>
   </PropertyGroup>
   <!-- This property group is only here to support building this project using the 
        MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
@@ -73,10 +73,13 @@
       <HintPath>..\..\LIB\Silverlight\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+      <HintPath>..\..\Bin\Silverlight\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Prism.Interactivity">
-      <HintPath>..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
+      <HintPath>..\..\Bin\Silverlight\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.GuidanceTools">
+      <HintPath>..\..\LIB\Silverlight\Microsoft.Practices.Prism.GuidanceTools.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -96,7 +99,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\Behaviors\ToggleInfoTipBehavior.cs" />
     <Compile Include="Infrastructure\ExportViewAttribute.cs" />
     <Compile Include="Infrastructure\StateManagement\StateHandler.cs" />
     <Compile Include="Infrastructure\ViewFactory.cs" />
@@ -110,9 +112,6 @@
     <Compile Include="Infrastructure\StateManagement\State.cs" />
     <Compile Include="Infrastructure\StringExtensions.cs" />
     <Compile Include="Infrastructure\SingleViewUIService.cs" />
-    <Compile Include="Infrastructure\Views\InfoTipView.xaml.cs">
-      <DependentUpon>InfoTipView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Infrastructure\WeakEventHandler.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -160,14 +159,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="Infrastructure\Views\InfoTipView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <DesignData Include="SampleData\NumericQuestionViewModelSampleData.xaml">
+      <SubType>Designer</SubType>
+    </DesignData>
+    <DesignData Include="SampleData\OpenQuestionViewModelSampleData.xaml">
+      <SubType>Designer</SubType>
+    </DesignData>
+    <DesignData Include="SampleData\MultipleSelectionQuestionViewModelSampleData.xaml">
+      <SubType>Designer</SubType>
+    </DesignData>
     <Page Include="Theme\Theme.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -208,7 +212,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\info.png" />
+    <DesignData Include="SampleData\AvailableQuestionnaireTemplatesListViewModelSampleData.xaml" />
+    <DesignData Include="SampleData\QuestionnaireViewModelSampleData.xaml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

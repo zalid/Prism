@@ -17,7 +17,6 @@
 using System;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Microsoft.Practices.Prism.Regions
 {
@@ -49,6 +48,12 @@ namespace Microsoft.Practices.Prism.Regions
         /// </summary>
         /// <value>The name of the region.</value>
         string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the comparison used to sort the views.
+        /// </summary>
+        /// <value>The comparison to use.</value>
+        Comparison<object> SortComparison { get; set; }
 
         ///<overloads>Adds a new view to the region.</overloads>
         /// <summary>
@@ -109,8 +114,14 @@ namespace Microsoft.Practices.Prism.Regions
         IRegionManager RegionManager { get; set; }
 
         /// <summary>
-        ///     Gets the collection of <see cref="IRegionBehavior"/>s that can extend the behavior of regions. 
+        /// Gets the collection of <see cref="IRegionBehavior"/>s that can extend the behavior of regions. 
         /// </summary>
         IRegionBehaviorCollection Behaviors { get; }
+
+        /// <summary>
+        /// Gets or sets the navigation service.
+        /// </summary>
+        /// <value>The navigation service.</value>
+        IRegionNavigationService NavigationService { get; set; }
     }
 }

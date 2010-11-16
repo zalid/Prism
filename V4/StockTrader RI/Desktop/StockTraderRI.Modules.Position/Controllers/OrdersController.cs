@@ -16,10 +16,12 @@
 //===================================================================================
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Globalization;
+using System.Linq;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Regions;
-using Microsoft.Practices.Unity;
+using Microsoft.Practices.ServiceLocation;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Infrastructure.Models;
@@ -27,29 +29,28 @@ using StockTraderRI.Modules.Position.Interfaces;
 using StockTraderRI.Modules.Position.Models;
 using StockTraderRI.Modules.Position.Orders;
 using StockTraderRI.Modules.Position.Properties;
-using System.Linq;
 
 namespace StockTraderRI.Modules.Position.Controllers
 {
+    [Export(typeof(IOrdersController))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class OrdersController : IOrdersController
     {
         private IRegionManager _regionManager;
-        private IUnityContainer _container;
         private readonly StockTraderRICommandProxy commandProxy;
         private IAccountPositionService _accountPositionService;
 
-        public OrdersController(IRegionManager regionManager, IUnityContainer container, StockTraderRICommandProxy commandProxy, IAccountPositionService accountPositionService)
+        [ImportingConstructor]
+        public OrdersController(IRegionManager regionManager, StockTraderRICommandProxy commandProxy, IAccountPositionService accountPositionService)
         {
             _regionManager = regionManager;
-            _container = container;
             _accountPositionService = accountPositionService;
             this.commandProxy = commandProxy;
             BuyCommand = new DelegateCommand<string>(OnBuyExecuted);
             SellCommand = new DelegateCommand<string>(OnSellExecuted);
-            SubmitAllVoteOnlyCommand = new DelegateCommand(()=>{}, SubmitAllCanExecute);
-            OrderModels = new List<IOrderCompositePresentationModel>();
+            SubmitAllVoteOnlyCommand = new DelegateCommand(() => { }, SubmitAllCanExecute);
+            OrderModels = new List<IOrderCompositeViewModel>();
             commandProxy.SubmitAllOrdersCommand.RegisterCommand(SubmitAllVoteOnlyCommand);
-            
         }
 
         void OnSellExecuted(string parameter)
@@ -64,11 +65,11 @@ namespace StockTraderRI.Modules.Position.Controllers
 
         virtual protected bool SubmitAllCanExecute()
         {
-            Dictionary<string,long> sellOrderShares = new Dictionary<string, long>();
+            Dictionary<string, long> sellOrderShares = new Dictionary<string, long>();
 
             if (OrderModels.Count == 0) return false;
 
-            foreach(var order in OrderModels)
+            foreach (var order in OrderModels)
             {
                 if (order.TransactionInfo.TransactionType == TransactionType.Sell)
                 {
@@ -96,7 +97,6 @@ namespace StockTraderRI.Modules.Position.Controllers
             }
 
             return true;
-            
         }
 
         virtual protected void StartOrder(string tickerSymbol, TransactionType transactionType)
@@ -109,31 +109,32 @@ namespace StockTraderRI.Modules.Position.Controllers
 
             IRegion ordersRegion = _regionManager.Regions[RegionNames.OrdersRegion];
 
-            var orderCompositePresentationModel = _container.Resolve<IOrderCompositePresentationModel>();
-            orderCompositePresentationModel.TransactionInfo = new TransactionInfo(tickerSymbol, transactionType);
-            orderCompositePresentationModel.CloseViewRequested += delegate
+            var orderCompositeViewModel = ServiceLocator.Current.GetInstance<IOrderCompositeViewModel>();
+
+            orderCompositeViewModel.TransactionInfo = new TransactionInfo(tickerSymbol, transactionType);
+            orderCompositeViewModel.CloseViewRequested += delegate
             {
-                OrderModels.Remove(orderCompositePresentationModel);
-                commandProxy.SubmitAllOrdersCommand.UnregisterCommand(orderCompositePresentationModel.SubmitCommand);
-                commandProxy.CancelAllOrdersCommand.UnregisterCommand(orderCompositePresentationModel.CancelCommand);
-                commandProxy.SubmitOrderCommand.UnregisterCommand(orderCompositePresentationModel.SubmitCommand);
-                commandProxy.CancelOrderCommand.UnregisterCommand(orderCompositePresentationModel.CancelCommand);
-                ordersRegion.Remove(orderCompositePresentationModel.View);
+                OrderModels.Remove(orderCompositeViewModel);
+                commandProxy.SubmitAllOrdersCommand.UnregisterCommand(orderCompositeViewModel.SubmitCommand);
+                commandProxy.CancelAllOrdersCommand.UnregisterCommand(orderCompositeViewModel.CancelCommand);
+                commandProxy.SubmitOrderCommand.UnregisterCommand(orderCompositeViewModel.SubmitCommand);
+                commandProxy.CancelOrderCommand.UnregisterCommand(orderCompositeViewModel.CancelCommand);
+                ordersRegion.Remove(orderCompositeViewModel);
                 if (ordersRegion.Views.Count() == 0)
                 {
                     this.RemoveOrdersView();
                 }
             };
 
-            ordersRegion.Add(orderCompositePresentationModel.View);
-            OrderModels.Add(orderCompositePresentationModel);
+            ordersRegion.Add(orderCompositeViewModel);
+            OrderModels.Add(orderCompositeViewModel);
 
-            commandProxy.SubmitAllOrdersCommand.RegisterCommand(orderCompositePresentationModel.SubmitCommand);
-            commandProxy.CancelAllOrdersCommand.RegisterCommand(orderCompositePresentationModel.CancelCommand);
-            commandProxy.SubmitOrderCommand.RegisterCommand(orderCompositePresentationModel.SubmitCommand);
-            commandProxy.CancelOrderCommand.RegisterCommand(orderCompositePresentationModel.CancelCommand);
+            commandProxy.SubmitAllOrdersCommand.RegisterCommand(orderCompositeViewModel.SubmitCommand);
+            commandProxy.CancelAllOrdersCommand.RegisterCommand(orderCompositeViewModel.CancelCommand);
+            commandProxy.SubmitOrderCommand.RegisterCommand(orderCompositeViewModel.SubmitCommand);
+            commandProxy.CancelOrderCommand.RegisterCommand(orderCompositeViewModel.CancelCommand);
 
-            ordersRegion.Activate(orderCompositePresentationModel.View);
+            ordersRegion.Activate(orderCompositeViewModel);
         }
 
         private void RemoveOrdersView()
@@ -154,8 +155,7 @@ namespace StockTraderRI.Modules.Position.Controllers
             object ordersView = region.GetView("OrdersView");
             if (ordersView == null)
             {
-                var ordersPresentationModel = this._container.Resolve<IOrdersPresentationModel>();
-                ordersView = ordersPresentationModel.View;
+                ordersView = ServiceLocator.Current.GetInstance<IOrdersView>();
                 region.Add(ordersView, "OrdersView");
             }
 
@@ -166,9 +166,9 @@ namespace StockTraderRI.Modules.Position.Controllers
 
         public DelegateCommand<string> BuyCommand { get; private set; }
         public DelegateCommand<string> SellCommand { get; private set; }
-        public DelegateCommand SubmitAllVoteOnlyCommand{ get; private set; }
+        public DelegateCommand SubmitAllVoteOnlyCommand { get; private set; }
 
-        private List<IOrderCompositePresentationModel> OrderModels { get; set;}
+        private List<IOrderCompositeViewModel> OrderModels { get; set; }
 
         #endregion
     }

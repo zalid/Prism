@@ -1,15 +1,10 @@
 @echo Dynamically creating a XAP file named RemoteModules.xap. This file is included in the Composite.Silverlight.Tests project as a file link (even if it's not shown in Visual Studio) as an embedded resource. 
 
-REM Remove quotes from %1
-SET binPath=%1
-SET binPath=%binPath:"=%
+SET Configuration=%1
 
 pushd "%~dp0"
 
-set compositeDll="%binPath%Microsoft.Practices.Prism.dll"
-if not exist %compositeDll% set compositeDll="..\..\..\..\..\Lib\Silverlight\Prism\Microsoft.Practices.Prism.dll"
-if not exist %compositeDll% set compositeDll="..\..\..\..\Composite\Bin\Debug\Microsoft.Practices.Prism.dll"
-if not exist %compositeDll% set compositeDll="..\..\..\..\Composite\Bin\Release\Microsoft.Practices.Prism.dll"
+set compositeDll="..\..\..\Prism\Bin\%Configuration%\Microsoft.Practices.Prism.dll"
 if not exist %compositeDll% echo ERROR. Could not find %compositeDll%
 if not exist %compositeDll% goto Error
 

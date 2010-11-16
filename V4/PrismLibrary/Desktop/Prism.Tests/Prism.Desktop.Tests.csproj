@@ -43,7 +43,7 @@
     <CodeAnalysisRules>
     </CodeAnalysisRules>
     <NoWarn>0067, 0649, 0219</NoWarn>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Prism.TestProjects.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -57,7 +57,7 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Prism.TestProjects.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -141,7 +141,10 @@
     <Compile Include="Mocks\MockDelegateReference.cs" />
     <Compile Include="Events\SubscriptionTokenFixture.cs" />
     <Compile Include="Mocks\MockConfigurationStore.Desktop.cs" />
+    <Compile Include="Mocks\MockSortableViews.cs" />
+    <Compile Include="Regions\Behaviors\RegionMemberLifetimeBehaviorFixture.cs" />
     <Compile Include="Regions\LocatorNavigationTargetHandlerFixture.cs" />
+    <Compile Include="Regions\NavigationAsyncExtensionsFixture.cs" />
     <Compile Include="Regions\NavigationContextFixture.cs" />
     <Compile Include="Regions\RegionNavigationServiceFixture.new.cs" />
     <Compile Include="Regions\RegionNavigationJournalFixture.cs" />
@@ -320,7 +323,11 @@
       <Name>Composite.Desktop</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Modularity\NotAValidDotNetDll.txt.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

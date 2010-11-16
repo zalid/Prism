@@ -79,7 +79,9 @@
     <CodeAnalysisRuleSet>Migrated rules for StockTraderRI.Infrastructure.Silverlight.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\LIB\Silverlight\CommonServiceLocation\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Silverlight.Testing, Version=2.0.20930.1042, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\LIB\Silverlight\UnitTestFramework\Microsoft.Silverlight.Testing.dll</HintPath>
@@ -88,16 +90,20 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\LIB\Silverlight\UnitTestFramework\Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
     <Reference Include="system" />
     <Reference Include="System.Windows.Browser" />
     <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+      <HintPath>..\..\..\Bin\Silverlight\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Desktop\StockTraderRI.Infrastructure.Tests\Behaviors\AutoPopulateExportedViewsBehaviorFixture.cs">
+      <Link>Behaviors\AutoPopulateExportedViewsBehaviorFixture.cs</Link>
+    </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Infrastructure.Tests\Behaviors\DialogActivationBehaviorFixture.cs">
       <Link>Behaviors\DialogActivationBehaviorFixture.cs</Link>
     </Compile>

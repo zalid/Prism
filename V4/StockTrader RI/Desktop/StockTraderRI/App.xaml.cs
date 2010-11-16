@@ -16,7 +16,6 @@
 //===================================================================================
 using System;
 using System.Windows;
-using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
 
 namespace StockTraderRI
@@ -40,7 +39,7 @@ namespace StockTraderRI
 
         private static void RunInDebugMode()
         {
-            UnityBootstrapper bootstrapper = new StockTraderRIBootstrapper();
+            StockTraderRIBootstrapper bootstrapper = new StockTraderRIBootstrapper();
             bootstrapper.Run();
         }
 
@@ -49,7 +48,7 @@ namespace StockTraderRI
             AppDomain.CurrentDomain.UnhandledException += AppDomainUnhandledException;
             try
             {
-                UnityBootstrapper bootstrapper = new StockTraderRIBootstrapper();
+                StockTraderRIBootstrapper bootstrapper = new StockTraderRIBootstrapper();
                 bootstrapper.Run();
             }
             catch (Exception ex)

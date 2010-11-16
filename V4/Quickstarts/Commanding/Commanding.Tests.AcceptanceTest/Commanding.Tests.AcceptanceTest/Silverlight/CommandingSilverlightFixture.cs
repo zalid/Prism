@@ -215,7 +215,7 @@ namespace Commanding.Tests.AcceptanceTest.Silverlight
         private static void InvokeSilverLightAttemptSaveAfterSaveAllOrders()
         {
             CommandingAssertion<SilverlightAppLauncher>.AssertSLProcessMultipleOrdersByClickingToolBarSaveAll();
-            CommandingAssertion<SilverlightAppLauncher>.AssertSaveButton();
+           // CommandingAssertion<SilverlightAppLauncher>.AssertSaveButton();
         }
         private static void InvokeSilverLightAttemptSaveAfterChangingQuantityNull()
         {

@@ -83,7 +83,7 @@ namespace Microsoft.Practices.Prism.Events
         /// <remarks>
         /// If <paramref name="keepSubscriberReferenceAlive"/> is set to <see langword="false" />, <see cref="CompositePresentationEvent{TPayload}"/> will maintain a <seealso cref="WeakReference"/> to the Target of the supplied <paramref name="action"/> delegate.
         /// If not using a WeakReference (<paramref name="keepSubscriberReferenceAlive"/> is <see langword="true" />), the user must explicitly call Unsubscribe for the event when disposing the subscriber in order to avoid memory leaks or unexepcted behavior.
-        /// 
+        /// <para/>
         /// The CompositePresentationEvent collection is thread-safe.
         /// </remarks>
         public SubscriptionToken Subscribe(Action<TPayload> action, bool keepSubscriberReferenceAlive)
@@ -101,7 +101,7 @@ namespace Microsoft.Practices.Prism.Events
         /// <remarks>
         /// If <paramref name="keepSubscriberReferenceAlive"/> is set to <see langword="false" />, <see cref="CompositePresentationEvent{TPayload}"/> will maintain a <seealso cref="WeakReference"/> to the Target of the supplied <paramref name="action"/> delegate.
         /// If not using a WeakReference (<paramref name="keepSubscriberReferenceAlive"/> is <see langword="true" />), the user must explicitly call Unsubscribe for the event when disposing the subscriber in order to avoid memory leaks or unexepcted behavior.
-        /// 
+        /// <para/>
         /// The CompositePresentationEvent collection is thread-safe.
         /// </remarks>
         public SubscriptionToken Subscribe(Action<TPayload> action, ThreadOption threadOption, bool keepSubscriberReferenceAlive)

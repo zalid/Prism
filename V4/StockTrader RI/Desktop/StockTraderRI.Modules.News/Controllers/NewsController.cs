@@ -19,50 +19,35 @@ using Microsoft.Practices.Prism.Regions;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.News.Article;
+using System.ComponentModel.Composition;
+using System.ComponentModel;
 
 namespace StockTraderRI.Modules.News.Controllers
 {
+    [Export(typeof(INewsController))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class NewsController : INewsController
     {
-        private readonly IRegionManager regionManager;
-        private readonly IArticlePresentationModel articlePresentationModel;
-        private readonly IEventAggregator eventAggregator;
-        private readonly INewsReaderPresenter readerPresenter;
-        private readonly IRegion shellRegion;
-
+        private readonly ArticleViewModel articleViewModel;
+        private readonly NewsReaderViewModel newsReaderViewModel;
+        
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "newsReader")]
-        public NewsController(IRegionManager regionManager, IArticlePresentationModel articlePresentationModel, IEventAggregator eventAggregator, INewsReaderPresenter newsReaderPresenter)
-        {
-            this.regionManager = regionManager;
-            this.articlePresentationModel = articlePresentationModel;
-            this.eventAggregator = eventAggregator;
-            this.articlePresentationModel.Controller = this;
-
-            this.readerPresenter = newsReaderPresenter;
-
-            this.shellRegion = this.regionManager.Regions[RegionNames.SecondaryRegion];
-            this.shellRegion.Add(this.readerPresenter.View);
+        [ImportingConstructor]
+        public NewsController(ArticleViewModel articleViewModel, NewsReaderViewModel newsReaderViewModel)
+        {            
+            this.articleViewModel = articleViewModel;         
+            this.newsReaderViewModel = newsReaderViewModel;
+            this.articleViewModel.PropertyChanged += this.ArticleViewModel_PropertyChanged;
         }
 
-        public void Run()
+        private void ArticleViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            this.regionManager.Regions[RegionNames.ResearchRegion].Add(articlePresentationModel.View);
-            eventAggregator.GetEvent<TickerSymbolSelectedEvent>().Subscribe(ShowNews, ThreadOption.UIThread);
-        }
-
-        public void ShowNews(string companySymbol)
-        {
-            this.articlePresentationModel.SetTickerSymbol(companySymbol);
-        }
-
-        public void CurrentNewsArticleChanged(NewsArticle article)
-        {
-            this.readerPresenter.SetNewsArticle(article);
-        }
-
-        public void ShowNewsReader()
-        {
-            this.shellRegion.Activate(this.readerPresenter.View);
+            switch (e.PropertyName)
+            {
+                case "SelectedArticle":
+                    this.newsReaderViewModel.NewsArticle = this.articleViewModel.SelectedArticle;
+                    break;
+            }
         }
     }
 }

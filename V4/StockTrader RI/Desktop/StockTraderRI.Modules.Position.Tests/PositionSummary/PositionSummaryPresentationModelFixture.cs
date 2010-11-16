@@ -15,7 +15,9 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System.Collections.ObjectModel;
+using Microsoft.Practices.Prism.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Modules.Position.PositionSummary;
 using StockTraderRI.Modules.Position.Tests.Mocks;
@@ -25,42 +27,24 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
     [TestClass]
     public class PositionSummaryPresentationModelFixture
     {
-        MockPositionSummaryView view;
         MockOrdersController ordersController;
-        MockEventAggregator eventAggregator;
+        Mock<IEventAggregator> eventAggregator;
         MockObservablePosition observablePosition;
 
         [TestInitialize]
         public void SetUp()
         {
-            view = new MockPositionSummaryView();
             ordersController = new MockOrdersController();
             observablePosition = new MockObservablePosition();
-            this.eventAggregator = new MockEventAggregator();
-            eventAggregator.AddMapping<TickerSymbolSelectedEvent>(new MockTickerSymbolSelectedEvent());
-        }
-
-        [TestMethod]
-        public void CanInitPresentationModel()
-        {
-            PositionSummaryPresentationModel presentationModel = CreatePresentationModel();
-
-            Assert.AreEqual(view, presentationModel.View);
-
-        }
-
-        [TestMethod]
-        public void CanSetPresentationModelIntoView()
-        {
-            var presentationModel = CreatePresentationModel();
-
-            Assert.AreSame(presentationModel, view.Model);
+            eventAggregator = new Mock<IEventAggregator>();
+            eventAggregator.Setup(x => x.GetEvent<TickerSymbolSelectedEvent>()).Returns(
+                new MockTickerSymbolSelectedEvent());
         }
 
         [TestMethod]
         public void ShouldTriggerPropertyChangedEventOnCurrentPositionSummaryItemChange()
         {
-            PositionSummaryPresentationModel presentationModel = CreatePresentationModel();
+            PositionSummaryViewModel presentationModel = CreatePresentationModel();
             string changedPropertyName = string.Empty;
 
             presentationModel.PropertyChanged += (o, e) =>
@@ -77,7 +61,7 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
         public void TickerSymbolSelectedPublishesEvent()
         {
             var tickerSymbolSelectedEvent = new MockTickerSymbolSelectedEvent();
-            eventAggregator.AddMapping<TickerSymbolSelectedEvent>(tickerSymbolSelectedEvent);
+            eventAggregator.Setup(x => x.GetEvent<TickerSymbolSelectedEvent>()).Returns(tickerSymbolSelectedEvent);
             var presentationModel = CreatePresentationModel();
 
             presentationModel.CurrentPositionSummaryItem = new PositionSummaryItem("FUND0", 0, 0, 0);
@@ -95,12 +79,9 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
             Assert.AreSame(presentationModel.SellCommand, ordersController.SellCommand);
         }
 
-        private PositionSummaryPresentationModel CreatePresentationModel()
+        private PositionSummaryViewModel CreatePresentationModel()
         {
-            return new PositionSummaryPresentationModel(view
-                                                , ordersController
-                                                , eventAggregator
-                                                , observablePosition);
+            return new PositionSummaryViewModel(ordersController, eventAggregator.Object, observablePosition);
 
         }
 

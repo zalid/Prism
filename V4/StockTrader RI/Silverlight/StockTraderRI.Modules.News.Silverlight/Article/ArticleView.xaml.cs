@@ -14,28 +14,40 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-using System;
+using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
+using StockTraderRI.Infrastructure;
+using StockTraderRI.Modules.News.Controllers;
 
 namespace StockTraderRI.Modules.News.Article
 {
-    public partial class ArticleView : UserControl, IArticleView
+    [ViewExport(RegionName = RegionNames.ResearchRegion)]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public partial class ArticleView : UserControl
     {
+        // Note - this import is here so that the controller is created and gets wired to the article and news reader
+        // view models, which are shared instances
+        [Import]
+        public INewsController newsController;
+
         public ArticleView()
         {
             InitializeComponent();
         }
 
-        public event EventHandler<EventArgs> ShowNewsReader;
-
-        public ArticlePresentationModel Model
-        {
-            get
-            {
-                return this.DataContext as ArticlePresentationModel;
-            }
-
+        /// <summary>
+        /// Sets the ViewModel.
+        /// </summary>
+        /// <remarks>
+        /// This set-only property is annotated with the <see cref="ImportAttribute"/> so it is injected by MEF with
+        /// the appropriate view model.
+        /// </remarks>
+        [Import]
+        [SuppressMessage("Microsoft.Design", "CA1044:PropertiesShouldNotBeWriteOnly", Justification = "Needs to be a property to be composed by MEF")]
+        public ArticleViewModel ViewModel
+        {          
             set
             {
                 this.DataContext = value;
@@ -47,24 +59,10 @@ namespace StockTraderRI.Modules.News.Article
             if (this.NewsList.SelectedItem != null)
             {
                 VisualStateManager.GoToState(this, "Details", true);
-            } 
+            }
             else
             {
                 VisualStateManager.GoToState(this, "List", true);
-            }
-        }
-
-        private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Model.SelectedArticle = null;
-        }
-
-        private void OpenButton_Click(object sender, RoutedEventArgs e)
-        {
-            EventHandler<EventArgs> showNewsReaderHandler = this.ShowNewsReader;
-            if (showNewsReaderHandler != null)
-            {
-                showNewsReaderHandler(this, EventArgs.Empty);
             }
         }
     }

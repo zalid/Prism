@@ -15,7 +15,8 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System;
-using System.Globalization;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Microsoft.Practices.Prism.Properties;
@@ -29,26 +30,26 @@ namespace Microsoft.Practices.Prism.Regions
     public class RegionNavigationService : IRegionNavigationService
     {
         private readonly IServiceLocator serviceLocator;
-        private readonly INavigationTargetHandler navigationTargetHandler;
+        private readonly IRegionNavigationContentLoader regionNavigationContentLoader;
         private IRegionNavigationJournal journal;
-        private bool isNavigating;
+        private NavigationContext currentNavigationContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RegionNavigationService"/> class.
         /// </summary>
         /// <param name="serviceLocator">The service locator.</param>
-        /// <param name="navigationTargetHandler">The navigation target handler.</param>
+        /// <param name="regionNavigationContentLoader">The navigation target handler.</param>
         /// <param name="journal">The journal.</param>
-        public RegionNavigationService(IServiceLocator serviceLocator, INavigationTargetHandler navigationTargetHandler, IRegionNavigationJournal journal)
+        public RegionNavigationService(IServiceLocator serviceLocator, IRegionNavigationContentLoader regionNavigationContentLoader, IRegionNavigationJournal journal)
         {
             if (serviceLocator == null)
             {
                 throw new ArgumentNullException("serviceLocator");
             }
 
-            if (navigationTargetHandler == null)
+            if (regionNavigationContentLoader == null)
             {
-                throw new ArgumentNullException("navigationTargetHandler");
+                throw new ArgumentNullException("regionNavigationContentLoader");
             }
 
             if (journal == null)
@@ -57,7 +58,7 @@ namespace Microsoft.Practices.Prism.Regions
             }
 
             this.serviceLocator = serviceLocator;
-            this.navigationTargetHandler = navigationTargetHandler;
+            this.regionNavigationContentLoader = regionNavigationContentLoader;
             this.journal = journal;
             this.journal.NavigationTarget = this;
         }
@@ -81,19 +82,61 @@ namespace Microsoft.Practices.Prism.Regions
         }
 
         /// <summary>
-        /// Initiates navigation to the specified source.
+        /// Raised when the region is about to be navigated to content.
         /// </summary>
-        /// <param name="source">The source.</param>
-        /// <param name="navigationCallback">A callback to execute when the navigation request is completed.</param>
-        public void RequestNavigate(Uri source, Action<NavigationResult> navigationCallback)
+        public event EventHandler<RegionNavigationEventArgs> Navigating;
+
+        private void RaiseNavigating(NavigationContext navigationContext)
         {
+            if (this.Navigating != null)
+            {
+                this.Navigating(this, new RegionNavigationEventArgs(navigationContext));
+            }
+        }
+
+        /// <summary>
+        /// Raised when the region is navigated to content.
+        /// </summary>
+        public event EventHandler<RegionNavigationEventArgs> Navigated;
+
+        private void RaiseNavigated(NavigationContext navigationContext)
+        {
+            if (this.Navigated != null)
+            {
+                this.Navigated(this, new RegionNavigationEventArgs(navigationContext));
+            }
+        }
+
+        /// <summary>
+        /// Raised when a navigation request fails.
+        /// </summary>
+        public event EventHandler<RegionNavigationFailedEventArgs> NavigationFailed;
+
+        private void RaiseNavigationFailed(NavigationContext navigationContext, Exception error)
+        {
+            if (this.NavigationFailed != null)
+            {
+                this.NavigationFailed(this, new RegionNavigationFailedEventArgs(navigationContext, error));
+            }
+        }
+
+        /// <summary>
+        /// Initiates navigation to the specified target.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="navigationCallback">A callback to execute when the navigation request is completed.</param>
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Exception is marshalled to callback")]
+        public void RequestNavigate(Uri target, Action<NavigationResult> navigationCallback)
+        {
+            if (navigationCallback == null) throw new ArgumentNullException("navigationCallback");
+
             try
             {
-                DoNavigate(source, navigationCallback);
+                this.DoNavigate(target, navigationCallback);
             }
             catch (Exception e)
             {
-                navigationCallback(new NavigationResult(new NavigationContext(this, source), e));
+                this.NotifyNavigationFailed(new NavigationContext(this, target), navigationCallback, e);
             }
         }
 
@@ -106,22 +149,14 @@ namespace Microsoft.Practices.Prism.Regions
 
             if (this.Region == null)
             {
-                throw new ArgumentNullException("region");
+                throw new InvalidOperationException(Resources.NavigationServiceHasNoRegion);
             }
 
-            if (this.isNavigating)
-            {
-                throw new InvalidOperationException(
-                    string.Format(CultureInfo.CurrentCulture, Resources.NavigationInProgress, this.Region.Name));
-            }
-
-            this.isNavigating = true;
-
-            NavigationContext navigationContext = new NavigationContext(this, source);
+            this.currentNavigationContext = new NavigationContext(this, source);
 
             // starts querying the active views
             RequestCanNavigateFromOnCurrentlyActiveView(
-                navigationContext,
+                this.currentNavigationContext,
                 navigationCallback,
                 this.Region.ActiveViews.ToArray(),
                 0);
@@ -135,27 +170,26 @@ namespace Microsoft.Practices.Prism.Regions
         {
             if (currentViewIndex < activeViews.Length)
             {
-                var vetoingView = activeViews[currentViewIndex] as INavigationAwareWithVeto;
+                var vetoingView = activeViews[currentViewIndex] as IConfirmNavigationRequest;
                 if (vetoingView != null)
                 {
-                    // the current active view implements INavigationAwareWithVeto, request confirmation
+                    // the current active view implements IConfirmNavigationRequest, request confirmation
                     // providing a callback to resume the navigation request
-                    vetoingView.RequestCanNavigateFrom(
+                    vetoingView.ConfirmNavigationRequest(
                         navigationContext,
                         canNavigate =>
                         {
-                            if (canNavigate)
+                            if (this.currentNavigationContext == navigationContext && canNavigate)
                             {
                                 RequestCanNavigateFromOnCurrentlyActiveViewModel(
                                     navigationContext,
                                     navigationCallback,
-                                    this.Region.ActiveViews.ToArray(),
+                                    activeViews,
                                     currentViewIndex);
                             }
                             else
                             {
-                                this.isNavigating = false;
-                                navigationCallback(new NavigationResult(navigationContext, false));
+                                this.NotifyNavigationFailed(navigationContext, navigationCallback, null);
                             }
                         });
                 }
@@ -164,13 +198,13 @@ namespace Microsoft.Practices.Prism.Regions
                     RequestCanNavigateFromOnCurrentlyActiveViewModel(
                         navigationContext,
                         navigationCallback,
-                        this.Region.ActiveViews.ToArray(),
+                        activeViews,
                         currentViewIndex);
                 }
             }
             else
             {
-                ExecuteNavigation(navigationContext, navigationCallback);
+                ExecuteNavigation(navigationContext, activeViews, navigationCallback);
             }
         }
 
@@ -184,28 +218,27 @@ namespace Microsoft.Practices.Prism.Regions
 
             if (frameworkElement != null)
             {
-                var vetoingViewModel = frameworkElement.DataContext as INavigationAwareWithVeto;
+                var vetoingViewModel = frameworkElement.DataContext as IConfirmNavigationRequest;
 
                 if (vetoingViewModel != null)
                 {
-                    // the data model for the current active view implements INavigationAwareWithVeto, request confirmation
+                    // the data model for the current active view implements IConfirmNavigationRequest, request confirmation
                     // providing a callback to resume the navigation request
-                    vetoingViewModel.RequestCanNavigateFrom(
+                    vetoingViewModel.ConfirmNavigationRequest(
                         navigationContext,
                         canNavigate =>
                         {
-                            if (canNavigate)
+                            if (this.currentNavigationContext == navigationContext && canNavigate)
                             {
                                 RequestCanNavigateFromOnCurrentlyActiveView(
                                     navigationContext,
                                     navigationCallback,
-                                    this.Region.ActiveViews.ToArray(),
+                                    activeViews,
                                     currentViewIndex + 1);
                             }
                             else
                             {
-                                this.isNavigating = false;
-                                navigationCallback(new NavigationResult(navigationContext, false));
+                                this.NotifyNavigationFailed(navigationContext, navigationCallback, null);
                             }
                         });
 
@@ -216,41 +249,82 @@ namespace Microsoft.Practices.Prism.Regions
             RequestCanNavigateFromOnCurrentlyActiveView(
                 navigationContext,
                 navigationCallback,
-                this.Region.ActiveViews.ToArray(),
+                activeViews,
                 currentViewIndex + 1);
         }
 
-        private void ExecuteNavigation(NavigationContext navigationContext, Action<NavigationResult> navigationCallback)
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Exception is marshalled to callback")]
+        private void ExecuteNavigation(NavigationContext navigationContext, object[] activeViews, Action<NavigationResult> navigationCallback)
         {
-            object view = this.navigationTargetHandler.GetTargetView(this.Region, navigationContext);
-
-            this.Region.Activate(view);
-
-            // Update the navigation journal before notifying others of navigaton
-            IRegionNavigationJournalEntry journalEntry = this.serviceLocator.GetInstance<IRegionNavigationJournalEntry>();
-            journalEntry.Uri = navigationContext.Uri;
-            this.journal.RecordNavigation(journalEntry);
-
-            // The view can be informed of navigation
-            INavigationAware navigationAwareView = view as INavigationAware;
-            if (navigationAwareView != null)
+            try
             {
-                navigationAwareView.OnNavigatedTo(navigationContext);
+                NotifyActiveViewsNavigatingFrom(navigationContext, activeViews);
+
+                object view = this.regionNavigationContentLoader.LoadContent(this.Region, navigationContext);
+
+                // Raise the navigating event just before activing the view.
+                this.RaiseNavigating(navigationContext);
+
+                this.Region.Activate(view);
+
+                // Update the navigation journal before notifying others of navigaton
+                IRegionNavigationJournalEntry journalEntry = this.serviceLocator.GetInstance<IRegionNavigationJournalEntry>();
+                journalEntry.Uri = navigationContext.Uri;
+                this.journal.RecordNavigation(journalEntry);
+
+                // The view can be informed of navigation
+                InvokeOnNavigationAwareElement(view, (n) => n.OnNavigatedTo(navigationContext));
+
+                navigationCallback(new NavigationResult(navigationContext, true));
+
+                // Raise the navigated event when navigation is completed.
+                this.RaiseNavigated(navigationContext);
+            }
+            catch (Exception e)
+            {
+                this.NotifyNavigationFailed(navigationContext, navigationCallback, e);
+            }
+        }
+
+        private void NotifyNavigationFailed(NavigationContext navigationContext, Action<NavigationResult> navigationCallback, Exception e)
+        {
+            var navigationResult =
+                e != null ? new NavigationResult(navigationContext, e) : new NavigationResult(navigationContext, false);
+
+            navigationCallback(navigationResult);
+            this.RaiseNavigationFailed(navigationContext, e);
+        }
+
+        private static void NotifyActiveViewsNavigatingFrom(NavigationContext navigationContext, object[] activeViews)
+        {
+            InvokeOnNavigationAwareElements(activeViews, (n) => n.OnNavigatedFrom(navigationContext));
+        }
+
+        private static void InvokeOnNavigationAwareElements(IEnumerable<object> items, Action<INavigationAware> invocation)
+        {
+            foreach (var item in items)
+            {
+                InvokeOnNavigationAwareElement(item, invocation);
+            }
+        }
+
+        private static void InvokeOnNavigationAwareElement(object item, Action<INavigationAware> invocation)
+        {
+            var navigationAwareItem = item as INavigationAware;
+            if (navigationAwareItem != null)
+            {
+                invocation(navigationAwareItem);
             }
 
-            // When using patterns like MVVM, the DataContext can also be informed of navigation.                        
-            FrameworkElement viewFrameworkElement = view as FrameworkElement;
-            if (viewFrameworkElement != null)
+            FrameworkElement frameworkElement = item as FrameworkElement;
+            if (frameworkElement != null)
             {
-                INavigationAware navigationAwareDataContext = viewFrameworkElement.DataContext as INavigationAware;
+                INavigationAware navigationAwareDataContext = frameworkElement.DataContext as INavigationAware;
                 if (navigationAwareDataContext != null)
                 {
-                    navigationAwareDataContext.OnNavigatedTo(navigationContext);
+                    invocation(navigationAwareDataContext);
                 }
             }
-
-            this.isNavigating = false;
-            navigationCallback(new NavigationResult(navigationContext, true));
         }
     }
 }

@@ -60,6 +60,7 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\..\Prism.TestProjects.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -70,6 +71,7 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\..\Prism.TestProjects.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation">
@@ -101,6 +103,9 @@
     <Compile Include="..\..\Desktop\Prism.MefExtensions.Tests\DefaultPrismServiceRegistrarFixture.cs">
       <Link>DefaultPrismServiceRegistrarFixture.cs</Link>
     </Compile>
+    <Compile Include="..\..\Desktop\Prism.MefExtensions.Tests\DownloadedPartCatalogCollectionFixture.cs">
+      <Link>DownloadedPartCatalogCollectionFixture.cs</Link>
+    </Compile>
     <Compile Include="..\..\Desktop\Prism.MefExtensions.Tests\MefBootstrapperFixture.cs">
       <Link>MefBootstrapperFixture.cs</Link>
     </Compile>
@@ -113,11 +118,17 @@
     <Compile Include="..\..\Desktop\Prism.MefExtensions.Tests\MefBootstrapperRunMethodFixture.cs">
       <Link>MefBootstrapperRunMethodFixture.cs</Link>
     </Compile>
+    <Compile Include="..\..\Desktop\Prism.MefExtensions.Tests\MefModuleInitializerFixture.cs">
+      <Link>MefModuleInitializerFixture.cs</Link>
+    </Compile>
     <Compile Include="..\..\Desktop\Prism.MefExtensions.Tests\MefModuleManagerFixture.cs">
       <Link>MefModuleManagerFixture.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\Prism.MefExtensions.Tests\MefNullContainerBootstrapperFixture.cs">
       <Link>MefNullContainerBootstrapperFixture.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Desktop\Prism.MefExtensions.Tests\MefNullModuleManagerFixture.cs">
+      <Link>MefNullModuleManagerFixture.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\Prism.MefExtensions.Tests\MefServiceLocatorAdapterFixture.cs">
       <Link>MefServiceLocatorAdapterFixture.cs</Link>

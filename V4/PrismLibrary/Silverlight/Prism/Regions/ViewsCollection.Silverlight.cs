@@ -15,35 +15,42 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 
 namespace Microsoft.Practices.Prism.Regions
 {
     public partial class ViewsCollection
     {
-        private void AddAndNotify(IList items)
+        private void NotifyAdd(IList items, int newStartingIndex)
         {
-            if (items.Count > 0)
+            if (items.Count <= 0)
             {
-                foreach (object item in items)
-                {
-                    int index = filteredCollection.Count;
-                    filteredCollection.Add(item);
-                    OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, index));
-                }
+                return;
+            }
+
+            foreach (var item in items)
+            {
+                this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(
+                                             NotifyCollectionChangedAction.Add,
+                                             item,
+                                             newStartingIndex));
             }
         }
 
-        private void RemoveAndNotify(IList items)
+        private void NotifyRemove(IList items, int originalIndex)
         {
-            if (items.Count > 0)
+            if (items.Count <= 0)
             {
-                foreach (object item in items)
-                {
-                    int index = filteredCollection.IndexOf(items[0]);
-                    filteredCollection.Remove(item);
-                    OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item, index));
-                }
+                return;
+            }
+
+            foreach (var item in items)
+            {
+                this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(
+                                             NotifyCollectionChangedAction.Remove,
+                                             item,
+                                             originalIndex));
             }
         }
     }

@@ -60,10 +60,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+      <HintPath>..\..\Bin\Silverlight\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Prism.Interactivity">
-      <HintPath>..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
+      <HintPath>..\..\Bin\Silverlight\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Silverlight.Testing">
       <HintPath>..\..\LIB\Silverlight\UnitTestFramework\Microsoft.Silverlight.Testing.dll</HintPath>
@@ -82,7 +82,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
     <Reference Include="System.Windows.Controls, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Windows.Interactivity, Version=4.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\LIB\Silverlight\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>

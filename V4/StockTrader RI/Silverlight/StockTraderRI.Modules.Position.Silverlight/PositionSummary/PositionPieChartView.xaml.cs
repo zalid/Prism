@@ -14,24 +14,27 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+using System.ComponentModel.Composition;
 using System.Windows.Controls;
-using System.Windows.Controls.DataVisualization.Charting;
-using StockTraderRI.Modules.Position.Interfaces;
+using StockTraderRI.Infrastructure;
 
 namespace StockTraderRI.Modules.Position.PositionSummary
 {
-    public partial class PositionPieChartView : UserControl, IPositionPieChartView
+    [ViewExport(RegionName = RegionNames.ResearchRegion)]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public partial class PositionPieChartView : UserControl
     {
         public PositionPieChartView()
         {
             InitializeComponent();
         }
 
-        public IPositionPieChartPresentationModel Model
+        [Import]
+        public IPositionPieChartViewModel Model
         {
-            get 
+            get
             {
-                return this.DataContext as IPositionPieChartPresentationModel;
+                return this.DataContext as IPositionPieChartViewModel;
             }
             set
             {

@@ -36,12 +36,12 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Lib\Desktop\Prism\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-    <DocumentationFile>..\..\..\Lib\Desktop\Prism\Microsoft.Practices.Prism.UnityExtensions.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Microsoft.Practices.Prism.UnityExtensions.xml</DocumentationFile>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
     <RegisterForComInterop>false</RegisterForComInterop>
@@ -50,7 +50,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Lib\Desktop\Prism\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -58,7 +58,7 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
-    <DocumentationFile>..\..\..\Lib\Desktop\Prism\Microsoft.Practices.Prism.UnityExtensions.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Microsoft.Practices.Prism.UnityExtensions.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>

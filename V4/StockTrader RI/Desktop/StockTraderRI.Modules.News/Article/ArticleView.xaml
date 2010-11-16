@@ -2,7 +2,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:infModels="clr-namespace:StockTraderRI.Infrastructure.Models;assembly=StockTraderRI.Infrastructure"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"     
     x:Class="StockTraderRI.Modules.News.Article.ArticleView"
     Height="Auto" Width="Auto" mc:Ignorable="d">
     <UserControl.Resources>
@@ -164,7 +165,7 @@
                 <SplineDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1" KeySpline="0.5,0,0.5,1"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-    </UserControl.Resources>
+    </UserControl.Resources>    
     <Border Padding="10,10,10,10">
         <StackPanel>
             <Grid x:Name="ListGrid" Height="Auto" Width="Auto"  RenderTransformOrigin="0.5,0.5">
@@ -187,7 +188,7 @@
                         x:Name="NewsList" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"
     					SelectedItem="{Binding Path=SelectedArticle, Mode=TwoWay}" Margin="0,0,0,0" Background="{x:Null}" BorderBrush="{x:Null}" SelectionChanged="ListBox_SelectionChanged" />
             </Grid>
-            <Grid x:Name="DetailsGrid" DataContext="{Binding Path=SelectedArticle}" Visibility="Collapsed" RenderTransformOrigin="0.5,0.5" Width="225">
+            <Grid x:Name="DetailsGrid" Visibility="Collapsed" RenderTransformOrigin="0.5,0.5" Width="225">
                 <Grid.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -200,11 +201,11 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{Binding Path=Title}" Style="{StaticResource TextBlockSectionTitle}" TextWrapping="Wrap" MinWidth="150" Width="190" HorizontalAlignment="Left"/>
-                <TextBlock Grid.Row="1" Text="{Binding Path=Body}" Foreground="#FF808080" FontFamily="Trebuchet MS" FontSize="12" TextWrapping="Wrap"/>
+                <TextBlock Grid.Row="0" Text="{Binding Path=SelectedArticle.Title}" Style="{StaticResource TextBlockSectionTitle}" TextWrapping="Wrap" MinWidth="150" Width="190" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="1" Text="{Binding Path=SelectedArticle.Body}" Foreground="#FF808080" FontFamily="Trebuchet MS" FontSize="12" TextWrapping="Wrap"/>
             	<Canvas HorizontalAlignment="Right" VerticalAlignment="Top" Width="50" Height="24" Grid.Column="0" Grid.Row="0">
-            		<Button x:Name="BackButton" Click="BackButton_Click" Template="{StaticResource BackButtonTemplate}" Cursor="Hand" Content="{StaticResource BackButtonTemplate}" Margin="-27,0,0,0" />
-            		<Button x:Name="OpenButton" Click="OpenButton_Click" Template="{StaticResource OpenButtonTemplate}" Cursor="Hand" Content="{StaticResource OpenButtonTemplate}" Margin="0,0,0,0" d:LayoutOverrides="GridBox" />
+                    <Button x:Name="BackButton" Command="{Binding ShowArticleListCommand}" Template="{StaticResource BackButtonTemplate}" Cursor="Hand" Content="{StaticResource BackButtonTemplate}" Margin="-27,0,0,0" />
+            		<Button x:Name="OpenButton" Command="{Binding ShowNewsReaderCommand}" Template="{StaticResource OpenButtonTemplate}" Cursor="Hand" Content="{StaticResource OpenButtonTemplate}" Margin="0,0,0,0" d:LayoutOverrides="GridBox" />
             	</Canvas>
             </Grid>
         </StackPanel>

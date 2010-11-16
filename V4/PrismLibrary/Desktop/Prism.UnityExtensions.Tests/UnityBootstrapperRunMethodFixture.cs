@@ -26,6 +26,7 @@ using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Collections.Generic;
 
 namespace Microsoft.Practices.Prism.UnityExtensions.Tests
 {
@@ -42,7 +43,7 @@ namespace Microsoft.Practices.Prism.UnityExtensions.Tests
         [TestMethod]
         public void RunShouldNotFailIfReturnedNullShell()
         {
-            var bootstrapper = new DefaultUnityBootstrapper{ShellObject = null};
+            var bootstrapper = new DefaultUnityBootstrapper { ShellObject = null };
             bootstrapper.Run();
         }
 
@@ -259,7 +260,7 @@ namespace Microsoft.Practices.Prism.UnityExtensions.Tests
 
             mockedContainer.Verify(c => c.RegisterType(typeof(RegionAdapterMappings), It.IsAny<Type>(), null, It.IsAny<LifetimeManager>()), Times.Once());
         }
-        
+
         [TestMethod]
         public void RunRegistersTypeForIRegionViewRegistry()
         {
@@ -318,13 +319,32 @@ namespace Microsoft.Practices.Prism.UnityExtensions.Tests
         [TestMethod]
         public void ModuleManagerRunCalled()
         {
-            var mockedContainer = new Mock<IUnityContainer>();
-            SetupMockedContainerForVerificationTests(mockedContainer);
-            var mockedModuleManager = new Mock<IModuleManager>();
-            mockedContainer.Setup(c => c.Resolve(typeof(IModuleManager), (string)null)).Returns(
-                mockedModuleManager.Object);
+            // Have to use a non-mocked container because of IsRegistered<> extension method, Registrations property,and ContainerRegistration
+            var container = new UnityContainer();
 
-            var bootstrapper = new MockedContainerBootstrapper(mockedContainer.Object);
+            var mockedModuleInitializer = new Mock<IModuleInitializer>();
+            var mockedModuleManager = new Mock<IModuleManager>();
+            var regionAdapterMappings = new RegionAdapterMappings();
+            var serviceLocatorAdapter = new UnityServiceLocatorAdapter(container);
+            var regionBehaviorFactory = new RegionBehaviorFactory(serviceLocatorAdapter);
+
+
+            container.RegisterInstance<IServiceLocator>(serviceLocatorAdapter);
+            container.RegisterInstance<UnityBootstrapperExtension>(new UnityBootstrapperExtension());
+            container.RegisterInstance<IModuleCatalog>(new ModuleCatalog());
+            container.RegisterInstance<IModuleInitializer>(mockedModuleInitializer.Object);
+            container.RegisterInstance<IModuleManager>(mockedModuleManager.Object);
+            container.RegisterInstance<RegionAdapterMappings>(regionAdapterMappings);
+
+#if SILVERLIGHT
+            container.RegisterInstance<TabControlRegionAdapter>(new TabControlRegionAdapter(regionBehaviorFactory));
+#endif
+
+            container.RegisterInstance<SelectorRegionAdapter>(new SelectorRegionAdapter(regionBehaviorFactory));
+            container.RegisterInstance<ItemsControlRegionAdapter>(new ItemsControlRegionAdapter(regionBehaviorFactory));
+            container.RegisterInstance<ContentControlRegionAdapter>(new ContentControlRegionAdapter(regionBehaviorFactory));
+
+            var bootstrapper = new MockedContainerBootstrapper(container);
 
             bootstrapper.Run();
 
@@ -375,7 +395,7 @@ namespace Microsoft.Practices.Prism.UnityExtensions.Tests
             Assert.IsTrue(messages[14].Contains("Initializing modules."));
             Assert.IsTrue(messages[15].Contains("Bootstrapper sequence completed."));
         }
-        
+
         [TestMethod]
         public void RunShouldLogLoggerCreationSuccess()
         {
@@ -491,7 +511,7 @@ namespace Microsoft.Practices.Prism.UnityExtensions.Tests
         public void RunShouldNotLogAboutInitializingTheShellIfShellIsNotCreated()
         {
             const string expectedMessageText = "Initializing shell";
-            var bootstrapper = new DefaultUnityBootstrapper {ShellObject = null};
+            var bootstrapper = new DefaultUnityBootstrapper { ShellObject = null };
 
             bootstrapper.Run();
             var messages = bootstrapper.BaseLogger.Messages;
@@ -540,7 +560,7 @@ namespace Microsoft.Practices.Prism.UnityExtensions.Tests
                 new ModuleCatalog());
 
             mockedContainer.Setup(c => c.Resolve(typeof(IModuleInitializer), (string)null)).Returns(
-                mockedModuleInitializer);
+                mockedModuleInitializer.Object);
 
             mockedContainer.Setup(c => c.Resolve(typeof(IModuleManager), (string)null)).Returns(
                 mockedModuleManager.Object);

@@ -26,6 +26,10 @@ namespace Microsoft.Practices.Prism.Interactivity.InteractionRequest
     /// </summary>
     public abstract class PopupChildWindowActionBase : TriggerAction<FrameworkElement>
     {
+        /// <summary>
+        /// Displays the child window and collects results for <see cref="IInteractionRequest"/>.
+        /// </summary>
+        /// <param name="parameter">The parameter to the action. If the action does not require a parameter, the parameter may be set to a null reference.</param>
         protected override void Invoke(object parameter)
         {
             var args = parameter as InteractionRequestedEventArgs;
@@ -49,6 +53,11 @@ namespace Microsoft.Practices.Prism.Interactivity.InteractionRequest
             childWindow.Show();
         }
 
+        /// <summary>
+        /// Returns the child window to display as part of the trigger action.
+        /// </summary>
+        /// <param name="notification">The notification to display in the child window.</param>
+        /// <returns></returns>
         protected abstract ChildWindow GetChildWindow(Notification notification);
     }
 }

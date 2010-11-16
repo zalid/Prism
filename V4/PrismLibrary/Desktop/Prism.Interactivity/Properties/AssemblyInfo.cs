@@ -51,5 +51,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("4.0.0.0")]
 [assembly: AssemblyFileVersion("4.0.0.0")]
 
-[assembly: System.Windows.Markup.XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.Interactivity")]
 [assembly: System.Windows.Markup.XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.Interactivity.InteractionRequest")]

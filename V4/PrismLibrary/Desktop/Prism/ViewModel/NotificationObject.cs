@@ -28,8 +28,10 @@ namespace Microsoft.Practices.Prism.ViewModel
     /// This class provides basic support for implementing the <see cref="INotifyPropertyChanged"/> interface and for
     /// marshalling execution to the UI thread.
     /// </remarks>
-#if !SILVERLIGHT
-    [Serializable]
+#if SILVERLIGHT
+        [System.Runtime.Serialization.DataContract]
+#else
+        [Serializable]
 #endif
     public abstract class NotificationObject : INotifyPropertyChanged
     {

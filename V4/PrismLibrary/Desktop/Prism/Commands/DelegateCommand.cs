@@ -22,14 +22,31 @@ namespace Microsoft.Practices.Prism.Commands
 {
     /// <summary>
     /// An <see cref="ICommand"/> whose delegates can be attached for <see cref="Execute"/> and <see cref="CanExecute"/>.
-    /// It also implements the <see cref="IActiveAware"/> interface, which is
-    /// useful when registering this command in a <see cref="CompositeCommand"/>
-    /// that monitors command's activity.
+    /// It also implements the <see cref="IActiveAware"/> interface, which is useful when registering this command in a <see cref="CompositeCommand"/> that monitors command's activity.
     /// </summary>
     /// <typeparam name="T">Parameter type.</typeparam>
-    public class DelegateCommand<T> : DelegateCommandBase
-        where T : class
-    {
+    /// <remarks>
+    /// The constructor deliberately prevent the use of value types.
+    /// Because ICommand takes an object, having a value type for T would cause unexpected behavior when CanExecute(null) is called during XAML initialization for command bindings.
+    /// Using default(T) was considered and rejected as a solution because the implementor would not be able to distinguish between a valid and defaulted values.
+    /// <para/>
+    /// Instead, callers should support a value type by using a nullable value type and checking the HasValue property before using the Value property.
+    /// <example>
+    ///     <code>
+    /// public MyClass()
+    /// {
+    ///     this.submitCommand = new DelegateCommand&lt;int?&gt;(this.Submit, this.CanSubmit);
+    /// }
+    /// 
+    /// private bool CanSubmit(int? customerId)
+    /// {
+    ///     return (customerId.HasValue &amp;&amp; customers.Contains(customerId.Value));
+    /// }
+    ///     </code>
+    /// </example>
+    /// </remarks>
+    public class DelegateCommand<T> : DelegateCommandBase        
+    {        
         /// <summary>
         /// Initializes a new instance of <see cref="DelegateCommand{T}"/>.
         /// </summary>
@@ -37,7 +54,7 @@ namespace Microsoft.Practices.Prism.Commands
         /// <remarks><seealso cref="CanExecute"/> will always return true.</remarks>
         public DelegateCommand(Action<T> executeMethod)
             : this(executeMethod, (o)=>true)
-        {
+        {            
         }
 
         /// <summary>
@@ -51,6 +68,20 @@ namespace Microsoft.Practices.Prism.Commands
         {
             if (executeMethod == null || canExecuteMethod == null)
                 throw new ArgumentNullException("executeMethod", Resources.DelegateCommandDelegatesCannotBeNull);
+
+#if !WINDOWS_PHONE
+            Type genericType = typeof(T);
+
+            // DelegateCommand allows object or Nullable<>.  
+            // note: Nullable<> is a struct so we cannot use a class constraint.
+            if (genericType.IsValueType)
+            {
+                if ((!genericType.IsGenericType) || (!typeof(Nullable<>).IsAssignableFrom(genericType.GetGenericTypeDefinition())))
+                {
+                    throw new InvalidCastException(Resources.DelegateCommandInvalidGenericPayloadType);
+                }
+            }
+#endif
         }
 
         ///<summary>

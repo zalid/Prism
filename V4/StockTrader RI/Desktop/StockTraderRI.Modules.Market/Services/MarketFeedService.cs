@@ -24,9 +24,12 @@ using Microsoft.Practices.Prism.Events;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Modules.Market.Properties;
+using System.ComponentModel.Composition;
 
 namespace StockTraderRI.Modules.Market.Services
 {
+    [Export(typeof(IMarketFeedService))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class MarketFeedService : IMarketFeedService, IDisposable
     {
         private IEventAggregator EventAggregator { get; set; }
@@ -37,6 +40,7 @@ namespace StockTraderRI.Modules.Market.Services
         private int _refreshInterval = 10000;
         private readonly object _lockObject = new object();
 
+        [ImportingConstructor]
         public MarketFeedService(IEventAggregator eventAggregator)
             : this(XDocument.Parse(Resources.Market), eventAggregator)
         {

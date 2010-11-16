@@ -14,40 +14,23 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-using Microsoft.Practices.Prism.Modularity;
-using Microsoft.Practices.Unity;
-using StockTraderRI.Infrastructure.Interfaces;
-using StockTraderRI.Modules.News.Article;
-using StockTraderRI.Modules.News.Controllers;
-using StockTraderRI.Modules.News.Services;
+// using Microsoft.Practices.Prism.Modularity;
+// using Microsoft.Practices.Prism.MefExtensions.Modularity;
 
 namespace StockTraderRI.Modules.News
 {
-    public class NewsModule : IModule
+    /// <summary>
+    /// A placeholder to initialize this module.
+    /// </summary>
+    /// <remarks>
+    /// This module is intentionally left empty because views, services, and other types are discovered through declarative attributes.
+    /// View registration for this module is done through the <see cref="StockTraderRI.Infrastructure.ViewExportAttribute"/>.
+    /// If you extend this reference implementation and need to initialization when this module is loaded, 
+    /// uncomment the module export attribute, IModule interface, Initialize method.
+    /// </remarks>
+    //[ModuleExport(typeof(NewsModule)]
+    public class NewsModule //: IModule
     {
-        private readonly IUnityContainer container;
-
-        public NewsModule(IUnityContainer container)
-        {
-            this.container = container;
-        }
-
-        public void Initialize()
-        {
-            this.RegisterViewsAndServices();
-
-            INewsController controller = this.container.Resolve<INewsController>();
-            controller.Run();
-        }
-
-        protected void RegisterViewsAndServices()
-        {
-            this.container.RegisterType<INewsController, NewsController>(new ContainerControlledLifetimeManager());
-            this.container.RegisterType<IArticleView, ArticleView>();
-            this.container.RegisterType<IArticlePresentationModel, ArticlePresentationModel>();
-            this.container.RegisterType<INewsFeedService, NewsFeedService>(new ContainerControlledLifetimeManager());
-            this.container.RegisterType<INewsReaderView, NewsReader>();
-            this.container.RegisterType<INewsReaderPresenter, NewsReaderPresenter>();
-        }
+        // public void Initialize() { }
     }
 }

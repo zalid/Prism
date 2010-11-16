@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
@@ -16,9 +17,11 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
-    <ThrowErrorsInValidation>false</ThrowErrorsInValidation><FileUpgradeFlags></FileUpgradeFlags>
+    <ThrowErrorsInValidation>false</ThrowErrorsInValidation><FileUpgradeFlags>
+    </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation></UpgradeBackupLocation>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <PublishUrl>publish\</PublishUrl>
@@ -48,7 +51,8 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRules></CodeAnalysisRules>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>Migrated rules for StockTraderRI.Modules.Position.Silverlight.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -62,13 +66,21 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisRules></CodeAnalysisRules>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
     <CodeAnalysisRuleSet>Migrated rules for StockTraderRI.Modules.Position.Silverlight.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Practices.Prism.MefExtensions">
+      <HintPath>..\..\..\Bin\Silverlight\Microsoft.Practices.Prism.MefExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\..\..\LIB\Silverlight\CommonServiceLocation\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity.Silverlight">
       <HintPath>..\..\..\LIB\Silverlight\Unity\Microsoft.Practices.Unity.Silverlight.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
@@ -86,7 +98,7 @@
     <Reference Include="System.Windows.Browser" />
     <Reference Include="System.Xml.Linq, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+      <HintPath>..\..\..\Bin\Silverlight\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -96,20 +108,11 @@
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Controllers\OrdersController.cs">
       <Link>Controllers\OrdersController.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Interfaces\IOrderCompositeView.cs">
-      <Link>Interfaces\IOrderCompositeView.cs</Link>
-    </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Interfaces\IOrdersService.cs">
       <Link>Interfaces\IOrdersService.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Interfaces\IOrdersView.cs">
       <Link>Interfaces\IOrdersView.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Interfaces\IPositionPieChartView.cs">
-      <Link>Interfaces\IPositionPieChartView.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Interfaces\IPositionSummaryView.cs">
-      <Link>Interfaces\IPositionSummaryView.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Models\Order.cs">
       <Link>Models\Order.cs</Link>
@@ -117,26 +120,23 @@
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Models\TransactionInfo.cs">
       <Link>Models\TransactionInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\IOrderCompositePresentationModel.cs">
-      <Link>Orders\IOrderCompositePresentationModel.cs</Link>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\IOrderCompositeViewModel.cs">
+      <Link>Orders\IOrderCompositeViewModel.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\IOrderDetailsPresentationModel.cs">
-      <Link>Orders\IOrderDetailsPresentationModel.cs</Link>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\IOrderDetailsViewModel.cs">
+      <Link>Orders\IOrderDetailsViewModel.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\IOrderDetailsView.cs">
-      <Link>Orders\IOrderDetailsView.cs</Link>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\IOrdersViewModel.cs">
+      <Link>Orders\IOrdersViewModel.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\IOrdersPresentationModel.cs">
-      <Link>Orders\IOrdersPresentationModel.cs</Link>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\OrderCompositeViewModel.cs">
+      <Link>Orders\OrderCompositeViewModel.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\OrderCompositePresentationModel.cs">
-      <Link>Orders\OrderCompositePresentationModel.cs</Link>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\OrderDetailsViewModel.cs">
+      <Link>Orders\OrderDetailsViewModel.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\OrderDetailsPresentationModel.cs">
-      <Link>Orders\OrderDetailsPresentationModel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\OrdersPresentationModel.cs">
-      <Link>Orders\OrdersPresentationModel.cs</Link>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\OrdersViewModel.cs">
+      <Link>Orders\OrdersViewModel.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\OrderType.cs">
       <Link>Orders\OrderType.cs</Link>
@@ -153,23 +153,23 @@
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\PositionSummary\IObservablePosition.cs">
       <Link>PositionSummary\IObservablePosition.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\PositionSummary\IPositionPieChartPresentationModel.cs">
-      <Link>PositionSummary\IPositionPieChartPresentationModel.cs</Link>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\PositionSummary\IPositionPieChartViewModel.cs">
+      <Link>PositionSummary\IPositionPieChartViewModel.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\PositionSummary\IPositionSummaryPresentationModel.cs">
-      <Link>PositionSummary\IPositionSummaryPresentationModel.cs</Link>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\PositionSummary\IPositionSummaryViewModel.cs">
+      <Link>PositionSummary\IPositionSummaryViewModel.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\PositionSummary\ObservablePosition.cs">
       <Link>PositionSummary\ObservablePosition.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\PositionSummary\PositionPieChartPresentationModel.cs">
-      <Link>PositionSummary\PositionPieChartPresentationModel.cs</Link>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\PositionSummary\PositionPieChartViewModel.cs">
+      <Link>PositionSummary\PositionPieChartViewModel.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\PositionSummary\PositionSummaryItem.cs">
       <Link>PositionSummary\PositionSummaryItem.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\PositionSummary\PositionSummaryPresentationModel.cs">
-      <Link>PositionSummary\PositionSummaryPresentationModel.cs</Link>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\PositionSummary\PositionSummaryViewModel.cs">
+      <Link>PositionSummary\PositionSummaryViewModel.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Properties\Resources.Designer.cs">
       <Link>Properties\Resources.Designer.cs</Link>
@@ -185,14 +185,14 @@
     <Compile Include="Orders\OrderCommandsView.xaml.cs">
       <DependentUpon>OrderCommandsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Orders\OrderCompositePresentationModel.Silverlight.cs" />
+    <Compile Include="Orders\OrderCompositeViewModel.Silverlight.cs" />
     <Compile Include="Orders\OrderCompositeView.xaml.cs">
       <DependentUpon>OrderCompositeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Orders\OrderDetailsView.xaml.cs">
       <DependentUpon>OrderDetailsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Orders\OrdersPresentationModel.Silverlight.cs" />
+    <Compile Include="Orders\OrdersViewModel.Silverlight.cs" />
     <Compile Include="Orders\OrdersView.xaml.cs">
       <DependentUpon>OrdersView.xaml</DependentUpon>
     </Compile>

@@ -35,10 +35,9 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         [TestMethod]
         public void NullAggregateCatalogThrows()
         {
-            var agent = new DefaultPrismServiceRegistrar();
             try
             {
-                agent.RegisterRequiredPrismServicesIfMissing(null);
+                DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(null);
                 Assert.Fail("Expected exception not thrown");
             }
             catch (Exception)
@@ -51,8 +50,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         public void SingleSelectorItemsSourceSyncBehaviorIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 
@@ -70,11 +68,31 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         }
 
         [TestMethod]
+        public void SingleRegionLifetimeBehaviorIsRegisteredWithContainer()
+        {
+            AggregateCatalog catalog = new AggregateCatalog();
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
+
+            CompositionContainer container = new CompositionContainer(newCatalog);
+
+            foreach (var part in container.Catalog.Parts)
+            {
+                foreach (var export in part.ExportDefinitions)
+                {
+                    System.Diagnostics.Debug.WriteLine(string.Format("Part contract name => '{0}'", export.ContractName));
+                }
+            }
+
+            var exportedValue = container.GetExportedValue<RegionMemberLifetimeBehavior>();
+
+            Assert.IsNotNull(exportedValue);
+        }
+
+        [TestMethod]
         public void SingleIRegionViewRegistryIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 
@@ -90,8 +108,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         public void SingleContentControlRegionAdapterIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 
@@ -106,10 +123,10 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         public void SingleIModuleInitializerIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
+            container.ComposeExportedValue<AggregateCatalog>(catalog);
 
             SetupLoggerForTest(container);
             SetupServiceLocator(container);
@@ -124,8 +141,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         public void SingleIEventAggregatorIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 
@@ -140,8 +156,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         public void SingleSelectorRegionAdapterIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 
@@ -156,8 +171,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         public void SingleBindRegionContextToDependencyObjectBehaviorIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 
@@ -172,8 +186,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         public void SingleIRegionManagerIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 
@@ -188,8 +201,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         public void SingleRegionAdapterMappingsIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 
@@ -204,8 +216,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         public void SingleItemsControlRegionAdapterIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 
@@ -220,8 +231,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         public void SingleSyncRegionContextWithHostBehaviorIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 
@@ -236,8 +246,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         public void SingleIRegionNavigationServiceIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 
@@ -249,17 +258,16 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         }
 
         [TestMethod]
-        public void SingleINavigationTargetHandlerIsRegisteredWithContainer()
+        public void SingleIRegionNavigationContentLoaderIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 
             SetupServiceLocator(container);
 
-            var exportedValue = container.GetExportedValue<INavigationTargetHandler>();
+            var exportedValue = container.GetExportedValue<IRegionNavigationContentLoader>();
 
             Assert.IsNotNull(exportedValue);
         }
@@ -268,8 +276,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         public void SingleRegionManagerRegistrationBehaviorIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 
@@ -284,8 +291,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         public void SingleIModuleManagerIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 
@@ -306,8 +312,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         public void SingleDelayedRegionCreationBehaviorIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 
@@ -322,8 +327,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         public void SingleAutoPopulateRegionBehaviorIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 
@@ -333,12 +337,12 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
 
             Assert.IsNotNull(exportedValue);
         }
+
         [TestMethod]
         public void SingleRegionActiveAwareBehaviorIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 
@@ -354,8 +358,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         public void SingleMefFileModuleTypeLoaderIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 
@@ -372,8 +375,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         public void SingleIRegionBehaviorFactoryIsRegisteredWithContainer()
         {
             AggregateCatalog catalog = new AggregateCatalog();
-            var agent = new DefaultPrismServiceRegistrar();
-            var newCatalog = agent.RegisterRequiredPrismServicesIfMissing(catalog);
+            var newCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(catalog);
 
             CompositionContainer container = new CompositionContainer(newCatalog);
 

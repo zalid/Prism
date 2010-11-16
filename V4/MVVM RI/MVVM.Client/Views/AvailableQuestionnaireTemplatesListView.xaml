@@ -8,18 +8,9 @@
     xmlns:vm="clr-namespace:MVVM.Client.ViewModels"
     xmlns:model="clr-namespace:MVVM.Questionnaires.Model;assembly=MVVM.Questionnaires"
     xmlns:views="clr-namespace:MVVM.Client.Views"
-    xmlns:Behaviors="clr-namespace:MVVM.Client.Infrastructure.Behaviors"
-    mc:Ignorable="d"
-    d:DesignHeight="300" d:DesignWidth="400">
-
-    <d:DesignProperties.DataContext>
-        <vm:AvailableQuestionnaireTemplatesListViewModel>
-            <vm:AvailableQuestionnaireTemplatesListViewModel.QuestionnaireTemplates>
-                <model:QuestionnaireTemplate Title="Questionnaire1" />
-                <model:QuestionnaireTemplate Title="Questionnaire2 "/>
-            </vm:AvailableQuestionnaireTemplatesListViewModel.QuestionnaireTemplates>
-        </vm:AvailableQuestionnaireTemplatesListViewModel>
-    </d:DesignProperties.DataContext>
+    xmlns:Behaviors="clr-namespace:MVVM.Client.Infrastructure.Behaviors" xmlns:GuidanceTools="clr-namespace:Microsoft.Practices.Prism.GuidanceTools;assembly=Microsoft.Practices.Prism.GuidanceTools" mc:Ignorable="d"
+    d:DesignHeight="300" d:DesignWidth="400" 
+    d:DataContext="{d:DesignData /SampleData/AvailableQuestionnaireTemplatesListViewModelSampleData.xaml}">
 
     <Border BorderBrush="{StaticResource PrimaryBrush}" BorderThickness="2" Margin="2,2,2,10">
         <Grid x:Name="LayoutRoot" Background="White">
@@ -61,21 +52,13 @@
                                     CommandParameter="{Binding}">
                                     Take Survey
                                 </Button>
-                                <ToggleButton Grid.Column="2" Style="{StaticResource InfoTipToggleButtonStyle}">
-                                    <i:Interaction.Behaviors>
-                                        <Behaviors:ToggleInfoTipBehavior >
-                                            <Behaviors:ToggleInfoTipBehavior.ContentTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel MaxWidth="400">
-                                                        <TextBlock TextWrapping="Wrap">This button binds the command provided by the AvailableQuestionnaireTemplatesListViewModel from the
+                                <GuidanceTools:InfoTipToggleButton Grid.Column="2">
+                                    <StackPanel MaxWidth="400">
+                                        <TextBlock TextWrapping="Wrap">This button binds the command provided by the AvailableQuestionnaireTemplatesListViewModel from the
                                 DataTemplate by binding through the DataContext of an element outside the DataTemplate,
                                 while binding to the local data context for the command parameter.</TextBlock>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </Behaviors:ToggleInfoTipBehavior.ContentTemplate>
-                                        </Behaviors:ToggleInfoTipBehavior>
-                                    </i:Interaction.Behaviors>
-                                </ToggleButton>                               
+                                    </StackPanel>
+                                </GuidanceTools:InfoTipToggleButton>
                             </Grid>
                         </Border>
                     </DataTemplate>

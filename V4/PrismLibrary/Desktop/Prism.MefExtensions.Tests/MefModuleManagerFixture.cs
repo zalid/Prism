@@ -16,9 +16,6 @@
 //===================================================================================
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.Reflection;
 using Microsoft.Practices.Prism.Logging;
 using Microsoft.Practices.Prism.MefExtensions.Modularity;
 using Microsoft.Practices.Prism.Modularity;
@@ -27,8 +24,6 @@ using Moq;
 
 namespace Microsoft.Practices.Prism.MefExtensions.Tests
 {
-    
-
     [TestClass]
     public partial class MefModuleManagerFixture
     {
@@ -46,7 +41,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         {
             TestableMefModuleManager moduleManager = new TestableMefModuleManager
                                                          {
-                                                             Modules = (IEnumerable<Lazy<IModule, IModuleExport>>) new List<Lazy<IModule,  IModuleExport>>()
+                                                             Modules = (IEnumerable<Lazy<IModule, IModuleExport>>)new List<Lazy<IModule, IModuleExport>>()
                                                          };
 
             bool result = moduleManager.CallModuleNeedsRetrieval(new ModuleInfo("name", "type"));
@@ -79,7 +74,86 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
 
             Assert.IsFalse(result);
         }
-                
+
+        [TestMethod]
+        public void DownloadCompletedRaisedForImportedModulesInCatalog()
+        {
+            var mockModuleInitializer = new Mock<IModuleInitializer>();
+            var modules = new List<ModuleInfo>();
+
+            var mockModuleCatalog = new Mock<IModuleCatalog>();
+            mockModuleCatalog.Setup(x => x.Modules).Returns(modules);
+            mockModuleCatalog
+                .Setup(x => x.AddModule(It.IsAny<ModuleInfo>()))
+                .Callback<ModuleInfo>(modules.Add);
+
+            var mockLogger = new Mock<ILoggerFacade>();
+
+            List<ModuleInfo> modulesCompleted = new List<ModuleInfo>();
+            var moduleManager = new TestableMefModuleManager(mockModuleInitializer.Object, mockModuleCatalog.Object, mockLogger.Object)
+                                    {
+                                        Modules =
+                                            new List<Lazy<IModule, IModuleExport>>()
+                                                {
+                                                    new Lazy<IModule, IModuleExport>(() => new TestModule(),
+                                                                                     new TestModuleMetadata())
+                                                }
+                                    };
+
+            moduleManager.LoadModuleCompleted += (o, e) =>
+                                                     {
+                                                         modulesCompleted.Add(e.ModuleInfo);
+                                                     };
+
+            moduleManager.OnImportsSatisfied();
+
+            Assert.AreEqual(1, modulesCompleted.Count);
+        }
+
+        [TestMethod]
+        public void DownloadCompletedNotRaisedForOnDemandImportedModules()
+        {
+            var mockModuleInitializer = new Mock<IModuleInitializer>();
+            var modules = new List<ModuleInfo>();
+
+            var mockModuleCatalog = new Mock<IModuleCatalog>();
+            mockModuleCatalog.Setup(x => x.Modules).Returns(modules);
+            mockModuleCatalog
+                .Setup(x => x.AddModule(It.IsAny<ModuleInfo>()))
+                .Callback<ModuleInfo>(modules.Add);
+
+            var mockLogger = new Mock<ILoggerFacade>();
+
+            List<ModuleInfo> modulesCompleted = new List<ModuleInfo>();
+            var moduleManager = new TestableMefModuleManager(mockModuleInitializer.Object, mockModuleCatalog.Object, mockLogger.Object)
+            {
+                Modules =
+                    new List<Lazy<IModule, IModuleExport>>()
+                                                {
+                                                    new Lazy<IModule, IModuleExport>(() => new TestModule(),
+                                                                                     new TestModuleMetadata()
+                                                                                         {
+                                                                                             InitializationMode = InitializationMode.OnDemand
+                                                                                         }),
+                                                    new Lazy<IModule, IModuleExport>(() => new TestModule(),
+                                                                                        new TestModuleMetadata()
+                                                                                            {
+                                                                                                ModuleName = "WhenAvailableModule"
+                                                                                            })
+                                                }
+            };
+
+            moduleManager.LoadModuleCompleted += (o, e) =>
+            {
+                modulesCompleted.Add(e.ModuleInfo);
+            };
+
+            moduleManager.OnImportsSatisfied();
+
+            Assert.AreEqual(1, modulesCompleted.Count);
+            Assert.AreEqual("WhenAvailableModule", modulesCompleted[0].ModuleName);
+        }
+
         public class TestModule : IModule
         {
             public void Initialize()
@@ -90,31 +164,32 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
 
         public class TestModuleMetadata : IModuleExport
         {
-            public string ModuleName
+            public TestModuleMetadata()
             {
-                get { return "TestModule"; }
+                this.ModuleName = "TestModule";
+                this.ModuleType = typeof(TestModule);
+                this.InitializationMode = InitializationMode.WhenAvailable;
+                this.DependsOnModuleNames = null;
             }
 
-            public Type ModuleType
-            {
-                get { return typeof(TestModule); }
-            }
+            public string ModuleName { get; set; }
 
-            public InitializationMode InitializationMode
-            {
-                get { return InitializationMode.WhenAvailable; }
-            }
+            public Type ModuleType { get; set; }
 
-            public string[] DependsOnModuleNames
-            {
-                get { return null; }
-            }
+            public InitializationMode InitializationMode { get; set; }
+
+            public string[] DependsOnModuleNames { get; set; }
         }
 
         internal class TestableMefModuleManager : MefModuleManager
         {
             public TestableMefModuleManager()
-                : base(new Mock<IModuleInitializer>().Object, new Mock<IModuleCatalog>().Object, new Mock<ILoggerFacade>().Object)
+                : this(new Mock<IModuleInitializer>().Object, new Mock<IModuleCatalog>().Object, new Mock<ILoggerFacade>().Object)
+            {
+            }
+
+            public TestableMefModuleManager(IModuleInitializer moduleInitializer, IModuleCatalog moduleCatalog, ILoggerFacade loggerFacade)
+                : base(moduleInitializer, moduleCatalog, loggerFacade)
             {
             }
 

@@ -32,7 +32,7 @@ namespace Microsoft.Practices.Prism.Modularity
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Xap")]
     public class XapModuleTypeLoader : IModuleTypeLoader
     {
-        private Dictionary<Uri, ModuleInfo> downloadingModules = new Dictionary<Uri, ModuleInfo>();
+        private Dictionary<Uri, List<ModuleInfo>> downloadingModules = new Dictionary<Uri, List<ModuleInfo>>();
         private HashSet<Uri> downloadedUris = new HashSet<Uri>();
 
         /// <summary>
@@ -104,14 +104,20 @@ namespace Microsoft.Practices.Prism.Modularity
                 {
                     this.RaiseLoadModuleCompleted(moduleInfo, null);
                 }
-                else if (!this.IsDownloading(uri))
+                else
                 {
+                    bool needToStartDownload = !this.IsDownloading(uri);
+
+                    // I record downloading for the moduleInfo even if I don't need to start a new download
                     this.RecordDownloading(uri, moduleInfo);
 
-                    IFileDownloader downloader = this.CreateDownloader();
-                    downloader.DownloadProgressChanged += this.IFileDownloader_DownloadProgressChanged;
-                    downloader.DownloadCompleted += this.IFileDownloader_DownloadCompleted;
-                    downloader.DownloadAsync(uri, uri);
+                    if (needToStartDownload)
+                    {
+                        IFileDownloader downloader = this.CreateDownloader();
+                        downloader.DownloadProgressChanged += this.IFileDownloader_DownloadProgressChanged;
+                        downloader.DownloadCompleted += this.IFileDownloader_DownloadCompleted;
+                        downloader.DownloadAsync(uri, uri);
+                    }
                 }
             }
             catch (Exception ex)
@@ -145,8 +151,12 @@ namespace Microsoft.Practices.Prism.Modularity
         private void HandleModuleDownloadProgressChanged(DownloadProgressChangedEventArgs e)
         {
             Uri uri = (Uri)e.UserState;
-            ModuleInfo moduleInfo = this.GetDownloadingModule(uri);
-            this.RaiseModuleDownloadProgressChanged(new ModuleDownloadProgressChangedEventArgs(moduleInfo, e.BytesReceived, e.TotalBytesToReceive));
+            List<ModuleInfo> moduleInfos = this.GetDownloadingModules(uri);
+
+            foreach (ModuleInfo moduleInfo in moduleInfos)
+            {
+                this.RaiseModuleDownloadProgressChanged(new ModuleDownloadProgressChangedEventArgs(moduleInfo, e.BytesReceived, e.TotalBytesToReceive));
+            }
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
@@ -173,7 +183,7 @@ namespace Microsoft.Practices.Prism.Modularity
         private void HandleModuleDownloaded(DownloadCompletedEventArgs e)
         {
             Uri uri = (Uri)e.UserState;
-            ModuleInfo moduleInfo = this.GetDownloadingModule(uri);
+            List<ModuleInfo> moduleInfos = this.GetDownloadingModules(uri);
 
             Exception error = e.Error;
             if (error == null)
@@ -202,7 +212,10 @@ namespace Microsoft.Practices.Prism.Modularity
                 }
             }
 
-            this.RaiseLoadModuleCompleted(moduleInfo, error);
+            foreach (ModuleInfo moduleInfo in moduleInfos)
+            {
+                this.RaiseLoadModuleCompleted(moduleInfo, error);
+            }
         }
 
         private bool IsDownloading(Uri uri)
@@ -217,25 +230,32 @@ namespace Microsoft.Practices.Prism.Modularity
         {
             lock (this.downloadingModules)
             {
-                if (!this.downloadingModules.ContainsKey(uri))
+                List<ModuleInfo> moduleInfos;
+                if (!this.downloadingModules.TryGetValue(uri, out moduleInfos))
                 {
-                    this.downloadingModules.Add(uri, moduleInfo);
+                    moduleInfos = new List<ModuleInfo>();
+                    this.downloadingModules.Add(uri, moduleInfos);
+                }
+
+                if (!moduleInfos.Contains(moduleInfo))
+                {
+                    moduleInfos.Add(moduleInfo);
                 }
             }
         }
 
-        private ModuleInfo GetDownloadingModule(Uri uri)
+        private List<ModuleInfo> GetDownloadingModules(Uri uri)
         {
             lock (this.downloadingModules)
             {
-                return this.downloadingModules[uri];
+                return new List<ModuleInfo>(this.downloadingModules[uri]);
             }
         }
 
         private void RecordDownloadComplete(Uri uri)
         {
             lock (this.downloadingModules)
-            {
+            {                
                 if (!this.downloadingModules.ContainsKey(uri))
                 {
                     this.downloadingModules.Remove(uri);

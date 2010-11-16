@@ -25,7 +25,7 @@ namespace Microsoft.Practices.Prism.Interactivity.InteractionRequest
     /// The standard <see cref="EventTrigger"/> class can be used instead, as long as the 'Raised' event 
     /// name is specified.
     /// </remarks>
-    public class InteractionRequestTrigger : EventTriggerBase<IInteractionRequest>
+    public class InteractionRequestTrigger : EventTrigger
     {
         /// <summary>
         /// Specifies the name of the Event this EventTriggerBase is listening for.

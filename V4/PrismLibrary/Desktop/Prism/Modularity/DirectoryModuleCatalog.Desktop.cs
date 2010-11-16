@@ -139,14 +139,31 @@ namespace Microsoft.Practices.Prism.Modularity
 
             private static IEnumerable<ModuleInfo> GetNotAllreadyLoadedModuleInfos(DirectoryInfo directory, Type IModuleType)
             {
+                List<FileInfo> validAssemblies = new List<FileInfo>();
                 Assembly[] alreadyLoadedAssemblies = AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies();
-                return directory.GetFiles("*.dll")
+
+                var fileInfos = directory.GetFiles("*.dll")
                     .Where(file => alreadyLoadedAssemblies
                                        .FirstOrDefault(
                                        assembly =>
                                        String.Compare(Path.GetFileName(assembly.Location), file.Name,
-                                                      StringComparison.OrdinalIgnoreCase) == 0) == null)
-                    .SelectMany(file => Assembly.ReflectionOnlyLoadFrom(file.FullName)
+                                                      StringComparison.OrdinalIgnoreCase) == 0) == null);
+                
+                foreach (FileInfo fileInfo in fileInfos)
+                {
+                    Assembly assembly = null;
+                    try
+                    {
+                        assembly = Assembly.ReflectionOnlyLoadFrom(fileInfo.FullName);
+                        validAssemblies.Add(fileInfo);
+                    }
+                    catch (BadImageFormatException)
+                    {
+                        // skip non-.NET Dlls
+                    }
+                }
+
+                return validAssemblies.SelectMany(file => Assembly.ReflectionOnlyLoadFrom(file.FullName)
                                             .GetExportedTypes()
                                             .Where(IModuleType.IsAssignableFrom)
                                             .Where(t => t != IModuleType)

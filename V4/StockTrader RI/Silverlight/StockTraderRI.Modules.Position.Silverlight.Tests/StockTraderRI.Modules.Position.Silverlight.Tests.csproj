@@ -94,6 +94,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\LIB\Silverlight\UnitTestFramework\Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.dll</HintPath>
     </Reference>
+    <Reference Include="Moq.Silverlight">
+      <HintPath>..\..\..\LIB\Silverlight\Moq\Moq.Silverlight.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
@@ -102,7 +106,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+      <HintPath>..\..\..\Bin\Silverlight\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -114,9 +118,6 @@
     </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position.Tests\Mocks\MockAccountPositionService.cs">
       <Link>Mocks\MockAccountPositionService.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position.Tests\Mocks\MockEventAggregator.cs">
-      <Link>Mocks\MockEventAggregator.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position.Tests\Mocks\MockLogger.cs">
       <Link>Mocks\MockLogger.cs</Link>
@@ -130,17 +131,8 @@
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position.Tests\Mocks\MockOrderDetailsPresentationModel.cs">
       <Link>Mocks\MockOrderDetailsPresentationModel.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position.Tests\Mocks\MockOrderDetailsView.cs">
-      <Link>Mocks\MockOrderDetailsView.cs</Link>
-    </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position.Tests\Mocks\MockOrdersController.cs">
       <Link>Mocks\MockOrdersController.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position.Tests\Mocks\MockOrdersView.cs">
-      <Link>Mocks\MockOrdersView.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position.Tests\Mocks\MockPositionSummaryView.cs">
-      <Link>Mocks\MockPositionSummaryView.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position.Tests\Mocks\MockRegionManager.cs">
       <Link>Mocks\MockRegionManager.cs</Link>
@@ -153,12 +145,6 @@
     </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position.Tests\Orders\OrderDetailsPresenterFixture.cs">
       <Link>Orders\OrderDetailsPresenterFixture.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position.Tests\Orders\OrdersPresenterFixture.cs">
-      <Link>Orders\OrdersPresenterFixture.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position.Tests\PositionModuleFixture.cs">
-      <Link>PositionModuleFixture.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position.Tests\PositionSummary\ObservablePositionFixture.cs">
       <Link>PositionSummary\ObservablePositionFixture.cs</Link>

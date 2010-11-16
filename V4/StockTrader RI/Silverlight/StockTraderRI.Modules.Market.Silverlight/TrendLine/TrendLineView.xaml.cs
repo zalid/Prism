@@ -14,28 +14,37 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Controls;
-using System.Windows.Controls.DataVisualization;
-using StockTraderRI.Infrastructure.Interfaces;
-using StockTraderRI.Infrastructure.Models;
+using StockTraderRI.Infrastructure;
 
 namespace StockTraderRI.Modules.Market.TrendLine
 {
-    public partial class TrendLineView : UserControl, ITrendLineView
+    [ViewExport(RegionName = RegionNames.ResearchRegion)]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public partial class TrendLineView : UserControl
     {
         public TrendLineView()
         {
             InitializeComponent();
         }
 
-        #region Implementation of ITrendLineView
-
-        public ITrendLinePresentationModel Model
+        /// <summary>
+        /// Sets the ViewModel.
+        /// </summary>
+        /// <remarks>
+        /// This set-only property is annotated with the <see cref="ImportAttribute"/> so it is injected by MEF with
+        /// the appropriate view model.
+        /// </remarks>
+        [Import]
+        [SuppressMessage("Microsoft.Design", "CA1044:PropertiesShouldNotBeWriteOnly", Justification = "Needs to be a property to be composed by MEF")]
+        public TrendLineViewModel ViewModel
         {
-            get { return this.DataContext as ITrendLinePresentationModel; }
-            set { this.DataContext = value; }
+            set
+            {
+                this.DataContext = value;
+            }
         }
-
-        #endregion
     }
 }

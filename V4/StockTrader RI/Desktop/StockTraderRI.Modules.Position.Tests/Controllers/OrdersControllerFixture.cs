@@ -15,20 +15,18 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System;
-using System.Collections.Generic;
 using System.Windows.Input;
 using Microsoft.Practices.Prism.Regions;
-using Microsoft.Practices.Unity;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using StockTraderRI.Infrastructure;
+using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Modules.Position.Controllers;
 using StockTraderRI.Modules.Position.Interfaces;
 using StockTraderRI.Modules.Position.Models;
 using StockTraderRI.Modules.Position.Orders;
 using StockTraderRI.Modules.Position.Tests.Mocks;
-using StockTraderRI.Modules.Position.Tests.Orders;
-using StockTraderRI.Infrastructure.Interfaces;
-using Microsoft.Practices.Prism.TestSupport;
 
 namespace StockTraderRI.Modules.Position.Tests.Controllers
 {
@@ -50,243 +48,443 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
         [TestMethod]
         public void BuyAndSellCommandsInvokeController()
         {
-            var container = new MockUnityContainer();
-            container.ResolveBag.Add(typeof(IOrdersPresentationModel), new MockOrdersPresentationModel());
-            container.ResolveBag.Add(typeof(IOrderCompositePresentationModel), new MockOrderCompositePresentationModel());
-            
-            var controller = new TestableOrdersController(regionManager, container, new MockStockTraderRICommandProxy(), null);
-            controller.BuyCommand.Execute("STOCK01");
+            try
+            {
+                Mock<IOrdersViewModel> mockOrdersViewModel = new Mock<IOrdersViewModel>();
+                Mock<ServiceLocatorImplBase> mockServiceLocator = new Mock<ServiceLocatorImplBase>();
 
-            Assert.AreEqual("STOCK01", controller.StartOrderArgumentTickerSymbol);
-            Assert.AreEqual(TransactionType.Buy, controller.StartOrderArgumentTransactionType);
+                var buyOrderCompositePresenter = new MockOrderCompositePresentationModel();
+                var sellOrderCompositePresenter = new MockOrderCompositePresentationModel();
 
-            // Set new CompositePresentationModel to simulate resolution of new instance.
-            container.ResolveBag[typeof (IOrderCompositePresentationModel)] = new MockOrderCompositePresentationModel();
-            controller.SellCommand.Execute("STOCK02");
+                var commandProxy = new MockStockTraderRICommandProxy();
 
-            Assert.AreEqual("STOCK02", controller.StartOrderArgumentTickerSymbol);
-            Assert.AreEqual(TransactionType.Sell, controller.StartOrderArgumentTransactionType);
+                IOrdersViewModel orderCompositePresentationModel = mockOrdersViewModel.Object;
+
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersView>()).Returns(new Mock<IOrdersView>().Object);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersViewModel>()).Returns(orderCompositePresentationModel);
+                ServiceLocator.SetLocatorProvider(() => mockServiceLocator.Object);
+
+                var controller = new TestableOrdersController(regionManager, commandProxy, null);
+
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersViewModel>()).Returns(orderCompositePresentationModel);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(buyOrderCompositePresenter);
+                controller.BuyCommand.Execute("STOCK01");
+
+                Assert.AreEqual("STOCK01", controller.StartOrderArgumentTickerSymbol);
+                Assert.AreEqual(TransactionType.Buy, controller.StartOrderArgumentTransactionType);
+
+                // Set new CompositePresentationModel to simulate resolution of new instance.
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(sellOrderCompositePresenter);
+                controller.SellCommand.Execute("STOCK02");
+
+                Assert.AreEqual("STOCK02", controller.StartOrderArgumentTickerSymbol);
+                Assert.AreEqual(TransactionType.Sell, controller.StartOrderArgumentTransactionType);
+            }
+            finally
+            {
+                ServiceLocator.SetLocatorProvider(() => null);
+            }
         }
 
         [TestMethod]
         public void ControllerAddsViewIfNotPresent()
         {
-            var container = new MockUnityContainer();
-            container.ResolveBag.Add(typeof(IOrdersPresentationModel), new MockOrdersPresentationModel());
-            container.ResolveBag.Add(typeof(IOrderCompositePresentationModel), new MockOrderCompositePresentationModel());
-            var collapsibleRegion = (MockRegion) regionManager.Regions["ActionRegion"];
+            try
+            {
+                Mock<IOrdersViewModel> mockOrdersViewModel = new Mock<IOrdersViewModel>();
+                Mock<ServiceLocatorImplBase> mockServiceLocator = new Mock<ServiceLocatorImplBase>();
 
-            var controller = new TestableOrdersController(regionManager, container, new MockStockTraderRICommandProxy(), null);
+                var orderCompositePresenter = new MockOrderCompositePresentationModel();
+                var commandProxy = new MockStockTraderRICommandProxy();
 
-            Assert.AreEqual<int>(0, collapsibleRegion.AddedViews.Count);
-            controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
-            Assert.AreEqual<int>(1, collapsibleRegion.AddedViews.Count);
+                IOrdersViewModel orderCompositePresentationModel = mockOrdersViewModel.Object;
+
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersView>()).Returns(new Mock<IOrdersView>().Object);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersViewModel>()).Returns(orderCompositePresentationModel);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(orderCompositePresenter);
+                ServiceLocator.SetLocatorProvider(() => mockServiceLocator.Object);
+
+                var controller = new TestableOrdersController(regionManager, commandProxy, null);
+
+                var collapsibleRegion = (MockRegion)regionManager.Regions["ActionRegion"];
+
+                Assert.AreEqual<int>(0, collapsibleRegion.AddedViews.Count);
+                controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
+                Assert.AreEqual<int>(1, collapsibleRegion.AddedViews.Count);
+
+            }
+            finally
+            {
+                ServiceLocator.SetLocatorProvider(() => null);
+            }
         }
 
         [TestMethod]
         public void ControllerAddsANewOrderOnStartOrder()
         {
-            var container = new MockUnityContainer();
-            container.ResolveBag.Add(typeof(IOrdersPresentationModel), new MockOrdersPresentationModel());
-            container.ResolveBag.Add(typeof(IOrderCompositePresentationModel), new MockOrderCompositePresentationModel());
+            try
+            {
+                Mock<IOrdersViewModel> mockOrdersViewModel = new Mock<IOrdersViewModel>();
+                Mock<ServiceLocatorImplBase> mockServiceLocator = new Mock<ServiceLocatorImplBase>();
 
-            var controller = new TestableOrdersController(regionManager, container, new MockStockTraderRICommandProxy(), null);
+                var orderCompositePresenter = new MockOrderCompositePresentationModel();
+                var commandProxy = new MockStockTraderRICommandProxy();
 
-            Assert.AreEqual<int>(0, ordersRegion.AddedViews.Count);
-            controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
-            Assert.AreEqual<int>(1, ordersRegion.AddedViews.Count);
+                IOrdersViewModel orderCompositePresentationModel = mockOrdersViewModel.Object;
+
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersView>()).Returns(new Mock<IOrdersView>().Object);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersViewModel>()).Returns(orderCompositePresentationModel);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(orderCompositePresenter);
+                ServiceLocator.SetLocatorProvider(() => mockServiceLocator.Object);
+
+                var controller = new TestableOrdersController(regionManager, commandProxy, null);
+
+                Assert.AreEqual<int>(0, ordersRegion.AddedViews.Count);
+                controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
+                Assert.AreEqual<int>(1, ordersRegion.AddedViews.Count);
+            }
+            finally
+            {
+                ServiceLocator.SetLocatorProvider(() => null);
+            }
         }
 
         [TestMethod]
         public void NewOrderIsShownOrder()
         {
-            var container = new MockUnityContainer();
-            container.ResolveBag.Add(typeof(IOrdersPresentationModel), new MockOrdersPresentationModel());
-            container.ResolveBag.Add(typeof(IOrderCompositePresentationModel), new MockOrderCompositePresentationModel());
+            try
+            {
+                Mock<IOrdersViewModel> mockOrdersViewModel = new Mock<IOrdersViewModel>();
+                Mock<ServiceLocatorImplBase> mockServiceLocator = new Mock<ServiceLocatorImplBase>();
 
-            var controller = new TestableOrdersController(regionManager, container, new MockStockTraderRICommandProxy(), null);
+                var orderCompositePresenter = new MockOrderCompositePresentationModel();
+                var commandProxy = new MockStockTraderRICommandProxy();
 
-            Assert.AreEqual<int>(0, ordersRegion.AddedViews.Count);
-            controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
-            Assert.AreSame(ordersRegion.SelectedItem, ordersRegion.AddedViews[0]);
+                IOrdersViewModel orderCompositePresentationModel = mockOrdersViewModel.Object;
+
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersView>()).Returns(new Mock<IOrdersView>().Object);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersViewModel>()).Returns(orderCompositePresentationModel);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(orderCompositePresenter);
+                ServiceLocator.SetLocatorProvider(() => mockServiceLocator.Object);
+
+                var controller = new TestableOrdersController(regionManager, commandProxy, null);
+
+                Assert.AreEqual<int>(0, ordersRegion.AddedViews.Count);
+                controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
+                Assert.AreSame(ordersRegion.SelectedItem, ordersRegion.AddedViews[0]);
+            }
+            finally
+            {
+                ServiceLocator.SetLocatorProvider(() => null);
+            }
         }
 
         [TestMethod]
         public void StartOrderHooksInstanceCommandsToGlobalSaveAllAndCancelAllCommands()
         {
-            var container = new MockUnityContainer();
-            var orderCompositePresenter = new MockOrderCompositePresentationModel();
-            container.ResolveBag.Add(typeof(IOrdersPresentationModel), new MockOrdersPresentationModel());
-            container.ResolveBag.Add(typeof(IOrderCompositePresentationModel), orderCompositePresenter);
+            try
+            {
 
-            var commandProxy = new MockStockTraderRICommandProxy();
+                Mock<IOrdersViewModel> mockOrdersViewModel = new Mock<IOrdersViewModel>();
+                Mock<ServiceLocatorImplBase> mockServiceLocator = new Mock<ServiceLocatorImplBase>();
 
-            var controller = new TestableOrdersController(regionManager, container, commandProxy, null);
-            controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
+                var orderCompositePresenter = new MockOrderCompositePresentationModel();
+                var commandProxy = new MockStockTraderRICommandProxy();
 
-            Assert.IsFalse(orderCompositePresenter.MockSubmitCommand.ExecuteCalled);
-            commandProxy.SubmitAllOrdersCommand.Execute(null);
-            Assert.IsTrue(orderCompositePresenter.MockSubmitCommand.ExecuteCalled);
+                IOrdersViewModel orderCompositePresentationModel = mockOrdersViewModel.Object;
 
-            Assert.IsFalse(orderCompositePresenter.MockCancelCommand.ExecuteCalled);
-            commandProxy.CancelAllOrdersCommand.Execute(null);
-            Assert.IsTrue(orderCompositePresenter.MockCancelCommand.ExecuteCalled);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersView>()).Returns(new Mock<IOrdersView>().Object);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersViewModel>()).Returns(orderCompositePresentationModel);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(orderCompositePresenter);
+                ServiceLocator.SetLocatorProvider(() => mockServiceLocator.Object);
+
+                var controller = new TestableOrdersController(regionManager, commandProxy, null);
+                controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
+
+                Assert.IsFalse(orderCompositePresenter.MockSubmitCommand.ExecuteCalled);
+                commandProxy.SubmitAllOrdersCommand.Execute(null);
+                Assert.IsTrue(orderCompositePresenter.MockSubmitCommand.ExecuteCalled);
+
+                Assert.IsFalse(orderCompositePresenter.MockCancelCommand.ExecuteCalled);
+                commandProxy.CancelAllOrdersCommand.Execute(null);
+                Assert.IsTrue(orderCompositePresenter.MockCancelCommand.ExecuteCalled);
+            }
+            finally
+            {
+                ServiceLocator.SetLocatorProvider(() => null);
+            }
         }
-      
+
         [TestMethod]
         public void StartOrderHooksInstanceCommandsToGlobalSaveAndCancelCommands()
         {
-            var container = new MockUnityContainer();
-            var orderCompositePresenter = new MockOrderCompositePresentationModel();
-            container.ResolveBag.Add(typeof(IOrdersPresentationModel), new MockOrdersPresentationModel());
-            container.ResolveBag.Add(typeof(IOrderCompositePresentationModel), orderCompositePresenter);
+            try
+            {
 
-            var commandProxy = new MockStockTraderRICommandProxy();
+                Mock<IOrdersViewModel> mockOrdersViewModel = new Mock<IOrdersViewModel>();
+                Mock<ServiceLocatorImplBase> mockServiceLocator = new Mock<ServiceLocatorImplBase>();
 
-            var controller = new TestableOrdersController(regionManager, container, commandProxy, null);
-            controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
+                var orderCompositePresenter = new MockOrderCompositePresentationModel();
+                var commandProxy = new MockStockTraderRICommandProxy();
 
-            Assert.IsFalse(orderCompositePresenter.MockSubmitCommand.ExecuteCalled);
-            commandProxy.SubmitOrderCommand.Execute(null);
-            Assert.IsTrue(orderCompositePresenter.MockSubmitCommand.ExecuteCalled);
+                IOrdersViewModel orderCompositePresentationModel = mockOrdersViewModel.Object;
 
-            Assert.IsFalse(orderCompositePresenter.MockCancelCommand.ExecuteCalled);
-            commandProxy.CancelOrderCommand.Execute(null);
-            Assert.IsTrue(orderCompositePresenter.MockCancelCommand.ExecuteCalled);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersView>()).Returns(new Mock<IOrdersView>().Object);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersViewModel>()).Returns(orderCompositePresentationModel);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(orderCompositePresenter);
+                ServiceLocator.SetLocatorProvider(() => mockServiceLocator.Object);
+
+                var controller = new TestableOrdersController(regionManager, commandProxy, null);
+                controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
+
+                Assert.IsFalse(orderCompositePresenter.MockSubmitCommand.ExecuteCalled);
+                commandProxy.SubmitOrderCommand.Execute(null);
+                Assert.IsTrue(orderCompositePresenter.MockSubmitCommand.ExecuteCalled);
+
+                Assert.IsFalse(orderCompositePresenter.MockCancelCommand.ExecuteCalled);
+                commandProxy.CancelOrderCommand.Execute(null);
+                Assert.IsTrue(orderCompositePresenter.MockCancelCommand.ExecuteCalled);
+            }
+            finally
+            {
+                ServiceLocator.SetLocatorProvider(() => null);
+            }
         }
 
         [TestMethod]
         public void OnCloseViewRequestedTheControllerUnhooksGlobalCommands()
         {
-            var container = new MockUnityContainer();
-            var orderCompositePresenter = new MockOrderCompositePresentationModel();
-            container.ResolveBag.Add(typeof(IOrdersPresentationModel), new MockOrdersPresentationModel());
-            container.ResolveBag.Add(typeof(IOrderCompositePresentationModel), orderCompositePresenter);
-            var commandProxy = new MockStockTraderRICommandProxy();
+            try
+            {
+                Mock<IOrdersViewModel> mockOrdersViewModel = new Mock<IOrdersViewModel>();
+                Mock<ServiceLocatorImplBase> mockServiceLocator = new Mock<ServiceLocatorImplBase>();
 
-            var controller = new TestableOrdersController(regionManager, container, commandProxy, null);
-            controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
+                var orderCompositePresenter = new MockOrderCompositePresentationModel();
+                var commandProxy = new MockStockTraderRICommandProxy();
 
-            Assert.AreEqual(1, ordersRegion.AddedViews.Count);
-            orderCompositePresenter.RaiseCloseViewRequested();
+                IOrdersViewModel orderCompositePresentationModel = mockOrdersViewModel.Object;
 
-            Assert.AreEqual(0, ordersRegion.AddedViews.Count);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersView>()).Returns(new Mock<IOrdersView>().Object);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersViewModel>()).Returns(orderCompositePresentationModel);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(orderCompositePresenter);
+                ServiceLocator.SetLocatorProvider(() => mockServiceLocator.Object);
 
-            commandProxy.SubmitAllOrdersCommand.Execute(null);
-            Assert.IsFalse(orderCompositePresenter.MockSubmitCommand.ExecuteCalled);
+                var controller = new TestableOrdersController(regionManager, commandProxy, null);
+                controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
 
-            commandProxy.CancelAllOrdersCommand.Execute(null);
-            Assert.IsFalse(orderCompositePresenter.MockCancelCommand.ExecuteCalled);
+                Assert.AreEqual(1, ordersRegion.AddedViews.Count);
 
-            commandProxy.SubmitOrderCommand.Execute(null);
-            Assert.IsFalse(orderCompositePresenter.MockSubmitCommand.ExecuteCalled);
+                // Act
+                orderCompositePresenter.RaiseCloseViewRequested();
 
-            commandProxy.CancelOrderCommand.Execute(null);
-            Assert.IsFalse(orderCompositePresenter.MockCancelCommand.ExecuteCalled);
+                // Verify
+                Assert.AreEqual(0, ordersRegion.AddedViews.Count);
+
+                commandProxy.SubmitAllOrdersCommand.Execute(null);
+                Assert.IsFalse(orderCompositePresenter.MockSubmitCommand.ExecuteCalled);
+
+                commandProxy.CancelAllOrdersCommand.Execute(null);
+                Assert.IsFalse(orderCompositePresenter.MockCancelCommand.ExecuteCalled);
+
+                commandProxy.SubmitOrderCommand.Execute(null);
+                Assert.IsFalse(orderCompositePresenter.MockSubmitCommand.ExecuteCalled);
+
+                commandProxy.CancelOrderCommand.Execute(null);
+                Assert.IsFalse(orderCompositePresenter.MockCancelCommand.ExecuteCalled);
+            }
+            finally
+            {
+                ServiceLocator.SetLocatorProvider(() => null);
+            }
         }
 
         [TestMethod]
         public void StartOrderCreatesCompositePMAndPassesCorrectInitInfo()
         {
-            IUnityContainer container = new UnityContainer();
-            container.RegisterType<IOrdersPresentationModel, MockOrdersPresentationModel>();
-            var presentationModel = new MockOrderCompositePresentationModel();
-            container.RegisterInstance<IOrderCompositePresentationModel>(presentationModel);
+            try
+            {
+                Mock<IOrdersViewModel> mockOrdersViewModel = new Mock<IOrdersViewModel>();
+                Mock<ServiceLocatorImplBase> mockServiceLocator = new Mock<ServiceLocatorImplBase>();
 
-            var controller = new TestableOrdersController(regionManager, container, new MockStockTraderRICommandProxy(), null);
-            controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
+                var orderCompositePresenter = new MockOrderCompositePresentationModel();
+                var commandProxy = new MockStockTraderRICommandProxy();
 
-            Assert.AreEqual("STOCK01", presentationModel.TransactionInfo.TickerSymbol);
-            Assert.AreEqual(TransactionType.Buy, presentationModel.TransactionInfo.TransactionType);
+                IOrdersViewModel orderCompositePresentationModel = mockOrdersViewModel.Object;
+
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersView>()).Returns(new Mock<IOrdersView>().Object);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersViewModel>()).Returns(orderCompositePresentationModel);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(orderCompositePresenter);
+                ServiceLocator.SetLocatorProvider(() => mockServiceLocator.Object);
+
+                var controller = new TestableOrdersController(regionManager, commandProxy, null);
+
+                controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
+
+                Assert.AreEqual("STOCK01", orderCompositePresenter.TransactionInfo.TickerSymbol);
+                Assert.AreEqual(TransactionType.Buy, orderCompositePresenter.TransactionInfo.TransactionType);
+
+            }
+            finally
+            {
+                ServiceLocator.SetLocatorProvider(() => null);
+            }
         }
 
         [TestMethod]
         public void SubmitAllInstanceCommandHookedToGlobalSubmitAllCommands()
         {
-            var container = new MockUnityContainer();
-            var orderCompositePresenter = new MockOrderCompositePresentationModel();
-            container.ResolveBag.Add(typeof(IOrdersPresentationModel), new MockOrdersPresentationModel());
-            container.ResolveBag.Add(typeof(IOrderCompositePresentationModel), orderCompositePresenter);
-            var commandProxy = new MockStockTraderRICommandProxy();
-            
-            var accountPositionService = new MockAccountPositionService();
-            accountPositionService.AddPosition("STOCK01", 10.0M, 100);
+            try
+            {
+                Mock<IOrdersViewModel> mockOrdersViewModel = new Mock<IOrdersViewModel>();
+                Mock<ServiceLocatorImplBase> mockServiceLocator = new Mock<ServiceLocatorImplBase>();
 
-            var controller = new TestableOrdersController(regionManager, container, commandProxy, accountPositionService);
-            controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
+                var orderCompositePresenter = new MockOrderCompositePresentationModel();
+                var commandProxy = new MockStockTraderRICommandProxy();
 
-            Assert.IsFalse(controller.SubmitAllCommandCalled);
-            commandProxy.SubmitAllOrdersCommand.CanExecute(null);
-            Assert.IsTrue(controller.SubmitAllCommandCalled);
+                IOrdersViewModel orderCompositePresentationModel = mockOrdersViewModel.Object;
+
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersView>()).Returns(new Mock<IOrdersView>().Object);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersViewModel>()).Returns(orderCompositePresentationModel);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(orderCompositePresenter);
+                ServiceLocator.SetLocatorProvider(() => mockServiceLocator.Object);
+
+                var accountPositionService = new MockAccountPositionService();
+                accountPositionService.AddPosition("STOCK01", 10.0M, 100);
+
+                var controller = new TestableOrdersController(regionManager, commandProxy, accountPositionService);
+                controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
+
+                Assert.IsFalse(controller.SubmitAllCommandCalled);
+                commandProxy.SubmitAllOrdersCommand.CanExecute(null);
+                Assert.IsTrue(controller.SubmitAllCommandCalled);
+
+            }
+            finally
+            {
+                ServiceLocator.SetLocatorProvider(() => null);
+            }
+
         }
 
         [TestMethod]
         public void CannotSellMoreSharesThanAreOwned()
         {
-            var container = new MockUnityContainer();
-            container.ResolveBag.Add(typeof(IOrdersPresentationModel), new MockOrdersPresentationModel());
-            var accountPositionService = new MockAccountPositionService();
-            accountPositionService.AddPosition("STOCK01", 10.0M, 100);
+            try
+            {
 
-            var controller = new TestableOrdersController(regionManager, container, new MockStockTraderRICommandProxy(), accountPositionService);
-            var buyOrder = new MockOrderCompositePresentationModel() { Shares = 100, };
+                Mock<IOrdersViewModel> mockOrdersViewModel = new Mock<IOrdersViewModel>();
+                Mock<ServiceLocatorImplBase> mockServiceLocator = new Mock<ServiceLocatorImplBase>();
 
-            container.ResolveBag.Add(typeof(IOrderCompositePresentationModel), buyOrder);
-            controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
+                var orderCompositePresenter = new MockOrderCompositePresentationModel();
+                var commandProxy = new MockStockTraderRICommandProxy();
 
-            Assert.IsTrue(controller.SubmitAllVoteOnlyCommand.CanExecute());
+                IOrdersViewModel orderCompositePresentationModel = mockOrdersViewModel.Object;
 
-            var sellOrder = new MockOrderCompositePresentationModel() { Shares = 200 };
-			container.ResolveBag[typeof(IOrderCompositePresentationModel)] = sellOrder;
-            controller.InvokeStartOrder(TransactionType.Sell, "STOCK01");
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersView>()).Returns(new Mock<IOrdersView>().Object);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersViewModel>()).Returns(orderCompositePresentationModel);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(orderCompositePresenter);
+                ServiceLocator.SetLocatorProvider(() => mockServiceLocator.Object);
 
-            //Should not be able to sell even though owned shares==100, buy==100 and sell==200
-            Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute());
+                var accountPositionService = new MockAccountPositionService();
+                accountPositionService.AddPosition("STOCK01", 10.0M, 100);
+
+                var controller = new TestableOrdersController(regionManager, commandProxy, accountPositionService);
+
+                // Act
+                var buyOrder = new MockOrderCompositePresentationModel() { Shares = 100, };
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(buyOrder);
+                controller.InvokeStartOrder(TransactionType.Buy, "STOCK01");
+                Assert.IsTrue(controller.SubmitAllVoteOnlyCommand.CanExecute());
+
+                var sellOrder = new MockOrderCompositePresentationModel() { Shares = 200 };
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(sellOrder);
+                controller.InvokeStartOrder(TransactionType.Sell, "STOCK01");
+
+                //Should not be able to sell even though owned shares==100, buy==100 and sell==200
+                Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute());
+            }
+            finally
+            {
+                ServiceLocator.SetLocatorProvider(() => null);
+            }
         }
 
         [TestMethod]
         public void CannotSellMoreSharesThanAreOwnedInDifferentOrders()
         {
-            var container = new MockUnityContainer();
-            container.ResolveBag.Add(typeof(IOrdersPresentationModel), new MockOrdersPresentationModel());
-            var accountPositionService = new MockAccountPositionService();
-            accountPositionService.AddPosition("STOCK01", 10.0M, 100);
+            try
+            {
+                Mock<IOrdersViewModel> mockOrdersViewModel = new Mock<IOrdersViewModel>();
+                Mock<ServiceLocatorImplBase> mockServiceLocator = new Mock<ServiceLocatorImplBase>();
 
-            var controller = new TestableOrdersController(regionManager, container, new MockStockTraderRICommandProxy(), accountPositionService);
-            var sellOrder1 = new MockOrderCompositePresentationModel() { Shares = 100 };
+                var orderCompositePresenter = new MockOrderCompositePresentationModel();
+                var commandProxy = new MockStockTraderRICommandProxy();
 
-            container.ResolveBag.Add(typeof(IOrderCompositePresentationModel), sellOrder1);
-            controller.InvokeStartOrder(TransactionType.Sell, "STOCK01");
+                IOrdersViewModel orderCompositePresentationModel = mockOrdersViewModel.Object;
 
-            Assert.IsTrue(controller.SubmitAllVoteOnlyCommand.CanExecute());
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersView>()).Returns(new Mock<IOrdersView>().Object);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersViewModel>()).Returns(orderCompositePresentationModel);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(orderCompositePresenter);
+                ServiceLocator.SetLocatorProvider(() => mockServiceLocator.Object);
 
-            var sellOrder2 = new MockOrderCompositePresentationModel() { Shares = 100 };
-			container.ResolveBag[typeof(IOrderCompositePresentationModel)] = sellOrder2;
-            controller.InvokeStartOrder(TransactionType.Sell, "stock01");
+                var accountPositionService = new MockAccountPositionService();
+                accountPositionService.AddPosition("STOCK01", 10.0M, 100);
 
-            Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute());
+                var controller = new TestableOrdersController(regionManager, commandProxy, accountPositionService);
+                var sellOrder1 = new MockOrderCompositePresentationModel() { Shares = 100 };
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(sellOrder1);
+
+                controller.InvokeStartOrder(TransactionType.Sell, "STOCK01");
+
+                Assert.IsTrue(controller.SubmitAllVoteOnlyCommand.CanExecute());
+
+                var sellOrder2 = new MockOrderCompositePresentationModel() { Shares = 100 };
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(sellOrder2);
+
+                controller.InvokeStartOrder(TransactionType.Sell, "stock01");
+
+                Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute());
+            }
+            finally
+            {
+                ServiceLocator.SetLocatorProvider(() => null);
+            }
         }
 
         [TestMethod]
         public void CannotSellMoreSharesThatAreNotOwned()
         {
-            var container = new MockUnityContainer();
-            container.ResolveBag.Add(typeof(IOrdersPresentationModel), new MockOrdersPresentationModel());
+            try
+            {
 
-            var controller = new TestableOrdersController(regionManager, container, new MockStockTraderRICommandProxy(), new MockAccountPositionService());
+                Mock<IOrdersViewModel> mockOrdersViewModel = new Mock<IOrdersViewModel>();
+                Mock<ServiceLocatorImplBase> mockServiceLocator = new Mock<ServiceLocatorImplBase>();
 
-            var sellOrder = new MockOrderCompositePresentationModel() { Shares = 1};
-            container.ResolveBag.Add(typeof(IOrderCompositePresentationModel), sellOrder);
+                var orderCompositePresenter = new MockOrderCompositePresentationModel() { Shares = 1 };
+                var commandProxy = new MockStockTraderRICommandProxy();
 
-            controller.InvokeStartOrder(TransactionType.Sell, "NOTOWNED");
+                IOrdersViewModel orderCompositePresentationModel = mockOrdersViewModel.Object;
 
-            Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute());
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersView>()).Returns(new Mock<IOrdersView>().Object);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersViewModel>()).Returns(orderCompositePresentationModel);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(orderCompositePresenter);
+                ServiceLocator.SetLocatorProvider(() => mockServiceLocator.Object);
+
+                var controller = new TestableOrdersController(regionManager, new MockStockTraderRICommandProxy(), new MockAccountPositionService());
+                controller.InvokeStartOrder(TransactionType.Sell, "NOTOWNED");
+
+                Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute());
+            }
+            finally
+            {
+                ServiceLocator.SetLocatorProvider(() => null);
+            }
         }
 
         [TestMethod]
         public void CannotSubmitAllWhenNothingToSubmit()
         {
-            var controller = new TestableOrdersController(new MockRegionManager(), new MockUnityContainer(), new MockStockTraderRICommandProxy(), new MockAccountPositionService());
+            var controller = new TestableOrdersController(new MockRegionManager(), new MockStockTraderRICommandProxy(), new MockAccountPositionService());
 
             Assert.IsFalse(controller.SubmitAllVoteOnlyCommand.CanExecute());
         }
@@ -294,64 +492,101 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
         [TestMethod]
         public void AfterAllOrdersSubmittedSubmitAllCommandShouldBeDisabled()
         {
-            var container = new MockUnityContainer();
-            container.ResolveBag.Add(typeof(IOrdersPresentationModel), new MockOrdersPresentationModel());
-            var commandProxy = new MockStockTraderRICommandProxy();
+            try
+            {
+                Mock<IOrdersView> mockOrdersView = new Mock<IOrdersView>();
+                Mock<IOrdersViewModel> mockOrdersViewModel = new Mock<IOrdersViewModel>();
+                Mock<ServiceLocatorImplBase> mockServiceLocator = new Mock<ServiceLocatorImplBase>();
 
-            var controller = new TestableOrdersController(regionManager, container, commandProxy, new MockAccountPositionService());
+                var orderCompositePresenter = new MockOrderCompositePresentationModel();
+                var commandProxy = new MockStockTraderRICommandProxy();
 
-            var buyOrder = new MockOrderCompositePresentationModel() { Shares = 100 };
-			container.ResolveBag[typeof(IOrderCompositePresentationModel)] = buyOrder;
-            controller.InvokeStartOrder(TransactionType.Buy, "STOCK1");
+                IOrdersView orderCompositeView = mockOrdersView.Object;
+                IOrdersViewModel orderCompositePresentationModel = mockOrdersViewModel.Object;
 
-            bool canExecuteChangedCalled = false;
-            bool canExecuteResult = false;
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersView>()).Returns(orderCompositeView);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersViewModel>()).Returns(orderCompositePresentationModel);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(orderCompositePresenter);
+                ServiceLocator.SetLocatorProvider(() => mockServiceLocator.Object);
 
-            commandProxy.SubmitAllOrdersCommand.CanExecuteChanged += delegate
-                                                                 {
-                                                                     canExecuteChangedCalled = true;
-                                                                     canExecuteResult =
-                                                                         controller.SubmitAllVoteOnlyCommand.CanExecute();
-                                                                 };
-            buyOrder.RaiseCloseViewRequested();
+                var controller = new TestableOrdersController(regionManager, commandProxy, new MockAccountPositionService());
 
-            Assert.IsTrue(canExecuteChangedCalled);
-            Assert.IsFalse(canExecuteResult);
+                var buyOrder = new MockOrderCompositePresentationModel() { Shares = 100 };
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(buyOrder);
+
+                controller.InvokeStartOrder(TransactionType.Buy, "STOCK1");
+
+                bool canExecuteChangedCalled = false;
+                bool canExecuteResult = false;
+
+                commandProxy.SubmitAllOrdersCommand.CanExecuteChanged += delegate
+                {
+                    canExecuteChangedCalled = true;
+                    canExecuteResult =
+                        controller.SubmitAllVoteOnlyCommand.CanExecute();
+                };
+                buyOrder.RaiseCloseViewRequested();
+
+                Assert.IsTrue(canExecuteChangedCalled);
+                Assert.IsFalse(canExecuteResult);
+            }
+            finally
+            {
+                ServiceLocator.SetLocatorProvider(() => null);
+            }
         }
 
         [TestMethod]
         public void ShouldRemoveOrdersViewWhenClosingLastOrder()
         {
-            var container = new MockUnityContainer();
-            container.ResolveBag.Add(typeof(IOrdersPresentationModel), new MockOrdersPresentationModel());
-            var region = (MockRegion)regionManager.Regions["ActionRegion"];
+            try
+            {
+                Mock<IOrdersViewModel> mockOrdersViewModel = new Mock<IOrdersViewModel>();
 
-            var controller = new TestableOrdersController(regionManager, container, new MockStockTraderRICommandProxy(), null);
+                Mock<ServiceLocatorImplBase> mockServiceLocator = new Mock<ServiceLocatorImplBase>();
 
-            var buyOrder = new MockOrderCompositePresentationModel() { Shares = 100 };
-			container.ResolveBag[typeof(IOrderCompositePresentationModel)] = buyOrder;
-            controller.InvokeStartOrder(TransactionType.Buy, "STOCK1");
+                var orderCompositePresenter = new MockOrderCompositePresentationModel() { Shares = 100 };
+                var commandProxy = new MockStockTraderRICommandProxy();
 
-            Assert.AreEqual<int>(1, region.AddedViews.Count);
+                IOrdersViewModel orderCompositePresentationModel = mockOrdersViewModel.Object;
 
-            buyOrder.RaiseCloseViewRequested();
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersView>()).Returns(new Mock<IOrdersView>().Object);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrdersViewModel>()).Returns(orderCompositePresentationModel);
+                mockServiceLocator.Setup(x => x.GetInstance<IOrderCompositeViewModel>()).Returns(orderCompositePresenter);
+                ServiceLocator.SetLocatorProvider(() => mockServiceLocator.Object);
 
-            Assert.AreEqual<int>(0, region.AddedViews.Count);
+                var controller = new TestableOrdersController(regionManager, commandProxy, new MockAccountPositionService());
+
+                var region = (MockRegion)regionManager.Regions["ActionRegion"];
+
+                controller.InvokeStartOrder(TransactionType.Buy, "STOCK1");
+
+                Assert.AreEqual<int>(1, region.AddedViews.Count);
+
+                orderCompositePresenter.RaiseCloseViewRequested();
+
+                Assert.AreEqual<int>(0, region.AddedViews.Count);
+
+            }
+            finally
+            {
+                ServiceLocator.SetLocatorProvider(() => null);
+            }
         }
     }
 
     internal class TestableOrdersController : OrdersController
     {
 
-        public TestableOrdersController(IRegionManager regionManager, IUnityContainer container, MockStockTraderRICommandProxy commandProxy, IAccountPositionService accountPositionService)
-            : base(regionManager, container, commandProxy, accountPositionService)
+        public TestableOrdersController(IRegionManager regionManager, MockStockTraderRICommandProxy commandProxy, IAccountPositionService accountPositionService)
+            : base(regionManager, commandProxy, accountPositionService)
         {
         }
 
         public string StartOrderArgumentTickerSymbol { get; set; }
         public TransactionType StartOrderArgumentTransactionType { get; set; }
 
-        
+
 
         protected override void StartOrder(string tickerSymbol, TransactionType transactionType)
         {
@@ -375,34 +610,20 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
         }
     }
 
-    public class MockOrdersPresentationModel : IOrdersPresentationModel
+    public class MockOrdersViewModel : IOrdersViewModel
     {
-        private IOrdersView _view = new MockOrdersView();
-
-        public IOrdersView View
-        {
-            get { return _view; }
-            set { _view = value; }
-        }
-
         public string HeaderInfo
         {
             get { throw new NotImplementedException(); }
         }
     }
 
-    class MockOrderCompositePresentationModel : IOrderCompositePresentationModel
+    class MockOrderCompositePresentationModel : IOrderCompositeViewModel
     {
         public MockCommand MockSubmitCommand = new MockCommand();
         public MockCommand MockCancelCommand = new MockCommand();
-        private IOrderCompositeView _view = new MockOrderCompositeView();
 
         public event EventHandler CloseViewRequested;
-
-        public IOrderCompositeView View
-        {
-            get { return _view; }
-        }
 
         public ICommand SubmitCommand
         {
@@ -414,9 +635,9 @@ namespace StockTraderRI.Modules.Position.Tests.Controllers
             get { return MockCancelCommand; }
         }
 
-        public TransactionInfo TransactionInfo { get; set;}
+        public TransactionInfo TransactionInfo { get; set; }
 
-        public int Shares { get; set;}
+        public int Shares { get; set; }
 
         internal void RaiseCloseViewRequested()
         {

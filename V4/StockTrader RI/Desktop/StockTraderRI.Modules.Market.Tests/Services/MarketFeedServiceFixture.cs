@@ -17,10 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Microsoft.Practices.Prism.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Modules.Market.Services;
-using StockTraderRI.Modules.Market.Tests.Mocks;
 using StockTraderRI.Modules.Market.Tests.Properties;
 
 namespace StockTraderRI.Modules.Market.Tests.Services
@@ -192,6 +192,19 @@ namespace StockTraderRI.Modules.Market.Tests.Services
     }
 
 
+    class MockEventAggregator : IEventAggregator
+    {
+        Dictionary<Type, object> events = new Dictionary<Type, object>();
+        public TEventType GetEvent<TEventType>() where TEventType : EventBase, new()
+        {
+            return (TEventType)events[typeof(TEventType)];
+        }
+
+        public void AddMapping<TEventType>(TEventType mockEvent)
+        {
+            events.Add(typeof(TEventType), mockEvent);
+        }
+    }
 
     class MockPriceUpdatedEventAggregator : MockEventAggregator
     {

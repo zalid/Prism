@@ -45,7 +45,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Lib\Silverlight\Prism\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
@@ -54,14 +54,14 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
-    <DocumentationFile>..\..\..\Lib\Silverlight\Prism\Microsoft.Practices.Prism.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Microsoft.Practices.Prism.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>0612</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Lib\Silverlight\Prism\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
@@ -71,7 +71,7 @@
     <CodeAnalysisRules>
     </CodeAnalysisRules>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>..\..\..\Lib\Silverlight\Prism\Microsoft.Practices.Prism.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Microsoft.Practices.Prism.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>0612</NoWarn>
   </PropertyGroup>
@@ -80,6 +80,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\LIB\Silverlight\CommonServiceLocation\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib">
       <Private>False</Private>
@@ -114,9 +115,6 @@
     </Compile>
     <Compile Include="..\..\Desktop\Prism\Commands\DelegateCommandBase.cs">
       <Link>Commands\DelegateCommandBase.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\Prism\Commands\WeakEventHandlerManager.cs">
-      <Link>Commands\WeakEventHandlerManager.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\Prism\Events\BackgroundEventSubscription.cs">
       <Link>Events\BackgroundEventSubscription.cs</Link>
@@ -292,6 +290,9 @@
     <Compile Include="..\..\Desktop\Prism\Regions\Behaviors\RegionManagerRegistrationBehavior.cs">
       <Link>Regions\Behaviors\RegionManagerRegistrationBehavior.cs</Link>
     </Compile>
+    <Compile Include="..\..\Desktop\Prism\Regions\Behaviors\RegionMemberLifetimeBehavior.cs">
+      <Link>Regions\Behaviors\RegionMemberLifetimeBehavior.cs</Link>
+    </Compile>
     <Compile Include="..\..\Desktop\Prism\Regions\Behaviors\SelectorItemsSourceSyncBehavior.cs">
       <Link>Regions\Behaviors\SelectorItemsSourceSyncBehavior.cs</Link>
     </Compile>
@@ -304,17 +305,14 @@
     <Compile Include="..\..\Desktop\Prism\Regions\DefaultRegionManagerAccessor.cs">
       <Link>Regions\DefaultRegionManagerAccessor.cs</Link>
     </Compile>
+    <Compile Include="..\..\Desktop\Prism\Regions\IConfirmNavigationRequest.cs">
+      <Link>Regions\IConfirmNavigationRequest.cs</Link>
+    </Compile>
     <Compile Include="..\..\Desktop\Prism\Regions\INavigateAsync.cs">
       <Link>Regions\INavigateAsync.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\Prism\Regions\INavigationAware.cs">
       <Link>Regions\INavigationAware.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\Prism\Regions\INavigationAwareWithVeto.cs">
-      <Link>Regions\INavigationAwareWithVeto.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\Prism\Regions\INavigationTargetHandler.cs">
-      <Link>Regions\INavigationTargetHandler.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\Prism\Regions\IRegion.cs">
       <Link>Regions\IRegion.cs</Link>
@@ -340,6 +338,12 @@
     <Compile Include="..\..\Desktop\Prism\Regions\IRegionManagerAccessor.cs">
       <Link>Regions\IRegionManagerAccessor.cs</Link>
     </Compile>
+    <Compile Include="..\..\Desktop\Prism\Regions\IRegionMemberLifetime.cs">
+      <Link>Regions\IRegionMemberLifetime.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Desktop\Prism\Regions\IRegionNavigationContentLoader.cs">
+      <Link>Regions\IRegionNavigationContentLoader.cs</Link>
+    </Compile>
     <Compile Include="..\..\Desktop\Prism\Regions\IRegionNavigationJournal.cs">
       <Link>Regions\IRegionNavigationJournal.cs</Link>
     </Compile>
@@ -361,8 +365,8 @@
     <Compile Include="..\..\Desktop\Prism\Regions\IViewsCollection.cs">
       <Link>Regions\IViewsCollection.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\Prism\Regions\LocatorNavigationTargetHandler.cs">
-      <Link>Regions\LocatorNavigationTargetHandler.cs</Link>
+    <Compile Include="..\..\Desktop\Prism\Regions\NavigationAsyncExtensions.cs">
+      <Link>Regions\NavigationAsyncExtensions.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\Prism\Regions\NavigationContext.cs">
       <Link>Regions\NavigationContext.cs</Link>
@@ -397,6 +401,18 @@
     <Compile Include="..\..\Desktop\Prism\Regions\RegionManagerExtensions.cs">
       <Link>Regions\RegionManagerExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\..\Desktop\Prism\Regions\RegionMemberLifetimeAttribute.cs">
+      <Link>Regions\RegionMemberLifetimeAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Desktop\Prism\Regions\RegionNavigationContentLoader.cs">
+      <Link>Regions\RegionNavigationContentLoader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Desktop\Prism\Regions\RegionNavigationEventArgs.cs">
+      <Link>Regions\RegionNavigationEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Desktop\Prism\Regions\RegionNavigationFailedEventArgs.cs">
+      <Link>Regions\RegionNavigationFailedEventArgs.cs</Link>
+    </Compile>
     <Compile Include="..\..\Desktop\Prism\Regions\RegionNavigationJournal.cs">
       <Link>Regions\RegionNavigationJournal.cs</Link>
     </Compile>
@@ -426,6 +442,9 @@
     </Compile>
     <Compile Include="..\..\Desktop\Prism\Regions\ViewsCollection.cs">
       <Link>Regions\ViewsCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Desktop\Prism\Regions\ViewSortHintAttribute.cs">
+      <Link>Regions\ViewSortHintAttribute.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\Prism\ServiceLocatorExtensions.cs">
       <Link>ServiceLocatorExtensions.cs</Link>

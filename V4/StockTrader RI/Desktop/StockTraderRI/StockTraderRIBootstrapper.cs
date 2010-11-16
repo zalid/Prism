@@ -14,10 +14,11 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+using System;
+using System.ComponentModel.Composition.Hosting;
 using System.Windows;
-using Microsoft.Practices.Prism.Modularity;
-using Microsoft.Practices.Prism.UnityExtensions;
-using Microsoft.Practices.Unity;
+using Microsoft.Practices.Prism.MefExtensions;
+using StockTraderRI.Infrastructure;
 using StockTraderRI.Modules.Market;
 using StockTraderRI.Modules.News;
 using StockTraderRI.Modules.Position;
@@ -25,33 +26,48 @@ using StockTraderRI.Modules.Watch;
 
 namespace StockTraderRI
 {
-    public partial class StockTraderRIBootstrapper : UnityBootstrapper
+    [CLSCompliant(false)]
+    public partial class StockTraderRIBootstrapper : MefBootstrapper
     {
-        protected override IModuleCatalog CreateModuleCatalog()
+        protected override void ConfigureAggregateCatalog()
         {
-            var catalog = new ModuleCatalog();
-            catalog.AddModule(typeof(MarketModule))
-                .AddModule(typeof(PositionModule), "MarketModule")
-                .AddModule(typeof(WatchModule), "MarketModule")
-                .AddModule(typeof(NewsModule));
-
-            return catalog;
+            this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(StockTraderRIBootstrapper).Assembly));
+            this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(StockTraderRICommands).Assembly));
+            this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(MarketModule).Assembly));
+            this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(PositionModule).Assembly));
+            this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(WatchModule).Assembly));
+            this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(NewsModule).Assembly));
         }
 
         protected override void ConfigureContainer()
         {
-            Container.RegisterType<IShellView, Shell>();
             base.ConfigureContainer();
+        }
+
+        protected override void InitializeShell()
+        {
+            base.InitializeShell();
+
+#if SILVERLIGHT
+            Application.Current.RootVisual = (Shell)this.Shell;            
+#else
+            Application.Current.MainWindow = (Shell)this.Shell;
+            Application.Current.MainWindow.Show();
+#endif
+        }
+
+        protected override Microsoft.Practices.Prism.Regions.IRegionBehaviorFactory ConfigureDefaultRegionBehaviors()
+        {
+            var factory = base.ConfigureDefaultRegionBehaviors();
+
+            factory.AddIfMissing("AutoPopulateExportedViewsBehavior", typeof(AutoPopulateExportedViewsBehavior));
+
+            return factory;
         }
 
         protected override DependencyObject CreateShell()
         {
-			ShellPresenter presenter = Container.Resolve<ShellPresenter>();
-			IShellView view = presenter.View;
-
-			view.ShowView();
-
-			return view as DependencyObject;
+            return this.Container.GetExportedValue<Shell>();
         }
     }
 }

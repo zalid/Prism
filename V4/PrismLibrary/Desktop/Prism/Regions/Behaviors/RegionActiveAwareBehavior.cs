@@ -14,7 +14,9 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+using System;
 using System.Collections.Specialized;
+using System.Windows;
 
 namespace Microsoft.Practices.Prism.Regions.Behaviors
 {
@@ -66,26 +68,37 @@ namespace Microsoft.Practices.Prism.Regions.Behaviors
             {
                 foreach (object item in e.NewItems)
                 {
-                    IActiveAware activeAware = item as IActiveAware;
-                    if (activeAware != null)
-                    {
-                        activeAware.IsActive = true;
-                    }
+                    InvokeOnActiveAwareElement(item, activeAware => activeAware.IsActive = true);
                 }
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove)
             {
                 foreach (object item in e.OldItems)
                 {
-                    IActiveAware activeAware = item as IActiveAware;
-                    if (activeAware != null)
-                    {
-                        activeAware.IsActive = false;
-                    }
+                    InvokeOnActiveAwareElement(item, activeAware => activeAware.IsActive = false);
                 }
             }
 
             // May need to handle other action values (reset, replace). Currently the ViewsCollection class does not raise CollectionChanged with these values.
+        }
+
+        private static void InvokeOnActiveAwareElement(object item, Action<IActiveAware> invocation)
+        {
+            var activeAware = item as IActiveAware;
+            if (activeAware != null)
+            {
+                invocation(activeAware);
+            }
+
+            var frameworkElement = item as FrameworkElement;
+            if (frameworkElement != null)
+            {
+                var activeAwareDataContext = frameworkElement.DataContext as IActiveAware;
+                if (activeAwareDataContext != null)
+                {
+                    invocation(activeAwareDataContext);
+                }
+            }
         }
 
         private INotifyCollectionChanged GetCollection()

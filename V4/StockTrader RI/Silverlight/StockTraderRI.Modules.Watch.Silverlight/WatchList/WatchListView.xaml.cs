@@ -14,23 +14,43 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Controls;
 using System.Windows.Data;
 using StockTraderRI.Infrastructure;
 
 namespace StockTraderRI.Modules.Watch.WatchList
 {
-    public partial class WatchListView : UserControl, IWatchListView
+    [ViewExport(RegionName = RegionNames.MainRegion)]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public partial class WatchListView : UserControl
     {
         public WatchListView()
         {
             InitializeComponent();
         }
 
-        public void SetModel(WatchListPresentationModel model)
-        {
-            this.DataContext = model;
+        /// <summary>
+        /// Sets the ViewModel.
+        /// </summary>
+        /// <remarks>
+        /// This set-only property is annotated with the <see cref="ImportAttribute"/> so it is injected by MEF with
+        /// the appropriate view model.
+        /// </remarks>
+        [Import]
+        [SuppressMessage("Microsoft.Design", "CA1044:PropertiesShouldNotBeWriteOnly", Justification = "Needs to be a property to be composed by MEF")]
+        public WatchListViewModel ViewModel
+        {        
+            set
+            {
+                this.DataContext = value;
+                this.OnDataContextChanged();
+            }
+        }
 
+        private void OnDataContextChanged()
+        {
             // Because in Silverlight you cannot bind to a RelativeSource, we are using Resources with an observable value,
             // in order to be able to bind to the Buy and Sell commands. 
             // The resources are declared in the XAML, because Silverlight has StaticResource markup only, so these

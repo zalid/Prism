@@ -76,31 +76,6 @@ namespace Microsoft.Practices.Prism.Tests.Regions
         }
 
         [TestMethod]
-#if SILVERLIGHT
-        [Ignore]
-#endif
-        public void ControlWithExistingBindingOnItemsSourceWithNullValueThrows()
-        {
-            var tabControl = new TabControl();
-            Binding binding = new Binding("Enumerable");
-            binding.Source = new SimpleModel() { Enumerable = null };
-            tabControl.SetBinding(ItemsControl.ItemsSourceProperty, binding);
-
-            IRegionAdapter adapter = new TestableTabControlRegionAdapter();
-
-            try
-            {
-                var region = (MockRegion)adapter.Initialize(tabControl, "region");
-                Assert.Fail();
-            }
-            catch (Exception ex)
-            {
-                Assert.IsInstanceOfType(ex, typeof(InvalidOperationException));
-                StringAssert.Contains(ex.Message, "ItemsControl's ItemsSource property is not empty.");
-            }
-        }
-
-        [TestMethod]
         public void AdapterSynchronizesViewsWithItemCollection()
         {
             var tabControl = new TabControl();
@@ -300,6 +275,51 @@ namespace Microsoft.Practices.Prism.Tests.Regions
             var behavior = region.Behaviors["TabControlRegionSyncBehavior"] as IHostAwareRegionBehavior;
             behavior.HostControl = tabControl2;
 
+        }
+
+        [TestMethod]
+        public void AddedTabItemsAppearInTabControl()
+        {
+            var tabControl = new TabControl();
+            var view = new TabItem();
+            IRegionAdapter adapter = new TabControlRegionAdapter(null);
+            var region = adapter.Initialize(tabControl, "region");
+
+            region.Add(view);
+            Assert.AreEqual(1, tabControl.Items.Count());
+            Assert.IsNotNull(view.Parent);
+            Assert.AreSame(tabControl, view.Parent);
+            Assert.AreSame(view, region.Views.ElementAt(0));
+        }
+
+        [TestMethod]
+        public void TabsWithViewSortHintAreSortedProperly()
+        {
+            var tabControl = new TabControl();
+            var view1 = new MockSortableView1();
+            var view2 = new MockSortableView2();
+            var view3 = new MockSortableView3();
+
+            IRegionAdapter adapter = new TabControlRegionAdapter(null);
+
+            var region = adapter.Initialize(tabControl, "region");
+            Assert.AreEqual(0, region.Views.Count());
+
+            region.Add(view2);
+            Assert.AreEqual(1, tabControl.Items.Count);
+            Assert.AreSame(view2, ((TabItem)tabControl.Items[0]).Content);
+
+            region.Add(view1);
+            Assert.AreEqual(2, tabControl.Items.Count);
+            Assert.AreSame(view1, ((TabItem)tabControl.Items[0]).Content);
+            Assert.AreSame(view2, ((TabItem)tabControl.Items[1]).Content);
+            
+            region.Add(view3);
+            Assert.AreEqual(3, tabControl.Items.Count);
+            Assert.AreSame(view1, ((TabItem)tabControl.Items[0]).Content);
+            Assert.AreSame(view2, ((TabItem)tabControl.Items[1]).Content);
+            Assert.AreSame(view3, ((TabItem)tabControl.Items[2]).Content);
+            
         }
 
         internal class SimpleModel

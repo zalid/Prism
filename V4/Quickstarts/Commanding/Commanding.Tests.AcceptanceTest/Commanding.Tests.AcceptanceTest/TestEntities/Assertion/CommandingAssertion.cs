@@ -49,6 +49,10 @@ namespace Commanding.Tests.AcceptanceTest.TestEntities.Assertion
         #region Desktop
         public static void AssertDesktopControlLoad()
         {
+            AutomationElementCollection aeorderViews = CommandingPage<TApp>.aeOrderListView;
+            aeorderViews[0].Select();
+            Thread.Sleep(2000);
+
             //const int initialOrdersCount = 3;
             Assert.IsNotNull(CommandingPage<TApp>.SaveAllToolBarButton,"Save All Button Not loaded");
             Assert.IsNotNull(CommandingPage<TApp>.SaveButton, "Save Button Not loaded");
@@ -69,6 +73,10 @@ namespace Commanding.Tests.AcceptanceTest.TestEntities.Assertion
 
         public static void AssertProcessOrderByClickingSave()
         {
+            AutomationElementCollection aeorderViews = CommandingPage<TApp>.aeOrderListView;
+            aeorderViews[0].Select();
+            Thread.Sleep(2000);
+
             PopulateOrderDetailsWithData();
             AutomationElementCollection orderView = CommandingPage<TApp>.OrderListView;
             AutomationElement saveButton = CommandingPage<TApp>.SaveButton;
@@ -84,6 +92,10 @@ namespace Commanding.Tests.AcceptanceTest.TestEntities.Assertion
 
         public static void AssertAttemptSaveAfterMakingAnOrderInvalid()
         {
+            AutomationElementCollection aeorderViews = CommandingPage<TApp>.aeOrderListView;
+            aeorderViews[0].Select();
+            Thread.Sleep(2000);
+
             //Populate the order details fileds with valid data
             PopulateOrderDetailsWithData();
 
@@ -176,6 +188,9 @@ namespace Commanding.Tests.AcceptanceTest.TestEntities.Assertion
 
         public static void AssertDesktopAttemptSaveAfterChangingQuantityNull()
         {
+            AutomationElementCollection aeorderViews = CommandingPage<TApp>.aeOrderListView;
+            aeorderViews[0].Select();
+            Thread.Sleep(2000);
             PopulateOrderDetailsWithData();
             CommandingPage<TApp>.QuantityTextBox.SetValue(string.Empty);
             CommandingPage<TApp>.PriceTextBox.SetFocus();
@@ -183,6 +198,10 @@ namespace Commanding.Tests.AcceptanceTest.TestEntities.Assertion
         }
         public static void AssertDesktopAttemptSaveAfterChangingPriceNull()
         {
+            AutomationElementCollection aeorderViews = CommandingPage<TApp>.aeOrderListView;
+            aeorderViews[0].Select();
+            Thread.Sleep(2000);
+
             PopulateOrderDetailsWithData();
             CommandingPage<TApp>.PriceTextBox.SetValue(string.Empty);
             CommandingPage<TApp>.QuantityTextBox.SetFocus();
@@ -210,6 +229,10 @@ namespace Commanding.Tests.AcceptanceTest.TestEntities.Assertion
 
         public static void AssertSilverLightControlsLoadTest()
         {
+            AutomationElementCollection aeorderViews = CommandingPage<TApp>.aeOrderListView;
+            aeorderViews[0].Select();
+            Thread.Sleep(2000);
+
             AutomationElement aeSaveAllToolBarButton = CommandingPage<TApp>.aeSaveAllToolBarButton;
             Assert.IsNotNull(aeSaveAllToolBarButton, "SaveAll Button Not Loaded");
             AutomationElement aeSaveButton = CommandingPage<TApp>.aeSaveButton;
@@ -230,6 +253,9 @@ namespace Commanding.Tests.AcceptanceTest.TestEntities.Assertion
 
         public static void AssertSLProcessOrderByClickingSave()
         {
+            AutomationElementCollection aeorderViews    = CommandingPage<TApp>.aeOrderListView;
+            aeorderViews[1].Select();
+            Thread.Sleep(2000);
             SLPopulateOrderDetailsWithData();
             AutomationElementCollection aeorderView = CommandingPage<TApp>.aeOrderListView;
             AutomationElement aesaveButton = CommandingPage<TApp>.aeSaveButton;            
@@ -241,8 +267,11 @@ namespace Commanding.Tests.AcceptanceTest.TestEntities.Assertion
 
         public static void AssertSLAttemptSaveAfterMakingAnOrderInvalid()
         {
-            SLPopulateOrderDetailsWithInvalidData();
             AutomationElementCollection aeorderView = CommandingPage<TApp>.aeOrderListView;
+            aeorderView[1].Select();
+            Thread.Sleep(2000);
+            SLPopulateOrderDetailsWithInvalidData();
+           // AutomationElementCollection aeorderView = CommandingPage<TApp>.aeOrderListView;
             AutomationElement aesaveButton = CommandingPage<TApp>.aeSaveButton;
             Assert.IsFalse(aesaveButton.Current.IsEnabled,"Save Button is Enabled for Invalid Order details");                        
         }
@@ -257,6 +286,12 @@ namespace Commanding.Tests.AcceptanceTest.TestEntities.Assertion
             System.Threading.Thread.Sleep(2000);
             Assert.IsTrue(orderviews.Count == 3, "Total order Items Count is Not equal to Three");
             //Populate Order 1 with Valid Data
+            orderviews[1].SetFocus();
+            orderviews[1].Select();
+            Thread.Sleep(1000);
+            orderviews[0].SetFocus();
+            orderviews[0].Select();
+            Thread.Sleep(2000);
             SLPopulateOrderDetailsWithData();          
             orderviews[1].SetFocus();
             orderviews[1].Select();
@@ -278,6 +313,10 @@ namespace Commanding.Tests.AcceptanceTest.TestEntities.Assertion
 
         public static void AssertSLAttemptToolBarSaveAllForMultipleValidOrdersAndOneInvalidOrder()
         {
+            AutomationElementCollection aeorderViews = CommandingPage<TApp>.aeOrderListView;
+            aeorderViews[0].Select();
+            Thread.Sleep(2000);
+
             AutomationElementCollection aeorderView = CommandingPage<TApp>.aeOrderListView;
             AutomationElement aeSaveAllButton = CommandingPage<TApp>.aeSaveAllToolBarButton;
             AutomationElement orderview = aeorderView[0];
@@ -307,6 +346,9 @@ namespace Commanding.Tests.AcceptanceTest.TestEntities.Assertion
 
         public static void AssertSLAttemptSaveAfterChangingQuantityNull()
         {
+            AutomationElementCollection aeorderView = CommandingPage<TApp>.aeOrderListView;
+            aeorderView[1].Select();
+            Thread.Sleep(2000);
             SLPopulateOrderDetailsWithData();
             CommandingPage<TApp>.aeQuantityTextBox.SetValue(string.Empty);
             CommandingPage<TApp>.aePriceTextBox.SetFocus();
@@ -316,6 +358,9 @@ namespace Commanding.Tests.AcceptanceTest.TestEntities.Assertion
         }
         public static void AssertSLAttemptSaveAfterChangingPriceNull()
         {
+            AutomationElementCollection aeorderView = CommandingPage<TApp>.aeOrderListView;
+            aeorderView[1].Select();
+            Thread.Sleep(2000);
             SLPopulateOrderDetailsWithData();
             CommandingPage<TApp>.aePriceTextBox.SetValue(string.Empty);
             CommandingPage<TApp>.aeQuantityTextBox.SetFocus();

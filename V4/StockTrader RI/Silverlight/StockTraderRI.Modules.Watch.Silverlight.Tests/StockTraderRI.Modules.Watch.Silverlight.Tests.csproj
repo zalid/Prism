@@ -94,6 +94,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\LIB\Silverlight\UnitTestFramework\Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.dll</HintPath>
     </Reference>
+    <Reference Include="Moq.Silverlight">
+      <HintPath>..\..\..\LIB\Silverlight\Moq\Moq.Silverlight.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
     <Reference Include="system" />
@@ -102,42 +106,21 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Windows.Browser" />
     <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+      <HintPath>..\..\..\Bin\Silverlight\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.WatchList.Tests\AddWatch\AddWatchPresenterFixture.cs">
-      <Link>AddWatch\AddWatchPresenterFixture.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.WatchList.Tests\Controllers\WatchListControllerFixture.cs">
-      <Link>Controllers\WatchListControllerFixture.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.WatchList.Tests\Mocks\MockAddWatchView.cs">
-      <Link>Mocks\MockAddWatchView.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.WatchList.Tests\Mocks\MockEventAggregator.cs">
-      <Link>Mocks\MockEventAggregator.cs</Link>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.WatchList.Tests\AddWatch\AddWatchViewModelFixture.cs">
+      <Link>AddWatch\AddWatchViewModelFixture.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.WatchList.Tests\Mocks\MockMarketFeedService.cs">
       <Link>Mocks\MockMarketFeedService.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.WatchList.Tests\Mocks\MockRegionManager.cs">
-      <Link>Mocks\MockRegionManager.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.WatchList.Tests\Mocks\MockWatchListService.cs">
-      <Link>Mocks\MockWatchListService.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.WatchList.Tests\Mocks\MockWatchListView.cs">
-      <Link>Mocks\MockWatchListView.cs</Link>
-    </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.WatchList.Tests\Services\WatchListServiceFixture.cs">
       <Link>Services\WatchListServiceFixture.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.WatchList.Tests\WatchList\WatchListPresentationModelFixture.cs">
-      <Link>WatchList\WatchListPresentationModelFixture.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.WatchList.Tests\WatchModuleFixture.cs">
-      <Link>WatchModuleFixture.cs</Link>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.WatchList.Tests\WatchList\WatchListViewModelFixture.cs">
+      <Link>WatchList\WatchListViewModelFixture.cs</Link>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -186,6 +169,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

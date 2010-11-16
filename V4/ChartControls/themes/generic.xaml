@@ -83,12 +83,12 @@
                   <local:LabelExtractor x:Key="labelextractor" Items="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Items}"
                                         LabelPath="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LabelPath}"/>
                 </Grid.Resources>
-                <local:DiscreteAxis Name="HAxis" Grid.Row="1" Grid.Column="2" 
+                <local:DiscreteAxis x:Name="HAxis" Grid.Row="1" Grid.Column="2" 
                                     ItemsSource="{Binding Source={StaticResource labelextractor}, Path=Labels}"
                                     ItemTemplate="{TemplateBinding LabelAxisItemTemplate}"
                                     ItemTemplateSelector="{TemplateBinding LabelAxisItemTemplateSelector}"
                                     TickLength="{TemplateBinding TickLength}"/>
-                <local:ContinuousAxis Name="VAxis" Grid.Row="0" Grid.Column="1" 
+                <local:ContinuousAxis x:Name="VAxis" Grid.Row="0" Grid.Column="1" 
                                       SourceValues="{Binding Source={StaticResource extractor}, Path=Values}"
                                       ItemTemplate="{TemplateBinding ValueAxisItemTemplate}"
                                       ItemTemplateSelector="{TemplateBinding ValueAxisItemTemplateSelector}"/>

@@ -14,96 +14,102 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Data;
+using Microsoft.Practices.Prism.Events;
+
 using Commanding.Modules.Order.Services;
 using Commanding.Modules.Order.Views;
-using Microsoft.Practices.Prism.Events;
 
 namespace Commanding.Modules.Order.PresentationModels
 {
+    /// <summary>
+    /// Presentation model to support the OrdersEditorView.
+    /// </summary>
     public class OrdersEditorPresentationModel : INotifyPropertyChanged
     {
-        private readonly IOrdersRepository ordersRepository;
+        private readonly IOrdersRepository  ordersRepository;
         private readonly OrdersCommandProxy commandProxy;
-        private OrderPresentationModel selectedOrder;
 
-        public OrdersEditorPresentationModel(OrdersEditorView view, IOrdersRepository ordersRepository, OrdersCommandProxy commandProxy)
+        private ObservableCollection<OrderPresentationModel> _orders { get; set; }
+
+        public OrdersEditorPresentationModel( IOrdersRepository ordersRepository, OrdersCommandProxy commandProxy )
         {
             this.ordersRepository = ordersRepository;
-            this.commandProxy = commandProxy;
-            this.Orders = new ObservableCollection<OrderPresentationModel>();
+            this.commandProxy     = commandProxy;
+
+            // Create dummy order data.
             this.PopulateOrders();
 
-            this.View = view;
-            view.Model = this;
+            // Initialize a CollectionView for the underlying Orders collection.
+#if SILVERLIGHT
+            this.Orders = new PagedCollectionView( _orders );
+#else
+            this.Orders = new ListCollectionView( _orders );
+#endif
+            // Track the current selection.
+            this.Orders.CurrentChanged += SelectedOrderChanged;
+            this.Orders.MoveCurrentTo(null);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public ICollectionView Orders { get; private set; }
 
-        public OrdersEditorView View { get; private set; }
-
-        public ObservableCollection<OrderPresentationModel> Orders { get; private set; }
-
-        public OrderPresentationModel SelectedOrder
+        private void SelectedOrderChanged( object sender, EventArgs e )
         {
-            get
-            {
-                return this.selectedOrder;
-            }
-
-            set
-            {
-                if (this.selectedOrder != value)
-                {
-                    this.selectedOrder = value;
-                    this.OnPropertyChanged("SelectedOrder");
-                }
-            }
+            SelectedOrder = Orders.CurrentItem as OrderPresentationModel;
+            NotifyPropertyChanged( "SelectedOrder" );
         }
+
+        public OrderPresentationModel SelectedOrder { get; private set; }
 
         private void PopulateOrders()
         {
-            foreach (Services.Order order in this.ordersRepository.GetOrdersToEdit())
-            {
-                var orderPresentationModel = new OrderPresentationModel()
-                {
-                    OrderName = order.Name,
-                    DeliveryDate = order.DeliveryDate
-                };
-                orderPresentationModel.Saved += this.OrderSaved;
-                this.commandProxy.SaveAllOrdersCommand.RegisterCommand(orderPresentationModel.SaveOrderCommand);
-                this.Orders.Add(orderPresentationModel);
-            }
+            _orders = new ObservableCollection<OrderPresentationModel>();
 
-            this.SelectedOrder = this.Orders[0];
+            foreach ( Services.Order order in this.ordersRepository.GetOrdersToEdit() )
+            {
+                // Wrap the Order object in a presentation model object.
+                var orderPresentationModel = new OrderPresentationModel( order );
+                _orders.Add( orderPresentationModel );
+
+                // Subscribe to the Save event on the individual orders.
+                orderPresentationModel.Saved += this.OrderSaved;
+
+                //TODO: 04 - Each Order Save command is registered with the application's SaveAll command.
+                commandProxy.SaveAllOrdersCommand.RegisterCommand( orderPresentationModel.SaveOrderCommand );
+            }
         }
 
-        private void OrderSaved(object sender, DataEventArgs<OrderPresentationModel> e)
+        private void OrderSaved( object sender, DataEventArgs<OrderPresentationModel> e )
         {
             if (e != null && e.Value != null)
             {
                 OrderPresentationModel order = e.Value;
-                if (this.Orders.Contains(order))
+                if ( this.Orders.Contains( order ) )
                 {
                     order.Saved -= this.OrderSaved;
-                    this.commandProxy.SaveAllOrdersCommand.UnregisterCommand(order.SaveOrderCommand);
-                    this.Orders.Remove(order);
-                    if (this.Orders.Count > 0)
-                    {
-                        this.SelectedOrder = this.Orders[0];
-                    }
+                    //TODO: 05 - As each order is saved, it is unregistered from the application's SaveAll command.
+                    this.commandProxy.SaveAllOrdersCommand.UnregisterCommand( order.SaveOrderCommand );
+                    // Remove saved orders from the collection.
+                    this._orders.Remove( order );
                 }
             }
         }
 
-        private void OnPropertyChanged(string propertyName)
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged( string propertyName )
         {
-            PropertyChangedEventHandler handler = this.PropertyChanged;
-            if (handler != null)
+            if ( this.PropertyChanged != null )
             {
-                handler(this, new PropertyChangedEventArgs(propertyName));
+                this.PropertyChanged( this, new PropertyChangedEventArgs( propertyName ) );
             }
         }
+
+        #endregion
     }
 }

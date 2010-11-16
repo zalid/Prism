@@ -23,14 +23,18 @@ using Microsoft.Practices.Prism.Properties;
 namespace Microsoft.Practices.Prism.Commands
 {
     /// <summary>
-    /// The CompositeCommand composites one or more ICommands.
+    /// The CompositeCommand composes one or more ICommands.
     /// </summary>
     public partial class CompositeCommand : ICommand
     {
         private readonly List<ICommand> registeredCommands = new List<ICommand>();
-        private List<WeakReference> _canExecuteChangedHandlers;
         private readonly bool monitorCommandActivity;
         private readonly EventHandler onRegisteredCommandCanExecuteChangedHandler;
+
+#if !SILVERLIGHT
+        private List<WeakReference> _canExecuteChangedHandlers;
+#endif
+
 
         /// <summary>
         /// Initializes a new instance of <see cref="CompositeCommand"/>.
@@ -123,6 +127,7 @@ namespace Microsoft.Practices.Prism.Commands
             this.OnCanExecuteChanged();
         }
 
+
         /// <summary>
         /// Forwards <see cref="ICommand.CanExecute"/> to the registered commands and returns
         /// <see langword="true" /> if all of the commands return <see langword="true" />.
@@ -156,6 +161,12 @@ namespace Microsoft.Practices.Prism.Commands
             return hasEnabledCommandsThatShouldBeExecuted;
         }
 
+#if SILVERLIGHT
+    /// <summary>
+    /// Occurs when changes occur that affect whether or not the command should execute. 
+    /// </summary>
+        public event EventHandler CanExecuteChanged;
+#else
         /// <summary>
         /// Occurs when any of the registered commands raise <see cref="ICommand.CanExecuteChanged"/>. You must keep a hard
         /// reference to the handler to avoid garbage collection and unexpected results. See remarks for more information.
@@ -187,6 +198,7 @@ namespace Microsoft.Practices.Prism.Commands
                 WeakEventHandlerManager.RemoveWeakReferenceHandler(_canExecuteChangedHandlers, value);
             }
         }
+#endif
 
         /// <summary>
         /// Forwards <see cref="ICommand.Execute"/> to the registered commands.
@@ -251,6 +263,21 @@ namespace Microsoft.Practices.Prism.Commands
             }
         }
 
+#if SILVERLIGHT
+        /// <summary>
+        /// Raises <see cref="ICommand.CanExecuteChanged"/> on the UI thread so every 
+        /// command invoker can requery <see cref="ICommand.CanExecute"/> to check if the
+        /// <see cref="CompositeCommand"/> can execute.
+        /// </summary>
+        protected virtual void OnCanExecuteChanged()
+        {
+            var handlers = CanExecuteChanged;
+            if (handlers != null)
+            {
+                handlers(this, EventArgs.Empty);
+            }
+        }
+#else
         /// <summary>
         /// Raises <see cref="ICommand.CanExecuteChanged"/> on the UI thread so every 
         /// command invoker can requery <see cref="ICommand.CanExecute"/> to check if the
@@ -260,7 +287,7 @@ namespace Microsoft.Practices.Prism.Commands
         {
             WeakEventHandlerManager.CallWeakReferenceHandlers(this, _canExecuteChangedHandlers);
         }
-
+#endif
 
         /// <summary>
         /// Handler for IsActiveChanged events of registered commands.

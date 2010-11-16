@@ -36,12 +36,12 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Lib\Desktop\Prism\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-    <DocumentationFile>..\..\..\Lib\Desktop\Prism\Microsoft.Practices.Prism.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Microsoft.Practices.Prism.XML</DocumentationFile>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
@@ -51,7 +51,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Lib\Desktop\Prism\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -59,7 +59,7 @@
     <CodeAnalysisRules>
     </CodeAnalysisRules>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>..\..\..\Lib\Desktop\Prism\Microsoft.Practices.Prism.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Microsoft.Practices.Prism.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>0612</NoWarn>
   </PropertyGroup>
@@ -110,7 +110,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\DelegateCommandBase.cs" />
-    <Compile Include="Commands\WeakEventHandlerManager.cs">
+    <Compile Include="Commands\WeakEventHandlerManager.Desktop.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Events\BackgroundEventSubscription.cs" />
@@ -232,6 +232,7 @@
     <Compile Include="Regions\Behaviors\RegionCreationException.Desktop.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Regions\Behaviors\RegionMemberLifetimeBehavior.cs" />
     <Compile Include="Regions\Behaviors\RegionManagerRegistrationBehavior.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -249,7 +250,8 @@
     </Compile>
     <Compile Include="Regions\INavigateAsync.cs" />
     <Compile Include="Regions\INavigationAware.cs" />
-    <Compile Include="Regions\INavigationTargetHandler.cs" />
+    <Compile Include="Regions\IRegionMemberLifetime.cs" />
+    <Compile Include="Regions\IRegionNavigationContentLoader.cs" />
     <Compile Include="Regions\IRegionBehaviorFactory.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -265,8 +267,10 @@
     <Compile Include="Regions\ItemsControlRegionAdapter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Regions\INavigationAwareWithVeto.cs" />
-    <Compile Include="Regions\LocatorNavigationTargetHandler.cs" />
+    <Compile Include="Regions\IConfirmNavigationRequest.cs" />
+    <Compile Include="Regions\NavigationAsyncExtensions.cs" />
+    <Compile Include="Regions\RegionMemberLifetimeAttribute.cs" />
+    <Compile Include="Regions\RegionNavigationContentLoader.cs" />
     <Compile Include="Regions\NavigationContext.cs" />
     <Compile Include="Regions\NavigationResult.cs" />
     <Compile Include="Regions\Region.cs">
@@ -293,6 +297,8 @@
     <Compile Include="Regions\RegionManager.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Regions\RegionNavigationEventArgs.cs" />
+    <Compile Include="Regions\RegionNavigationFailedEventArgs.cs" />
     <Compile Include="Regions\RegionNavigationJournal.cs" />
     <Compile Include="Regions\RegionNavigationJournalEntry.cs" />
     <Compile Include="Regions\RegionViewRegistry.cs">
@@ -333,6 +339,7 @@
     <Compile Include="Regions\ViewsCollection.Desktop.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Regions\ViewSortHintAttribute.cs" />
     <Compile Include="ServiceLocatorExtensions.cs" />
     <Compile Include="ViewModel\ErrorsContainer.cs" />
     <Compile Include="UriParsingHelper.cs" />

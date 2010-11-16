@@ -22,13 +22,17 @@ using Microsoft.Practices.Prism.Logging;
 using StockTraderRI.Modules.Position.Interfaces;
 using StockTraderRI.Modules.Position.Models;
 using StockTraderRI.Modules.Position.Properties;
+using System.ComponentModel.Composition;
 
 namespace StockTraderRI.Modules.Position.Services
 {
+    [Export(typeof(IOrdersService))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class XmlOrdersService : IOrdersService
     {
         private ILoggerFacade logger;
 
+        [ImportingConstructor]
         public XmlOrdersService(ILoggerFacade logger)
         {
             this.logger = logger;

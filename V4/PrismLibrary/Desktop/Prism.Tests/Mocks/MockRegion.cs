@@ -92,9 +92,29 @@ namespace Microsoft.Practices.Prism.Tests.Mocks
         }
 
 
-        public void RequestNavigate(System.Uri source, System.Action<NavigationResult> navigationCallback)
+        public void RequestNavigate(System.Uri target, System.Action<NavigationResult> navigationCallback)
         {
             throw new System.NotImplementedException();
+        }
+
+
+        public IRegionNavigationService NavigationService
+        {
+            get { throw new System.NotImplementedException(); }
+            set { throw new System.NotImplementedException(); }
+        }
+
+
+        public System.Comparison<object> SortComparison
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+                throw new System.NotImplementedException();
+            }
         }
     }
 }

@@ -34,6 +34,7 @@ namespace Microsoft.Practices.Prism.Tests.Modularity
         private const string ModulesDirectory3 = @".\DynamicModules\DependantModules";
         private const string ModulesDirectory4 = @".\DynamicModules\MocksModules2";
         private const string ModulesDirectory5 = @".\DynamicModules\ModulesMainDomain\";
+        private const string InvalidModulesDirectory = @".\Modularity";
 
         public DirectoryModuleCatalogFixture()
         {
@@ -48,6 +49,7 @@ namespace Microsoft.Practices.Prism.Tests.Modularity
             CompilerHelper.CleanUpDirectory(ModulesDirectory3);
             CompilerHelper.CleanUpDirectory(ModulesDirectory4);
             CompilerHelper.CleanUpDirectory(ModulesDirectory5);
+            CompilerHelper.CleanUpDirectory(InvalidModulesDirectory);
         }
 
         [TestMethod]
@@ -85,6 +87,55 @@ namespace Microsoft.Practices.Prism.Tests.Modularity
             DirectoryModuleCatalog catalog = new DirectoryModuleCatalog();
             catalog.ModulePath = ModulesDirectory1;
             catalog.Load();
+
+            ModuleInfo[] modules = catalog.Modules.ToArray();
+
+            Assert.IsNotNull(modules);
+            Assert.AreEqual(1, modules.Length);
+            Assert.IsNotNull(modules[0].Ref);
+            StringAssert.StartsWith(modules[0].Ref, "file://");
+            Assert.IsTrue(modules[0].Ref.Contains(@"MockModuleA.dll"));
+            Assert.IsNotNull(modules[0].ModuleType);
+            StringAssert.Contains(modules[0].ModuleType, "Microsoft.Practices.Prism.Tests.Mocks.Modules.MockModuleA");
+        }
+
+        [TestMethod]
+        [DeploymentItem(@"Modularity\NotAValidDotNetDll.txt.dll", @".\Modularity")]
+        public void ShouldNotThrowWithNonValidDotNetAssembly()
+        {
+            DirectoryModuleCatalog catalog = new DirectoryModuleCatalog();
+            catalog.ModulePath = InvalidModulesDirectory;
+            try
+            {
+                catalog.Load();
+            }
+            catch (Exception)
+            {
+                Assert.Fail("Should not have thrown.");
+            }
+            
+            ModuleInfo[] modules = catalog.Modules.ToArray();
+            Assert.IsNotNull(modules);
+            Assert.AreEqual(0, modules.Length);
+        }
+
+        [TestMethod]
+        [DeploymentItem(@"Modularity\NotAValidDotNetDll.txt.dll", InvalidModulesDirectory)]
+        public void LoadsValidAssembliesWhenInvalidDllsArePresent()
+        {
+            CompilerHelper.CompileFile(@"Microsoft.Practices.Prism.Tests.Mocks.Modules.MockModuleA.cs",
+                                       InvalidModulesDirectory + @"\MockModuleA.dll");
+
+            DirectoryModuleCatalog catalog = new DirectoryModuleCatalog();
+            catalog.ModulePath = InvalidModulesDirectory;
+            try
+            {
+                catalog.Load();
+            }
+            catch (Exception)
+            {
+                Assert.Fail("Should not have thrown.");
+            }
 
             ModuleInfo[] modules = catalog.Modules.ToArray();
 

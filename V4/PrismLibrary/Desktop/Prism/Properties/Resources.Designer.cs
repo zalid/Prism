@@ -188,6 +188,15 @@ namespace Microsoft.Practices.Prism.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to T for DelegateCommand&lt;T&gt; is not an object nor Nullable..
+        /// </summary>
+        internal static string DelegateCommandInvalidGenericPayloadType {
+            get {
+                return ResourceManager.GetString("DelegateCommandInvalidGenericPayloadType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot add dependency for unknown module {0}.
         /// </summary>
         internal static string DependencyForUnknownModule {
@@ -268,7 +277,11 @@ namespace Microsoft.Practices.Prism.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to load type for module {0}. Error was: {1}..
+        ///   Looks up a localized string similar to Failed to load type for module {0}. 
+        ///
+        ///If this error occurred when using MEF in a Silverlight application, please ensure that the CopyLocal property of the reference to the MefExtensions assembly is set to true in the main application/shell and false in all other assemblies. 
+        ///
+        ///Error was: {1}..
         /// </summary>
         internal static string FailedToRetrieveModule {
             get {
@@ -393,6 +406,15 @@ namespace Microsoft.Practices.Prism.Properties {
         internal static string NavigationInProgress {
             get {
                 return ResourceManager.GetString("NavigationInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Navigation cannot proceed until a region is set for the RegionNavigationService..
+        /// </summary>
+        internal static string NavigationServiceHasNoRegion {
+            get {
+                return ResourceManager.GetString("NavigationServiceHasNoRegion", resourceCulture);
             }
         }
         

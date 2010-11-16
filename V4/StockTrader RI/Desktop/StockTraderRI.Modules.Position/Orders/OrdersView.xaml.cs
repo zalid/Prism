@@ -14,21 +14,8 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Windows;
+using System.ComponentModel.Composition;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using StockTraderRI.Modules.Position.Interfaces;
 
 namespace StockTraderRI.Modules.Position.Orders
@@ -36,6 +23,8 @@ namespace StockTraderRI.Modules.Position.Orders
     /// <summary>
     /// Interaction logic for TransactionView.xaml
     /// </summary>
+    [Export(typeof(IOrdersView))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class OrdersView : UserControl, IOrdersView
     {
         public OrdersView()
@@ -43,10 +32,10 @@ namespace StockTraderRI.Modules.Position.Orders
             InitializeComponent();
         }
 
-        public void SetModel(IOrdersPresentationModel model)
+        [Import]
+        public IOrdersViewModel ViewModel
         {
-            this.DataContext = model;
+            set { this.DataContext = value; }
         }
     }
-   
 }

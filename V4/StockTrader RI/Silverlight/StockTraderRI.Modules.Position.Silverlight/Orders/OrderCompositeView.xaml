@@ -2,7 +2,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" 
-    xmlns:Converters="clr-namespace:StockTraderRI.Infrastructure.Converters;assembly=StockTraderRI.Infrastructure">
+    xmlns:Converters="clr-namespace:StockTraderRI.Infrastructure.Converters;assembly=StockTraderRI.Infrastructure"
+    xmlns:orders="clr-namespace:StockTraderRI.Modules.Position.Orders">
     <UserControl.Resources>
         <Style x:Key="HeaderedContentControlStyle1" TargetType="toolkit:HeaderedContentControl">
             <Setter Property="Foreground" Value="#FF000000"/>
@@ -22,7 +23,12 @@
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Border Padding="5,5,5,5" BorderBrush="#77000000" BorderThickness="1,1,1,1" Margin="0,0,0,10" CornerRadius="12,12,12,12">
-            <toolkit:HeaderedContentControl x:Name="HeaderedControl" BorderThickness="2,1,2,1" Style="{StaticResource HeaderedContentControlStyle1}" Content="{Binding OrderDetailsView}" >
+            <toolkit:HeaderedContentControl x:Name="HeaderedControl" BorderThickness="2,1,2,1" Style="{StaticResource HeaderedContentControlStyle1}" Content="{Binding OrderDetails}">
+                <ContentControl.ContentTemplate>
+                    <DataTemplate>
+                        <orders:OrderDetailsView/>
+                    </DataTemplate>
+                </ContentControl.ContentTemplate>
                 <toolkit:HeaderedContentControl.Header>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -33,7 +39,7 @@
                             <TextBlock Text="{Binding Converter={StaticResource transactionTypeToStringConverter}, Path=TransactionInfo.TransactionType}" Style="{StaticResource TextBlockSectionTitle}" />
                             <TextBlock Text="{Binding HeaderInfo}" Style="{StaticResource TextBlockSectionTitle}" />
                         </StackPanel>
-                        <ContentControl HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1" Content="{Binding OrderCommandsView}" />
+                        <orders:OrderCommandsView Grid.Column="1" HorizontalAlignment="Right" DataContext="{Binding OrderDetails}"/>
                     </Grid>
                 </toolkit:HeaderedContentControl.Header>
             </toolkit:HeaderedContentControl>

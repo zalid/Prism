@@ -165,7 +165,7 @@ namespace Microsoft.Practices.Prism.Tests.Commands
 
             delegateCommand.RaiseCanExecuteChanged();
             Assert.IsTrue(multiCommand.CanExecuteChangedRaised);
-        }        
+        }
 
         [TestMethod]
         public void UnregisterCommandRemovesFromExecuteDelegation()
@@ -356,7 +356,7 @@ namespace Microsoft.Practices.Prism.Tests.Commands
 
             compositeCommand.RegisterCommand(firstCommand);
             compositeCommand.RegisterCommand(secondCommand);
-            
+
             compositeCommand.Execute(null);
 
             Assert.IsTrue(secondCommand.WasExecuted);
@@ -382,6 +382,27 @@ namespace Microsoft.Practices.Prism.Tests.Commands
             compositeCommand.RegisterCommand(duplicateCommand);
         }
 
+#if SILVERLIGHT
+        [TestMethod]
+        public void ShouldKeepStrongReferenceToOnCanExecuteChangedHandlers()
+        {
+            var command = new TestableCompositeCommand();
+
+            var handlers = new CanExecutChangeHandler();
+
+            var weakHandlerRef = new WeakReference(handlers);
+            Assert.IsTrue(weakHandlerRef.IsAlive, "FirstOne");
+
+            command.CanExecuteChanged += handlers.CanExecuteChangeHandler;
+
+            handlers = null;
+
+            GC.Collect();
+
+            Assert.IsTrue(weakHandlerRef.IsAlive);
+            Assert.IsNotNull(command); // Only here to ensure command survives optimizations and the GC.Collect
+        }
+#else
         [TestMethod]
         public void ShouldKeepWeakReferenceToOnCanExecuteChangedHandlers()
         {
@@ -395,14 +416,17 @@ namespace Microsoft.Practices.Prism.Tests.Commands
             GC.Collect();
 
             Assert.IsFalse(weakHandlerRef.IsAlive);
+            Assert.IsNotNull(command); // Only here to ensure command survives optimizations and the GC.Collect
         }
+#endif
 
-        
         private class CanExecutChangeHandler
         {
+            private int callCount = 0;
+
             public void CanExecuteChangeHandler(object sender, EventArgs e)
             {
-                
+                callCount++;
             }
         }
     }

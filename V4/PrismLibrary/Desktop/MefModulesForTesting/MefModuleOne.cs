@@ -15,11 +15,12 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System.ComponentModel.Composition;
+using Microsoft.Practices.Prism.MefExtensions.Modularity;
 using Microsoft.Practices.Prism.Modularity;
 
 namespace MefModulesForTesting
 {
-    [Export(typeof(IModule))]
+    [ModuleExport("MefModuleOne", typeof(MefModuleOne))]
     public class MefModuleOne : IModule
     {
         public bool WasInitialized = false;

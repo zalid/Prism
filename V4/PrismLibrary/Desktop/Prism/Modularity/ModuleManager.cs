@@ -62,6 +62,14 @@ namespace Microsoft.Practices.Prism.Modularity
             this.loggerFacade = loggerFacade;
         }
 
+        /// <summary>
+        /// The module catalog specified in the constructor.
+        /// </summary>
+        protected IModuleCatalog ModuleCatalog
+        {
+            get { return this.moduleCatalog; }
+        }
+
 
         /// <summary>
         /// Raised repeatedly to provide progress as modules are loaded in the background.
@@ -103,6 +111,7 @@ namespace Microsoft.Practices.Prism.Modularity
 
             this.LoadModulesWhenAvailable();
         }
+
 
         /// <summary>
         /// Loads and initializes the module on the <see cref="ModuleCatalog"/> with the name <paramref name="moduleName"/>.
@@ -181,7 +190,10 @@ namespace Microsoft.Practices.Prism.Modularity
             this.LoadModulesThatAreReadyForLoad();
         }
 
-        private void LoadModulesThatAreReadyForLoad()
+        /// <summary>
+        /// Loads the modules that are not intialized and have their dependencies loaded.
+        /// </summary>
+        protected void LoadModulesThatAreReadyForLoad()
         {
             bool keepLoading = true;
             while (keepLoading)

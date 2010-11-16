@@ -37,7 +37,7 @@ namespace AcceptanceTestLibrary.Common.Launcher.Silverlight
                 Process appProcess = Process.Start(GetBrowserPath(), silverlightApplicationPath);
                 ProcessId = appProcess.Id;
 
-                Thread.Sleep(10000);
+                Thread.Sleep(15000);
 
                 //Get the current process and return that
                 Process targetProcess = GetCurrentAppProcess();

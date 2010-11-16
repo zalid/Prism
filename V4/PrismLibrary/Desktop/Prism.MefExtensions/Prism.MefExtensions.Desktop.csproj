@@ -16,25 +16,26 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Lib\Desktop\Prism\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>..\..\..\Lib\Desktop\Prism\Microsoft.Practices.Prism.MefExtensions.XML</DocumentationFile>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Debug\Microsoft.Practices.Prism.MefExtensions.XML</DocumentationFile>
     <NoWarn>0649</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Lib\Desktop\Prism\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <DocumentationFile>..\..\..\Lib\Desktop\Prism\Microsoft.Practices.Prism.MefExtensions.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Microsoft.Practices.Prism.MefExtensions.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation">
@@ -58,6 +59,7 @@
     <Compile Include="Events\MefEventAggregator.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MefBootstrapper.cs" />
+    <Compile Include="Modularity\DownloadedPartCatalogCollection.cs" />
     <Compile Include="Modularity\IModuleExport.cs" />
     <Compile Include="Modularity\MefFileModuleTypeLoader.Desktop.cs" />
     <Compile Include="Modularity\MefModuleInitializer.cs" />
@@ -76,12 +78,13 @@
     <Compile Include="Regions\Behaviors\MefBindRegionContextToDependencyObjectBehavior.cs" />
     <Compile Include="Regions\Behaviors\MefDelayedRegionCreationBehavior.cs" />
     <Compile Include="Regions\Behaviors\MefRegionActiveAwareBehavior.cs" />
+    <Compile Include="Regions\Behaviors\MefRegionMemberLifetimeBehavior.cs" />
     <Compile Include="Regions\Behaviors\MefRegionManagerRegistrationBehavior.cs" />
     <Compile Include="Regions\Behaviors\MefSelectorItemsSourceSyncBehavior.cs" />
     <Compile Include="Regions\Behaviors\MefSyncRegionContextWithHostBehavior.cs" />
     <Compile Include="Regions\MefContentControlRegionAdapter.cs" />
     <Compile Include="Regions\MefItemsControlRegionAdapter.cs" />
-    <Compile Include="Regions\MefNavigationTargetHandler.cs" />
+    <Compile Include="Regions\MefRegionNavigationContentLoader.cs" />
     <Compile Include="Regions\MefRegionAdapterMappings.cs" />
     <Compile Include="Regions\MefRegionBehaviorFactory.cs" />
     <Compile Include="Regions\MefRegionManager.cs" />

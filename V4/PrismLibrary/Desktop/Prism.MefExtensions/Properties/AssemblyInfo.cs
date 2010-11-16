@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Prism.MefExtensions.Desktop")]
+[assembly: AssemblyProduct("Prism")]
 [assembly: AssemblyCopyright("Copyright (c) 2008,2009, 2010 Microsoft Corporation.  All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

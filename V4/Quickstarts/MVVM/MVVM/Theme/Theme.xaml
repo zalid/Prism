@@ -202,24 +202,6 @@
     </Style>
 
 
-    <!-- Tooltip -->
-    <Style TargetType="ToolTip">
-        <Setter Property="Width" Value="250" />       
-        <Setter Property="Background" Value="#FFFF99" />
-        <Setter Property="FontSize" Value="10" />
-        <Setter Property="Foreground" Value="Black" />        
-        <Setter Property="BorderBrush" Value="#FFCC33" />
-        <Setter Property="BorderThickness" Value="2" />        
-    </Style>
-
-    <!-- Tooltip image -->
-    <Style x:Name="ToolTipImageStyle" TargetType="Image">
-        <Setter Property="Source" Value="../Images/info.png"></Setter>
-        <Setter Property="Width" Value="15"></Setter>
-        <Setter Property="Height" Value="15"></Setter>
-        <Setter Property="Margin" Value="2,0,0,0"></Setter>
-    </Style>
-
     <!-- Border -->
     <Style x:Name="BorderBrush" TargetType="Border">
         <Setter Property="BorderBrush" Value="#FF0F68A6" />

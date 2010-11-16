@@ -21,6 +21,7 @@ using System.Threading;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
+using System.Collections.Generic;
 
 namespace Microsoft.Practices.Prism.Tests.Modularity
 {
@@ -109,7 +110,104 @@ namespace Microsoft.Practices.Prism.Tests.Modularity
             typeLoader.LoadModuleType(moduleInfo2);
 
             Assert.IsFalse(mockFileDownloader.DownloadAsyncCalled);
-        }        
+        }    
+    
+        [TestMethod]
+        public void ShouldRaiseDownloadCompletedForEachModuleInfoWhenDownloadedFromSameUri()
+        {
+            var mockFileDownloader = new MockFileDownloader();
+
+            const string moduleATypeName = "Microsoft.Practices.Prism.Tests.Mocks.Modules.RemoteModule, RemoteModuleA, Version=0.0.0.0";
+            var remoteModuleUri = "http://MyModule.xap";
+            var moduleInfoA = new ModuleInfo() { Ref = remoteModuleUri, ModuleName = "ModuleA", ModuleType = moduleATypeName };
+
+            const string moduleBTypeName = "Microsoft.Practices.Prism.Tests.Mocks.Modules.RemoteModule, RemoteModuleB, Version=0.0.0.0";
+            var moduleInfoB = new ModuleInfo() { Ref = remoteModuleUri, ModuleName = "ModuleB", ModuleType = moduleBTypeName };
+
+            XapModuleTypeLoader typeLoader = new TestableXapModuleTypeLoader(mockFileDownloader);
+
+            List<ModuleInfo> downloadedModuleInfos = new List<ModuleInfo>();
+            typeLoader.LoadModuleCompleted += (o, e) =>
+                {
+                    downloadedModuleInfos.Add(e.ModuleInfo);
+                };
+
+            typeLoader.LoadModuleType(moduleInfoA);
+            typeLoader.LoadModuleType(moduleInfoB);
+
+            Stream xapStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Microsoft.Practices.Prism.Tests.Mocks.Modules.RemoteModules.xap");
+            mockFileDownloader.InvokeOpenReadCompleted(new DownloadCompletedEventArgs(xapStream, null, false, mockFileDownloader.DownloadAsyncArgumentUserToken));
+
+
+            Assert.IsTrue(downloadedModuleInfos.Contains(moduleInfoA));
+            Assert.IsTrue(downloadedModuleInfos.Contains(moduleInfoB));
+        }
+
+        [TestMethod]
+        public void ShouldRaiseDownloadCompletedOnceIfSameModuleInfoInstanceRequestedTwice()
+        {
+            var mockFileDownloader = new MockFileDownloader();
+
+            const string moduleATypeName = "Microsoft.Practices.Prism.Tests.Mocks.Modules.RemoteModule, RemoteModuleA, Version=0.0.0.0";
+            var remoteModuleUri = "http://MyModule.xap";
+            var moduleInfoA = new ModuleInfo() { Ref = remoteModuleUri, ModuleName = "ModuleA", ModuleType = moduleATypeName };
+
+            const string moduleBTypeName = "Microsoft.Practices.Prism.Tests.Mocks.Modules.RemoteModule, RemoteModuleB, Version=0.0.0.0";
+            var moduleInfoB = new ModuleInfo() { Ref = remoteModuleUri, ModuleName = "ModuleB", ModuleType = moduleBTypeName };
+
+            XapModuleTypeLoader typeLoader = new TestableXapModuleTypeLoader(mockFileDownloader);
+
+            List<ModuleInfo> downloadedModuleInfos = new List<ModuleInfo>();
+            typeLoader.LoadModuleCompleted += (o, e) =>
+            {
+                downloadedModuleInfos.Add(e.ModuleInfo);
+            };
+
+            typeLoader.LoadModuleType(moduleInfoA);
+            typeLoader.LoadModuleType(moduleInfoA);
+            typeLoader.LoadModuleType(moduleInfoB);
+            typeLoader.LoadModuleType(moduleInfoB);
+
+            Stream xapStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Microsoft.Practices.Prism.Tests.Mocks.Modules.RemoteModules.xap");
+            mockFileDownloader.InvokeOpenReadCompleted(new DownloadCompletedEventArgs(xapStream, null, false, mockFileDownloader.DownloadAsyncArgumentUserToken));
+
+
+            Assert.AreEqual(2, downloadedModuleInfos.Count);
+            Assert.IsTrue(downloadedModuleInfos.Contains(moduleInfoA));
+            Assert.IsTrue(downloadedModuleInfos.Contains(moduleInfoB));
+        }
+
+        [TestMethod]
+        public void ShouldNotDownloadAgainIfAlreadyDownloaded()
+        {
+            var mockFileDownloader = new MockFileDownloader();
+
+            const string moduleATypeName = "Microsoft.Practices.Prism.Tests.Mocks.Modules.RemoteModule, RemoteModuleA, Version=0.0.0.0";
+            var remoteModuleUri = "http://MyModule.xap";
+            var moduleInfoA = new ModuleInfo() { Ref = remoteModuleUri, ModuleName = "ModuleA", ModuleType = moduleATypeName };
+
+            XapModuleTypeLoader typeLoader = new TestableXapModuleTypeLoader(mockFileDownloader);
+
+            List<ModuleInfo> downloadedModuleInfos = new List<ModuleInfo>();
+            typeLoader.LoadModuleCompleted += (o, e) =>
+            {
+                downloadedModuleInfos.Add(e.ModuleInfo);
+            };
+
+            typeLoader.LoadModuleType(moduleInfoA);
+
+            Stream xapStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Microsoft.Practices.Prism.Tests.Mocks.Modules.RemoteModules.xap");
+            mockFileDownloader.InvokeOpenReadCompleted(new DownloadCompletedEventArgs(xapStream, null, false, mockFileDownloader.DownloadAsyncArgumentUserToken));
+
+            mockFileDownloader.DownloadAsyncCalled = false;
+
+            typeLoader.LoadModuleType(moduleInfoA);
+
+            Assert.AreEqual(2, downloadedModuleInfos.Count);
+            Assert.AreEqual(moduleInfoA, downloadedModuleInfos[0]);
+            Assert.AreEqual(moduleInfoA, downloadedModuleInfos[1]);
+            Assert.IsFalse(mockFileDownloader.DownloadAsyncCalled);            
+        }
     }
 
     internal class TestableXapModuleTypeLoader : XapModuleTypeLoader

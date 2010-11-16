@@ -22,9 +22,12 @@ using System.Xml.Linq;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.News.Properties;
+using System.ComponentModel.Composition;
 
 namespace StockTraderRI.Modules.News.Services
 {
+    [Export(typeof(INewsFeedService))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class NewsFeedService : INewsFeedService
     {
         readonly Dictionary<string, List<NewsArticle>> newsData = new Dictionary<string, List<NewsArticle>>();

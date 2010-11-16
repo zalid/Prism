@@ -76,7 +76,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\..\..\LIB\Desktop\Prism\Microsoft.Practices.Prism.dll</HintPath>
+      <HintPath>..\..\..\..\Bin\Desktop\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

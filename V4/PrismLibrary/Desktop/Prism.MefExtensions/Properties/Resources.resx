@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="FailedToGetType" xml:space="preserve">
-    <value>Unable to retrieve the module type {0} from the loaded assemblies.  You may need to specify a more fully-qualified type name.</value>
+    <value>Unable to locate the module with type '{0}' among the exported modules. Make sure the module name in the module catalog matches that specified on ModuleExportAttribute for the module type.</value>
   </data>
   <data name="NullCompositionContainerException" xml:space="preserve">
     <value>The CompositionContainer is required and cannot be null.</value>
@@ -132,52 +132,52 @@
   <data name="LoggerWasCreatedSuccessfully" xml:space="preserve">
     <value>Logger was created successfully.</value>
   </data>
-	<data name="CreatingModuleCatalog">
-		<value xml:space="preserve">Creating module catalog.</value>
-	</data>
-	<data name="ConfiguringModuleCatalog">
-		<value xml:space="preserve">Configuring module catalog.</value>
-	</data>
-	<data name="CreatingCatalogForMEF">
-		<value xml:space="preserve">Creating catalog for MEF</value>
-	</data>
-	<data name="ConfiguringCatalogForMEF">
-		<value xml:space="preserve">Configuring catalog for MEF</value>
-	</data>
-	<data name="CreatingMefContainer">
-		<value xml:space="preserve">Creating Mef container</value>
-	</data>
-	<data name="ConfiguringMefContainer">
-		<value xml:space="preserve">Configuring MEF container</value>
-	</data>
-	<data name="ConfiguringServiceLocatorSingleton">
-		<value xml:space="preserve">Configuring ServiceLocator singleton</value>
-	</data>
-	<data name="ConfiguringRegionAdapters">
-		<value xml:space="preserve">Configuring region adapters</value>
-	</data>
-	<data name="ConfiguringDefaultRegionBehaviors">
-		<value xml:space="preserve">Configuring default region behaviors</value>
-	</data>
-	<data name="RegisteringFrameworkExceptionTypes">
-		<value xml:space="preserve">Registering Framework Exception Types</value>
-	</data>
-	<data name="CreatingShell">
-		<value xml:space="preserve">Creating shell</value>
-	</data>
-	<data name="SettingTheRegionManager">
-		<value xml:space="preserve">Setting the RegionManager.</value>
-	</data>
-	<data name="UpdatingRegions">
-		<value xml:space="preserve">Updating Regions.</value>
-	</data>
-	<data name="InitializingShell">
-		<value xml:space="preserve">Initializing shell</value>
-	</data>
-	<data name="InitializingModules">
-		<value xml:space="preserve">Initializing modules</value>
-	</data>
-	<data name="BootstrapperSequenceCompleted">
-		<value xml:space="preserve">Bootstrapper sequence completed</value>
-	</data>
+  <data name="CreatingModuleCatalog" xml:space="preserve">
+    <value>Creating module catalog.</value>
+  </data>
+  <data name="ConfiguringModuleCatalog" xml:space="preserve">
+    <value>Configuring module catalog.</value>
+  </data>
+  <data name="CreatingCatalogForMEF" xml:space="preserve">
+    <value>Creating catalog for MEF</value>
+  </data>
+  <data name="ConfiguringCatalogForMEF" xml:space="preserve">
+    <value>Configuring catalog for MEF</value>
+  </data>
+  <data name="CreatingMefContainer" xml:space="preserve">
+    <value>Creating Mef container</value>
+  </data>
+  <data name="ConfiguringMefContainer" xml:space="preserve">
+    <value>Configuring MEF container</value>
+  </data>
+  <data name="ConfiguringServiceLocatorSingleton" xml:space="preserve">
+    <value>Configuring ServiceLocator singleton</value>
+  </data>
+  <data name="ConfiguringRegionAdapters" xml:space="preserve">
+    <value>Configuring region adapters</value>
+  </data>
+  <data name="ConfiguringDefaultRegionBehaviors" xml:space="preserve">
+    <value>Configuring default region behaviors</value>
+  </data>
+  <data name="RegisteringFrameworkExceptionTypes" xml:space="preserve">
+    <value>Registering Framework Exception Types</value>
+  </data>
+  <data name="CreatingShell" xml:space="preserve">
+    <value>Creating shell</value>
+  </data>
+  <data name="SettingTheRegionManager" xml:space="preserve">
+    <value>Setting the RegionManager.</value>
+  </data>
+  <data name="UpdatingRegions" xml:space="preserve">
+    <value>Updating Regions.</value>
+  </data>
+  <data name="InitializingShell" xml:space="preserve">
+    <value>Initializing shell</value>
+  </data>
+  <data name="InitializingModules" xml:space="preserve">
+    <value>Initializing modules</value>
+  </data>
+  <data name="BootstrapperSequenceCompleted" xml:space="preserve">
+    <value>Bootstrapper sequence completed</value>
+  </data>
 </root>

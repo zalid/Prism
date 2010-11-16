@@ -15,7 +15,6 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System;
-using System.Windows.Controls;
 
 namespace Microsoft.Practices.Prism.Regions
 {
@@ -35,5 +34,20 @@ namespace Microsoft.Practices.Prism.Regions
         /// </summary>
         /// <value>The journal.</value>
         IRegionNavigationJournal Journal { get; }
+
+        /// <summary>
+        /// Raised when the region is about to be navigated to content.
+        /// </summary>
+        event EventHandler<RegionNavigationEventArgs> Navigating;
+
+        /// <summary>
+        /// Raised when the region is navigated to content.
+        /// </summary>
+        event EventHandler<RegionNavigationEventArgs> Navigated;
+
+        /// <summary>
+        /// Raised when a navigation request fails.
+        /// </summary>
+        event EventHandler<RegionNavigationFailedEventArgs> NavigationFailed;
     }
 }

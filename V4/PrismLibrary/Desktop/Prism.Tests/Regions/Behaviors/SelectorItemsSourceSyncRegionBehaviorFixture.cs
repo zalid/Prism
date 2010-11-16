@@ -56,6 +56,28 @@ namespace Microsoft.Practices.Prism.Tests.Regions.Behaviors
         }
 
         [TestMethod]
+        public void IfViewsHaveSortHintThenViewsAreProperlySorted()
+        {
+            SelectorItemsSourceSyncBehavior behavior = CreateBehavior();
+
+            var v1 = new MockSortableView1();
+            var v2 = new MockSortableView2();
+            var v3 = new MockSortableView3();
+            behavior.Attach();
+
+            behavior.Region.Add(v3);
+            behavior.Region.Add(v2);
+            behavior.Region.Add(v1);
+            
+            Assert.AreEqual(3, (behavior.HostControl as Selector).Items.Count);
+
+            Assert.AreSame(v1, (behavior.HostControl as Selector).Items[0]);
+            Assert.AreSame(v2, (behavior.HostControl as Selector).Items[1]);
+            Assert.AreSame(v3, (behavior.HostControl as Selector).Items[2]);
+        }
+
+
+        [TestMethod]
         public void SelectionChangedShouldChangeActiveViews()
         {
             SelectorItemsSourceSyncBehavior behavior = CreateBehavior();
@@ -111,10 +133,8 @@ namespace Microsoft.Practices.Prism.Tests.Regions.Behaviors
             behavior.Attach();
         }
 
+#if !SILVERLIGHT
         [TestMethod]
-#if SILVERLIGHT
-        [Ignore]
-#endif
         public void ControlWithExistingBindingOnItemsSourceWithNullValueThrows()
         {
             var behavor = CreateBehavior();
@@ -134,6 +154,7 @@ namespace Microsoft.Practices.Prism.Tests.Regions.Behaviors
                 StringAssert.Contains(ex.Message, "ItemsControl's ItemsSource property is not empty.");
             }
         }
+#endif
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]

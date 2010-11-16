@@ -23,11 +23,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Prism.MefExtensions.Silverlight")]
+[assembly: AssemblyTitle("Microsoft.Practices.Prism.MefExtensions")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Prism.MefExtensions.Silverlight")]
+[assembly: AssemblyProduct("Prism")]
 [assembly: AssemblyCopyright("Copyright (c) 2008,2009,2010 Microsoft Corporation.  All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

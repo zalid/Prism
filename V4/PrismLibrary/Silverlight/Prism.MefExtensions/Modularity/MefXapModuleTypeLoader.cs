@@ -31,20 +31,29 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
     [Export]
     public class MefXapModuleTypeLoader : IModuleTypeLoader
     {
-        private Dictionary<Uri, ModuleInfo> downloadingModules = new Dictionary<Uri, ModuleInfo>();
+        private Dictionary<Uri, List<ModuleInfo>> downloadingModules = new Dictionary<Uri, List<ModuleInfo>>();
         private HashSet<Uri> downloadedUris = new HashSet<Uri>();
+        private DownloadedPartCatalogCollection downloadedPartCatalogs;
 
         /// <summary>
-        /// An aggregrate catalog provided by MEF via an import 
+        /// Initializes a new instance of the <see cref="MefXapModuleTypeLoader"/> class.
         /// </summary>
-        /// <remarks>Due to Silverlight/MEF restrictions this must be public.</remarks>
-        [Import(AllowRecomposition = false)]
-        public AggregateCatalog AggregateCatalog { get; set; }        
+        /// <param name="downloadedPartCatalogs">The downloaded part catalog collection.</param>
+        [ImportingConstructor]
+        public MefXapModuleTypeLoader(DownloadedPartCatalogCollection downloadedPartCatalogs)
+        {
+            if (downloadedPartCatalogs == null)
+            {
+                throw new ArgumentNullException("downloadedPartCatalogs");
+            }
+
+            this.downloadedPartCatalogs = downloadedPartCatalogs;
+        }
 
         /// <summary>
         /// Raised repeatedly to provide progress as modules are loaded in the background.
         /// </summary>
-        public event EventHandler<ModuleDownloadProgressChangedEventArgs> ModuleDownloadProgressChanged;
+        public virtual event EventHandler<ModuleDownloadProgressChangedEventArgs> ModuleDownloadProgressChanged;
 
         private void RaiseModuleDownloadProgressChanged(ModuleInfo moduleInfo, long bytesReceived, long totalBytesToReceive)
         {
@@ -62,7 +71,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
         /// <summary>
         /// Raised when a module is loaded or fails to load.
         /// </summary>
-        public event EventHandler<LoadModuleCompletedEventArgs> LoadModuleCompleted;
+        public virtual event EventHandler<LoadModuleCompletedEventArgs> LoadModuleCompleted;
 
         private void RaiseLoadModuleCompleted(ModuleInfo moduleInfo, Exception error)
         {
@@ -85,11 +94,11 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
         /// <returns>
         /// 	<see langword="true"/> if the current typeloader is able to retrieve the module, otherwise <see langword="false"/>.
         /// </returns>
-        public bool CanLoadModuleType(ModuleInfo moduleInfo)
+        public virtual bool CanLoadModuleType(ModuleInfo moduleInfo)
         {
             if (moduleInfo == null)
-            { 
-                throw new ArgumentNullException("moduleInfo"); 
+            {
+                throw new ArgumentNullException("moduleInfo");
             }
 
             if (!string.IsNullOrEmpty(moduleInfo.Ref))
@@ -106,7 +115,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
         /// </summary>
         /// <param name="moduleInfo">Module that should have it's type loaded.</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Exceptions are included in the resulting message and are handled by subscribers of the LoadModuleCompleted event.")]
-        public void LoadModuleType(ModuleInfo moduleInfo)
+        public virtual void LoadModuleType(ModuleInfo moduleInfo)
         {
             if (moduleInfo == null)
             {
@@ -135,15 +144,20 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
                 if (this.IsSuccessfullyDownloaded(deploymentCatalog.Uri))
                 {
                     this.RaiseLoadModuleCompleted(moduleInfo, null);
-                }
-                // Start downloading if not already in progress.
-                else if (!this.IsDownloading(deploymentCatalog.Uri))
+                }               
+                else
                 {
-                    this.RecordDownloading(deploymentCatalog.Uri, moduleInfo);
+                    bool needToStartDownload = !this.IsDownloading(uri);
 
-                    deploymentCatalog.DownloadProgressChanged += this.DeploymentCatalog_DownloadProgressChanged;
-                    deploymentCatalog.DownloadCompleted += this.DeploymentCatalog_DownloadCompleted;
-                    deploymentCatalog.DownloadAsync();
+                    // I record downloading for the moduleInfo even if I don't need to start a new download
+                    this.RecordDownloading(uri, moduleInfo);
+
+                    if (needToStartDownload)
+                    {
+                        deploymentCatalog.DownloadProgressChanged += this.DeploymentCatalog_DownloadProgressChanged;
+                        deploymentCatalog.DownloadCompleted += this.DeploymentCatalog_DownloadCompleted;
+                        deploymentCatalog.DownloadAsync();
+                    }
                 }
             }
             catch (Exception)
@@ -173,8 +187,12 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
 
         private void HandleDownloadProgressChanged(DeploymentCatalog deploymentCatalog, DownloadProgressChangedEventArgs e)
         {
-            ModuleInfo moduleInfo = this.GetDownloadingModule(deploymentCatalog.Uri);
-            this.RaiseModuleDownloadProgressChanged(moduleInfo, e.BytesReceived, e.TotalBytesToReceive);
+            List<ModuleInfo> moduleInfos = this.GetDownloadingModules(deploymentCatalog.Uri);
+
+            foreach (ModuleInfo moduleInfo in moduleInfos)
+            {
+                this.RaiseModuleDownloadProgressChanged(moduleInfo, e.BytesReceived, e.TotalBytesToReceive);
+            }
         }
 
         private void DeploymentCatalog_DownloadCompleted(object sender, AsyncCompletedEventArgs e)
@@ -197,18 +215,22 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Exceptions are included in the resulting message and are handled by subscribers of the LoadModuleCompleted event.")]
         private void HandleDownloadCompleted(DeploymentCatalog deploymentCatalog, AsyncCompletedEventArgs e)
         {
-            ModuleInfo moduleInfo = GetDownloadingModule(deploymentCatalog.Uri);
+            List<ModuleInfo> moduleInfos = this.GetDownloadingModules(deploymentCatalog.Uri);
+            
             Exception error = e.Error;
             if (error == null)
             {
                 try
                 {
                     this.RecordDownloadComplete(deploymentCatalog.Uri);
-                                        
-                    this.AggregateCatalog.Catalogs.Add(deploymentCatalog);
+
+                    foreach (ModuleInfo moduleInfo in moduleInfos)
+                    {
+                        this.downloadedPartCatalogs.Add(moduleInfo, deploymentCatalog);
+                    }
 
                     this.RecordDownloadSuccess(deploymentCatalog.Uri);
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -216,8 +238,11 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
                 }
             }
 
-            this.RaiseLoadModuleCompleted(moduleInfo, error);
-        }      
+            foreach (ModuleInfo moduleInfo in moduleInfos)
+            {
+                this.RaiseLoadModuleCompleted(moduleInfo, error);
+            }
+        }
 
         private bool IsDownloading(Uri uri)
         {
@@ -231,18 +256,25 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
         {
             lock (this.downloadingModules)
             {
-                if (!this.downloadingModules.ContainsKey(uri))
+                List<ModuleInfo> moduleInfos;
+                if (!this.downloadingModules.TryGetValue(uri, out moduleInfos))
                 {
-                    this.downloadingModules.Add(uri, moduleInfo);
+                    moduleInfos = new List<ModuleInfo>();
+                    this.downloadingModules.Add(uri, moduleInfos);
+                }
+
+                if (!moduleInfos.Contains(moduleInfo))
+                {
+                    moduleInfos.Add(moduleInfo);
                 }
             }
         }
 
-        private ModuleInfo GetDownloadingModule(Uri uri)
+        private List<ModuleInfo> GetDownloadingModules(Uri uri)
         {
             lock (this.downloadingModules)
             {
-                return this.downloadingModules[uri];
+                return new List<ModuleInfo>(this.downloadingModules[uri]);
             }
         }
 
@@ -271,6 +303,6 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
             {
                 this.downloadedUris.Add(uri);
             }
-        }        
+        }
     }
 }

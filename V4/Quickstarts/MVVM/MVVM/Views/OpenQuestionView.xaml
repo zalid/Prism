@@ -5,6 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
     xmlns:prism="http://www.codeplex.com/prism" 
+    xmlns:GuidanceTools="clr-namespace:Microsoft.Practices.Prism.GuidanceTools;assembly=Microsoft.Practices.Prism.GuidanceTools" 
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="400">
 
@@ -20,15 +21,13 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Question.QuestionText}" Style="{StaticResource QuestionLabelStyle}"/>
-        <Image Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Style="{StaticResource ToolTipImageStyle}">
-            <ToolTipService.ToolTip>
-                <StackPanel>
-                    <TextBlock TextWrapping="Wrap">This is an Open Question, any character is allowed.</TextBlock>
-                    <TextBlock TextWrapping="Wrap"> • The OpenQuestionView binds to the AvailableLength property from the OpenQuestionViewModel to show the remaining characters.</TextBlock>
-                    <TextBlock TextWrapping="Wrap"> • The UpdateTextBindingOnPropertyChanged behavior is used to update the binding whenever a new character is entered.</TextBlock>
-                </StackPanel>
-            </ToolTipService.ToolTip>
-        </Image>
+        <GuidanceTools:InfoTipToggleButton Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left">
+            <StackPanel MinWidth="100" MinHeight="24" MaxWidth="400">
+                <TextBlock TextWrapping="Wrap">This is an Open Question, any character is allowed.</TextBlock>
+                <TextBlock TextWrapping="Wrap"> • The OpenQuestionView binds to the AvailableLength property from the OpenQuestionViewModel to show the remaining characters.</TextBlock>
+                <TextBlock TextWrapping="Wrap"> • The UpdateTextBindingOnPropertyChanged behavior is used to update the binding whenever a new character is entered.</TextBlock>
+            </StackPanel>
+        </GuidanceTools:InfoTipToggleButton>
 
         <TextBox Grid.Row="1" Grid.ColumnSpan="2" MinHeight="50"
                  MaxLength="{Binding Question.MaxLength}"

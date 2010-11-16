@@ -72,10 +72,8 @@ namespace Microsoft.Practices.Prism.Tests.Regions
             }
         }
 
+#if !SILVERLIGHT
         [TestMethod]
-#if SILVERLIGHT
-        [Ignore]
-#endif
         public void ControlWithExistingBindingOnContentWithNullValueThrows()
         {
             var control = new ContentControl();
@@ -96,6 +94,7 @@ namespace Microsoft.Practices.Prism.Tests.Regions
                 StringAssert.Contains(ex.Message, "ContentControl's Content property is not empty.");
             }
         }
+#endif
 
         [TestMethod]
         public void AddedItemShouldBeActivated()

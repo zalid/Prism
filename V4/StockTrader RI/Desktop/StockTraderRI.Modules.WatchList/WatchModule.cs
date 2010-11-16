@@ -14,54 +14,23 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-using Microsoft.Practices.Prism.Modularity;
-using Microsoft.Practices.Prism.Regions;
-using Microsoft.Practices.Unity;
-using StockTraderRI.Infrastructure;
-using StockTraderRI.Modules.Watch.AddWatch;
-using StockTraderRI.Modules.Watch.Controllers;
-using StockTraderRI.Modules.Watch.Services;
-using StockTraderRI.Modules.Watch.WatchList;
+// using Microsoft.Practices.Prism.Modularity;
+// using Microsoft.Practices.Prism.MefExtensions.Modularity;
 
 namespace StockTraderRI.Modules.Watch
 {
-    public class WatchModule : IModule
+    /// <summary>
+    /// A placeholder to initialize this module.
+    /// </summary>
+    /// <remarks>
+    /// This module is intentionally left empty because views, services, and other types are discovered through declarative attributes.
+    /// View registration for this module is done through the <see cref="StockTraderRI.Infrastructure.ViewExportAttribute"/>.
+    /// If you extend this reference implementation and need to initialization when this module is loaded, 
+    /// uncomment the module export attribute, IModule interface, Initialize method.
+    /// </remarks>
+    //[ModuleExport(typeof(WatchModule)]
+    public class WatchModule
     {
-        private readonly IUnityContainer _container;
-        private readonly IRegionManager _regionManager;
-
-        public WatchModule(IUnityContainer container, IRegionManager regionManager)
-        {
-            _container = container;
-            _regionManager = regionManager;
-        }
-
-        #region IModule Members
-
-        public void Initialize()
-        {
-            this.RegisterViewsAndServices();
-
-            var controller = this._container.Resolve<IWatchListController>();
-            controller.Run();
-
-            this._regionManager.RegisterViewWithRegion(
-                                                    RegionNames.MainToolBarRegion,
-                                                    () => this._container.Resolve<IAddWatchPresenter>().View);
-        }
-
-        protected void RegisterViewsAndServices()
-        {
-            _container.RegisterType<IWatchListController, WatchListController>();
-            _container.RegisterType<IWatchListService, WatchListService>(new ContainerControlledLifetimeManager());
-
-            _container.RegisterType<IWatchListView, WatchListView>();
-            _container.RegisterType<IWatchListPresentationModel, WatchListPresentationModel>();
-
-            _container.RegisterType<IAddWatchView, AddWatchView>();
-            _container.RegisterType<IAddWatchPresenter, AddWatchPresenter>();
-        }
-
-        #endregion
+        // public void Initialize() { }
     }
 }

@@ -33,7 +33,7 @@ namespace Microsoft.Practices.Prism.Tests.Events
         [TestMethod]
         public void IsEventArgs()
         {
-            Assert.IsTrue(typeof(EventArgs).IsAssignableFrom(typeof(DataEventArgs<>)));
+            Assert.IsTrue(typeof(EventArgs).IsAssignableFrom(typeof(DataEventArgs<string>)));
         }
     }
 }

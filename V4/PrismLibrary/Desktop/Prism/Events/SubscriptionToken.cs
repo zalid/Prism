@@ -19,7 +19,7 @@ using System;
 namespace Microsoft.Practices.Prism.Events
 {
     /// <summary>
-    /// Subsription token returned from <see cref="EventBase"/> on subscribe.
+    /// Subscription token returned from <see cref="EventBase"/> on subscribe.
     /// </summary>
     public class SubscriptionToken : IEquatable<SubscriptionToken>
     {

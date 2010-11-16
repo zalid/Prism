@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
@@ -12,10 +13,11 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>StockTraderRI</RootNamespace>
-    <AssemblyName>StockTraderRI</AssemblyName>
+    <AssemblyName>StockTraderRI.Silverlight</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightApplication>true</SilverlightApplication>
-    <SupportedCultures></SupportedCultures>
+    <SupportedCultures>
+    </SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
     <XapFilename>StockTraderRI.xap</XapFilename>
@@ -24,9 +26,11 @@
     <TestPageFileName>TestPage.html</TestPageFileName>
     <CreateTestPage>true</CreateTestPage>
     <ValidateXaml>true</ValidateXaml>
-    <ThrowErrorsInValidation>false</ThrowErrorsInValidation><FileUpgradeFlags></FileUpgradeFlags>
+    <ThrowErrorsInValidation>false</ThrowErrorsInValidation><FileUpgradeFlags>
+    </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation></UpgradeBackupLocation>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <PublishUrl>publish\</PublishUrl>
@@ -56,7 +60,8 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRules></CodeAnalysisRules>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>Migrated rules for StockTraderRI.Silverlight.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -69,15 +74,20 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRules></CodeAnalysisRules>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>Migrated rules for StockTraderRI.Silverlight.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Practices.Prism.MefExtensions">
+      <HintPath>..\..\..\Bin\Silverlight\Microsoft.Practices.Prism.MefExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity.Silverlight, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\LIB\Silverlight\Unity\Microsoft.Practices.Unity.Silverlight.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
     <Reference Include="system" />
@@ -87,25 +97,19 @@
     <Reference Include="System.Windows.Controls.Data, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Windows.Browser" />
-    <Reference Include="Microsoft.Practices.Prism.UnityExtensions">
-      <HintPath>..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.UnityExtensions.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+      <HintPath>..\..\..\Bin\Silverlight\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Desktop\StockTraderRI\Controls\ResearchControl.cs">
       <Link>Controls\ResearchControl.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI\IShellView.cs">
-      <Link>IShellView.cs</Link>
-    </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI\Resources\ResourceNames.cs">
       <Link>Resources\ResourceNames.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI\ShellPresenter.cs">
-      <Link>ShellPresenter.cs</Link>
+    <Compile Include="..\..\Desktop\StockTraderRI\ShellViewModel.cs">
+      <Link>ShellViewModel.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI\StockTraderRIBootstrapper.cs">
       <Link>StockTraderRIBootstrapper.cs</Link>

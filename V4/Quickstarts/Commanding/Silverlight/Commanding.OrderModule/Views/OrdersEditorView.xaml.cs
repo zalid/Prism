@@ -15,34 +15,21 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System.Windows.Controls;
-using System.Windows;
 using Commanding.Modules.Order.PresentationModels;
 
 namespace Commanding.Modules.Order.Views
 {
+    /// <summary>
+    /// Interaction logic for OrdersEditorView.xaml
+    /// </summary>
     public partial class OrdersEditorView : UserControl
     {
-        public OrdersEditorView()
+        public OrdersEditorView( OrdersEditorPresentationModel model )
         {
             InitializeComponent();
-        }
 
-        public OrdersEditorPresentationModel Model
-        {
-            get { return DataContext as OrdersEditorPresentationModel; }
-            set
-            {
-                DataContext = value;
-                value.PropertyChanged += ModelPropertyChanged;
-            }
-        }
-
-        void ModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "SelectedOrder")
-            {
-                this.SelectedOrderControl.Visibility = this.Model.SelectedOrder != null ? Visibility.Visible : Visibility.Collapsed;
-            }
+            // Set the presentation model as this views data context.
+            DataContext = model;
         }
     }
 }

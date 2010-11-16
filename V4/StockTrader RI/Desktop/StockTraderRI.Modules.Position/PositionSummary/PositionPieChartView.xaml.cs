@@ -15,16 +15,19 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System;
+using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using Microsoft.Practices.Prism.Events;
-using StockTraderRI.Modules.Position.Interfaces;
+using StockTraderRI.Infrastructure;
 
 namespace StockTraderRI.Modules.Position.PositionSummary
 {
     /// <summary>
     /// Interaction logic for PositionPieChartView.xaml
     /// </summary>
-    public partial class PositionPieChartView : UserControl, IPositionPieChartView
+    [ViewExport(RegionName = RegionNames.ResearchRegion)]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public partial class PositionPieChartView : UserControl
     {
         public event EventHandler<DataEventArgs<string>> PositionSelected = delegate { };
 
@@ -33,11 +36,12 @@ namespace StockTraderRI.Modules.Position.PositionSummary
             InitializeComponent();
         }
 
-        public IPositionPieChartPresentationModel Model
+        [Import]
+        public IPositionPieChartViewModel Model
         {
             get
             {
-                return this.DataContext as IPositionPieChartPresentationModel;
+                return this.DataContext as IPositionPieChartViewModel;
             }
             set
             {

@@ -21,7 +21,7 @@ using Microsoft.Practices.Prism.Properties;
 namespace Microsoft.Practices.Prism.Events
 {
     /// <summary>
-    /// Provides a way to retrieve a <see cref="Delegate"/> to execute an action dependending
+    /// Provides a way to retrieve a <see cref="Delegate"/> to execute an action depending
     /// on the value of a second filter predicate that returns true if the action should execute.
     /// </summary>
     /// <typeparam name="TPayload">The type to use for the generic <see cref="System.Action{TPayload}"/> and <see cref="Predicate{TPayload}"/> types.</typeparam>

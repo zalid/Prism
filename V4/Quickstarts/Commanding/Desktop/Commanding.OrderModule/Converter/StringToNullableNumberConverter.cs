@@ -20,6 +20,9 @@ using System.Windows.Data;
 
 namespace Commanding.Modules.Order.Converter
 {
+    /// <summary>
+    /// Converts a String to a nullable Integer or Decimal.
+    /// </summary>
     public class StringToNullableNumberConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

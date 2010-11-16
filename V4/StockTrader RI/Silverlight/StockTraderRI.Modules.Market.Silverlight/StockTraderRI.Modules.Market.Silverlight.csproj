@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
@@ -16,9 +17,11 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
-    <ThrowErrorsInValidation>false</ThrowErrorsInValidation><FileUpgradeFlags></FileUpgradeFlags>
+    <ThrowErrorsInValidation>false</ThrowErrorsInValidation><FileUpgradeFlags>
+    </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation></UpgradeBackupLocation>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <PublishUrl>publish\</PublishUrl>
@@ -50,7 +53,8 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRules></CodeAnalysisRules>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>Migrated rules for StockTraderRI.Modules.Market.Silverlight.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -64,13 +68,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisRules></CodeAnalysisRules>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
     <CodeAnalysisRuleSet>Migrated rules for StockTraderRI.Modules.Market.Silverlight.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Practices.Prism.MefExtensions">
+      <HintPath>..\..\..\Bin\Silverlight\Microsoft.Practices.Prism.MefExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity.Silverlight">
       <HintPath>..\..\..\LIB\Silverlight\Unity\Microsoft.Practices.Unity.Silverlight.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
     <Reference Include="system" />
@@ -87,7 +96,7 @@
     <Reference Include="System.Windows.Browser" />
     <Reference Include="System.Xml.Linq, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+      <HintPath>..\..\..\Bin\Silverlight\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -104,14 +113,8 @@
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Market\Services\MarketHistoryService.cs">
       <Link>Services\MarketHistoryService.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Market\TrendLine\ITrendLinePresentationModel.cs">
-      <Link>TrendLine\ITrendLinePresentationModel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Market\TrendLine\ITrendLineView.cs">
-      <Link>TrendLine\ITrendLineView.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Market\TrendLine\TrendLinePresentationModel.cs">
-      <Link>TrendLine\TrendLinePresentationModel.cs</Link>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Market\TrendLine\TrendLineViewModel.cs">
+      <Link>TrendLine\TrendLineViewModel.cs</Link>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -179,7 +182,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkReference="65e5631b-965b-4e16-9b98-6dcae79b0d85" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="65e5631b-965b-4e16-9b98-6dcae79b0d85" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

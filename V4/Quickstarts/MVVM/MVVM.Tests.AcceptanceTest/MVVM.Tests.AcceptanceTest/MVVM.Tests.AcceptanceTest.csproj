@@ -1,8 +1,10 @@
-﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion></ProductVersion>
+    <ProductVersion>
+    </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{6F7A9027-4421-4CB6-BE41-41B1CAC9CA2D}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -90,7 +92,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>$(MSBuildBinPath)\msbuild.exe "$(SolutionDir)..\MVVM.sln" /p:configuration=$(ConfigurationName)</PreBuildEvent>
+    <PreBuildEvent>$(MSBuildBinPath)\msbuild.exe "$(SolutionDir)..\MVVM Quickstart.sln" /p:configuration=$(ConfigurationName)</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

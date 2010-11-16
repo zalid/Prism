@@ -76,7 +76,7 @@ namespace Microsoft.Practices.Prism.Regions
         }
 
         /// <summary>
-        /// Creates an instance of the the behavior <see cref="Type"/> that is registered using the specified key.
+        /// Creates an instance of the behavior <see cref="Type"/> that is registered using the specified key.
         /// </summary>
         /// <param name="key">The key that is used to register a behavior type.</param>
         /// <returns>A new instance of the behavior. </returns>

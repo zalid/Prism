@@ -18,24 +18,45 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using StockTraderRI.Resources;
+using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 
 namespace StockTraderRI
 {
-    public partial class Shell : UserControl, IShellView
+    [Export]
+    public partial class Shell : UserControl
     {
         private const int VisibleGridDefaultHeight = 5;
 
         public Shell()
         {
             InitializeComponent();
+
+            this.Loaded += new RoutedEventHandler(Shell_Loaded);
         }
 
-        public void ShowView()
+        /// <summary>
+        /// Sets the ViewModel.
+        /// </summary>
+        /// <remarks>
+        /// This set-only property is annotated with the <see cref="ImportAttribute"/> so it is injected by MEF with
+        /// the appropriate view model.
+        /// </remarks>
+        [Import]
+        [SuppressMessage("Microsoft.Design", "CA1044:PropertiesShouldNotBeWriteOnly", Justification = "Needs to be a property to be composed by MEF")]
+        public ShellViewModel ViewModel
         {
-            Application.Current.RootVisual = this;
+            set
+            {
+                this.DataContext = value;
+            }
+        } 
+
+        private void Shell_Loaded(object sender, RoutedEventArgs e)
+        {
             var story = (Storyboard)this.Resources[ResourceNames.EntryStoryboardName];
             story.Begin();
-        }
+        }      
 
         private void ActionControl_LayoutUpdated(object sender, System.EventArgs e)
         {

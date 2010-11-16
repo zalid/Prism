@@ -370,6 +370,16 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
         }
 
         [TestMethod]
+        public void RegionLifetimeBehaviorIsRegisteredWithContainer()
+        {
+            var bootstrapper = new DefaultMefBootstrapper();
+            bootstrapper.Run();
+
+            var exported = bootstrapper.BaseContainer.GetExportedValue<RegionMemberLifetimeBehavior>();
+            Assert.IsNotNull(exported);
+        }
+
+        [TestMethod]
         public void RegionNavigationServiceIsRegisteredWithContainer()
         {
             var bootstrapper = new DefaultMefBootstrapper();
@@ -417,7 +427,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
             var bootstrapper = new DefaultMefBootstrapper();
             bootstrapper.Run();
 
-            var exported = bootstrapper.BaseContainer.GetExportedValue<INavigationTargetHandler>();
+            var exported = bootstrapper.BaseContainer.GetExportedValue<IRegionNavigationContentLoader>();
             Assert.IsNotNull(exported);
         }       
 

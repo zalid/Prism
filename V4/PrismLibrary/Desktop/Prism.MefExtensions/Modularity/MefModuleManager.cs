@@ -33,26 +33,6 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
     [Export(typeof(IModuleManager))]
     public partial class MefModuleManager : ModuleManager, IPartImportsSatisfiedNotification
     {
-        // disable the warning that the field is never assigned to, and will always have its default value null
-        // as it is imported by MEF
-#pragma warning disable 0649
-#if SILVERLIGHT
-
-        /// <summary>
-        /// Gets or sets the imported module catalog.
-        /// </summary>
-        /// <value>The module catalog.</value>
-        /// <remarks>
-        /// MEF requires this be public in Silverlight applications.
-        /// </remarks>
-        [Import(AllowRecomposition = false)]
-        public IModuleCatalog ModuleCatalog { get; set; }
-#else
-        [Import(AllowRecomposition = false)] 
-        private IModuleCatalog ModuleCatalog { get; set; }
-#endif
-#pragma warning restore 0649
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MefModuleManager"/> class.
         /// </summary>
@@ -96,8 +76,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
         public virtual void OnImportsSatisfied()
         {
             // To prevent a double foreach loop, we key on the module type for anything already in the catalog.
-            ILookup<string, ModuleInfo> registeredModules =
-                this.ModuleCatalog.Modules.ToLookup<ModuleInfo, string>(m => m.ModuleType);
+            IDictionary<string, ModuleInfo> registeredModules = this.ModuleCatalog.Modules.ToDictionary(m => m.ModuleName);
 
             foreach (Lazy<IModule, IModuleExport> lazyModule in this.ImportedModules)
             {
@@ -105,16 +84,17 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
                 // Using GetType().Name would cause the Module to be constructed here rather than lazily when the module is needed.
                 Type moduleType = lazyModule.Metadata.ModuleType;
 
-                // Only if the module is not already in the catalog is it added.
-                // This means that existing attributes in configuration or XAML manifests win over ModuleExportAttribute properties.
-                if (!registeredModules.Contains(moduleType.AssemblyQualifiedName))
+                ModuleInfo registeredModule = null;
+                if (!registeredModules.TryGetValue(lazyModule.Metadata.ModuleName, out registeredModule))
                 {
+                    // If the module is not already in the catalog is it added.
                     ModuleInfo moduleInfo = new ModuleInfo()
-                                                {
-                                                    ModuleName = lazyModule.Metadata.ModuleName,
-                                                    ModuleType = moduleType.AssemblyQualifiedName,
-                                                    InitializationMode = lazyModule.Metadata.InitializationMode
-                                                };
+                    {
+                        ModuleName = lazyModule.Metadata.ModuleName,
+                        ModuleType = moduleType.AssemblyQualifiedName,
+                        InitializationMode = lazyModule.Metadata.InitializationMode,
+                        State = lazyModule.Metadata.InitializationMode == InitializationMode.OnDemand ? ModuleState.NotStarted : ModuleState.ReadyForInitialization,
+                    };
 
                     if (lazyModule.Metadata.DependsOnModuleNames != null)
                     {
@@ -123,7 +103,14 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
 
                     this.ModuleCatalog.AddModule(moduleInfo);
                 }
+                else
+                {
+                    // If the module is already in the catalog then override the module type name from the imported module
+                    registeredModule.ModuleType = moduleType.AssemblyQualifiedName;
+                }
             }
+
+            this.LoadModulesThatAreReadyForLoad();
         }
 
         /// <summary>
@@ -133,20 +120,8 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
         /// <returns>True if the module needs to be retrieved.  Otherwise, false.</returns>
         protected override bool ModuleNeedsRetrieval(ModuleInfo moduleInfo)
         {
-            if (this.ImportedModules != null && this.ImportedModules.Count() != 0)
-            {
-                // It is important that the Metadata.ModuleType is used here. 
-                // Using GetType().Name would cause the Module to be constructed here rather than lazily when the module is needed.
-                Lazy<IModule, IModuleExport> module =
-                    this.ImportedModules.FirstOrDefault(
-                        lazyModule => (lazyModule.Metadata.ModuleType.Name == moduleInfo.ModuleName));
-                if (module != null)
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return this.ImportedModules == null
+                || !this.ImportedModules.Any(lazyModule => lazyModule.Metadata.ModuleName == moduleInfo.ModuleName);
         }
     }
 }

@@ -27,7 +27,7 @@ using System.Windows.Markup;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft Corporation")]
-[assembly: AssemblyProduct("Prism Library")]
+[assembly: AssemblyProduct("Prism")]
 [assembly: AssemblyCopyright("Copyright (c) 2008,2009,2010 Microsoft Corporation.  All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -53,3 +53,4 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("http://www.codeplex.com/CompositeWPF", "Microsoft.Practices.Prism.Regions")]
 [assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.Regions")]
 [assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.Commands")]
+[assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.ViewModel")]

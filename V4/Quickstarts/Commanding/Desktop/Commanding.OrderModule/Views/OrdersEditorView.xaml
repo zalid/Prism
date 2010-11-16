@@ -3,12 +3,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:models="clr-namespace:Commanding.Modules.Order.PresentationModels"
     xmlns:converter="clr-namespace:Commanding.Modules.Order.Converter"
-    Width="Auto" Height="Auto" >
+    Width="Auto" Height="Auto">
+
     <UserControl.Resources>
         <ControlTemplate x:Key="ErrorTemplate">
-        <Border BorderBrush="Red" BorderThickness="1" Padding="2" CornerRadius="2">
-            <AdornedElementPlaceholder />
-        </Border>
+            <Border BorderBrush="Red" BorderThickness="1" Padding="2" CornerRadius="2">
+                <AdornedElementPlaceholder />
+            </Border>
         </ControlTemplate>
         <converter:ErrorConverter x:Key="errorConverter"/>
         <converter:DateConverter x:Key="dateConverter"/>
@@ -51,12 +52,13 @@
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition  Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Label AutomationProperties.AutomationId="OrderNameLabel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding OrderName}"  HorizontalContentAlignment="Left" FontWeight="Bold"/>
+                <Label AutomationProperties.AutomationId="NameLabel" Grid.Row="0" Grid.Column="0" Margin="0,0,0,10">Name</Label>
                 <Label AutomationProperties.AutomationId="DateLabel" Grid.Row="1" Grid.Column="0">Delivery Date</Label>
                 <Label AutomationProperties.AutomationId="QuantityLabel" Grid.Row="2" Grid.Column="0">Quantity</Label>
                 <Label AutomationProperties.AutomationId="PriceLabel" Grid.Row="3" Grid.Column="0">Price</Label>
                 <Label AutomationProperties.AutomationId="ShippingLabel" Grid.Row="4" Grid.Column="0">Shipping</Label>
                 <Label AutomationProperties.AutomationId="TotalLabel" Grid.Row="5" Grid.Column="0">Total</Label>
+                <Label AutomationProperties.AutomationId="OrderNameLabel" Grid.Row="0" Grid.Column="1" Content="{Binding OrderName}" HorizontalContentAlignment="Left" FontWeight="Bold"/>
                 <TextBox AutomationProperties.AutomationId="DeliveryDateTextBox" Grid.Row="1" Grid.Column="1" Text="{Binding DeliveryDate, ValidatesOnExceptions=True, NotifyOnValidationError=True, ValidatesOnDataErrors=True, Converter={StaticResource dateConverter}}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Style="{StaticResource TextBoxInError}" />
                 <TextBox AutomationProperties.AutomationId="QuantityTextBox" Grid.Row="2" Grid.Column="1" Text="{Binding Quantity, ValidatesOnExceptions=True, NotifyOnValidationError=True, ValidatesOnDataErrors=True, Converter={StaticResource stringToNullableNumberConverter}}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Style="{StaticResource TextBoxInError}" />
                 <TextBox AutomationProperties.AutomationId="PriceTextBox" Grid.Row="3" Grid.Column="1" Text="{Binding Price, ValidatesOnExceptions=True, NotifyOnValidationError=True, ValidatesOnDataErrors=True, Converter={StaticResource stringToNullableNumberConverter}}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Style="{StaticResource TextBoxInError}" />
@@ -66,22 +68,24 @@
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
+
     <Grid>
-    <Grid.ColumnDefinitions>
-        <ColumnDefinition Width=".4*"/>
-        <ColumnDefinition  Width=".6*"/>
-    </Grid.ColumnDefinitions>
-    <Border Grid.Column="0" CornerRadius="4,4,4,4" BorderBrush="#193441" Background="#FCFFF5" BorderThickness="2,2,2,2" Margin="5" Padding="5">
-        <ListView AutomationProperties.AutomationId="OrderListView" ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrder, Mode=TwoWay}" Width="Auto" Height="Auto" >
-            <ListView.ItemTemplate>
-                <DataTemplate DataType="{x:Type models:OrderPresentationModel}">
-                    <TextBlock Text="{Binding OrderName}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </Border>
-    <Border Grid.Column="1" CornerRadius="4,4,4,4" BorderBrush="#193441" Background="#FCFFF5" BorderThickness="2,2,2,2" Margin="5" Padding="5">
-        <ContentControl Content="{Binding SelectedOrder}" Width="Auto" Height="Auto"/>
-    </Border>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".4*"/>
+            <ColumnDefinition Width=".6*"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0" CornerRadius="4,4,4,4" BorderBrush="#193441" Background="#FCFFF5" BorderThickness="2,2,2,2" Margin="5" Padding="5">
+            <ListView AutomationProperties.AutomationId="OrderListView" ItemsSource="{Binding Orders}" SelectionMode="Single" Width="Auto" Height="Auto" >
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="{x:Type models:OrderPresentationModel}">
+                        <TextBlock Text="{Binding OrderName}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
+        <Border Grid.Column="1" CornerRadius="4,4,4,4" BorderBrush="#193441" Background="#FCFFF5" BorderThickness="2,2,2,2" Margin="5" Padding="5">
+            <ContentControl Content="{Binding SelectedOrder}" Width="Auto" Height="Auto"/>
+        </Border>
     </Grid>
+
 </UserControl>

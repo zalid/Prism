@@ -40,15 +40,11 @@ namespace MVVM.Client.ViewModels
         private readonly ISingleViewUIService uiService;
         private readonly IQuestionnaireRepository questionnaireRepository;
 
-        // This public constructor is here only for design-time support
-        public AvailableQuestionnaireTemplatesListViewModel()
-        {
-            this.QuestionnaireTemplates = new ObservableCollection<QuestionnaireTemplate>();
-        }
-
         [ImportingConstructor]
         public AvailableQuestionnaireTemplatesListViewModel(IQuestionnaireRepository questionnaireRepository, ISingleViewUIService uiService)
         {
+            this.QuestionnaireTemplates = new ObservableCollection<QuestionnaireTemplate>();
+
             this.questionnaireRepository = questionnaireRepository;
             this.uiService = uiService;
 

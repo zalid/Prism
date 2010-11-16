@@ -21,9 +21,12 @@ using Microsoft.Practices.Prism.Events;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Infrastructure.Models;
+using System.ComponentModel.Composition;
 
 namespace StockTraderRI.Modules.Position.PositionSummary
 {
+    [Export(typeof(IObservablePosition))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class ObservablePosition : IObservablePosition
     {
         private IAccountPositionService accountPositionService;
@@ -31,6 +34,7 @@ namespace StockTraderRI.Modules.Position.PositionSummary
 
         public ObservableCollection<PositionSummaryItem> Items { get; private set; }
 
+        [ImportingConstructor]
         public ObservablePosition(IAccountPositionService accountPositionService, IMarketFeedService marketFeedService, IEventAggregator eventAggregator)
         {
             this.Items = new ObservableCollection<PositionSummaryItem>();

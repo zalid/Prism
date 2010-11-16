@@ -16,13 +16,10 @@
 //===================================================================================
 using System;
 using System.Collections.Generic;
-using Microsoft.Practices.Prism.Tests.Mocks;
-using Microsoft.Practices.Prism;
+using System.Collections.Specialized;
 using Microsoft.Practices.Prism.Regions;
+using Microsoft.Practices.Prism.Tests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Microsoft.Practices.ServiceLocation;
-using System.Windows.Controls;
 
 namespace Microsoft.Practices.Prism.Tests.Regions
 {
@@ -213,7 +210,7 @@ namespace Microsoft.Practices.Prism.Tests.Regions
             {
                 RegionManager.UpdatingRegions -= new EventHandler(RegionManager_UpdatingRegions);
             }
-        }       
+        }
 
         public void RegionManager_UpdatingRegions(object sender, EventArgs e)
         {
@@ -238,13 +235,90 @@ namespace Microsoft.Practices.Prism.Tests.Regions
             }
         }
 
+        [TestMethod]
+        public void WhenAddingRegions_ThenRegionsCollectionNotifiesUpdate()
+        {
+            var regionManager = new RegionManager();
+
+            var region1 = new Region { Name = "region1" };
+            var region2 = new Region { Name = "region2" };
+
+            NotifyCollectionChangedEventArgs args = null;
+            regionManager.Regions.CollectionChanged += (s, e) => args = e;
+
+            regionManager.Regions.Add(region1);
+
+            Assert.AreEqual(NotifyCollectionChangedAction.Add, args.Action);
+            CollectionAssert.AreEqual(new object[] { region1 }, args.NewItems);
+            Assert.AreEqual(0, args.NewStartingIndex);
+            Assert.IsNull(args.OldItems);
+            Assert.AreEqual(-1, args.OldStartingIndex);
+
+            regionManager.Regions.Add(region2);
+
+            Assert.AreEqual(NotifyCollectionChangedAction.Add, args.Action);
+            CollectionAssert.AreEqual(new object[] { region2 }, args.NewItems);
+            Assert.AreEqual(0, args.NewStartingIndex);
+            Assert.IsNull(args.OldItems);
+            Assert.AreEqual(-1, args.OldStartingIndex);
+        }
+
+        [TestMethod]
+        public void WhenRemovingRegions_ThenRegionsCollectionNotifiesUpdate()
+        {
+            var regionManager = new RegionManager();
+
+            var region1 = new Region { Name = "region1" };
+            var region2 = new Region { Name = "region2" };
+
+            regionManager.Regions.Add(region1);
+            regionManager.Regions.Add(region2);
+
+            NotifyCollectionChangedEventArgs args = null;
+            regionManager.Regions.CollectionChanged += (s, e) => args = e;
+
+            regionManager.Regions.Remove("region2");
+
+            Assert.AreEqual(NotifyCollectionChangedAction.Remove, args.Action);
+            CollectionAssert.AreEqual(new object[] { region2 }, args.OldItems);
+            Assert.AreEqual(0, args.OldStartingIndex);
+            Assert.IsNull(args.NewItems);
+            Assert.AreEqual(-1, args.NewStartingIndex);
+
+            regionManager.Regions.Remove("region1");
+
+            Assert.AreEqual(NotifyCollectionChangedAction.Remove, args.Action);
+            CollectionAssert.AreEqual(new object[] { region1 }, args.OldItems);
+            Assert.AreEqual(0, args.OldStartingIndex);
+            Assert.IsNull(args.NewItems);
+            Assert.AreEqual(-1, args.NewStartingIndex);
+        }
+
+        [TestMethod]
+        public void WhenRemovingNonExistingRegion_ThenRegionsCollectionDoesNotNotifyUpdate()
+        {
+            var regionManager = new RegionManager();
+
+            var region1 = new Region { Name = "region1" };
+
+            regionManager.Regions.Add(region1);
+
+            NotifyCollectionChangedEventArgs args = null;
+            regionManager.Regions.CollectionChanged += (s, e) => args = e;
+
+            regionManager.Regions.Remove("region2");
+
+            Assert.IsNull(args);
+        }
+
     }
 
     internal class FrameworkException : Exception
     {
-        public FrameworkException(Exception inner) : base(string.Empty, inner)
+        public FrameworkException(Exception inner)
+            : base(string.Empty, inner)
         {
-            
+
         }
     }
 }

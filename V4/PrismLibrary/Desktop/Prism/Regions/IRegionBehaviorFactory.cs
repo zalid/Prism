@@ -43,7 +43,7 @@ namespace Microsoft.Practices.Prism.Regions
         bool ContainsKey(string behaviorKey);
 
         /// <summary>
-        /// Creates an instance of the the Behaviortype that's registered using the specified key.
+        /// Creates an instance of the Behaviortype that's registered using the specified key.
         /// </summary>
         /// <param name="key">The key that's used to register a behavior type.</param>
         /// <returns>The created behavior. </returns>

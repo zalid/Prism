@@ -263,6 +263,26 @@ namespace StockTraderRI.Infrastructure.Tests.Behaviors
             {
                 throw new NotImplementedException();
             }
+
+
+            public IRegionNavigationService NavigationService
+            {
+                get { throw new NotImplementedException(); }
+                set { throw new System.NotImplementedException(); }
+            }
+
+
+            public Comparison<object> SortComparison
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+                set
+                {
+                    throw new NotImplementedException();
+                }
+            }
         }
 
         internal class MockViewsCollection : IViewsCollection

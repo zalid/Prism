@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
@@ -16,9 +17,11 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
-    <ThrowErrorsInValidation>false</ThrowErrorsInValidation><FileUpgradeFlags></FileUpgradeFlags>
+    <ThrowErrorsInValidation>false</ThrowErrorsInValidation><FileUpgradeFlags>
+    </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation></UpgradeBackupLocation>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <PublishUrl>publish\</PublishUrl>
@@ -48,7 +51,8 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRules></CodeAnalysisRules>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
     <CodeAnalysisRuleSet>Migrated rules for StockTraderRI.Modules.News.Silverlight.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -60,13 +64,18 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRules></CodeAnalysisRules>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
     <CodeAnalysisRuleSet>Migrated rules for StockTraderRI.Modules.News.Silverlight.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Practices.Prism.MefExtensions">
+      <HintPath>..\..\..\Bin\Silverlight\Microsoft.Practices.Prism.MefExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity.Silverlight">
       <HintPath>..\..\..\LIB\Silverlight\Unity\Microsoft.Practices.Unity.Silverlight.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
     <Reference Include="system" />
@@ -76,27 +85,15 @@
     <Reference Include="System.Windows.Browser" />
     <Reference Include="System.Xml.Linq, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+      <HintPath>..\..\..\Bin\Silverlight\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.News\Article\ArticlePresentationModel.cs">
-      <Link>Article\ArticlePresentationModel.cs</Link>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.News\Article\ArticleViewModel.cs">
+      <Link>Article\ArticleViewModel.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.News\Article\IArticlePresentationModel.cs">
-      <Link>Article\IArticlePresentationModel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.News\Article\IArticleView.cs">
-      <Link>Article\IArticleView.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.News\Article\INewsReaderPresenter.cs">
-      <Link>Article\INewsReaderPresenter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.News\Article\INewsReaderView.cs">
-      <Link>Article\INewsReaderView.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.News\Article\NewsReaderPresenter.cs">
-      <Link>Article\NewsReaderPresenter.cs</Link>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.News\Article\NewsReaderViewModel.cs">
+      <Link>Article\NewsReaderViewModel.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.News\Controllers\INewsController.cs">
       <Link>Controllers\INewsController.cs</Link>
@@ -117,8 +114,8 @@
     <Compile Include="Article\ArticleView.xaml.cs">
       <DependentUpon>ArticleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Article\NewsReader.xaml.cs">
-      <DependentUpon>NewsReader.xaml</DependentUpon>
+    <Compile Include="Article\NewsReaderView.xaml.cs">
+      <DependentUpon>NewsReaderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -136,7 +133,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Article\NewsReader.xaml">
+    <Page Include="Article\NewsReaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>

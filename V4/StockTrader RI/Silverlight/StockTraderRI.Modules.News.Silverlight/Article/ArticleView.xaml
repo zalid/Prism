@@ -247,7 +247,7 @@
                         x:Name="NewsList"
     					SelectedItem="{Binding Mode=TwoWay, Path=SelectedArticle}" Margin="0,0,0,0" Background="{x:Null}" BorderBrush="{x:Null}" SelectionChanged="ListBox_SelectionChanged"/>
             </Grid>
-            <Grid x:Name="DetailsGrid" Visibility="Collapsed" RenderTransformOrigin="0.5,0.5" Width="240" DataContext="{Binding Path=SelectedArticle}" >
+            <Grid x:Name="DetailsGrid" Visibility="Collapsed" RenderTransformOrigin="0.5,0.5" Width="240" >
                 <Grid.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -264,11 +264,11 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="0" Text="{Binding Path=Title}" Style="{StaticResource TextBlockSectionTitle}" TextWrapping="Wrap" MaxWidth="170" HorizontalAlignment="Left" />
-                <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Path=Body}" Foreground="#FF808080" FontFamily="Trebuchet MS" FontSize="12" TextWrapping="Wrap" />
+                <TextBlock Grid.Row="0" Text="{Binding Path=SelectedArticle.Title}" Style="{StaticResource TextBlockSectionTitle}" TextWrapping="Wrap" MaxWidth="170" HorizontalAlignment="Left" />
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Path=SelectedArticle.Body}" Foreground="#FF808080" FontFamily="Trebuchet MS" FontSize="12" TextWrapping="Wrap" />
                 <StackPanel Height="22" Grid.Column="1" Grid.Row="0" d:LayoutOverrides="GridBox" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
-                    <Button Click="BackButton_Click" Template="{StaticResource BackButtonTemplate}" Cursor="Hand" Content="{StaticResource BackButtonTemplate}" HorizontalAlignment="Left" />
-                    <Button Click="OpenButton_Click" Template="{StaticResource OpenButtonTemplate}" Cursor="Hand" Content="{StaticResource OpenButtonTemplate}" HorizontalAlignment="Left" Margin="5,0,0,0" />
+                    <Button Command="{Binding ShowArticleListCommand}" Template="{StaticResource BackButtonTemplate}" Cursor="Hand" Content="{StaticResource BackButtonTemplate}" HorizontalAlignment="Left" />
+                    <Button Command="{Binding ShowNewsReaderCommand}" Template="{StaticResource OpenButtonTemplate}" Cursor="Hand" Content="{StaticResource OpenButtonTemplate}" HorizontalAlignment="Left" Margin="5,0,0,0" />
                 </StackPanel>
             </Grid>
         </StackPanel>

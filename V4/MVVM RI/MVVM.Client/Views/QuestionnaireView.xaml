@@ -7,9 +7,10 @@
     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
     xmlns:behaviors="clr-namespace:MVVM.Client.Infrastructure.Behaviors"
     xmlns:Views="clr-namespace:MVVM.Client.Views" 
-    xmlns:prism="http://www.codeplex.com/prism" mc:Ignorable="d"
+    xmlns:prism="http://www.codeplex.com/prism" xmlns:GuidanceTools="clr-namespace:Microsoft.Practices.Prism.GuidanceTools;assembly=Microsoft.Practices.Prism.GuidanceTools" mc:Ignorable="d"
     x:Class="MVVM.Client.Views.QuestionnaireView"
-    d:DesignWidth="640" d:DesignHeight="480">
+    d:DesignWidth="640" d:DesignHeight="480" 
+    d:DataContext="{d:DesignData /SampleData/QuestionnaireViewModelSampleData.xaml}">
 
     <UserControl.Resources>
         <DataTemplate x:Key="SubmitWindowTemplate">
@@ -98,24 +99,16 @@
 
         <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Right">
             <TextBlock Foreground="White" HorizontalAlignment="Right">Implementation Notes</TextBlock>
-            <ToggleButton Style="{StaticResource InfoTipToggleButtonStyle}">
-                <i:Interaction.Behaviors>
-                    <behaviors:ToggleInfoTipBehavior >
-                        <behaviors:ToggleInfoTipBehavior.ContentTemplate>
-                            <DataTemplate>
-                                <StackPanel MaxWidth="500">
-                                    <TextBlock TextWrapping="Wrap">This Reference Implementation demonstrates the following challenges:</TextBlock>
-                                    <TextBlock TextWrapping="Wrap">• The usage of several behaviors.</TextBlock>
-                                    <TextBlock TextWrapping="Wrap">• Hierarchical ViewModels. The QuestionnaireViewModel is the main view model, and is composed of several child view models for each question.</TextBlock>
-                                    <TextBlock TextWrapping="Wrap">• The INotifyPropertyChanged interface is implemented in the ViewModel base class (which is inherited from al ViewModel classes), to notify when the ViewModel property value has changed. The ViewModel class provides a base implementation of the INotifyPropertyChanged interface and helper methods to raise the PropertyChanged event.</TextBlock>
-                                    <TextBlock TextWrapping="Wrap">• The INotifyDataErrorInfo interface is implemented in the DomainObject class to support validation. The model objects inherit from the DomainObject class which provides a base implementation of the INotifyDataErrorInfo interface and helper methods to set and clear the errors for particular properties.</TextBlock>
-                                    <TextBlock TextWrapping="Wrap">• Triggering animations based on the view model state. When submitting the questionnaire, an animation is triggered. For more information, see the Submit button notes.</TextBlock>
-                                </StackPanel>
-                            </DataTemplate>
-                        </behaviors:ToggleInfoTipBehavior.ContentTemplate>
-                    </behaviors:ToggleInfoTipBehavior>
-                </i:Interaction.Behaviors>
-            </ToggleButton>            
+            <GuidanceTools:InfoTipToggleButton>
+                <StackPanel MaxWidth="500">
+                    <TextBlock TextWrapping="Wrap">This Reference Implementation demonstrates the following challenges:</TextBlock>
+                    <TextBlock TextWrapping="Wrap">• The usage of several behaviors.</TextBlock>
+                    <TextBlock TextWrapping="Wrap">• Hierarchical ViewModels. The QuestionnaireViewModel is the main view model, and is composed of several child view models for each question.</TextBlock>
+                    <TextBlock TextWrapping="Wrap">• The INotifyPropertyChanged interface is implemented in the ViewModel base class (which is inherited from al ViewModel classes), to notify when the ViewModel property value has changed. The ViewModel class provides a base implementation of the INotifyPropertyChanged interface and helper methods to raise the PropertyChanged event.</TextBlock>
+                    <TextBlock TextWrapping="Wrap">• The INotifyDataErrorInfo interface is implemented in the DomainObject class to support validation. The model objects inherit from the DomainObject class which provides a base implementation of the INotifyDataErrorInfo interface and helper methods to set and clear the errors for particular properties.</TextBlock>
+                    <TextBlock TextWrapping="Wrap">• Triggering animations based on the view model state. When submitting the questionnaire, an animation is triggered. For more information, see the Submit button notes.</TextBlock>
+                </StackPanel>
+            </GuidanceTools:InfoTipToggleButton>
         </StackPanel>
 
         <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3" VerticalAlignment="Stretch">
@@ -190,21 +183,13 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
-            <ToggleButton Style="{StaticResource InfoTipToggleButtonStyle}">
-                <i:Interaction.Behaviors>
-                    <behaviors:ToggleInfoTipBehavior >
-                        <behaviors:ToggleInfoTipBehavior.ContentTemplate>
-                            <DataTemplate>
-                                <StackPanel MaxWidth="500">
-                                    <TextBlock TextWrapping="Wrap">• The Submit button uses the CallMethodAction Blend behavior to execute the Submit method on the QuestionnaireViewModel view model.</TextBlock>
-                                    <TextBlock TextWrapping="Wrap">• Its IsEnabled property is bound to the CanSubmit method of the QuestionnaireViewModel view model, so the button will be enabled depending on the property's value.</TextBlock>
-                                    <TextBlock TextWrapping="Wrap">• DataTriggers are used to set the VisualStateManager state depending on the CurrentState property of the QuestionnaireViewModel, thus triggering the submitting animation.</TextBlock>
-                                </StackPanel>
-                            </DataTemplate>
-                        </behaviors:ToggleInfoTipBehavior.ContentTemplate>
-                    </behaviors:ToggleInfoTipBehavior>
-                </i:Interaction.Behaviors>
-            </ToggleButton>           
+            <GuidanceTools:InfoTipToggleButton>
+                <StackPanel MaxWidth="500">
+                    <TextBlock TextWrapping="Wrap">• The Submit button uses the CallMethodAction Blend behavior to execute the Submit method on the QuestionnaireViewModel view model.</TextBlock>
+                    <TextBlock TextWrapping="Wrap">• Its IsEnabled property is bound to the CanSubmit method of the QuestionnaireViewModel view model, so the button will be enabled depending on the property's value.</TextBlock>
+                    <TextBlock TextWrapping="Wrap">• DataTriggers are used to set the VisualStateManager state depending on the CurrentState property of the QuestionnaireViewModel, thus triggering the submitting animation.</TextBlock>
+                </StackPanel>
+            </GuidanceTools:InfoTipToggleButton>
         </StackPanel>
         <Button Grid.Row="2" Grid.Column="2" Content="Cancel" Height="23" x:Name="button1" Width="75">
             <i:Interaction.Triggers>

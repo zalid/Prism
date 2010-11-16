@@ -34,7 +34,6 @@ namespace StockTraderRI.Controls
             "SelectionChanging", RoutingStrategy.Direct, typeof(RoutedEventHandler), typeof(AnimatedTabControl));
 
         private DispatcherTimer timer;
-        private SelectionChangedEventArgs lastArgs;
 
         public AnimatedTabControl()
         {
@@ -49,18 +48,24 @@ namespace StockTraderRI.Controls
 
         protected override void OnSelectionChanged(SelectionChangedEventArgs e)
         {
-            this.RaiseSelectionChangingEvent();
+            this.Dispatcher.BeginInvoke(
+                (Action)delegate
+                {
+                    this.RaiseSelectionChangingEvent();
 
-            this.StopTimer();
-            this.lastArgs = e;
+                    this.StopTimer();
 
-            this.timer = new DispatcherTimer
-            {
-                Interval = new TimeSpan(0, 0, 0, 0, 500)
-            };
+                    this.timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 500) };
 
-            this.timer.Tick += this.Timer_Tick;
-            this.timer.Start();
+                    EventHandler handler = null;
+                    handler = (sender, args) =>
+                        {
+                            this.StopTimer();
+                            base.OnSelectionChanged(e);
+                        };
+                    this.timer.Tick += handler;
+                    this.timer.Start();
+                });
         }
 
         // This method raises the Tap event
@@ -77,12 +82,6 @@ namespace StockTraderRI.Controls
                 this.timer.Stop();
                 this.timer = null;
             }
-        }
-
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            this.StopTimer();
-            base.OnSelectionChanged(this.lastArgs);
         }
     }
 }

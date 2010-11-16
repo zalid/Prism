@@ -62,7 +62,7 @@ namespace Microsoft.Practices.Prism.Modularity
             IModule moduleInstance = null;
             try
             {
-                moduleInstance = this.CreateModule(moduleInfo.ModuleType);
+                moduleInstance = this.CreateModule(moduleInfo);
                 moduleInstance.Initialize();
             }
             catch (Exception ex)
@@ -109,6 +109,17 @@ namespace Microsoft.Practices.Prism.Modularity
             this.loggerFacade.Log(moduleException.ToString(), Category.Exception, Priority.High);
 
             throw moduleException;
+        }
+
+        /// <summary>
+        /// Uses the container to resolve a new <see cref="IModule"/> by specifying its <see cref="Type"/>.
+        /// </summary>
+        /// <param name="moduleInfo">The module to create.</param>
+        /// <returns>A new instance of the module specified by <paramref name="moduleInfo"/>.</returns>
+        protected virtual IModule CreateModule(ModuleInfo moduleInfo)
+        {
+            if (moduleInfo == null) throw new ArgumentNullException("moduleInfo");
+            return this.CreateModule(moduleInfo.ModuleType);
         }
 
         /// <summary>

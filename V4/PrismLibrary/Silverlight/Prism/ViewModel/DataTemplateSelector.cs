@@ -32,7 +32,7 @@ namespace Microsoft.Practices.Prism.ViewModel
     /// </summary>
     /// <remarks>
     /// In order to determine the template it must use for the new content, this control retrieves it from its
-    /// resources using the the name for the type of the new content as the key.
+    /// resources using the name for the type of the new content as the key.
     /// </remarks>
     public class DataTemplateSelector : ContentControl
     {

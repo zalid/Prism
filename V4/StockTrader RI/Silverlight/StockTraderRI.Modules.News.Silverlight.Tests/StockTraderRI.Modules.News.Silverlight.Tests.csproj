@@ -90,6 +90,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\LIB\Silverlight\UnitTestFramework\Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.dll</HintPath>
     </Reference>
+    <Reference Include="Moq.Silverlight">
+      <HintPath>..\..\..\LIB\Silverlight\Moq\Moq.Silverlight.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
     <Reference Include="system" />
@@ -98,36 +102,18 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Windows.Browser" />
     <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+      <HintPath>..\..\..\Bin\Silverlight\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.News.Tests\Article\ArticlePresentationModelFixture.cs">
-      <Link>Article\ArticlePresentationModelFixture.cs</Link>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.News.Tests\Article\ArticleViewModelFixture.cs">
+      <Link>Article\ArticleViewModelFixture.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.News.Tests\Article\NewsReaderViewModelFixture.cs">
+      <Link>Article\NewsReaderViewModelFixture.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.News.Tests\Controllers\NewsControllerFixture.cs">
       <Link>Controllers\NewsControllerFixture.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.News.Tests\Mocks\MockArticleView.cs">
-      <Link>Mocks\MockArticleView.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.News.Tests\Mocks\MockEventAggregator.cs">
-      <Link>Mocks\MockEventAggregator.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.News.Tests\Mocks\MockNewsController.cs">
-      <Link>Mocks\MockNewsController.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.News.Tests\Mocks\MockNewsReaderView.cs">
-      <Link>Mocks\MockNewsReaderView.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.News.Tests\Mocks\MockRegion.cs">
-      <Link>Mocks\MockRegion.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.News.Tests\Mocks\MockRegionManager.cs">
-      <Link>Mocks\MockRegionManager.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.News.Tests\NewsModuleFixture.cs">
-      <Link>NewsModuleFixture.cs</Link>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -176,6 +162,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Mocks\" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -189,7 +178,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties ProjectLinkReference="f176d436-b909-417f-b46d-9877cc9a57c7" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" />
+      <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="f176d436-b909-417f-b46d-9877cc9a57c7" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

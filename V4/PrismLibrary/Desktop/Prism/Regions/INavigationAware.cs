@@ -23,19 +23,24 @@ namespace Microsoft.Practices.Prism.Regions
     public interface INavigationAware
     {
         /// <summary>
-        /// Indicates that the receiver has been the target of a navigation request.
+        /// Called when the implementer has been navigated to.
         /// </summary>
         /// <param name="navigationContext">The navigation context.</param>
         void OnNavigatedTo(NavigationContext navigationContext);
 
         /// <summary>
-        /// Determines whether this instance accepts being the target of a navigation request.
+        /// Called to determine if this instance can handle the navigation request.
         /// </summary>
         /// <param name="navigationContext">The navigation context.</param>
         /// <returns>
         /// <see langword="true"/> if this instance accepts the navigation request; otherwise, <see langword="false"/>.
         /// </returns>
-        bool CanNavigateTo(NavigationContext navigationContext);
-    }
+        bool IsNavigationTarget(NavigationContext navigationContext);
 
+        /// <summary>
+        /// Called when the implementer is being navigated away from.
+        /// </summary>
+        /// <param name="navigationContext">The navigation context.</param>
+        void OnNavigatedFrom(NavigationContext navigationContext);
+    }
 }

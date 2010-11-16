@@ -22,9 +22,12 @@ using System.Xml.Linq;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.Market.Properties;
+using System.ComponentModel.Composition;
 
 namespace StockTraderRI.Modules.Market.Services
 {
+    [Export(typeof(IMarketHistoryService))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class MarketHistoryService : IMarketHistoryService
     {
         private Dictionary<string, MarketHistoryCollection> _marketHistory;

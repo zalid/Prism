@@ -14,37 +14,51 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-using System;
-using System.Windows;
+using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using StockTraderRI.Infrastructure;
+using StockTraderRI.Modules.News.Controllers;
 
 namespace StockTraderRI.Modules.News.Article
 {
     /// <summary>
     /// Interaction logic for ArticleView.xaml
     /// </summary>
-    public partial class ArticleView : UserControl, IArticleView
+    [ViewExport(RegionName = RegionNames.ResearchRegion)]
+    [PartCreationPolicy(CreationPolicy.Shared)]
+    public partial class ArticleView : UserControl
     {
+        // Note - this import is here so that the controller is created and gets wired to the article and news reader
+        // view models, which are shared instances
+        [Import]
+#pragma warning disable 169
+        private INewsController newsController;
+#pragma warning restore 169
+
         public ArticleView()
         {
             InitializeComponent();
         }
 
-        public ArticlePresentationModel Model
+        /// <summary>
+        /// Sets the ViewModel.
+        /// </summary>
+        /// <remarks>
+        /// This set-only property is annotated with the <see cref="ImportAttribute"/> so it is injected by MEF with
+        /// the appropriate view model.
+        /// </remarks>
+        [Import]
+        [SuppressMessage("Microsoft.Design", "CA1044:PropertiesShouldNotBeWriteOnly", Justification = "Needs to be a property to be composed by MEF")]
+        ArticleViewModel ViewModel
         {
-            get
-            {
-                return this.DataContext as ArticlePresentationModel;
-            }
-
             set
             {
                 this.DataContext = value;
             }
         }
 
-        public event EventHandler<EventArgs> ShowNewsReader;
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -57,20 +71,6 @@ namespace StockTraderRI.Modules.News.Article
             {
                 var storyboard = (Storyboard)this.Resources["List"];
                 storyboard.Begin();
-            }
-        }
-
-        private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Model.SelectedArticle = null;
-        }
-
-        private void OpenButton_Click(object sender, RoutedEventArgs e)
-        {
-            EventHandler<EventArgs> showNewsReaderHandler = this.ShowNewsReader;
-            if (showNewsReaderHandler != null)
-            {
-                showNewsReaderHandler(this, EventArgs.Empty);
             }
         }
     }

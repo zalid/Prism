@@ -22,18 +22,11 @@ using StockTraderRI.Modules.Position.Orders;
 
 namespace StockTraderRI.Modules.Position.Tests.Mocks
 {
-    public class MockOrderDetailsPresentationModel : IOrderDetailsPresentationModel
+    public class MockOrderDetailsViewModel : IOrderDetailsViewModel
     {
         public bool DisposeCalled;
 
-        public MockOrderDetailsPresentationModel()
-        {
-            View = new MockOrderDetailsView();
-        }
-
         public event EventHandler CloseViewRequested;
-
-        public IOrderDetailsView View { get; set; }
 
         #region IDisposable Members
 
@@ -53,17 +46,17 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
 
         public TransactionType TransactionType { get; set; }
 
-        public string TickerSymbol { get; set;}
+        public string TickerSymbol { get; set; }
 
-        public int? Shares { get; set;}
+        public int? Shares { get; set; }
 
         public decimal? StopLimitPrice { get; set; }
 
-        public DelegateCommand<object> SubmitCommand { get; set;}
+        public DelegateCommand<object> SubmitCommand { get; set; }
 
-        public DelegateCommand<object> CancelCommand { get; set;}
+        public DelegateCommand<object> CancelCommand { get; set; }
 
-        #region IOrderDetailsPresentationModel Members
+        #region IOrderDetailsViewModel Members
 
         #endregion
     }

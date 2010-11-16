@@ -35,11 +35,11 @@ namespace Microsoft.Practices.Prism.MefExtensions.Regions
         /// Initializes a new instance of the <see cref="MefRegionNavigationService"/> class.
         /// </summary>
         /// <param name="serviceLocator">The service locator.</param>
-        /// <param name="navigationTargetHandler">The navigation target handler.</param>
+        /// <param name="navigationContentLoader">The navigation content loader.</param>
         /// <param name="journal">The navigation journal.</param>
         [ImportingConstructor]
-        public MefRegionNavigationService(IServiceLocator serviceLocator, INavigationTargetHandler navigationTargetHandler, IRegionNavigationJournal journal)
-            : base(serviceLocator, navigationTargetHandler, journal)
+        public MefRegionNavigationService(IServiceLocator serviceLocator, IRegionNavigationContentLoader navigationContentLoader, IRegionNavigationJournal journal)
+            : base(serviceLocator, navigationContentLoader, journal)
         { }
     }
 }

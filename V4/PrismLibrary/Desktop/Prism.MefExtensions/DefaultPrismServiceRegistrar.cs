@@ -25,24 +25,24 @@ namespace Microsoft.Practices.Prism.MefExtensions
     ///<summary>
     /// DefaultPrismServiceRegistrationAgent allows the Prism required types to be registered if necessary.
     ///</summary>
-    public class DefaultPrismServiceRegistrar
+    public static class DefaultPrismServiceRegistrar
     {
         /// <summary>
         /// Registers the required Prism types that are not already registered in the <see cref="AggregateCatalog"/>.
         /// </summary>
         ///<param name="aggregateCatalog">The <see cref="AggregateCatalog"/> to register the required types in, if they are not already registered.</param>
-        public AggregateCatalog RegisterRequiredPrismServicesIfMissing(AggregateCatalog aggregateCatalog)
+        public static AggregateCatalog RegisterRequiredPrismServicesIfMissing(AggregateCatalog aggregateCatalog)
         {
             if (aggregateCatalog == null) throw new ArgumentNullException("aggregateCatalog");
             IEnumerable<ComposablePartDefinition> partsToRegister =
-                this.GetRequiredPrismPartsToRegister(aggregateCatalog);
+                GetRequiredPrismPartsToRegister(aggregateCatalog);
 
             PrismDefaultsCatalog cat = new PrismDefaultsCatalog(partsToRegister);
             aggregateCatalog.Catalogs.Add(cat);
             return aggregateCatalog;
         }
 
-        private IEnumerable<ComposablePartDefinition> GetRequiredPrismPartsToRegister(AggregateCatalog aggregateCatalog)
+        private static IEnumerable<ComposablePartDefinition> GetRequiredPrismPartsToRegister(AggregateCatalog aggregateCatalog)
         {
             List<ComposablePartDefinition> partsToRegister = new List<ComposablePartDefinition>();
             var catalogWithDefaults = GetDefaultComposablePartCatalog();
@@ -55,7 +55,7 @@ namespace Microsoft.Practices.Prism.MefExtensions
                     {
                         foreach (var registeredExport in registeredPart.ExportDefinitions)
                         {
-                            if (string.Compare(registeredExport.ContractName, export.ContractName) == 0)
+                            if (string.Compare(registeredExport.ContractName, export.ContractName, StringComparison.Ordinal) == 0)
                             {
                                 exportAlreadyRegistered = true;
                                 break;

@@ -14,24 +14,27 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using StockTraderRI.Infrastructure;
-using StockTraderRI.Modules.Position.Interfaces;
 
 namespace StockTraderRI.Modules.Position.PositionSummary
 {
-    public partial class PositionSummaryView : UserControl, IPositionSummaryView
+    [ViewExport(RegionName = RegionNames.MainRegion)]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public partial class PositionSummaryView : UserControl
     {
         public PositionSummaryView()
         {
             InitializeComponent();
         }
 
-        public IPositionSummaryPresentationModel Model
+        [Import]
+        public IPositionSummaryViewModel Model
         {
             get
             {
-                return this.DataContext as IPositionSummaryPresentationModel;
+                return this.DataContext as IPositionSummaryViewModel;
             }
 
             set
@@ -40,8 +43,8 @@ namespace StockTraderRI.Modules.Position.PositionSummary
                 // in order to be able to bind to the Buy and Sell commands. 
                 // The resources are declared in the XAML, because Silverlight has StaticResource markup only, so these
                 // resources should be available when the control is initializing, even though the Value is yet not set.
-                ((ObservableCommand) this.Resources["BuyCommand"]).Value = value != null ? value.BuyCommand : null;
-                ((ObservableCommand) this.Resources["SellCommand"]).Value = value != null ? value.SellCommand : null;
+                ((ObservableCommand)this.Resources["BuyCommand"]).Value = value != null ? value.BuyCommand : null;
+                ((ObservableCommand)this.Resources["SellCommand"]).Value = value != null ? value.SellCommand : null;
                 DataContext = value;
             }
         }

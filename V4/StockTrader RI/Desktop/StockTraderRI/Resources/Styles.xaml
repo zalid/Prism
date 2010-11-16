@@ -30,7 +30,12 @@
         <GradientStop Color="#FF284292"/>
         <GradientStop Color="#FF2175B8" Offset="0.26499998569488525"/>
     </LinearGradientBrush>
-    
+
+    <LinearGradientBrush x:Key="sideBarHeaderBarBG" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FF4A5470"/>
+        <GradientStop Color="#FF576F82" Offset="0.25"/>
+    </LinearGradientBrush>
+
     <LinearGradientBrush x:Key="HorizontalNormalBrush" StartPoint="0,0" EndPoint="1,0">
         <GradientBrush.GradientStops>
             <GradientStopCollection>
@@ -549,11 +554,11 @@
                         <GridViewRowPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
                             <Setter Property="Background" TargetName="Border"  Value="#A5FFFFFF"></Setter>
                         </Trigger>
-                        <Trigger Property="ItemsControl.AlternationIndex" Value="2">
-                            <Setter Property="Background" TargetName="Border"  Value="Transparent"></Setter>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter Property="Background" TargetName="Border"  Value="#01FFFFFF"></Setter>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="true">
                             <Setter Property="Background" TargetName="Border" Value="#99B4C6"/>
@@ -816,7 +821,7 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Name="ContentRow" Height="0"/>
+                            <RowDefinition Name="ContentRow" Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Border 
               Name="Border" 
@@ -853,8 +858,8 @@
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsExpanded" Value="True">
-                            <Setter TargetName="ContentRow" Property="Height" Value="{Binding ElementName=Content,Path=DesiredHeight}" />
+                        <Trigger Property="IsExpanded" Value="False">
+                            <Setter TargetName="Content" Property="Visibility" Value="Collapsed" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
@@ -1133,21 +1138,21 @@
             <Trigger Property="IsEnabled" Value="false">
                 <Trigger.EnterActions>
                     <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.3" Storyboard.TargetName="textBlock" Storyboard.TargetProperty="(UIElement.Opacity)"  AutoReverse="true">
-                                    <SplineDoubleKeyFrame KeyTime="00:00:00.3" Value="0" KeySpline="0.5,0,0.5,1" />
-                                </DoubleAnimationUsingKeyFrames>
-                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.3" Storyboard.TargetName="BgEnabled" Storyboard.TargetProperty="(FrameworkElement.Width)"  AutoReverse="true">
-                                    <SplineDoubleKeyFrame KeyTime="00:00:00.3" Value="0" KeySpline="0.5,0,0.5,1" />
-                                </DoubleAnimationUsingKeyFrames>
-                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.3" Storyboard.TargetName="BgEnabled" Storyboard.TargetProperty="(UIElement.Opacity)"  AutoReverse="true">
-                                    <SplineDoubleKeyFrame KeyTime="00:00:00.3" Value="0" KeySpline="0.5,0,0.5,1" />
-                                </DoubleAnimationUsingKeyFrames>
-                                <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.2" Storyboard.TargetName="BgEnabled" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
-                                    <SplineColorKeyFrame KeyTime="00:00:00.1" Value="#FF006C3B"/>
-                                    <SplineColorKeyFrame KeyTime="00:00:00.2" Value="#FF6C6C6C"/>
-                                </ColorAnimationUsingKeyFrames>
-                            </Storyboard>
+                        <Storyboard>
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.3" Storyboard.TargetName="textBlock" Storyboard.TargetProperty="(UIElement.Opacity)"  AutoReverse="true">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.3" Value="0" KeySpline="0.5,0,0.5,1" />
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.3" Storyboard.TargetName="BgEnabled" Storyboard.TargetProperty="(FrameworkElement.Width)"  AutoReverse="true">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.3" Value="0" KeySpline="0.5,0,0.5,1" />
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.3" Storyboard.TargetName="BgEnabled" Storyboard.TargetProperty="(UIElement.Opacity)"  AutoReverse="true">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.3" Value="0" KeySpline="0.5,0,0.5,1" />
+                            </DoubleAnimationUsingKeyFrames>
+                            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.2" Storyboard.TargetName="BgEnabled" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
+                                <SplineColorKeyFrame KeyTime="00:00:00.1" Value="#FF006C3B"/>
+                                <SplineColorKeyFrame KeyTime="00:00:00.2" Value="#FF6C6C6C"/>
+                            </ColorAnimationUsingKeyFrames>
+                        </Storyboard>
                     </BeginStoryboard>
                 </Trigger.EnterActions>
                 <Trigger.ExitActions>
@@ -1177,7 +1182,7 @@
     <ControlTemplate x:Key="CancelButtonTemplate" TargetType="Button">
         <Grid Height="{TemplateBinding Height}">
             <Border Width="105" BorderBrush="#FFFFFFFF" BorderThickness="1,2,2,2" CornerRadius="0,9,9,0" Background="#FFFFFFFF">
-            <TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FF666666"  Margin="-9,0,0,0" />
+                <TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FF666666"  Margin="-9,0,0,0" />
             </Border>
         </Grid>
     </ControlTemplate>

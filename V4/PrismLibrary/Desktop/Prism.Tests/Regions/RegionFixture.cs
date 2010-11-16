@@ -29,6 +29,15 @@ namespace Microsoft.Practices.Prism.Tests.Regions
     public class RegionFixture
     {
         [TestMethod]
+        public void WhenRegionConstructed_SortComparisonIsDefault()
+        {
+            IRegion region = new Region();
+
+            Assert.IsNotNull(region.SortComparison);
+            Assert.AreEqual(region.SortComparison, Region.DefaultSortComparison);
+        }
+
+        [TestMethod]
         public void CanAddContentToRegion()
         {
             IRegion region = new Region();
@@ -300,7 +309,10 @@ namespace Microsoft.Practices.Prism.Tests.Regions
             IRegion region = new Region();
             region.Views.CollectionChanged += (sender, e) =>
                                                   {
-                                                      viewAdded = e.NewItems[0];
+                                                      if (e.Action == NotifyCollectionChangedAction.Add)
+                                                      {
+                                                          viewAdded = e.NewItems[0];
+                                                      }
                                                   };
             object model = new object();
             Assert.IsNull(viewAdded);
@@ -487,5 +499,31 @@ namespace Microsoft.Practices.Prism.Tests.Regions
                 ServiceLocator.SetLocatorProvider(() => null);
             }
         }
+
+        [TestMethod]
+        public void WhenViewsWithSortHintsAdded_RegionSortsViews()
+        {
+            IRegion region = new Region();
+
+            object view1 = new ViewOrder1();
+            object view2 = new ViewOrder2();
+            object view3 = new ViewOrder3();
+
+            region.Add(view1);
+            region.Add(view2);
+            region.Add(view3);
+
+            Assert.AreEqual(3, region.Views.Count());
+            Assert.AreSame(view2, region.Views.ElementAt(0));
+            Assert.AreSame(view3, region.Views.ElementAt(1));
+            Assert.AreSame(view1, region.Views.ElementAt(2));
+        }
+
+        [ViewSortHint("C")]
+        private class ViewOrder1 { };
+        [ViewSortHint("A")]
+        private class ViewOrder2 { };
+        [ViewSortHint("B")]
+        private class ViewOrder3 { };
     }
 }

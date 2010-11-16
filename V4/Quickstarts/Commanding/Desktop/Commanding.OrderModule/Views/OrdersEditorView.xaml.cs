@@ -24,15 +24,12 @@ namespace Commanding.Modules.Order.Views
     /// </summary>
     public partial class OrdersEditorView : UserControl
     {
-        public OrdersEditorView()
+        public OrdersEditorView( OrdersEditorPresentationModel model )
         {
             InitializeComponent();
-        }
 
-        public OrdersEditorPresentationModel Model
-        {
-            get { return DataContext as OrdersEditorPresentationModel; }
-            set { DataContext = value; }
+            // Set the presentation model as this views data context.
+            DataContext = model;
         }
     }
 }

@@ -288,5 +288,7 @@ namespace Microsoft.Practices.Prism.Tests.Regions.Behaviors
         {
             throw new System.NotImplementedException();
         }
+
+        public event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged;
     }
 }

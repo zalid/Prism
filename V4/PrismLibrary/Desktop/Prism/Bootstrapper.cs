@@ -62,7 +62,11 @@ namespace Microsoft.Practices.Prism
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "The Logger is added to the container which will dispose it when the container goes out of scope.")]
         protected virtual ILoggerFacade CreateLogger()
         {
+#if SILVERLIGHT
+            return new EmptyLogger();
+#else
             return new TextLogger();
+#endif
         }
 
         /// <summary>
@@ -157,6 +161,10 @@ namespace Microsoft.Practices.Prism
 
                 defaultRegionBehaviorTypesDictionary.AddIfMissing(RegionManagerRegistrationBehavior.BehaviorKey,
                                                                   typeof(RegionManagerRegistrationBehavior));
+
+                defaultRegionBehaviorTypesDictionary.AddIfMissing(RegionMemberLifetimeBehavior.BehaviorKey,
+                                                  typeof(RegionMemberLifetimeBehavior));
+
             }
 
             return defaultRegionBehaviorTypesDictionary;

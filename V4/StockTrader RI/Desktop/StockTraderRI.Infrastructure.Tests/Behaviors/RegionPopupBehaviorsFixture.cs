@@ -117,6 +117,8 @@ namespace StockTraderRI.Infrastructure.Tests.Behaviors
             }
 
             #endregion
+
+            public event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged;
         }
 
         internal class MockServiceLocator : ServiceLocatorImplBase

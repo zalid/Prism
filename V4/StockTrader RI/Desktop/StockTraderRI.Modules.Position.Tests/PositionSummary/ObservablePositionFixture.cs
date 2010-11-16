@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Practices.Prism.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.Position.PositionSummary;
@@ -125,10 +126,10 @@ namespace StockTraderRI.Modules.Position.Tests.PositionSummary
 
         private static IEventAggregator CreateEventAggregator()
         {
-            var eventAggregator = new MockEventAggregator();
-            eventAggregator.AddMapping<MarketPricesUpdatedEvent>(new MockMarketPricesUpdatedEvent());
+            var eventAggregator = new Mock<IEventAggregator>();
+            eventAggregator.Setup(x => x.GetEvent<MarketPricesUpdatedEvent>()).Returns(new MockMarketPricesUpdatedEvent());
 
-            return eventAggregator;
+            return eventAggregator.Object;
         }
 
         private class MockMarketPricesUpdatedEvent : MarketPricesUpdatedEvent

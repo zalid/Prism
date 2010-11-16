@@ -6,6 +6,7 @@
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"      
     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
     xmlns:prism="http://www.codeplex.com/prism" 
+    xmlns:GuidanceTools="clr-namespace:Microsoft.Practices.Prism.GuidanceTools;assembly=Microsoft.Practices.Prism.GuidanceTools" 
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="400">
 
@@ -29,17 +30,14 @@
         </i:Interaction.Triggers>
 
         <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding Question.QuestionText}" Style="{StaticResource QuestionLabelStyle}" />
-        <Image Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Style="{StaticResource ToolTipImageStyle}">
-            <ToolTipService.ToolTip>
-                <StackPanel>
-                    <TextBlock TextWrapping="Wrap"> This is a Numeric Question, a positive integer value is expected.</TextBlock>
-                    <TextBlock TextWrapping="Wrap"> • To customize the error message shown, the NumericQuestionViewModel validates the format of the input.</TextBlock>
-                    <TextBlock TextWrapping="Wrap"> • The validation of the maximum number accepted (bussiness logic) is performed by the NumericQuestionModel model.</TextBlock>
-                    <TextBlock TextWrapping="Wrap"> • The UpdateTextBindingOnPropertyChanged behavior is used to update the binding whenever a new character is entered, so the input is validated on every entry.</TextBlock>
-                </StackPanel>
-
-            </ToolTipService.ToolTip>
-        </Image>
+        <GuidanceTools:InfoTipToggleButton Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left">
+            <StackPanel MinWidth="100" MinHeight="24" MaxWidth="400">
+                <TextBlock TextWrapping="Wrap"> This is a Numeric Question, a positive integer value is expected.</TextBlock>
+                <TextBlock TextWrapping="Wrap"> • To customize the error message shown, the NumericQuestionViewModel validates the format of the input.</TextBlock>
+                <TextBlock TextWrapping="Wrap"> • The validation of the maximum number accepted (bussiness logic) is performed by the NumericQuestionModel model.</TextBlock>
+                <TextBlock TextWrapping="Wrap"> • The UpdateTextBindingOnPropertyChanged behavior is used to update the binding whenever a new character is entered, so the input is validated on every entry.</TextBlock>
+            </StackPanel>
+        </GuidanceTools:InfoTipToggleButton>
         <TextBox x:Name="textBox" Grid.Column="0" Grid.Row="1" AutomationProperties.AutomationId="NumericQuestionAutomationId">
             <TextBox.Text>
                 <Binding Path="Question.Response" 

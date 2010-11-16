@@ -15,13 +15,10 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System;
-using System.Text;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Logging;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.Regions;
@@ -66,7 +63,12 @@ namespace Microsoft.Practices.Prism.Tests.Modularity
             bootstrapper.CallCreateLogger();
 
             Assert.IsNotNull(bootstrapper.BaseLogger);
+
+#if SILVERLIGHT
+            Assert.IsInstanceOfType(bootstrapper.BaseLogger, typeof(EmptyLogger));
+#else
             Assert.IsInstanceOfType(bootstrapper.BaseLogger, typeof(TextLogger));
+#endif
         }
 
         [TestMethod]
@@ -94,9 +96,9 @@ namespace Microsoft.Practices.Prism.Tests.Modularity
         public void ConfigureRegionAdapterMappingsShouldRegisterItemsControlMapping()
         {
             var bootstrapper = new DefaultBootstrapper();
-            
+
             CreateAndConfigureServiceLocatorWithRegionAdapters();
-            
+
             var regionAdapterMappings = bootstrapper.CallConfigureRegionAdapterMappings();
 
             Assert.IsNotNull(regionAdapterMappings);
@@ -161,7 +163,7 @@ namespace Microsoft.Practices.Prism.Tests.Modularity
         }
 
         [TestMethod]
-        public void ConfigureDefaultRegionBehaviorsShouldAddFiveDefaultBehaviors()
+        public void ConfigureDefaultRegionBehaviorsShouldAddSixDefaultBehaviors()
         {
             var bootstrapper = new DefaultBootstrapper();
 
@@ -169,7 +171,7 @@ namespace Microsoft.Practices.Prism.Tests.Modularity
 
             bootstrapper.CallConfigureDefaultRegionBehaviors();
 
-            Assert.AreEqual(5, bootstrapper.DefaultRegionBehaviorTypes.Count());
+            Assert.AreEqual(6, bootstrapper.DefaultRegionBehaviorTypes.Count());
         }
 
         private static void CreateAndConfigureServiceLocatorWithDefaultRegionBehaviors()
@@ -191,9 +193,6 @@ namespace Microsoft.Practices.Prism.Tests.Modularity
             bootstrapper.CallConfigureDefaultRegionBehaviors();
 
             Assert.IsTrue(bootstrapper.DefaultRegionBehaviorTypes.ContainsKey(AutoPopulateRegionBehavior.BehaviorKey));
-
-            Assert.AreEqual(5, bootstrapper.DefaultRegionBehaviorTypes.Count());
-
         }
 
         [TestMethod]
@@ -242,6 +241,18 @@ namespace Microsoft.Practices.Prism.Tests.Modularity
             bootstrapper.CallConfigureDefaultRegionBehaviors();
 
             Assert.IsTrue(bootstrapper.DefaultRegionBehaviorTypes.ContainsKey(RegionManagerRegistrationBehavior.BehaviorKey));
+        }
+
+        [TestMethod]
+        public void ConfigureDefaultRegionBehaviorsShouldAddRegionLifetimeBehavior()
+        {
+            var bootstrapper = new DefaultBootstrapper();
+
+            CreateAndConfigureServiceLocatorWithDefaultRegionBehaviors();
+
+            bootstrapper.CallConfigureDefaultRegionBehaviors();
+
+            Assert.IsTrue(bootstrapper.DefaultRegionBehaviorTypes.ContainsKey(RegionMemberLifetimeBehavior.BehaviorKey));
         }
     }
 

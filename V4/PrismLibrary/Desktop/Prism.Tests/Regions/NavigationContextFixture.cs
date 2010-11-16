@@ -30,14 +30,17 @@ namespace Microsoft.Practices.Prism.Tests.Regions
         {
             var uri = new Uri("test?name=value", UriKind.Relative);
 
+            var navigationJournalMock = new Mock<IRegionNavigationJournal>();
+
             var navigationServiceMock = new Mock<IRegionNavigationService>();
+            navigationServiceMock.SetupGet(x => x.Journal).Returns(navigationJournalMock.Object);
 
             var context = new NavigationContext(navigationServiceMock.Object, uri);
 
             Assert.AreSame(navigationServiceMock.Object, context.NavigationService);
             Assert.AreEqual(uri, context.Uri);
-            Assert.AreEqual(1, context.UriQuery.Count());
-            Assert.AreEqual("value", context.UriQuery["name"]);
+            Assert.AreEqual(1, context.Parameters.Count());
+            Assert.AreEqual("value", context.Parameters["name"]);
         }
 
         [TestMethod]
@@ -45,13 +48,16 @@ namespace Microsoft.Practices.Prism.Tests.Regions
         {
             var uri = new Uri("test", UriKind.Relative);
 
+            var navigationJournalMock = new Mock<IRegionNavigationJournal>();
+
             var navigationServiceMock = new Mock<IRegionNavigationService>();
+            navigationServiceMock.SetupGet(x => x.Journal).Returns(navigationJournalMock.Object);
 
             var context = new NavigationContext(navigationServiceMock.Object, uri);
 
             Assert.AreSame(navigationServiceMock.Object, context.NavigationService);
             Assert.AreEqual(uri, context.Uri);
-            Assert.AreEqual(0, context.UriQuery.Count());
+            Assert.AreEqual(0, context.Parameters.Count());
         }
     }
 }

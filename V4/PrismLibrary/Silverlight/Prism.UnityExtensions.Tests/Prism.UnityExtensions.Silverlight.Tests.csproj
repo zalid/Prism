@@ -63,7 +63,7 @@
     <CodeAnalysisRules>
     </CodeAnalysisRules>
     <NoWarn>0067, 0649</NoWarn>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Prism.TestProjects.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -79,7 +79,7 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
-    <CodeAnalysisRuleSet>Migrated rules for Prism.UnityExtensions.Silverlight.Tests (2).ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Prism.TestProjects.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -140,6 +140,9 @@
     </Compile>
     <Compile Include="..\..\Desktop\Prism.UnityExtensions.Tests\UnityBootstrapperNullModuleCatalogFixture.cs">
       <Link>UnityBootstrapperNullModuleCatalogFixture.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Desktop\Prism.UnityExtensions.Tests\UnityBootstrapperNullModuleManagerFixture.cs">
+      <Link>UnityBootstrapperNullModuleManagerFixture.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\Prism.UnityExtensions.Tests\UnityBootstrapperRunMethodFixture.cs">
       <Link>UnityBootstrapperRunMethodFixture.cs</Link>

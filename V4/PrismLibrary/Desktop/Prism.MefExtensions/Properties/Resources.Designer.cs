@@ -176,7 +176,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to retrieve the module type {0} from the loaded assemblies.  You may need to specify a more fully-qualified type name..
+        ///   Looks up a localized string similar to Unable to locate the module with type &apos;{0}&apos; among the exported modules. Make sure the module name in the module catalog matches that specified on ModuleExportAttribute for the module type..
         /// </summary>
         internal static string FailedToGetType {
             get {

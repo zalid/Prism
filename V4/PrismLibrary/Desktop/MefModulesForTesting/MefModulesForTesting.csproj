@@ -44,6 +44,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Prism.MefExtensions\Prism.MefExtensions.Desktop.csproj">
+      <Project>{6ED61550-8E7A-42C6-9B30-380C6F97ED55}</Project>
+      <Name>Prism.MefExtensions.Desktop</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Prism\Prism.Desktop.csproj">
       <Project>{77138947-1D13-4E22-AEE0-5D0DD046CA34}</Project>
       <Name>Prism.Desktop</Name>

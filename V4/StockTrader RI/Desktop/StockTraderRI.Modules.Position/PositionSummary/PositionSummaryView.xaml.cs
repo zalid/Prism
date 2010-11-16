@@ -14,12 +14,15 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+using System.ComponentModel.Composition;
 using System.Windows.Controls;
-using StockTraderRI.Modules.Position.Interfaces;
+using StockTraderRI.Infrastructure;
 
 namespace StockTraderRI.Modules.Position.PositionSummary
 {
-    public partial class PositionSummaryView : UserControl, IPositionSummaryView
+    [ViewExport(RegionName = RegionNames.MainRegion)]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public partial class PositionSummaryView : UserControl
     {
         public PositionSummaryView()
         {
@@ -28,11 +31,12 @@ namespace StockTraderRI.Modules.Position.PositionSummary
 
         #region IPositionSummaryView Members
 
-        public IPositionSummaryPresentationModel Model
+        [Import]
+        public IPositionSummaryViewModel Model
         {
             get
             {
-                return DataContext as IPositionSummaryPresentationModel;
+                return DataContext as IPositionSummaryViewModel;
             }
             set
             {

@@ -1271,7 +1271,7 @@
         </Style>
         <Style x:Key="CustomDataGridStyle" TargetType="data:DataGrid">
             <Setter Property="RowBackground" Value="#AAEAEFF4"/>
-            <Setter Property="AlternatingRowBackground" Value="#00FFFFFF"/>
+            <Setter Property="AlternatingRowBackground" Value="#01FFFFFF"/>
             <Setter Property="Background" Value="#FFFFFFFF"/>
             <Setter Property="HeadersVisibility" Value="Column"/>
             <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
@@ -1534,7 +1534,11 @@
         </Style>
         <LinearGradientBrush x:Key="headerBarBG" EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FF284292"/>
-            <GradientStop Color="#FF2175B8" Offset="0.26499998569488525"/>
+            <GradientStop Color="#FF2175B8" Offset="0.25"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="sideBarHeaderBarBG" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FF4A5470"/>
+            <GradientStop Color="#FF576F82" Offset="0.25"/>
         </LinearGradientBrush>
 
         <Style x:Key="CustomTextBox" TargetType="TextBox">

@@ -15,6 +15,7 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using Microsoft.Practices.Prism.Commands;
+using System.ComponentModel.Composition;
 
 namespace StockTraderRI.Infrastructure
 {
@@ -51,6 +52,8 @@ namespace StockTraderRI.Infrastructure
         }
     }
 
+    [Export]    
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class StockTraderRICommandProxy
     {
         virtual public CompositeCommand SubmitOrderCommand

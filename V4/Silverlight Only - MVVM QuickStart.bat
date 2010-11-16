@@ -1,1 +1,1 @@
-@call "Quickstarts\MVVM\MVVM.sln"
+@call "Quickstarts\MVVM\MVVM Quickstart.sln"

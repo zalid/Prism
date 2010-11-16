@@ -14,11 +14,14 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+using System;
 using System.Windows;
-using Commanding.Modules.Order;
+
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.Unity;
+
+using Commanding.Modules.Order;
 
 namespace Commanding
 {

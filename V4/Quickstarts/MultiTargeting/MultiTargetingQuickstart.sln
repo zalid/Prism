@@ -10,11 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateListingViewer.Desktop", "Desktop\RealEstateListingViewer\RealEstateListingViewer.Desktop.csproj", "{87430705-54AC-4088-9348-098E3DB9F661}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateListingViewer", "Silverlight\RealEstateListingViewer\RealEstateListingViewer.csproj", "{DDB2851E-D641-45C2-9641-30AAE930FFC9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateListingViewer.Tests", "Silverlight\RealEstateListingViewer.Tests\RealEstateListingViewer.Tests.csproj", "{2CEB92BD-DF46-4FE6-B6C0-010C30187071}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateListingViewer.Desktop", "Desktop\RealEstateListingViewer\RealEstateListingViewer.Desktop.csproj", "{87430705-54AC-4088-9348-098E3DB9F661}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateListingViewer.Desktop.Tests", "Desktop\RealEstateListingViewer.Tests\RealEstateListingViewer.Desktop.Tests.csproj", "{7B7EB150-1D0F-4B80-B200-2651F77FA01E}"
 EndProject

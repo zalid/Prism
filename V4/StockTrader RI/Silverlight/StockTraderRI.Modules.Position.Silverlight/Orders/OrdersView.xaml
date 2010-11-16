@@ -6,6 +6,7 @@
     xmlns:cal="http://www.codeplex.com/prism" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:orders="clr-namespace:StockTraderRI.Modules.Position.Orders"
     mc:Ignorable="d" 
     d:DesignWidth="305" d:DesignHeight="115">
 
@@ -15,7 +16,13 @@
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <ScrollViewer VerticalAlignment="Top" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top" BorderThickness="0,0,0,0" Grid.RowSpan="1" Grid.Row="0" Style="{StaticResource ScrollViewerStyle}">
-            <ItemsControl x:Name="OrdersItemsControl" BorderThickness="0" cal:RegionManager.RegionName="OrdersRegion" Margin="0,10,0,10" />
+            <ItemsControl x:Name="OrdersItemsControl" BorderThickness="0" cal:RegionManager.RegionName="OrdersRegion" Margin="0,10,0,10">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <orders:OrderCompositeView/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </ScrollViewer>
         <StackPanel Height="Auto" VerticalAlignment="Bottom" Orientation="Horizontal" Grid.RowSpan="1" HorizontalAlignment="Center" Grid.Row="1">
             <Button Content="Submit All" commands:Click.Command="{Binding Path=SubmitAllOrdersCommand}" Template="{StaticResource SubmitButtonTemplate}" AutomationProperties.AutomationId="OrderCommandSubmitAllButton" Cursor="Hand" Height="25" />

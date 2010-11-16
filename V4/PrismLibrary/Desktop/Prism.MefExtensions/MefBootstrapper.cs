@@ -22,6 +22,8 @@ using Microsoft.Practices.Prism.MefExtensions.Properties;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.ServiceLocation;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.Practices.Prism.MefExtensions
 {
@@ -115,8 +117,12 @@ namespace Microsoft.Practices.Prism.MefExtensions
                 this.InitializeShell();
             }
 
-            this.Logger.Log(Resources.InitializingModules, Category.Debug, Priority.Low);
-            this.InitializeModules();
+            IEnumerable<Lazy<object, object>> exports = this.Container.GetExports(typeof(IModuleManager), null, null);
+            if ((exports != null) && (exports.Count() > 0))
+            {
+                this.Logger.Log(Resources.InitializingModules, Category.Debug, Priority.Low);
+                this.InitializeModules();
+            }
 
             this.Logger.Log(Resources.BootstrapperSequenceCompleted, Category.Debug, Priority.Low);
         }
@@ -177,17 +183,16 @@ namespace Microsoft.Practices.Prism.MefExtensions
         /// Helper method for configuring the <see cref="CompositionContainer"/>. 
         /// Registers defaults for all the types necessary for Prism to work, if they are not already registered.
         /// </summary>
-        public void RegisterDefaultTypesIfMissing()
+        public virtual void RegisterDefaultTypesIfMissing()
         {
-            DefaultPrismServiceRegistrar agent = new DefaultPrismServiceRegistrar();
-            this.AggregateCatalog = agent.RegisterRequiredPrismServicesIfMissing(this.AggregateCatalog);
+            this.AggregateCatalog = DefaultPrismServiceRegistrar.RegisterRequiredPrismServicesIfMissing(this.AggregateCatalog);
         }
 
         /// <summary>
         /// Helper method for configuring the <see cref="CompositionContainer"/>. 
         /// Registers all the types direct instantiated by the bootstrapper with the container.
         /// </summary>
-        protected void RegisterBootstrapperProvidedTypes()
+        protected virtual void RegisterBootstrapperProvidedTypes()
         {
             this.Container.ComposeExportedValue<ILoggerFacade>(this.Logger);
             this.Container.ComposeExportedValue<IModuleCatalog>(this.ModuleCatalog);
@@ -224,9 +229,6 @@ namespace Microsoft.Practices.Prism.MefExtensions
         protected override void InitializeModules()
         {
             IModuleManager manager = this.Container.GetExportedValue<IModuleManager>();
-
-            // TODO: comment this to explain why it is here
-            this.Container.SatisfyImportsOnce(manager);
             manager.Run();
         }
     }

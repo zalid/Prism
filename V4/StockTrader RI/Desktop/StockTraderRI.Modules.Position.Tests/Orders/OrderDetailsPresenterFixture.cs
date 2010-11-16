@@ -31,18 +31,9 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
     public class OrderDetailsPresenterFixture
     {
         [TestMethod]
-        public void PresenterProvidesViewModelToBindTo()
-        {
-            var view = new MockOrderDetailsView();
-            var presenter = new OrderDetailsPresentationModel(view, null, null);
-
-            Assert.IsNotNull(view.Model);
-        }
-
-        [TestMethod]
         public void PresenterCreatesPublicSubmitCommand()
         {
-            var presenter = CreatePresentationModel(new MockOrderDetailsView(), null);
+            var presenter = CreatePresentationModel(null);
 
             Assert.IsNotNull(presenter.SubmitCommand);
         }
@@ -50,9 +41,8 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         [TestMethod]
         public void CanExecuteChangedIsRaisedForSubmitCommandWhenModelBecomesValid()
         {
-            var view = new MockOrderDetailsView();
             bool canExecuteChanged = false;
-            var presenter = CreatePresentationModel(view, null);
+            var presenter = CreatePresentationModel(null);
             presenter.SubmitCommand.CanExecuteChanged += delegate { canExecuteChanged = true; };
             presenter.Shares = 2;
             canExecuteChanged = false;
@@ -66,7 +56,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         [ExpectedException(typeof(InputValidationException))]
         public void NonPositiveSharesThrows()
         {
-            var presenter = CreatePresentationModel(new MockOrderDetailsView(), null);
+            var presenter = CreatePresentationModel(null);
 
             presenter.Shares = 0;
         }
@@ -74,7 +64,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         [TestMethod]
         public void CannotSubmitWhenSharesIsNotPositive()
         {
-            var presenter = CreatePresentationModel(new MockOrderDetailsView(), null);
+            var presenter = CreatePresentationModel(null);
 
             presenter.Shares = 2;
             presenter.StopLimitPrice = 2;
@@ -93,13 +83,12 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         [ExpectedException(typeof(InvalidOperationException))]
         public void SubmitThrowsIfCanExecuteIsFalse()
         {
-            var presenter = CreatePresentationModel(new MockOrderDetailsView(),
-                                                    new MockAccountPositionService());
+            var presenter = CreatePresentationModel(new MockAccountPositionService());
             try
             {
                 presenter.Shares = 0;
             }
-            catch(InputValidationException) {}
+            catch (InputValidationException) { }
 
             Assert.IsFalse(presenter.SubmitCommand.CanExecute(null));
 
@@ -111,7 +100,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         {
             bool closeViewRaised = false;
 
-            var presenter = CreatePresentationModel(new MockOrderDetailsView(), null);
+            var presenter = CreatePresentationModel(null);
             presenter.CloseViewRequested += delegate
             {
                 closeViewRaised = true;
@@ -127,8 +116,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         {
             bool closeViewRaised = false;
 
-            var presenter = CreatePresentationModel(new MockOrderDetailsView(),
-                                                    new MockAccountPositionService());
+            var presenter = CreatePresentationModel(new MockAccountPositionService());
             presenter.CloseViewRequested += delegate
             {
                 closeViewRaised = true;
@@ -148,7 +136,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         {
             var accountPositionService = new MockAccountPositionService();
             accountPositionService.AddPosition(new AccountPosition("TESTFUND", 10m, 15));
-            var presenter = CreatePresentationModel(new MockOrderDetailsView(), accountPositionService);
+            var presenter = CreatePresentationModel(accountPositionService);
 
             presenter.TickerSymbol = "TESTFUND";
             presenter.TransactionType = TransactionType.Sell;
@@ -160,7 +148,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
             {
                 presenter.Shares = 16;
             }
-            catch(InputValidationException) { }
+            catch (InputValidationException) { }
             Assert.IsFalse(presenter.SubmitCommand.CanExecute(null));
         }
 
@@ -169,7 +157,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         {
             var accountPositionService = new MockAccountPositionService();
             accountPositionService.AddPosition(new AccountPosition("TESTFUND", 10m, 15));
-            var presenter = CreatePresentationModel(new MockOrderDetailsView(), accountPositionService);
+            var presenter = CreatePresentationModel(accountPositionService);
 
             presenter.TickerSymbol = "TESTFUND";
             presenter.TransactionType = TransactionType.Sell;
@@ -178,7 +166,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
             {
                 presenter.Shares = 16;
             }
-            catch(InputValidationException)
+            catch (InputValidationException)
             {
                 return;
             }
@@ -188,9 +176,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         [TestMethod]
         public void PresenterCreatesCallSetOrderTypes()
         {
-            var view = new MockOrderDetailsView();
-
-            var presenter = new OrderDetailsPresentationModel(view, null, null);
+            var presenter = new OrderDetailsViewModel(null, null);
 
             Assert.IsNotNull(presenter.AvailableOrderTypes);
             Assert.IsTrue(presenter.AvailableOrderTypes.Count > 0);
@@ -200,8 +186,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         [TestMethod]
         public void PresenterCreatesCallSetTimeInForce()
         {
-            var view = new MockOrderDetailsView();
-            var presenter = new OrderDetailsPresentationModel(view, null, null);
+            var presenter = new OrderDetailsViewModel(null, null);
             Assert.IsNotNull(presenter.AvailableTimesInForce);
             Assert.IsTrue(presenter.AvailableTimesInForce.Count > 0);
             Assert.AreEqual(GetEnumCount(typeof(TimeInForce)), presenter.AvailableTimesInForce.Count);
@@ -210,8 +195,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         [TestMethod]
         public void SetTransactionInfoShouldUpdateTheModel()
         {
-            var view = new MockOrderDetailsView();
-            var presenter = new OrderDetailsPresentationModel(view, new MockAccountPositionService(), null);
+            var presenter = new OrderDetailsViewModel(new MockAccountPositionService(), null);
             presenter.TransactionInfo = new TransactionInfo { TickerSymbol = "T000", TransactionType = TransactionType.Sell };
 
             Assert.AreEqual("T000", presenter.TickerSymbol);
@@ -222,8 +206,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         public void SubmitCallsServiceWithCorrectOrder()
         {
             var ordersService = new MockOrdersService();
-            var presenter = new OrderDetailsPresentationModel(new MockOrderDetailsView(),
-                                                    new MockAccountPositionService(), ordersService);
+            var presenter = new OrderDetailsViewModel(new MockAccountPositionService(), ordersService);
             presenter.Shares = 2;
             presenter.TickerSymbol = "AAAA";
             presenter.TransactionType = TransactionType.Buy;
@@ -246,8 +229,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         [TestMethod]
         public void VerifyTransactionInfoModificationsInOrderDetails()
         {
-            var view = new MockOrderDetailsView();
-            var orderDetailsPresenter = new OrderDetailsPresentationModel(view, new MockAccountPositionService(), null);
+            var orderDetailsPresenter = new OrderDetailsViewModel(new MockAccountPositionService(), null);
             var transactionInfo = new TransactionInfo { TickerSymbol = "Fund0", TransactionType = TransactionType.Buy };
             orderDetailsPresenter.TransactionInfo = transactionInfo;
             orderDetailsPresenter.TransactionType = TransactionType.Sell;
@@ -262,7 +244,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         {
             var accountPositionService = new MockAccountPositionService();
             accountPositionService.AddPosition(new AccountPosition("TESTFUND", 10m, 15));
-            var presenter = CreatePresentationModel(new MockOrderDetailsView(), accountPositionService);
+            var presenter = CreatePresentationModel(accountPositionService);
 
             presenter.TickerSymbol = "TESTFUND";
             presenter.TransactionType = TransactionType.Sell;
@@ -304,7 +286,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         [TestMethod]
         public void PropertyChangedIsRaisedWhenSharesIsChanged()
         {
-            var presenter = new OrderDetailsPresentationModel(new MockOrderDetailsView(),null,null);
+            var presenter = new OrderDetailsViewModel(null, null);
             presenter.Shares = 5;
 
             bool sharesPropertyChangedRaised = false;
@@ -328,9 +310,9 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
             return availableOrderTypes.Length;
         }
 
-        private static OrderDetailsPresentationModel CreatePresentationModel(IOrderDetailsView view, IAccountPositionService accountPositionService)
+        private static OrderDetailsViewModel CreatePresentationModel(IAccountPositionService accountPositionService)
         {
-            return new OrderDetailsPresentationModel(view, accountPositionService, new MockOrdersService());
+            return new OrderDetailsViewModel(accountPositionService, new MockOrdersService());
         }
     }
 

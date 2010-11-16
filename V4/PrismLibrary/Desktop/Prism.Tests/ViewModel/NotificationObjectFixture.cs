@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Xml.Serialization;
 using Microsoft.Practices.Prism.TestSupport;
@@ -39,7 +40,26 @@ namespace Microsoft.Practices.Prism.Tests.ViewModel
             Assert.IsTrue(changeTracker.ChangedProperties.Contains("InstanceProperty"));
         }
 
-#if !SILVERLIGHT
+#if SILVERLIGHT
+        [TestMethod]
+        public void NotificationObjectShouldBeDataContractSerializable()
+        {
+            var serializer = new System.Runtime.Serialization.DataContractSerializer(typeof (TestNotificationObject));
+            var stream = new System.IO.MemoryStream();
+            bool invoked = false;
+
+            var testObject = new TestNotificationObject();
+            testObject.PropertyChanged += (o, e) => { invoked = true; };
+
+            serializer.WriteObject(stream, testObject);
+
+            stream.Seek(0, System.IO.SeekOrigin.Begin);
+
+            var reconstitutedObject = serializer.ReadObject(stream) as TestNotificationObject;
+
+            Assert.IsNotNull(reconstitutedObject);
+        }
+#else
         [TestMethod]
         public void NotificationObjectShouldBeSerializable()
         {
@@ -67,8 +87,6 @@ namespace Microsoft.Practices.Prism.Tests.ViewModel
 
             var writeStream = new System.IO.StringWriter();
 
-            bool invoked = false;
-
             var testObject = new TestNotificationObject();
             testObject.PropertyChanged += MockHandler;
 
@@ -86,7 +104,9 @@ namespace Microsoft.Practices.Prism.Tests.ViewModel
             // does nothing intentionally
         }
     
-#if !SILVERLIGHT
+#if SILVERLIGHT
+        [DataContract]
+#else
         [Serializable]
 #endif
         public class TestNotificationObject : NotificationObject

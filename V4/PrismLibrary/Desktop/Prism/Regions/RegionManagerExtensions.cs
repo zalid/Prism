@@ -121,6 +121,9 @@ namespace Microsoft.Practices.Prism.Regions
         /// <param name="navigationCallback">The navigation callback.</param>
         public static void RequestNavigate(this IRegionManager regionManager, string regionName, Uri source, Action<NavigationResult> navigationCallback)
         {
+            if (regionManager == null) throw new ArgumentNullException("regionManager");
+            if (navigationCallback == null) throw new ArgumentNullException("navigationCallback");
+
             if (regionManager.Regions.ContainsRegionWithName(regionName))
             {
                 regionManager.Regions[regionName].RequestNavigate(source, navigationCallback);
@@ -129,6 +132,42 @@ namespace Microsoft.Practices.Prism.Regions
             {
                 navigationCallback(new NavigationResult(new NavigationContext(null, source), false));
             }
+        }
+
+        /// <summary>
+        /// Navigates the specified region manager.
+        /// </summary>
+        /// <param name="regionManager">The regionmanager that this extension method effects.</param>
+        /// <param name="regionName">The name of the region to call Navigate on.</param>
+        /// <param name="source">The URI of the content to display.</param>
+        public static void RequestNavigate(this IRegionManager regionManager, string regionName, Uri source)
+        {
+            RequestNavigate(regionManager, regionName, source, nr => { });
+        }
+
+        /// <summary>
+        /// Navigates the specified region manager.
+        /// </summary>
+        /// <param name="regionManager">The regionmanager that this extension method effects.</param>
+        /// <param name="regionName">The name of the region to call Navigate on.</param>
+        /// <param name="source">The URI of the content to display.</param>
+        /// <param name="navigationCallback">The navigation callback.</param>
+        public static void RequestNavigate(this IRegionManager regionManager, string regionName, string source, Action<NavigationResult> navigationCallback)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+
+            RequestNavigate(regionManager, regionName, new Uri(source, UriKind.RelativeOrAbsolute), navigationCallback);
+        }
+
+        /// <summary>
+        /// Navigates the specified region manager.
+        /// </summary>
+        /// <param name="regionManager">The regionmanager that this extension method effects.</param>
+        /// <param name="regionName">The name of the region to call Navigate on.</param>
+        /// <param name="source">The URI of the content to display.</param>
+        public static void RequestNavigate(this IRegionManager regionManager, string regionName, string source)
+        {
+            RequestNavigate(regionManager, regionName, source, nr => { });
         }
     }
 }

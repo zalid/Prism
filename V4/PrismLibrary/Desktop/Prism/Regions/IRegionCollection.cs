@@ -15,13 +15,14 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System.Collections.Generic;
+using System.Collections.Specialized;
 
 namespace Microsoft.Practices.Prism.Regions
 {
     /// <summary>
     /// Defines a collection of <see cref="IRegion"/> uniquely identified by their Name.
     /// </summary>
-    public interface IRegionCollection : IEnumerable<IRegion>
+    public interface IRegionCollection : IEnumerable<IRegion>, INotifyCollectionChanged
     {
         /// <summary>
         /// Gets the IRegion with the name received as index.

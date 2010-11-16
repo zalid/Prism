@@ -17,6 +17,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -32,11 +33,13 @@ namespace Microsoft.Practices.Prism.Regions
     {
         private ObservableCollection<ItemMetadata> itemMetadataCollection;
         private string name;
-        private IViewsCollection views;
-        private IViewsCollection activeViews;
+        private ViewsCollection views;
+        private ViewsCollection activeViews;
         private object context;
         private IRegionManager regionManager;
         private IRegionNavigationService regionNavigationService;
+
+        private Comparison<object> sort;
 
         /// <summary>
         /// Initializes a new instance of <see cref="Region"/>.
@@ -44,6 +47,8 @@ namespace Microsoft.Practices.Prism.Regions
         public Region()
         {
             this.Behaviors = new RegionBehaviorCollection(this);
+
+            this.sort = Region.DefaultSortComparison;
         }
 
         /// <summary>
@@ -116,6 +121,7 @@ namespace Microsoft.Practices.Prism.Regions
                 if (this.views == null)
                 {
                     this.views = new ViewsCollection(ItemMetadataCollection, x => true);
+                    this.views.SortComparison = this.sort;
                 }
 
                 return this.views;
@@ -133,9 +139,36 @@ namespace Microsoft.Practices.Prism.Regions
                 if (this.activeViews == null)
                 {
                     this.activeViews = new ViewsCollection(ItemMetadataCollection, x => x.IsActive);
+                    this.activeViews.SortComparison = this.sort;
                 }
 
                 return this.activeViews;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the comparison used to sort the views.
+        /// </summary>
+        /// <value>The comparison to use.</value>
+        public Comparison<object> SortComparison
+        {
+            get
+            {
+                return this.sort;
+            }
+            set
+            {
+                this.sort = value;
+
+                if (this.activeViews != null)
+                {
+                    this.activeViews.SortComparison = this.sort;
+                }
+
+                if (this.views != null)
+                {
+                    this.views.SortComparison = this.sort;
+                }
             }
         }
 
@@ -159,6 +192,29 @@ namespace Microsoft.Practices.Prism.Regions
                     this.regionManager = value;
                     this.OnPropertyChanged("RegionManager");
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets the navigation service.
+        /// </summary>
+        /// <value>The navigation service.</value>
+        public IRegionNavigationService NavigationService
+        {
+            get
+            {
+                if (this.regionNavigationService == null)
+                {
+                    this.regionNavigationService = ServiceLocator.Current.GetInstance<IRegionNavigationService>();
+                    this.regionNavigationService.Region = this;
+                }
+
+                return this.regionNavigationService;
+            }
+
+            set
+            {
+                this.regionNavigationService = value;
             }
         }
 
@@ -288,19 +344,13 @@ namespace Microsoft.Practices.Prism.Regions
         }
 
         /// <summary>
-        /// Initiates navigation to the specified source.
+        /// Initiates navigation to the specified target.
         /// </summary>
-        /// <param name="source">The source.</param>
+        /// <param name="target">The target.</param>
         /// <param name="navigationCallback">A callback to execute when the navigation request is completed.</param>
-        public void RequestNavigate(Uri source, Action<NavigationResult> navigationCallback)
+        public void RequestNavigate(Uri target, Action<NavigationResult> navigationCallback)
         {
-            if (this.regionNavigationService == null)
-            {
-                this.regionNavigationService = ServiceLocator.Current.GetInstance<IRegionNavigationService>();
-                this.regionNavigationService.Region = this;
-            }
-
-            this.regionNavigationService.RequestNavigate(source, navigationCallback);
+            this.NavigationService.RequestNavigate(target, navigationCallback);
         }
 
         private void InnerAdd(object view, string viewName, IRegionManager scopedRegionManager)
@@ -352,6 +402,72 @@ namespace Microsoft.Practices.Prism.Regions
             if (eventHandler != null)
             {
                 eventHandler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        /// <summary>
+        /// The default sort algorithm.
+        /// </summary>
+        /// <param name="x">The first view to compare.</param>
+        /// <param name="y">The second view to compare.</param>
+        /// <returns></returns>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "y")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "x")]
+        public static int DefaultSortComparison(object x, object y)
+        {
+            if (x == null)
+            {
+                if (y == null)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            else
+            {
+                if (y == null)
+                {
+                    return 1;
+                }
+                else
+                {
+                    Type xType = x.GetType();
+                    Type yType = y.GetType();
+
+                    ViewSortHintAttribute xAttribute = xType.GetCustomAttributes(typeof(ViewSortHintAttribute), true).FirstOrDefault() as ViewSortHintAttribute;
+                    ViewSortHintAttribute yAttribute = yType.GetCustomAttributes(typeof(ViewSortHintAttribute), true).FirstOrDefault() as ViewSortHintAttribute;
+
+                    return ViewSortHintAttributeComparison(xAttribute, yAttribute);
+                }
+            }
+        }
+
+        private static int ViewSortHintAttributeComparison(ViewSortHintAttribute x, ViewSortHintAttribute y)
+        {
+            if (x == null)
+            {
+                if (y == null)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            else
+            {
+                if (y == null)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return string.Compare(x.Hint, y.Hint, StringComparison.Ordinal);
+                }
             }
         }
     }

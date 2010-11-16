@@ -22,11 +22,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Prism.UnityExtensions")]
+[assembly: AssemblyTitle("Microsoft.Practices.Prism.UnityExtensions")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft Corporation")]
-[assembly: AssemblyProduct("Prism Library")]
+[assembly: AssemblyProduct("Prism")]
 [assembly: AssemblyCopyright("Copyright (c) 2008,2009,2010 Microsoft Corporation.  All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

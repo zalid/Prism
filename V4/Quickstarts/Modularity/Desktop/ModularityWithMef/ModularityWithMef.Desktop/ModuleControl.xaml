@@ -6,7 +6,6 @@
 	mc:Ignorable="d"		
 	UseLayoutRounding="True"
 	d:DesignWidth="100" d:DesignHeight="100"
-    Style="{DynamicResource ModuleControlStyle-Simple}"
     Loaded="ModuleControl_Loaded"    >
     <!-- This control binds against ModuleTrackingState -->
     <Grid x:Name="LayoutRoot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

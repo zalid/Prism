@@ -23,9 +23,12 @@ using System.Xml.Linq;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.Position.Properties;
+using System.ComponentModel.Composition;
 
 namespace StockTraderRI.Modules.Position.Services
 {
+    [Export(typeof(IAccountPositionService))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class AccountPositionService : IAccountPositionService
     {
         List<AccountPosition> _positions = new List<AccountPosition>();

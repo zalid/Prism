@@ -23,7 +23,7 @@ namespace ModuleA.Tests.Mocks
     public class MockEventAggregator : IEventAggregator
     {
         Dictionary<Type, object> events = new Dictionary<Type, object>();
-        public TEventType GetEvent<TEventType>() where TEventType : EventBase
+        public TEventType GetEvent<TEventType>() where TEventType : EventBase, new()
         {
             return (TEventType)events[typeof(TEventType)];
         }

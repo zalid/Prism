@@ -42,12 +42,12 @@ namespace Microsoft.Practices.Prism.Tests.Regions
 
             var navigationContext = new NavigationContext(null, new Uri(view.GetType().Name, UriKind.Relative));
 
-            var navigationTargetHandler = new TestLocatorNavigationTargetHandler(serviceLocatorMock.Object);
+            var navigationTargetHandler = new TestRegionNavigationContentLoader(serviceLocatorMock.Object);
 
 
             // Act
 
-            var returnedView = navigationTargetHandler.GetTargetView(region, navigationContext);
+            var returnedView = navigationTargetHandler.LoadContent(region, navigationContext);
 
 
             // Assert
@@ -56,7 +56,7 @@ namespace Microsoft.Practices.Prism.Tests.Regions
         }
 
         [TestMethod]
-        public void WhenRegionHasMultipleViews_ThenOnlyViewsWithMatchingTypeNameAreConsidered()
+        public void WhenRegionHasMultipleViews_ThenViewsWithMatchingTypeNameAreConsidered()
         {
             // Arrange
 
@@ -72,12 +72,42 @@ namespace Microsoft.Practices.Prism.Tests.Regions
 
             var navigationContext = new NavigationContext(null, new Uri(view2.GetType().Name, UriKind.Relative));
 
-            var navigationTargetHandler = new TestLocatorNavigationTargetHandler(serviceLocatorMock.Object);
+            var navigationTargetHandler = new TestRegionNavigationContentLoader(serviceLocatorMock.Object);
 
 
             // Act
 
-            var returnedView = navigationTargetHandler.GetTargetView(region, navigationContext);
+            var returnedView = navigationTargetHandler.LoadContent(region, navigationContext);
+
+
+            // Assert
+
+            Assert.AreSame(view2, returnedView);
+        }
+
+        [TestMethod]
+        public void WhenRegionHasMultipleViews_ThenViewsWithMatchingFullTypeNameAreConsidered()
+        {
+            // Arrange
+
+            var serviceLocatorMock = new Mock<IServiceLocator>();
+
+            var region = new Region();
+
+            var view1 = new TestView();
+            var view2 = "view";
+
+            region.Add(view1);
+            region.Add(view2);
+
+            var navigationContext = new NavigationContext(null, new Uri(view2.GetType().FullName, UriKind.Relative));
+
+            var navigationTargetHandler = new TestRegionNavigationContentLoader(serviceLocatorMock.Object);
+
+
+            // Act
+
+            var returnedView = navigationTargetHandler.LoadContent(region, navigationContext);
 
 
             // Assert
@@ -96,7 +126,7 @@ namespace Microsoft.Practices.Prism.Tests.Regions
 
             var viewMock = new Mock<INavigationAware>();
             viewMock
-                .Setup(v => v.CanNavigateTo(It.IsAny<NavigationContext>()))
+                .Setup(v => v.IsNavigationTarget(It.IsAny<NavigationContext>()))
                 .Returns(true)
                 .Verifiable();
 
@@ -104,12 +134,12 @@ namespace Microsoft.Practices.Prism.Tests.Regions
 
             var navigationContext = new NavigationContext(null, new Uri(viewMock.Object.GetType().Name, UriKind.Relative));
 
-            var navigationTargetHandler = new TestLocatorNavigationTargetHandler(serviceLocatorMock.Object);
+            var navigationTargetHandler = new TestRegionNavigationContentLoader(serviceLocatorMock.Object);
 
 
             // Act
 
-            var returnedView = navigationTargetHandler.GetTargetView(region, navigationContext);
+            var returnedView = navigationTargetHandler.LoadContent(region, navigationContext);
 
 
             // Assert
@@ -129,7 +159,7 @@ namespace Microsoft.Practices.Prism.Tests.Regions
 
             var dataContextMock = new Mock<INavigationAware>();
             dataContextMock
-                .Setup(v => v.CanNavigateTo(It.IsAny<NavigationContext>()))
+                .Setup(v => v.IsNavigationTarget(It.IsAny<NavigationContext>()))
                 .Returns(true)
                 .Verifiable();
             var viewMock = new Mock<FrameworkElement>();
@@ -139,12 +169,12 @@ namespace Microsoft.Practices.Prism.Tests.Regions
 
             var navigationContext = new NavigationContext(null, new Uri(viewMock.Object.GetType().Name, UriKind.Relative));
 
-            var navigationTargetHandler = new TestLocatorNavigationTargetHandler(serviceLocatorMock.Object);
+            var navigationTargetHandler = new TestRegionNavigationContentLoader(serviceLocatorMock.Object);
 
 
             // Act
 
-            var returnedView = navigationTargetHandler.GetTargetView(region, navigationContext);
+            var returnedView = navigationTargetHandler.LoadContent(region, navigationContext);
 
 
             // Assert
@@ -170,12 +200,12 @@ namespace Microsoft.Practices.Prism.Tests.Regions
 
             var navigationContext = new NavigationContext(null, new Uri(view.GetType().Name, UriKind.Relative));
 
-            var navigationTargetHandler = new TestLocatorNavigationTargetHandler(serviceLocatorMock.Object);
+            var navigationTargetHandler = new TestRegionNavigationContentLoader(serviceLocatorMock.Object);
 
 
             // Act
 
-            var returnedView = navigationTargetHandler.GetTargetView(region, navigationContext);
+            var returnedView = navigationTargetHandler.LoadContent(region, navigationContext);
 
 
             // Assert
@@ -195,7 +225,7 @@ namespace Microsoft.Practices.Prism.Tests.Regions
 
             var viewMock = new Mock<INavigationAware>();
             viewMock
-                .Setup(v => v.CanNavigateTo(It.IsAny<NavigationContext>()))
+                .Setup(v => v.IsNavigationTarget(It.IsAny<NavigationContext>()))
                 .Returns(false)
                 .Verifiable();
 
@@ -209,12 +239,12 @@ namespace Microsoft.Practices.Prism.Tests.Regions
 
             var navigationContext = new NavigationContext(null, new Uri(viewMock.Object.GetType().Name, UriKind.Relative));
 
-            var navigationTargetHandler = new TestLocatorNavigationTargetHandler(serviceLocatorMock.Object);
+            var navigationTargetHandler = new TestRegionNavigationContentLoader(serviceLocatorMock.Object);
 
 
             // Act
 
-            var returnedView = navigationTargetHandler.GetTargetView(region, navigationContext);
+            var returnedView = navigationTargetHandler.LoadContent(region, navigationContext);
 
 
             // Assert
@@ -235,7 +265,7 @@ namespace Microsoft.Practices.Prism.Tests.Regions
 
             var dataContextMock = new Mock<INavigationAware>();
             dataContextMock
-                .Setup(v => v.CanNavigateTo(It.IsAny<NavigationContext>()))
+                .Setup(v => v.IsNavigationTarget(It.IsAny<NavigationContext>()))
                 .Returns(false)
                 .Verifiable();
             var viewMock = new Mock<FrameworkElement>();
@@ -251,12 +281,12 @@ namespace Microsoft.Practices.Prism.Tests.Regions
 
             var navigationContext = new NavigationContext(null, new Uri(viewMock.Object.GetType().Name, UriKind.Relative));
 
-            var navigationTargetHandler = new TestLocatorNavigationTargetHandler(serviceLocatorMock.Object);
+            var navigationTargetHandler = new TestRegionNavigationContentLoader(serviceLocatorMock.Object);
 
 
             // Act
 
-            var returnedView = navigationTargetHandler.GetTargetView(region, navigationContext);
+            var returnedView = navigationTargetHandler.LoadContent(region, navigationContext);
 
 
             // Assert
@@ -278,15 +308,15 @@ namespace Microsoft.Practices.Prism.Tests.Regions
 
             var navigationContext = new NavigationContext(null, new Uri(typeof(TestView).Name, UriKind.Relative));
 
-            var navigationTargetHandler = new TestLocatorNavigationTargetHandler(serviceLocatorMock.Object);
+            var navigationTargetHandler = new TestRegionNavigationContentLoader(serviceLocatorMock.Object);
 
 
             // Act
 
-            ExceptionAssert.Throws<ArgumentException>(
+            ExceptionAssert.Throws<InvalidOperationException>(
                 () =>
                 {
-                    navigationTargetHandler.GetTargetView(region, navigationContext);
+                    navigationTargetHandler.LoadContent(region, navigationContext);
 
                 });
         }
@@ -308,13 +338,13 @@ namespace Microsoft.Practices.Prism.Tests.Regions
 
             var navigationContext = new NavigationContext(null, new Uri(view.GetType().Name, UriKind.Relative));
 
-            var navigationTargetHandler = new TestLocatorNavigationTargetHandler(serviceLocatorMock.Object);
+            var navigationTargetHandler = new TestRegionNavigationContentLoader(serviceLocatorMock.Object);
 
 
             // Act
 
-            var firstReturnedView = navigationTargetHandler.GetTargetView(region, navigationContext);
-            var secondReturnedView = navigationTargetHandler.GetTargetView(region, navigationContext);
+            var firstReturnedView = navigationTargetHandler.LoadContent(region, navigationContext);
+            var secondReturnedView = navigationTargetHandler.LoadContent(region, navigationContext);
 
 
             // Assert
@@ -324,9 +354,45 @@ namespace Microsoft.Practices.Prism.Tests.Regions
             serviceLocatorMock.Verify(sl => sl.GetInstance<object>(view.GetType().Name), Times.Once());
         }
 
-        public class TestLocatorNavigationTargetHandler : LocatorNavigationTargetHandler
+        [TestMethod]
+        public void WhenRequestingContentForNullRegion_ThenThrows()
         {
-            public TestLocatorNavigationTargetHandler(IServiceLocator serviceLocator)
+            var serviceLocatorMock = new Mock<IServiceLocator>();
+
+            var navigationContext = new NavigationContext(null, new Uri("/", UriKind.Relative));
+
+            var navigationTargetHandler = new TestRegionNavigationContentLoader(serviceLocatorMock.Object);
+
+
+            ExceptionAssert.Throws<ArgumentNullException>(
+                () =>
+                {
+                    navigationTargetHandler.LoadContent(null, navigationContext);
+
+                });
+        }
+
+        [TestMethod]
+        public void WhenRequestingContentForNullContext_ThenThrows()
+        {
+            var serviceLocatorMock = new Mock<IServiceLocator>();
+
+            var region = new Region();
+
+            var navigationTargetHandler = new TestRegionNavigationContentLoader(serviceLocatorMock.Object);
+
+
+            ExceptionAssert.Throws<ArgumentNullException>(
+                () =>
+                {
+                    navigationTargetHandler.LoadContent(region, null);
+
+                });
+        }
+
+        public class TestRegionNavigationContentLoader : RegionNavigationContentLoader
+        {
+            public TestRegionNavigationContentLoader(IServiceLocator serviceLocator)
                 : base(serviceLocator)
             { }
         }

@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -12,7 +13,8 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel><FileUpgradeFlags></FileUpgradeFlags>
+    <WarningLevel>4</WarningLevel><FileUpgradeFlags>
+    </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -40,7 +42,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRules></CodeAnalysisRules>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -52,18 +55,22 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <CodeAnalysisRules></CodeAnalysisRules>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.Unity, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\LIB\Desktop\Unity\Microsoft.Practices.Unity.dll</HintPath>
+    <Reference Include="Microsoft.Practices.Prism.MefExtensions">
+      <HintPath>..\..\..\Bin\Desktop\Microsoft.Practices.Prism.MefExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\..\..\LIB\Desktop\CommonServiceLocation\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -89,35 +96,32 @@
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\..\LIB\Desktop\Prism\Microsoft.Practices.Prism.dll</HintPath>
+      <HintPath>..\..\..\Bin\Desktop\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\IOrdersController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Interfaces\IOrderCompositeView.cs" />
     <Compile Include="Interfaces\IOrdersService.cs" />
     <Compile Include="Interfaces\IOrdersView.cs" />
-    <Compile Include="Interfaces\IPositionSummaryView.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\TransactionInfo.cs" />
-    <Compile Include="Orders\IOrderCompositePresentationModel.cs" />
-    <Compile Include="Orders\IOrderDetailsPresentationModel.cs" />
-    <Compile Include="Orders\IOrderDetailsView.cs" />
-    <Compile Include="Orders\IOrdersPresentationModel.cs" />
+    <Compile Include="Orders\IOrderCompositeViewModel.cs" />
+    <Compile Include="Orders\IOrderDetailsViewModel.cs" />
+    <Compile Include="Orders\IOrdersViewModel.cs" />
     <Compile Include="Orders\OrderCommandsView.xaml.cs">
       <DependentUpon>OrderCommandsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Orders\OrderCompositePresentationModel.cs" />
+    <Compile Include="Orders\OrderCompositeViewModel.cs" />
     <Compile Include="Orders\OrderCompositeView.xaml.cs">
       <DependentUpon>OrderCompositeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Orders\OrderDetailsPresentationModel.cs" />
+    <Compile Include="Orders\OrderDetailsViewModel.cs" />
     <Compile Include="Orders\OrderDetailsView.xaml.cs">
       <DependentUpon>OrderDetailsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Orders\OrdersPresentationModel.cs" />
+    <Compile Include="Orders\OrdersViewModel.cs" />
     <Compile Include="Orders\OrdersView.xaml.cs">
       <DependentUpon>OrdersView.xaml</DependentUpon>
     </Compile>
@@ -125,9 +129,9 @@
     <Compile Include="Orders\TimeInForce.cs" />
     <Compile Include="Orders\ValueDescription.cs" />
     <Compile Include="PositionModule.cs" />
-    <Compile Include="PositionSummary\IPositionSummaryPresentationModel.cs" />
+    <Compile Include="PositionSummary\IPositionSummaryViewModel.cs" />
     <Compile Include="PositionSummary\PositionSummaryItem.cs" />
-    <Compile Include="PositionSummary\PositionSummaryPresentationModel.cs" />
+    <Compile Include="PositionSummary\PositionSummaryViewModel.cs" />
     <Compile Include="PositionSummary\PositionSummaryView.xaml.cs">
       <DependentUpon>PositionSummaryView.xaml</DependentUpon>
     </Compile>
@@ -202,12 +206,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IPositionPieChartView.cs" />
-    <Compile Include="Orders\OrderCompositePresentationModel.Desktop.cs" />
+    <Compile Include="Orders\OrderCompositeViewModel.Desktop.cs" />
     <Compile Include="PositionSummary\IObservablePosition.cs" />
-    <Compile Include="PositionSummary\IPositionPieChartPresentationModel.cs" />
+    <Compile Include="PositionSummary\IPositionPieChartViewModel.cs" />
     <Compile Include="PositionSummary\ObservablePosition.cs" />
-    <Compile Include="PositionSummary\PositionPieChartPresentationModel.cs" />
+    <Compile Include="PositionSummary\PositionPieChartViewModel.cs" />
     <Compile Include="PositionSummary\PositionPieChartView.xaml.cs">
       <DependentUpon>PositionPieChartView.xaml</DependentUpon>
     </Compile>

@@ -32,8 +32,9 @@ namespace Microsoft.Practices.Prism.Regions
         public NavigationContext(IRegionNavigationService navigationService, Uri uri)
         {
             this.NavigationService = navigationService;
+
             this.Uri = uri;
-            this.UriQuery = uri != null ? UriParsingHelper.ParseQuery(uri) : null;
+            this.Parameters = uri != null ? UriParsingHelper.ParseQuery(uri) : null;
         }
 
         /// <summary>
@@ -52,6 +53,6 @@ namespace Microsoft.Practices.Prism.Regions
         /// Gets the <see cref="UriQuery"/> extracted from the URI.
         /// </summary>
         /// <value>The URI query.</value>
-        public UriQuery UriQuery { get; private set; }
+        public UriQuery Parameters { get; private set; }
     }
 }

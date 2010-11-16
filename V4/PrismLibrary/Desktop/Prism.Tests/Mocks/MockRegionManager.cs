@@ -78,5 +78,7 @@ namespace Microsoft.Practices.Prism.Tests.Mocks
         {
             return true;
         }
+
+        public event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged;
     }
 }

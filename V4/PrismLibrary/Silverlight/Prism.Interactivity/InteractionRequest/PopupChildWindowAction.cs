@@ -24,6 +24,9 @@ namespace Microsoft.Practices.Prism.Interactivity.InteractionRequest
     /// </summary>
     public class PopupChildWindowAction : PopupChildWindowActionBase
     {
+        /// <summary>
+        /// The child window to display as part of the popup.
+        /// </summary>
         public static readonly DependencyProperty ChildWindowProperty =
             DependencyProperty.Register(
                 "ChildWindow",
@@ -31,6 +34,9 @@ namespace Microsoft.Practices.Prism.Interactivity.InteractionRequest
                 typeof(PopupChildWindowAction),
                 new PropertyMetadata(null));
 
+        /// <summary>
+        /// The <see cref="DataTemplate"/> to apply to the popup content.
+        /// </summary>
         public static readonly DependencyProperty ContentTemplateProperty =
             DependencyProperty.Register(
                 "ContentTemplate",
@@ -59,6 +65,11 @@ namespace Microsoft.Practices.Prism.Interactivity.InteractionRequest
             set { SetValue(ContentTemplateProperty, value); }
         }
 
+        /// <summary>
+        /// Returns the child window to display as part of the trigger action.
+        /// </summary>
+        /// <param name="notification">The notification to display in the child window.</param>
+        /// <returns></returns>
         protected override ChildWindow GetChildWindow(Notification notification)
         {
             var childWindow = this.ChildWindow ?? this.CreateDefaultWindow(notification);

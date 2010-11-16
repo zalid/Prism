@@ -87,10 +87,8 @@ namespace Microsoft.Practices.Prism.Tests.Regions
             }
         }
 
+#if !SILVERLIGHT
         [TestMethod]
-#if SILVERLIGHT
-        [Ignore]
-#endif
         public void ControlWithExistingBindingOnItemsSourceWithNullValueThrows()
         {
             var control = new ItemsControl();
@@ -111,6 +109,7 @@ namespace Microsoft.Practices.Prism.Tests.Regions
                 StringAssert.Contains(ex.Message, "ItemsControl's ItemsSource property is not empty.");
             }
         }
+#endif
 
         class SimpleModel
         {

@@ -251,10 +251,8 @@ namespace Microsoft.Practices.Prism.Tests.Events
             Assert.IsTrue((CompositePresentationEvent.Contains(emptyAction.Action)));
         }
 
+#if !SILVERLIGHT
         [TestMethod]
-#if SILVERLIGHT
-        [Ignore]
-#endif
         public void InlineDelegateDeclarationsDoesNotGetCollectedIncorrectlyWithWeakReferences()
         {
             var CompositePresentationEvent = new TestableCompositePresentationEvent<string>();
@@ -265,6 +263,7 @@ namespace Microsoft.Practices.Prism.Tests.Events
 
             Assert.IsTrue(published);
         }
+#endif
 
         [TestMethod]
         public void ShouldNotGarbageCollectDelegateReferenceWhenUsingKeepAlive()

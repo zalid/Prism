@@ -18,8 +18,8 @@ using StockTraderRI.Modules.Position.Orders;
 
 namespace StockTraderRI.Modules.Position.Interfaces
 {
+    // TODO Comment on why whe need this.
     public interface IOrdersView
     {
-        void SetModel(IOrdersPresentationModel model);
     }
 }

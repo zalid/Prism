@@ -40,10 +40,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.Practices.Prism.MefExtensions">
-      <HintPath>..\..\..\..\..\LIB\Desktop\Prism\Microsoft.Practices.Prism.MefExtensions.dll</HintPath>
+      <HintPath>..\..\..\..\..\Bin\Desktop\Microsoft.Practices.Prism.MefExtensions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\..\..\..\LIB\Desktop\Prism\Microsoft.Practices.Prism.dll</HintPath>
+      <HintPath>..\..\..\..\..\Bin\Desktop\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

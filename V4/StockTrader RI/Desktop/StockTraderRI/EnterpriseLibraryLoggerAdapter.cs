@@ -19,6 +19,7 @@ using Microsoft.Practices.EnterpriseLibrary.Logging;
 
 namespace StockTraderRI
 {
+    // todo: Are we still using this?
     public class EnterpriseLibraryLoggerAdapter : ILoggerFacade
     {
         #region ILoggerFacade Members

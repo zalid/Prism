@@ -33,6 +33,7 @@ namespace Microsoft.Practices.Prism.Interactivity.InteractionRequest
         /// Fires the Raised event.
         /// </summary>
         /// <param name="context">The context for the interaction request.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
         public void Raise(T context)
         {
             this.Raise(context, c => { });
@@ -43,6 +44,7 @@ namespace Microsoft.Practices.Prism.Interactivity.InteractionRequest
         /// </summary>
         /// <param name="context">The context for the interaction request.</param>
         /// <param name="callback">The callback to execute when the interaction is completed.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
         public void Raise(T context, Action<T> callback)
         {
             var handler = this.Raised;

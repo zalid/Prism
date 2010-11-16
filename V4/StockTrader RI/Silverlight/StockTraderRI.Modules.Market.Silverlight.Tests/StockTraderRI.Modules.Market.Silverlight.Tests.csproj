@@ -94,6 +94,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\LIB\Silverlight\UnitTestFramework\Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.dll</HintPath>
     </Reference>
+    <Reference Include="Moq.Silverlight">
+      <HintPath>..\..\..\LIB\Silverlight\Moq\Moq.Silverlight.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
     <Reference Include="system" />
@@ -103,21 +107,12 @@
     <Reference Include="System.Windows.Browser" />
     <Reference Include="System.Xml.Linq, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\..\LIB\Silverlight\Prism\Microsoft.Practices.Prism.dll</HintPath>
+      <HintPath>..\..\..\Bin\Silverlight\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Market.Tests\MarketModuleFixture.cs">
-      <Link>MarketModuleFixture.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Market.Tests\Mocks\MockEventAggregator.cs">
-      <Link>Mocks\MockEventAggregator.cs</Link>
-    </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Market.Tests\Mocks\MockMarketHistoryService.cs">
       <Link>Mocks\MockMarketHistoryService.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Market.Tests\Mocks\MockTrendLineView.cs">
-      <Link>Mocks\MockTrendLineView.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Market.Tests\Properties\Resources.Designer.cs">
       <Link>Properties\Resources.Designer.cs</Link>
@@ -126,8 +121,8 @@
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Market.Tests\Services\MarketFeedServiceFixture.cs">
       <Link>Services\MarketFeedServiceFixture.cs</Link>
     </Compile>
-    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Market.Tests\TrendLineView\TrendLinePresentationModelFixture.cs">
-      <Link>TrendLineView\TrendLinePresentationModelFixture.cs</Link>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Market.Tests\TrendLineView\TrendLineViewModelFixture.cs">
+      <Link>TrendLineView\TrendLineViewModelFixture.cs</Link>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>

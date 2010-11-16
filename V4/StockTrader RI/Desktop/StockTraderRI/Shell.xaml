@@ -8,7 +8,7 @@
     xmlns:StockTraderRI="clr-namespace:StockTraderRI"
     infBehaviors:RegionPopupBehaviors.CreatePopupRegionWithName="{x:Static inf:RegionNames.SecondaryRegion}"
     infBehaviors:RegionPopupBehaviors.ContainerWindowStyle="{StaticResource WindowRegionStyle}"
-    Title="Shell" Height="768" Width="1024" WindowStartupLocation="CenterScreen" WindowState="Maximized"
+    Title="Stock Trader Reference Implementation" Height="768" Width="1024" WindowStartupLocation="CenterScreen" WindowState="Maximized"
      ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
     <Window.Background>
         <ImageBrush ImageSource="Resources/background.png"  Stretch="UniformToFill"/>
@@ -197,7 +197,7 @@
                         <TranslateTransform/>
                     </TransformGroup>
                 </Grid.RenderTransform>
-                <Controls:ResearchControl cal:RegionManager.RegionName="ResearchRegion">
+                <Controls:ResearchControl cal:RegionManager.RegionName="{x:Static inf:RegionNames.ResearchRegion}">
                     <Controls:ResearchControl.Template>
                         <ControlTemplate TargetType="Controls:ResearchControl">
                             <Grid>
@@ -205,7 +205,7 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <Border Grid.Row="0" Height="30" CornerRadius="12,12,12,12" Margin="0,0,0,10" BorderBrush="#FFFFFFFF" BorderThickness="2,2,2,2" x:Name="rightHeader" Canvas.ZIndex="1" Opacity="0.9" Background="{StaticResource headerBarBG}">
+                                <Border Grid.Row="0" Height="30" CornerRadius="12,12,12,12" Margin="0,0,0,10" BorderBrush="#FFFFFFFF" BorderThickness="2,2,2,2" x:Name="rightHeader" Canvas.ZIndex="1" Opacity="0.9" Background="{StaticResource sideBarHeaderBarBG}">
                                     <ItemsControl ItemsSource="{TemplateBinding Headers}" HorizontalAlignment="Center">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>

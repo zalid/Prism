@@ -26,11 +26,11 @@ namespace Commanding.Modules.Order.Services
 
         public IEnumerable<Order> GetOrdersToEdit()
         {
-            var orders = new List<Order>(InitialOrdersCount);
-            for (int i = 1; i <= InitialOrdersCount; i++)
+            var orders = new List<Order>( InitialOrdersCount );
+            for ( int i = 1 ; i <= InitialOrdersCount ; i++ )
             {
                 string orderName = String.Format(CultureInfo.CurrentCulture, "Order {0}", i);
-                orders.Add(new Order { Name = orderName, DeliveryDate = DateTime.Today.AddDays(i) });
+                orders.Add( new Order { Name = orderName, DeliveryDate = DateTime.Today.AddDays(i) } );
             }
 
             return orders;

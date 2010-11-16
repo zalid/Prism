@@ -153,7 +153,11 @@
     <value>The argument must be a valid absolute Uri to an assembly file.</value>
   </data>
   <data name="FailedToRetrieveModule" xml:space="preserve">
-    <value>Failed to load type for module {0}. Error was: {1}.</value>
+    <value>Failed to load type for module {0}. 
+
+If this error occurred when using MEF in a Silverlight application, please ensure that the CopyLocal property of the reference to the MefExtensions assembly is set to true in the main application/shell and false in all other assemblies. 
+
+Error was: {1}.</value>
   </data>
   <data name="InvalidDelegateRerefenceTypeException" xml:space="preserve">
     <value>The Target of the IDelegateReference should be of type {0}.</value>
@@ -305,5 +309,11 @@
   </data>
   <data name="NavigationInProgress" xml:space="preserve">
     <value>Navigation is already in progress on region with name '{0}'.</value>
+  </data>
+  <data name="NavigationServiceHasNoRegion" xml:space="preserve">
+    <value>Navigation cannot proceed until a region is set for the RegionNavigationService.</value>
+  </data>
+  <data name="DelegateCommandInvalidGenericPayloadType" xml:space="preserve">
+    <value>T for DelegateCommand&lt;T&gt; is not an object nor Nullable.</value>
   </data>
 </root>

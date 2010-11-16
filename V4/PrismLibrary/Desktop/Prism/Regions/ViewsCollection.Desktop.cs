@@ -15,6 +15,7 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 
@@ -22,29 +23,25 @@ namespace Microsoft.Practices.Prism.Regions
 {
     public partial class ViewsCollection
     {
-        private void AddAndNotify(IList items)
+        private void NotifyAdd(IList items, int newStartingIndex)
         {
             if (items.Count > 0)
             {
-                filteredCollection.AddRange(items.Cast<object>());
-                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, items));
+                OnCollectionChanged(new NotifyCollectionChangedEventArgs(
+                                            NotifyCollectionChangedAction.Add,
+                                            items,
+                                            newStartingIndex));
             }
         }
 
-        private void RemoveAndNotify(IList items)
+        private void NotifyRemove(IList items, int originalIndex)
         {
             if (items.Count > 0)
             {
-                int index = -1;
-                if (items.Count == 1)
-                {
-                    index = filteredCollection.IndexOf(items[0]);
-                }
-                foreach (object item in items)
-                {
-                    filteredCollection.Remove(item);
-                }
-                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, items, index));
+                OnCollectionChanged(new NotifyCollectionChangedEventArgs(
+                    NotifyCollectionChangedAction.Remove,
+                    items, 
+                    originalIndex));
             }
         }
     }

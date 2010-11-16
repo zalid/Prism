@@ -15,14 +15,16 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System;
+using System.ComponentModel;
 using Microsoft.Practices.Prism.Events;
-using Microsoft.Practices.Prism.Regions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.News.Article;
 using StockTraderRI.Modules.News.Controllers;
-using StockTraderRI.Modules.News.Tests.Mocks;
+using StockTraderRI.Infrastructure.Interfaces;
+using Microsoft.Practices.Prism.Regions;
 
 namespace StockTraderRI.Modules.News.Tests.Controllers
 {
@@ -30,93 +32,31 @@ namespace StockTraderRI.Modules.News.Tests.Controllers
     public class NewsControllerFixture
     {
         [TestMethod]
-        public void ShowNewsResolvesPresenterAndCallsSetTickerSymbolOnItAndAddsNamedViewToRegion()
+        public void WhenArticleViewModelSelectedArticleChanged_NewsReaderViewModelNewsArticleUpdated()
         {
-            var presenter = new MockArticlePresentationModel();
-            var eventAggregator = new MockEventAggregator();
-            eventAggregator.AddMapping<TickerSymbolSelectedEvent>(new MockTickerSymbolSelectedEvent());
-            var controller = new NewsController(CreateRegionManager(), presenter, eventAggregator, new MockNewsReaderPresenter());
+            // Prepare
+            INewsFeedService newsFeedService = new Mock<INewsFeedService>().Object;
+            IRegionManager regionManager = new Mock<IRegionManager>().Object;
 
-            controller.ShowNews("Test");
+            var tickerSymbolSelectedEvent = new Mock<TickerSymbolSelectedEvent>().Object;
 
-            Assert.IsNotNull(presenter.SetTickerSymbolArgumentCompanySymbol);
-            Assert.AreEqual("Test", presenter.SetTickerSymbolArgumentCompanySymbol);
-        }
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            mockEventAggregator.Setup(x => x.GetEvent<TickerSymbolSelectedEvent>()).Returns(tickerSymbolSelectedEvent);
+            IEventAggregator eventAggregator = mockEventAggregator.Object;
 
-        [TestMethod]
-        public void ControllerShowNewsWhenRasingGlobalEvent()
-        {
-            var presenter = new MockArticlePresentationModel();
-            var eventAggregator = new MockEventAggregator();
-            var tickerSymbolSelectedEvent = new MockTickerSymbolSelectedEvent();
-            eventAggregator.AddMapping<TickerSymbolSelectedEvent>(tickerSymbolSelectedEvent);
-            var controller = new NewsController(CreateRegionManager(), presenter, eventAggregator, new MockNewsReaderPresenter());
 
-            controller.Run();
+            ArticleViewModel articleViewModel = new ArticleViewModel(newsFeedService, regionManager, eventAggregator);
+            NewsReaderViewModel newsReaderViewModel = new NewsReaderViewModel();
 
-            Assert.IsNotNull(tickerSymbolSelectedEvent.SubscribeArgumentAction);
+            var controller = new NewsController(articleViewModel, newsReaderViewModel);
 
-            tickerSymbolSelectedEvent.SubscribeArgumentAction("TEST_SYMBOL");
-            Assert.AreEqual("TEST_SYMBOL", presenter.SetTickerSymbolArgumentCompanySymbol);
-        }
+            NewsArticle newsArticle = new NewsArticle() { Title = "SomeTitle", Body = "Newsbody" };
 
-        [TestMethod]
-        public void ShouldNotifyReaderWhenCurrentNewsArticleChanges()
-        {
-            var presenter = new MockArticlePresentationModel();
-            var eventAggregator = new MockEventAggregator();
-            eventAggregator.AddMapping<TickerSymbolSelectedEvent>(new MockTickerSymbolSelectedEvent());
-            var newsReaderPresenter = new MockNewsReaderPresenter();
-            var controller = new NewsController(CreateRegionManager(), presenter, eventAggregator, newsReaderPresenter);
+            // Act
+            articleViewModel.SelectedArticle = newsArticle;
 
-            controller.CurrentNewsArticleChanged(new NewsArticle() { Title = "SomeTitle", Body = "Newsbody" });
-
-            Assert.IsTrue(newsReaderPresenter.SetNewsArticleCalled);
-        }
-
-        [TestMethod]
-        public void ControllerShowNewsViewWhenArticlePresenterReceivesEvent()
-        {
-            var articlePresentationModel = new MockArticlePresentationModel();
-            var eventAggregator = new MockEventAggregator();
-            eventAggregator.AddMapping<TickerSymbolSelectedEvent>(new MockTickerSymbolSelectedEvent());
-            var newsReaderPresenter = new MockNewsReaderPresenter();
-            var regionManager = CreateRegionManager();
-            var shellRegion = (MockRegion)regionManager.Regions["SecondaryRegion"];
-
-            var controller = new NewsController(regionManager, articlePresentationModel, eventAggregator, newsReaderPresenter);
-
-            controller.ShowNewsReader();
-
-            Assert.IsTrue(shellRegion.ActivateCalled);
-            Assert.AreEqual(newsReaderPresenter.View, shellRegion.ActivateArg);
-        }
-
-        private MockRegionManager CreateRegionManager()
-        {
-            var regionManager = new MockRegionManager();
-            regionManager.Regions.Add("SecondaryRegion", new MockRegion());
-            regionManager.Regions.Add("NewsRegion", new MockRegion());
-            regionManager.Regions.Add("ResearchRegion", new MockRegion());
-
-            return regionManager;
-        }
-
-        internal class MockArticlePresentationModel : IArticlePresentationModel
-        {
-            public MockArticleView MockArticleView = new MockArticleView();
-            public string SetTickerSymbolArgumentCompanySymbol;
-            public void SetTickerSymbol(string companySymbol)
-            {
-                SetTickerSymbolArgumentCompanySymbol = companySymbol;
-            }
-
-            public IArticleView View
-            {
-                get { return MockArticleView; }
-            }
-
-            public INewsController Controller { get; set; }
+            // Verify
+            Assert.AreSame(newsArticle, newsReaderViewModel.NewsArticle);
         }
 
         internal class MockTickerSymbolSelectedEvent : TickerSymbolSelectedEvent
@@ -130,22 +70,6 @@ namespace StockTraderRI.Modules.News.Tests.Controllers
                 return null;
             }
         }
-    }
 
-    internal class MockNewsReaderPresenter : INewsReaderPresenter
-    {
-        public bool SetNewsArticleCalled { get; set; }
-
-        public INewsReaderView View { get; set; }
-
-        public MockNewsReaderPresenter()
-        {
-            View = new MockNewsReaderView();
-        }
-
-        public void SetNewsArticle(NewsArticle article)
-        {
-            SetNewsArticleCalled = true;
-        }
     }
 }

@@ -18,91 +18,92 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using Commanding.Modules.Order.Properties;
+
 using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.Commands;
 
+using Commanding.Modules.Order.Properties;
+using Commanding.Modules.Order.Services;
+
 namespace Commanding.Modules.Order.PresentationModels
 {
-    public partial class OrderPresentationModel : INotifyPropertyChanged
+    /// <summary>
+    /// Presentation model that represents an Order entity.
+    /// </summary>
+    public partial class OrderPresentationModel : INotifyPropertyChanged, IDataErrorInfo
     {
         private readonly IDictionary<string, string> errors = new Dictionary<string, string>();
-        private int? quantity;
-        private decimal? price;
-        private DateTime deliveryDate;
-        private decimal? shipping;
+        private readonly Services.Order _order;
 
-        public OrderPresentationModel()
+        public OrderPresentationModel( Services.Order order )
         {
-            this.SaveOrderCommand = new DelegateCommand<object>(this.Save, this.CanSave);
-            this.DeliveryDate = DateTime.Now;
-            this.PropertyChanged += this.OnPropertyChangedEvent;
+            _order = order;
+
+            //TODO: 01 - Each Order defines a Save command.
+            this.SaveOrderCommand = new DelegateCommand<object>( this.Save, this.CanSave );
+
+            // Track all property changes so we can validate.
+            this.PropertyChanged += this.OnPropertyChanged;
+
             this.Validate();
         }
 
-        public event EventHandler<DataEventArgs<OrderPresentationModel>> Saved;
+        #region Order Properties - OrderName, DeliveryDate, Quantity, Price, Shipping, Total
 
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public string OrderName { get; set; }
-
-        public DelegateCommand<object> SaveOrderCommand { get; private set; }
+        public string OrderName
+        {
+            get { return _order.Name; }
+            set { _order.Name = value; NotifyPropertyChanged( "OrderName" ); }
+        }
 
         public DateTime DeliveryDate
         {
-            get { return this.deliveryDate; }
+            get { return _order.DeliveryDate; }
             set
             {
-                if (this.deliveryDate != value)
+                if ( _order.DeliveryDate != value )
                 {
-                    this.deliveryDate = value;
-                    this.OnPropertyChanged("DeliveryDate");
+                    _order.DeliveryDate = value;
+                    this.NotifyPropertyChanged( "DeliveryDate" );
                 }
             }
         }
 
         public int? Quantity
         {
-            get { return this.quantity; }
+            get { return _order.Quantity; }
             set
             {
-                if (this.quantity != value)
+                if ( _order.Quantity != value )
                 {
-                    this.quantity = value;
-                    this.OnPropertyChanged("Quantity");
+                    _order.Quantity = value;
+                    this.NotifyPropertyChanged( "Quantity" );
                 }
             }
         }
 
         public decimal? Price
         {
-            get { return this.price; }
+            get { return _order.Price; }
             set
             {
-                if (this.price != value)
+                if ( _order.Price != value )
                 {
-                    this.price = value;
-                    this.OnPropertyChanged("Price");
+                    _order.Price = value;
+                    this.NotifyPropertyChanged( "Price" );
                 }
             }
         }
 
         public decimal? Shipping
         {
-            get
-            {
-                return this.shipping;
-            }
-
+            get { return _order.Shipping; }
             set
             {
-                if (this.shipping != value)
+                if ( _order.Shipping != value )
                 {
-                    this.shipping = value;
-                    this.OnPropertyChanged("Shipping");
+                    _order.Shipping = value;
+                    this.NotifyPropertyChanged( "Shipping" );
                 }
             }
         }
@@ -115,23 +116,74 @@ namespace Commanding.Modules.Order.PresentationModels
                 {
                     return (this.Price.Value * this.Quantity.Value) + (this.Shipping ?? 0);
                 }
-
                 return 0;
             }
         }
 
-        public string this[string columnName]
+        #endregion
+
+        private void OnPropertyChanged( object sender, PropertyChangedEventArgs e )
+        {
+            // Total is a calculated property based on price, quantity and shipping cost.
+            // If any of these properties change, then notify the view.
+            string propertyName = e.PropertyName;
+            if ( propertyName == "Price" || propertyName == "Quantity" || propertyName == "Shipping" )
+            {
+                this.NotifyPropertyChanged( "Total" );
+            }
+
+            // Validate and update the enabled status of the SaveOrder
+            // command whenever any property changes.
+            this.Validate();
+            this.SaveOrderCommand.RaiseCanExecuteChanged();
+        }
+
+        #region SaveOrder Command
+
+        public event EventHandler<DataEventArgs<OrderPresentationModel>> Saved;
+
+        public DelegateCommand<object> SaveOrderCommand { get; private set; }
+
+        private bool CanSave( object arg )
+        {
+            //TODO: 02 - The Order Save command is enabled only when all order data is valid.
+            // Can only save when there are no errors and
+            // when the order quantity is greater than zero.
+            return this.errors.Count == 0 && this.Quantity > 0;
+        }
+
+        private void Save( object obj )
+        {
+            // Save the order here.
+            Console.WriteLine( String.Format( CultureInfo.InvariantCulture, "{0} saved.", this.OrderName ) );
+
+            // Notify that the order was saved.
+            this.OnSaved( new DataEventArgs<OrderPresentationModel>( this ) );
+        }
+
+        private void OnSaved( DataEventArgs<OrderPresentationModel> e )
+        {
+            EventHandler<DataEventArgs<OrderPresentationModel>> savedHandler = this.Saved;
+            if ( savedHandler != null )
+            {
+                savedHandler( this, e );
+            }
+        }
+
+        #endregion
+
+        #region IDataErrorInfo Interface
+
+        public string this[ string columnName ]
         {
             get
             {
-                if (this.errors.ContainsKey(columnName))
+                if ( this.errors.ContainsKey( columnName ) )
                 {
                     return this.errors[columnName];
                 }
-
                 return null;
             }
-
             set
             {
                 this.errors[columnName] = value;
@@ -142,40 +194,17 @@ namespace Commanding.Modules.Order.PresentationModels
         {
             get
             {
-                // Not implemented because we are not consuming it. 
+                // Not implemented because we are not consuming it in this quick start. 
                 // Instead, we are displaying error messages at the item level. 
                 throw new NotImplementedException();
             }
         }
 
-        private void OnPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
-        {
-            string propertyName = e.PropertyName;
-            if (propertyName == "Price" || propertyName == "Quantity" || propertyName == "Shipping")
-            {
-                this.OnPropertyChanged("Total");
-            }
-
-            this.Validate();
-            this.SaveOrderCommand.RaiseCanExecuteChanged();
-        }
-
-        private void ClearError(string columnName)
-        {
-            if (this.errors.ContainsKey(columnName))
-            {
-                this.errors.Remove(columnName);
-            }
-        }
-
-        private bool CanSave(object arg)
-        {
-            return this.errors.Count == 0 && this.Quantity > 0;
-        }
+        #endregion
 
         private void Validate()
         {
-            if (this.Price == null || this.Price <= 0)
+            if ( this.Price == null || this.Price <= 0 )
             {
                 this["Price"] = Resources.InvalidPriceRange;
             }
@@ -184,7 +213,7 @@ namespace Commanding.Modules.Order.PresentationModels
                 this.ClearError("Price");
             }
 
-            if (this.Quantity == null || this.Quantity <= 0)
+            if ( this.Quantity == null || this.Quantity <= 0 )
             {
                 this["Quantity"] = Resources.InvalidQuantityRange;
             }
@@ -194,31 +223,26 @@ namespace Commanding.Modules.Order.PresentationModels
             }
         }
 
-        private void Save(object obj)
+        private void ClearError( string columnName )
         {
-            // Save the order here.
-            Console.WriteLine(String.Format(CultureInfo.InvariantCulture, "{0} saved.", this.OrderName));
-
-            // Notify that the order was saved
-            this.OnSaved(new DataEventArgs<OrderPresentationModel>(this));
-        }
-
-        private void OnSaved(DataEventArgs<OrderPresentationModel> e)
-        {
-            EventHandler<DataEventArgs<OrderPresentationModel>> savedHandler = this.Saved;
-            if (savedHandler != null)
+            if ( this.errors.ContainsKey( columnName ) )
             {
-                savedHandler(this, e);
+                this.errors.Remove( columnName );
             }
         }
 
-        private void OnPropertyChanged(string propertyName)
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged( string propertyName )
         {
-            PropertyChangedEventHandler handler = this.PropertyChanged;
-            if (handler != null)
+            if ( this.PropertyChanged != null )
             {
-                handler(this, new PropertyChangedEventArgs(propertyName));
+                this.PropertyChanged( this, new PropertyChangedEventArgs( propertyName ) );
             }
         }
+
+        #endregion
     }
 }

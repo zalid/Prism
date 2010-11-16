@@ -36,10 +36,10 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
 
         // disable the warning that the field is never assigned to, and will always have its default value null
         // as it is imported by MEF
-        #pragma warning disable 0649
-        [Import(AllowRecomposition = false)] 
+#pragma warning disable 0649
+        [Import(AllowRecomposition = false)]
         private AggregateCatalog aggregateCatalog;
-        #pragma warning restore 0649
+#pragma warning restore 0649
 
         /// <summary>
         /// Initializes a new instance of the MefFileModuleTypeLoader class.
@@ -54,12 +54,12 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
         /// <summary>
         /// Raised repeatedly to provide progress as modules are loaded in the background.
         /// </summary>
-        public event EventHandler<ModuleDownloadProgressChangedEventArgs> ModuleDownloadProgressChanged;
+        public virtual event EventHandler<ModuleDownloadProgressChangedEventArgs> ModuleDownloadProgressChanged;
 
         /// <summary>
         /// Raised when a module is loaded or fails to load.
         /// </summary>
-        public event EventHandler<LoadModuleCompletedEventArgs> LoadModuleCompleted;
+        public virtual event EventHandler<LoadModuleCompletedEventArgs> LoadModuleCompleted;
 
         /// <summary>
         /// Evaluates the <see cref="ModuleInfo.Ref"/> property to see if the current typeloader will be able to retrieve the <paramref name="moduleInfo"/>.
@@ -70,7 +70,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
         /// <returns>
         ///     <see langword="true"/> if the current typeloader is able to retrieve the module, otherwise <see langword="false"/>.
         /// </returns>
-        public bool CanLoadModuleType(ModuleInfo moduleInfo)
+        public virtual bool CanLoadModuleType(ModuleInfo moduleInfo)
         {
             if (moduleInfo == null)
             {
@@ -84,7 +84,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Modularity
         /// Retrieves the <paramref name="moduleInfo"/>.
         /// </summary>
         /// <param name="moduleInfo">Module that should have it's type loaded.</param>
-        public void LoadModuleType(ModuleInfo moduleInfo)
+        public virtual void LoadModuleType(ModuleInfo moduleInfo)
         {
             if (moduleInfo == null)
             {

@@ -14,47 +14,37 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-using System.ComponentModel;
+using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Controls;
-using System.Windows.Input;
+using StockTraderRI.Infrastructure;
 
 namespace StockTraderRI.Modules.Watch.AddWatch
 {
-    public partial class AddWatchView : UserControl, IAddWatchView
+    [ViewExport(RegionName = RegionNames.MainToolBarRegion)]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public partial class AddWatchView : UserControl
     {
         public AddWatchView()
         {
             InitializeComponent();
         }
 
-        public void SetAddWatchCommand(ICommand addWatchCommand)
-        {
-            this.DataContext = new AddWatchPresentationModel { AddWatchCommand = addWatchCommand };
-        }
-    }
-
-    public class AddWatchPresentationModel : INotifyPropertyChanged
-    {
-        public ICommand AddWatchCommand { get; set; }
-
-        private string stockSymbol;
-
-        public string StockSymbol
-        {
-            get { return stockSymbol; }
+        /// <summary>
+        /// Sets the ViewModel.
+        /// </summary>
+        /// <remarks>
+        /// This set-only property is annotated with the <see cref="ImportAttribute"/> so it is injected by MEF with
+        /// the appropriate view model.
+        /// </remarks>
+        [Import]
+        [SuppressMessage("Microsoft.Design", "CA1044:PropertiesShouldNotBeWriteOnly", Justification = "Needs to be a property to be composed by MEF")]
+        public AddWatchViewModel ViewModel
+        {            
             set
             {
-                stockSymbol = value;
-                OnPropertyChanged("StockSymbol");
+                this.DataContext = value;
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler Handler = PropertyChanged;
-            if (Handler != null) Handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

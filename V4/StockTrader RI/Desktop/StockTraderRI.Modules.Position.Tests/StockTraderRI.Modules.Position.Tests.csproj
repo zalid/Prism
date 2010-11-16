@@ -61,11 +61,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\LIB\Desktop\CommonServiceLocation\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\LIB\Desktop\Unity\Microsoft.Practices.Unity.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Moq">
+      <HintPath>..\..\..\LIB\Desktop\Moq\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -73,6 +72,7 @@
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -86,30 +86,24 @@
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\..\LIB\Desktop\Prism\Microsoft.Practices.Prism.dll</HintPath>
+      <HintPath>..\..\..\Bin\Desktop\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountPositionModelFixture.cs" />
     <Compile Include="Controllers\OrdersControllerFixture.cs" />
     <Compile Include="Mocks\MockAccountPositionService.cs" />
-    <Compile Include="Mocks\MockEventAggregator.cs" />
     <Compile Include="Mocks\MockLogger.cs" />
     <Compile Include="Mocks\MockMarketFeedService.cs" />
     <Compile Include="Mocks\MockMarketHistoryService.cs" />
     <Compile Include="Mocks\MockOrderDetailsPresentationModel.cs" />
-    <Compile Include="Mocks\MockOrderDetailsView.cs" />
     <Compile Include="Mocks\MockOrdersController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mocks\MockOrdersView.cs" />
-    <Compile Include="Mocks\MockPositionSummaryView.cs" />
     <Compile Include="Mocks\MockRegionManager.cs" />
     <Compile Include="Mocks\MockStockTraderRICommandProxy.cs" />
     <Compile Include="Orders\OrderCompositePresenterFixture.cs" />
     <Compile Include="Orders\OrderDetailsPresenterFixture.cs" />
-    <Compile Include="Orders\OrdersPresenterFixture.cs" />
-    <Compile Include="PositionModuleFixture.cs" />
     <Compile Include="PositionSummary\ObservablePositionFixture.cs" />
     <Compile Include="PositionSummary\PositionPieChartPresentationModelFixture.cs" />
     <Compile Include="PositionSummary\PositionSummaryItemFixture.cs" />

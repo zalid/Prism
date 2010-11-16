@@ -15,9 +15,7 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Globalization;
 
 namespace Microsoft.Practices.Prism.Regions
 {
@@ -43,7 +41,7 @@ namespace Microsoft.Practices.Prism.Regions
         {
             if (this.Uri != null)
             {
-                return string.Format("RegionNavigationJournalEntry:'{0}'", this.Uri.ToString());
+                return string.Format(CultureInfo.CurrentCulture, "RegionNavigationJournalEntry:'{0}'", this.Uri.ToString());
             }
 
             return base.ToString();

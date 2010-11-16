@@ -20,15 +20,19 @@ using System.Globalization;
 using System.Windows.Input;
 using Microsoft.Practices.Prism.Commands;
 using StockTraderRI.Infrastructure.Interfaces;
+using System.ComponentModel.Composition;
 
 namespace StockTraderRI.Modules.Watch.Services
 {
+    [Export(typeof(IWatchListService))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class WatchListService : IWatchListService
     {
         private readonly IMarketFeedService marketFeedService;
 
         private ObservableCollection<string> WatchItems { get; set; }
 
+        [ImportingConstructor]
         public WatchListService(IMarketFeedService marketFeedService)
         {
             this.marketFeedService = marketFeedService;

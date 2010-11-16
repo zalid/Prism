@@ -109,8 +109,11 @@ namespace Microsoft.Practices.Prism.UnityExtensions
                 this.InitializeShell();
             }
             
-            this.Logger.Log(Resources.InitializingModules, Category.Debug, Priority.Low);
-            this.InitializeModules();
+            if (this.Container.IsRegistered<IModuleManager>())
+            {
+                this.Logger.Log(Resources.InitializingModules, Category.Debug, Priority.Low);
+                this.InitializeModules();
+            }
 
             this.Logger.Log(Resources.BootstrapperSequenceCompleted, Category.Debug, Priority.Low);
         }
@@ -161,7 +164,7 @@ namespace Microsoft.Practices.Prism.UnityExtensions
                 RegisterTypeIfMissing(typeof(IRegionNavigationJournalEntry), typeof(RegionNavigationJournalEntry), false);
                 RegisterTypeIfMissing(typeof(IRegionNavigationJournal), typeof(RegionNavigationJournal), false);
                 RegisterTypeIfMissing(typeof(IRegionNavigationService), typeof(RegionNavigationService), false);
-                RegisterTypeIfMissing(typeof(INavigationTargetHandler), typeof(LocatorNavigationTargetHandler), true);                
+                RegisterTypeIfMissing(typeof(IRegionNavigationContentLoader), typeof(RegionNavigationContentLoader), true);                
             }
         }
 

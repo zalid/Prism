@@ -19,6 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Linq;
 
 namespace Microsoft.Practices.Prism.Regions
 {
@@ -30,12 +31,16 @@ namespace Microsoft.Practices.Prism.Regions
     public partial class ViewsCollection : IViewsCollection
     {
         private readonly ObservableCollection<ItemMetadata> subjectCollection;
-        private readonly Predicate<ItemMetadata> filter;
 
-        private readonly List<object> filteredCollection = new List<object>();
+        private readonly Dictionary<ItemMetadata, MonitorInfo> monitoredItems =
+            new Dictionary<ItemMetadata, MonitorInfo>();
+
+        private readonly Predicate<ItemMetadata> filter;
+        private Comparison<object> sort;
+        private List<object> filteredItems = new List<object>();
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ViewsCollection"/>.
+        /// Initializes a new instance of the <see cref="ViewsCollection"/> class.
         /// </summary>
         /// <param name="list">The list to wrap and filter.</param>
         /// <param name="filter">A predicate to filter the <paramref name="list"/> collection.</param>
@@ -43,8 +48,37 @@ namespace Microsoft.Practices.Prism.Regions
         {
             this.subjectCollection = list;
             this.filter = filter;
-            Initialize();
-            subjectCollection.CollectionChanged += UnderlyingCollection_CollectionChanged;
+            this.MonitorAllMetadataItems();
+            this.subjectCollection.CollectionChanged += this.SourceCollectionChanged;
+            this.UpdateFilteredItemsList();
+        }
+
+        /// <summary>
+        /// Occurs when the collection changes.
+        /// </summary>
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+        /// <summary>
+        /// Gets or sets the comparison used to sort the views.
+        /// </summary>
+        /// <value>The comparison to use.</value>
+        public Comparison<object> SortComparison
+        {
+            get { return this.sort; }
+            set
+            {
+                if (this.sort != value)
+                {
+                    this.sort = value;
+                    this.UpdateFilteredItemsList();
+                    this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                }
+            }
+        }
+
+        private IEnumerable<object> FilteredItems
+        {
+            get { return this.filteredItems; }
         }
 
         /// <summary>
@@ -54,7 +88,7 @@ namespace Microsoft.Practices.Prism.Regions
         /// <returns><see langword="true" /> if <paramref name="value"/> is found in the collection; otherwise, <see langword="false" />.</returns>
         public bool Contains(object value)
         {
-            return filteredCollection.Contains(value);
+            return this.FilteredItems.Contains(value);
         }
 
         ///<summary>
@@ -65,7 +99,8 @@ namespace Microsoft.Practices.Prism.Regions
         ///</returns>
         public IEnumerator<object> GetEnumerator()
         {
-            return filteredCollection.GetEnumerator();
+            return
+                this.FilteredItems.GetEnumerator();
         }
 
         ///<summary>
@@ -76,102 +111,214 @@ namespace Microsoft.Practices.Prism.Regions
         ///</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return this.GetEnumerator();
         }
 
         /// <summary>
-        /// Occurs when the collection changes.
+        /// Used to invoked the <see cref="CollectionChanged"/> event.
         /// </summary>
-        public event NotifyCollectionChangedEventHandler CollectionChanged;
-
-        private void AddAndNotify(object item)
-        {
-            AddAndNotify(new List<object>(1) { item });
-        }
-
-        private void RemoveAndNotify(object item)
-        {
-            RemoveAndNotify(new List<object>(1) { item });
-        }
-
+        /// <param name="e"></param>
         private void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            NotifyCollectionChangedEventHandler Handler = CollectionChanged;
-            if (Handler != null) Handler(this, e);
+            NotifyCollectionChangedEventHandler handler = this.CollectionChanged;
+            if (handler != null) handler(this, e);
         }
 
-        private void Reset()
+        private void NotifyReset()
         {
-            foreach (ItemMetadata itemMetadata in subjectCollection)
+            this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
+
+        /// <summary>
+        /// Removes all monitoring of underlying MetadataItems and re-adds them.
+        /// </summary>
+        private void ResetAllMonitors()
+        {
+            this.RemoveAllMetadataMonitors();
+            this.MonitorAllMetadataItems();
+        }
+
+        /// <summary>
+        /// Adds all underlying MetadataItems to the list from the subjectCollection
+        /// </summary>
+        private void MonitorAllMetadataItems()
+        {
+            foreach (var item in this.subjectCollection)
             {
-                itemMetadata.MetadataChanged -= itemMetadata_MetadataChanged;
+                this.AddMetadataMonitor(item, this.filter(item));
             }
-            filteredCollection.Clear();
-            Initialize();
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
-        private void Initialize()
+        /// <summary>
+        /// Removes all monitored items from our monitoring list.
+        /// </summary>
+        private void RemoveAllMetadataMonitors()
         {
-            foreach (ItemMetadata itemMetadata in subjectCollection)
+            foreach (var item in this.monitoredItems)
             {
-                itemMetadata.MetadataChanged += itemMetadata_MetadataChanged;
-                if (filter(itemMetadata))
-                {
-                    filteredCollection.Add(itemMetadata.Item);
-                }
+                item.Key.MetadataChanged -= this.OnItemMetadataChanged;
             }
+
+            this.monitoredItems.Clear();
         }
 
-        void UnderlyingCollection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        /// <summary>
+        /// Adds handler to monitor the MetadatItem and adds it to our monitoring list.
+        /// </summary>
+        /// <param name="itemMetadata"></param>
+        /// <param name="isInList"></param>
+        private void AddMetadataMonitor(ItemMetadata itemMetadata, bool isInList)
         {
-            List<object> changedItems = new List<object>();
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    foreach (ItemMetadata itemMetadata in e.NewItems)
+            itemMetadata.MetadataChanged += this.OnItemMetadataChanged;
+            this.monitoredItems.Add(
+                itemMetadata,
+                new MonitorInfo
                     {
-                        itemMetadata.MetadataChanged += itemMetadata_MetadataChanged;
-                        if (filter(itemMetadata))
-                        {
-                            changedItems.Add(itemMetadata.Item);
-                        }
-                    }
-                    AddAndNotify(changedItems);
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    foreach (ItemMetadata itemMetadata in e.OldItems)
-                    {
-                        itemMetadata.MetadataChanged -= itemMetadata_MetadataChanged;
-                        if (filteredCollection.Contains(itemMetadata.Item))
-                        {
-                            changedItems.Add(itemMetadata.Item);
-                        }
-                    }
-                    RemoveAndNotify(changedItems);
-                    break;
-                default:
-                    Reset();
-                    break;
-            }
+                        IsInList = isInList
+                    });
         }
 
-        void itemMetadata_MetadataChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Unhooks from the MetadataItem change event and removes from our monitoring list.
+        /// </summary>
+        /// <param name="itemMetadata"></param>
+        private void RemoveMetadataMonitor(ItemMetadata itemMetadata)
         {
-            ItemMetadata itemMetadata = (ItemMetadata)sender;
-            if (filteredCollection.Contains(itemMetadata.Item))
+            itemMetadata.MetadataChanged -= this.OnItemMetadataChanged;
+            this.monitoredItems.Remove(itemMetadata);
+        }
+
+        /// <summary>
+        /// Invoked when any of the underlying ItemMetadata items we're monitoring changes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnItemMetadataChanged(object sender, EventArgs e)
+        {
+            ItemMetadata itemMetadata = (ItemMetadata) sender;
+
+            // Our monitored item may have been removed during another event before
+            // our OnItemMetadataChanged got called back, so it's not unexpected
+            // that we may not have it in our list.
+            MonitorInfo monitorInfo;
+            bool foundInfo = this.monitoredItems.TryGetValue(itemMetadata, out monitorInfo);
+            if (!foundInfo) return;
+
+            if (this.filter(itemMetadata))
             {
-                if (filter(itemMetadata) == false)
+                if (!monitorInfo.IsInList)
                 {
-                    RemoveAndNotify(itemMetadata.Item);
+                    // This passes our filter and wasn't marked
+                    // as in our list so we can consider this
+                    // an Add.
+                    monitorInfo.IsInList = true;
+                    this.UpdateFilteredItemsList();
+                    NotifyAdd(itemMetadata.Item);
                 }
             }
             else
             {
-                if (filter(itemMetadata) == true)
+                // This doesn't fit our filter, we remove from our
+                // tracking list, but should not remove any monitoring in
+                // case it fits our filter in the future.
+                monitorInfo.IsInList = false;
+                this.RemoveFromFilteredList(itemMetadata.Item);
+            }
+        }
+
+        /// <summary>
+        /// The event handler due to changes in the underlying collection.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    this.UpdateFilteredItemsList();
+                    foreach (ItemMetadata itemMetadata in e.NewItems)
+                    {
+                        bool isInFilter = this.filter(itemMetadata);
+                        this.AddMetadataMonitor(itemMetadata, isInFilter);
+                        if (isInFilter)
+                        {
+                            NotifyAdd(itemMetadata.Item);
+                        }
+                    }
+
+                    // If we're sorting we can't predict how
+                    // the collection has changed on an add so we 
+                    // resort to a reset notification.
+                    if (this.sort != null)
+                    {
+                        this.NotifyReset();
+                    }
+
+                    break;
+
+                case NotifyCollectionChangedAction.Remove:
+                    foreach (ItemMetadata itemMetadata in e.OldItems)
+                    {
+                        this.RemoveMetadataMonitor(itemMetadata);
+                        if (this.filter(itemMetadata))
+                        {
+                            this.RemoveFromFilteredList(itemMetadata.Item);
+                        }
+                    }
+
+                    break;
+
+                default:
+                    this.ResetAllMonitors();
+                    this.UpdateFilteredItemsList();
+                    this.NotifyReset();
+
+                    break;
+            }
+        }
+
+        private void NotifyAdd(object item)
+        {
+            int newIndex = this.filteredItems.IndexOf(item);
+            this.NotifyAdd(new[] { item }, newIndex);
+        }
+        
+        private void RemoveFromFilteredList(object item)
+        {
+            int index = this.filteredItems.IndexOf(item);
+            this.UpdateFilteredItemsList();
+            this.NotifyRemove(new[] { item }, index);
+        }
+
+        private void UpdateFilteredItemsList()
+        {
+            this.filteredItems = this.subjectCollection.Where(i => this.filter(i)).Select(i => i.Item)
+                .OrderBy<object, object>(o => o, new RegionItemComparer(this.SortComparison)).ToList();
+        }
+        
+        private class MonitorInfo
+        {
+            public bool IsInList { get; set; }
+        }
+
+        private class RegionItemComparer : Comparer<object>
+        {
+            private readonly Comparison<object> comparer;
+
+            public RegionItemComparer(Comparison<object> comparer)
+            {
+                this.comparer = comparer;
+            }
+
+            public override int Compare(object x, object y)
+            {
+                if (this.comparer == null)
                 {
-                    AddAndNotify(itemMetadata.Item);
+                    return 0;
                 }
+
+                return this.comparer(x, y);
             }
         }
     }

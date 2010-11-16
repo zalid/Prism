@@ -14,12 +14,12 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-using System.ComponentModel;
+using Microsoft.Practices.Prism.ViewModel;
 using StockTraderRI.Infrastructure;
 
 namespace StockTraderRI.Modules.Position.Models
 {
-    public class TransactionInfo : INotifyPropertyChanged
+    public class TransactionInfo : NotificationObject
     {
         private string tickerSymbol;
         private TransactionType transactionType;
@@ -46,7 +46,7 @@ namespace StockTraderRI.Modules.Position.Models
                 if (this.tickerSymbol != value)
                 {
                     this.tickerSymbol = value;
-                    this.InvokePropertyChanged("TickerSymbol");
+                    this.RaisePropertyChanged(() => this.TickerSymbol);
                 }
             }
         }
@@ -63,17 +63,9 @@ namespace StockTraderRI.Modules.Position.Models
                 if (this.transactionType != value)
                 {
                     this.transactionType = value;
-                    this.InvokePropertyChanged("TransactionType");
+                    this.RaisePropertyChanged(() => this.TransactionType);
                 }
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void InvokePropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler Handler = PropertyChanged;
-            if (Handler != null) Handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

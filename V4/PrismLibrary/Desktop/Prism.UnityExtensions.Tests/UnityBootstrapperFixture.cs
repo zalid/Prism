@@ -14,21 +14,15 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Practices.Prism.UnityExtensions.Tests.Mocks;
-using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Logging;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.Regions;
-using Microsoft.Practices.Prism.UnityExtensions;
-using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Microsoft.Practices.Prism.UnityExtensions.Tests
 {
@@ -130,8 +124,8 @@ namespace Microsoft.Practices.Prism.UnityExtensions.Tests
             var bootstrapper = new DefaultUnityBootstrapper();
             bootstrapper.Run();
 
-            var actual1 = bootstrapper.BaseContainer.Resolve<INavigationTargetHandler>();
-            var actual2 = bootstrapper.BaseContainer.Resolve<INavigationTargetHandler>();
+            var actual1 = bootstrapper.BaseContainer.Resolve<IRegionNavigationContentLoader>();
+            var actual2 = bootstrapper.BaseContainer.Resolve<IRegionNavigationContentLoader>();
 
             Assert.IsNotNull(actual1);
             Assert.IsNotNull(actual2);

@@ -89,9 +89,10 @@ namespace Microsoft.Practices.Prism.Regions.Behaviors
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
+                int startIndex = e.NewStartingIndex;
                 foreach (object newItem in e.NewItems)
                 {
-                    this.hostControl.Items.Add(newItem);
+                    this.hostControl.Items.Insert(startIndex++, newItem);
                 }
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove)
@@ -136,8 +137,8 @@ namespace Microsoft.Practices.Prism.Regions.Behaviors
 
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                if (this.hostControl.SelectedItem != null 
-                    && this.hostControl.SelectedItem != e.NewItems[0] 
+                if (this.hostControl.SelectedItem != null
+                    && this.hostControl.SelectedItem != e.NewItems[0]
                     && this.Region.ActiveViews.Contains(this.hostControl.SelectedItem))
                 {
                     this.Region.Deactivate(this.hostControl.SelectedItem);
@@ -162,8 +163,8 @@ namespace Microsoft.Practices.Prism.Regions.Behaviors
 
                 object source;
 #if SILVERLIGHT
-    // e.OriginalSource == null, that's why we use sender.
-                    source = sender;
+                // e.OriginalSource == null, that's why we use sender.
+                source = sender;
 #else
                 source = e.OriginalSource;
 #endif

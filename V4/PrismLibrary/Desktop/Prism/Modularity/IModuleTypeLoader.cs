@@ -44,6 +44,9 @@ namespace Microsoft.Practices.Prism.Modularity
         /// <summary>
         /// Raised when a module is loaded or fails to load.
         /// </summary>
+        /// <remarks>
+        /// This event is raised once per ModuleInfo instance requested in <see cref=" LoadModuleType"/>.
+        /// </remarks>
         event EventHandler<LoadModuleCompletedEventArgs> LoadModuleCompleted;
     }
 }

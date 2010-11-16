@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -241,14 +242,14 @@ namespace Microsoft.Practices.Prism.Regions
 
         #endregion
 
-        private readonly RegionCollection regionCollection;        
+        private readonly RegionCollection regionCollection;
 
         /// <summary>
         /// Initializes a new instance of <see cref="RegionManager"/>.
         /// </summary>
         public RegionManager()
         {
-            regionCollection = new RegionCollection(this);           
+            regionCollection = new RegionCollection(this);
         }
 
         /// <summary>
@@ -279,6 +280,8 @@ namespace Microsoft.Practices.Prism.Regions
                 this.regionManager = regionManager;
                 this.regions = new List<IRegion>();
             }
+
+            public event NotifyCollectionChangedEventHandler CollectionChanged;
 
             public IEnumerator<IRegion> GetEnumerator()
             {
@@ -326,6 +329,8 @@ namespace Microsoft.Practices.Prism.Regions
 
                 this.regions.Add(region);
                 region.RegionManager = this.regionManager;
+
+                this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, region, 0));
             }
 
             public bool Remove(string regionName)
@@ -340,6 +345,8 @@ namespace Microsoft.Practices.Prism.Regions
                     removed = true;
                     this.regions.Remove(region);
                     region.RegionManager = null;
+
+                    this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, region, 0));
                 }
 
                 return removed;
@@ -356,6 +363,16 @@ namespace Microsoft.Practices.Prism.Regions
             {
                 return this.regions.FirstOrDefault(r => r.Name == regionName);
             }
-        }        
+
+            private void OnCollectionChanged(NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+            {
+                var handler = this.CollectionChanged;
+
+                if (handler != null)
+                {
+                    handler(this, notifyCollectionChangedEventArgs);
+                }
+            }
+        }
     }
 }

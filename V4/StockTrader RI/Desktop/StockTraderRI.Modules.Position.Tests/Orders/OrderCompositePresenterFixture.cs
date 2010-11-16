@@ -17,7 +17,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Interfaces;
-using StockTraderRI.Modules.Position.Interfaces;
 using StockTraderRI.Modules.Position.Models;
 using StockTraderRI.Modules.Position.Orders;
 using StockTraderRI.Modules.Position.Tests.Mocks;
@@ -31,37 +30,33 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
     public class OrderCompositePresentationModelFixture
     {
         [TestMethod]
-        public void ShouldCreateOrderDetailsPresenter()
+        public void ShouldCreateOrderdetailsViewModel()
         {
-            var detailsPresenter = new MockOrderDetailsPresentationModel();
-            IOrderCompositeView compositeView = new MockOrderCompositeView();
+            var detailsViewModel = new MockOrderDetailsViewModel();
 
-            var composite = new OrderCompositePresentationModel(compositeView, detailsPresenter, new MockOrderCommandsView());
+            var composite = new OrderCompositeViewModel(detailsViewModel);
 
             composite.TransactionInfo = new TransactionInfo("FXX01", TransactionType.Sell);
 
-            Assert.IsNotNull(detailsPresenter.TransactionInfo);
+            Assert.IsNotNull(detailsViewModel.TransactionInfo);
         }
 
         [TestMethod]
         public void ShouldAddDetailsViewAndControlsViewToContentArea()
         {
-            MockOrderCompositeView compositeView = new MockOrderCompositeView();
-            var detailsPresenter = new MockOrderDetailsPresentationModel();
+            var detailsViewModel = new MockOrderDetailsViewModel();
 
-            var composite = new OrderCompositePresentationModel(compositeView, detailsPresenter, new MockOrderCommandsView());
+            var composite = new OrderCompositeViewModel(detailsViewModel);
 
-            Assert.AreEqual(detailsPresenter.View, composite.OrderDetailsView);
-            Assert.IsNotNull(composite.OrderCommandsView as IOrderCommandsView);
+            Assert.AreSame(detailsViewModel, composite.OrderDetails);
         }
 
         [TestMethod]
         public void PresenterExposesChildOrderPresentersCloseRequested()
         {
-            var detailsPresenter = new MockOrderDetailsPresentationModel();
-            MockOrderCompositeView compositeView = new MockOrderCompositeView();
+            var detailsViewModel = new MockOrderDetailsViewModel();
 
-            var composite = new OrderCompositePresentationModel(compositeView, detailsPresenter, new MockOrderCommandsView());
+            var composite = new OrderCompositeViewModel(detailsViewModel);
 
             var closeViewRequestedFired = false;
             composite.CloseViewRequested += delegate
@@ -69,29 +64,17 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
                                                     closeViewRequestedFired = true;
                                                 };
 
-            detailsPresenter.RaiseCloseViewRequested();
+            detailsViewModel.RaiseCloseViewRequested();
 
             Assert.IsTrue(closeViewRequestedFired);
 
         }
 
         [TestMethod]
-        public void ShouldPassModelToView()
-        {
-            var view = new MockOrderCompositeView();
-            var composite = new OrderCompositePresentationModel(view, new MockOrderDetailsPresentationModel(), new MockOrderCommandsView());
-
-            composite.TransactionInfo = new TransactionInfo("FXX01", TransactionType.Sell);
-
-            Assert.IsNotNull(view);
-            Assert.AreEqual(composite, view.Model);
-        }
-
-        [TestMethod]
         public void TransactionInfoAndSharesAndCommandsAreTakenFromOrderDetails()
         {
-            var orderDetailsPM = new MockOrderDetailsPresentationModel();
-            var composite = new OrderCompositePresentationModel(new MockOrderCompositeView(), orderDetailsPM, new MockOrderCommandsView());
+            var orderDetailsPM = new MockOrderDetailsViewModel();
+            var composite = new OrderCompositeViewModel(orderDetailsPM);
             orderDetailsPM.Shares = 100;
 
             Assert.AreEqual(orderDetailsPM.Shares, composite.Shares);
@@ -105,7 +88,7 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         [TestMethod]
         public void ShouldSetHeaderInfo()
         {
-            var composite = new OrderCompositePresentationModel(new MockOrderCompositeView(), new MockOrderDetailsPresentationModel(), new MockOrderCommandsView());
+            var composite = new OrderCompositeViewModel(new MockOrderDetailsViewModel());
 
             composite.TransactionInfo = new TransactionInfo("FXX01", TransactionType.Sell);
 
@@ -118,8 +101,8 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
         [TestMethod]
         public void ShouldUpdateHeaderInfoWhenUpdatingTransactionInfo()
         {
-            var orderDetailsPM = new MockOrderDetailsPresentationModel();
-            var composite = new OrderCompositePresentationModel(new MockOrderCompositeView(), orderDetailsPM, new MockOrderCommandsView());
+            var orderDetailsPM = new MockOrderDetailsViewModel();
+            var composite = new OrderCompositeViewModel(orderDetailsPM);
 
             composite.TransactionInfo = new TransactionInfo("FXX01", TransactionType.Sell);
 
@@ -130,22 +113,5 @@ namespace StockTraderRI.Modules.Position.Tests.Orders
             Assert.AreEqual("Buy NEW_SYMBOL", composite.HeaderInfo);
         }
 #endif
-    }
-
-    internal class MockOrderCommandsView : IOrderCommandsView
-    {
-        public void SetModel(object model)
-        {
-        }
-    }
-
-    internal class MockOrderCompositeView : IOrderCompositeView
-    {
-        public IOrderCompositePresentationModel Model { get; private set; }
-
-        public void SetModel(IOrderCompositePresentationModel model)
-        {
-            this.Model = model;
-        }
     }
 }
