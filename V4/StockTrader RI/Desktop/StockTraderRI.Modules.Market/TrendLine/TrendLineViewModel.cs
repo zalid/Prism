@@ -36,6 +36,7 @@ namespace StockTraderRI.Modules.Market.TrendLine
 
         private MarketHistoryCollection historyCollection;
 
+        [ImportingConstructor]
         public TrendLineViewModel(IMarketHistoryService marketHistoryService, IEventAggregator eventAggregator)
         {
             if (eventAggregator == null)
