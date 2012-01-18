@@ -21,7 +21,7 @@ namespace StockTraderRI.Infrastructure
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     [MetadataAttribute]
-    public class ViewExportAttribute : ExportAttribute, IViewRegionRegistration
+    public sealed class ViewExportAttribute : ExportAttribute, IViewRegionRegistration
     {
         public ViewExportAttribute()
             : base(typeof(object))
@@ -30,6 +30,8 @@ namespace StockTraderRI.Infrastructure
         public ViewExportAttribute(string viewName)
             : base(viewName, typeof(object))
         { }
+
+        public string ViewName { get { return base.ContractName; } }
 
         public string RegionName { get; set; }
     }

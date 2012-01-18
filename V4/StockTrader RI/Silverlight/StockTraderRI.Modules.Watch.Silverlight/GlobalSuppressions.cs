@@ -33,3 +33,4 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Scope = "member", Target = "StockTraderRI.Modules.Watch.AddWatch.AddWatchView.#txtAddToWatchList")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Scope = "member", Target = "StockTraderRI.Modules.Watch.WatchList.WatchListPresentationModel.#WatchListItems")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Scope = "member", Target = "StockTraderRI.Modules.Watch.WatchList.WatchListView.#WatchListGrid")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace", Target = "StockTraderRI.Modules.Watch.AddWatch")]

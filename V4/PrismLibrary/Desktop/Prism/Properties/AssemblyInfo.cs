@@ -46,11 +46,12 @@ using System.Windows.Markup;
 //      Minor Version 
 //      Build Number
 //      Revision
-[assembly: AssemblyVersion("4.0.0.0")]
-[assembly: AssemblyFileVersion("4.0.0.0")]
+[assembly: AssemblyVersion("4.1.0.0")]
+[assembly: AssemblyFileVersion("4.1.0.0")]
 [assembly: CLSCompliant(true)]
 [assembly: NeutralResourcesLanguage("en")]
 [assembly: XmlnsDefinition("http://www.codeplex.com/CompositeWPF", "Microsoft.Practices.Prism.Regions")]
 [assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.Regions")]
+[assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.Regions.Behaviors")]
 [assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.Commands")]
 [assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.ViewModel")]

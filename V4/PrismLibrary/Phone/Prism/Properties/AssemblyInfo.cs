@@ -48,7 +48,7 @@ using System.Windows.Markup;
 [assembly: AssemblyCopyright("Copyright © Microsoft 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: NeutralResourcesLanguage("en")]
+[assembly: NeutralResourcesLanguage("en-US")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -68,8 +68,8 @@ using System.Windows.Markup;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("4.0.0")]
-[assembly: AssemblyFileVersion("4.0.0")]
+[assembly: AssemblyVersion("4.0.1")]
+[assembly: AssemblyFileVersion("4.0.1")]
 
 [assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.Commands")]
 [assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.ViewModel")]

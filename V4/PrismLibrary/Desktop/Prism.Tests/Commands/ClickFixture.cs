@@ -18,6 +18,7 @@ using Microsoft.Practices.Prism.Tests.Mocks;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+#pragma warning disable 0618
 namespace Microsoft.Practices.Prism.Tests.Commands
 {
     [TestClass]
@@ -92,3 +93,4 @@ namespace Microsoft.Practices.Prism.Tests.Commands
         }
     }
 }
+#pragma warning restore 0618

@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>StockTraderRI.Modules.Position</RootNamespace>
     <AssemblyName>StockTraderRI.Modules.Position</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>false</ThrowErrorsInValidation><FileUpgradeFlags>
@@ -80,26 +80,28 @@
     <Reference Include="Microsoft.Practices.Unity.Silverlight">
       <HintPath>..\..\..\LIB\Silverlight\Unity\Microsoft.Practices.Unity.Silverlight.dll</HintPath>
     </Reference>
-    <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.ComponentModel.Composition, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
     <Reference Include="system" />
-    <Reference Include="System.Windows.Controls, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Windows.Controls.Data, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls.Data, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Controls.DataVisualization.Toolkit, Version=4.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\LIB\Silverlight\SilverlightToolkit\System.Windows.Controls.DataVisualization.Toolkit.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System.Windows.Controls.Toolkit, Version=4.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\LIB\Silverlight\SilverlightToolkit\System.Windows.Controls.Toolkit.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Net" />
     <Reference Include="System.Windows.Browser" />
-    <Reference Include="System.Xml.Linq, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Practices.Prism">
       <HintPath>..\..\..\Bin\Silverlight\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Controllers\IOrdersController.cs">
@@ -129,6 +131,9 @@
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\IOrdersViewModel.cs">
       <Link>Orders\IOrdersViewModel.cs</Link>
     </Compile>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\IValueDescriptionList.cs">
+      <Link>Orders\IValueDescriptionList.cs</Link>
+    </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\OrderCompositeViewModel.cs">
       <Link>Orders\OrderCompositeViewModel.cs</Link>
     </Compile>
@@ -146,6 +151,9 @@
     </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\ValueDescription.cs">
       <Link>Orders\ValueDescription.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\Orders\ValueDescriptionList.cs">
+      <Link>Orders\ValueDescriptionList.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\StockTraderRI.Modules.Position\PositionModule.cs">
       <Link>PositionModule.cs</Link>
@@ -291,7 +299,7 @@
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
         <SilverlightProjectProperties />
       </FlavorProperties>
-      <UserProperties Notes="&lt;Notes Project=&quot;c349eeac-b1cb-4d24-ab88-f89b08a16c4d&quot; xmlns=&quot;clr-namespace:StickyNotes.Model;assembly=StickyNotes&quot;&gt;&lt;Notes.StickyNotes&gt;&lt;Note FilePath=&quot;&quot; Content=&quot;&quot; Date=&quot;2009-01-02T10:30:40.0131776-08:00&quot; /&gt;&lt;/Notes.StickyNotes&gt;&lt;/Notes&gt;" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="46f2da52-acb0-4183-912f-7cc29971ed50" />
+      <UserProperties ProjectLinkReference="46f2da52-acb0-4183-912f-7cc29971ed50" ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" Notes="&lt;Notes Project=&quot;c349eeac-b1cb-4d24-ab88-f89b08a16c4d&quot; xmlns=&quot;clr-namespace:StickyNotes.Model;assembly=StickyNotes&quot;&gt;&lt;Notes.StickyNotes&gt;&lt;Note FilePath=&quot;&quot; Content=&quot;&quot; Date=&quot;2009-01-02T10:30:40.0131776-08:00&quot; /&gt;&lt;/Notes.StickyNotes&gt;&lt;/Notes&gt;" />
     </VisualStudio>
     <UserProperties ProjectLinkerExcludeFilter="\\?desktop(\\.*)?$;\\?silverlight(\\.*)?$;\.desktop;\.silverlight;\.xaml;^service references(\\.*)?$;\.clientconfig;^web references(\\.*)?$" ProjectLinkReference="46F2DA52-ACB0-4183-912F-7CC29971ED50" />
   </ProjectExtensions>

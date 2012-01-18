@@ -182,6 +182,16 @@ namespace StockTraderRI.Modules.Position.Tests.Mocks
                 throw new NotImplementedException();
             }
         }
+
+        public void MoveFrom(IRegion sourceRegion, object view)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void MoveFrom(IRegion sourceRegion, object view, string viewName)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
     internal class MockViewsCollection : IViewsCollection

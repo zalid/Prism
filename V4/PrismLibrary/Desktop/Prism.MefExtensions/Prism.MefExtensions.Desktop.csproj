@@ -76,6 +76,7 @@
     </Compile>
     <Compile Include="Regions\Behaviors\MefAutoPopulateRegionBehavior.cs" />
     <Compile Include="Regions\Behaviors\MefBindRegionContextToDependencyObjectBehavior.cs" />
+    <Compile Include="Regions\Behaviors\MefClearChildViewsRegionBehavior.cs" />
     <Compile Include="Regions\Behaviors\MefDelayedRegionCreationBehavior.cs" />
     <Compile Include="Regions\Behaviors\MefRegionActiveAwareBehavior.cs" />
     <Compile Include="Regions\Behaviors\MefRegionMemberLifetimeBehavior.cs" />

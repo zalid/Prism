@@ -39,6 +39,7 @@
       <HintPath>..\..\..\Lib\Desktop\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -59,9 +60,15 @@
     <Compile Include="InteractionRequest\InteractionRequestedEventArgs.cs" />
     <Compile Include="InteractionRequest\InteractionRequestTrigger.cs" />
     <Compile Include="InteractionRequest\Notification.cs" />
+    <Compile Include="InvokeCommandAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Prism\Prism.Desktop.csproj">
+      <Project>{77138947-1D13-4E22-AEE0-5D0DD046CA34}</Project>
+      <Name>Prism.Desktop</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

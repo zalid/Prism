@@ -27,6 +27,11 @@ namespace StockTraderRI.ChartControls
 
         public static Point ComputeIntersectionPoint(FrameworkElement thisV, FrameworkElement toV)
         {
+            if (thisV == null)
+            {
+                throw new ArgumentNullException("thisV");
+            }
+
             PathGeometry fromGeometryFlat;
             //using the cached geometry or building one up
             fromGeometryFlat = BuildVertexGeometry(thisV);
@@ -297,7 +302,7 @@ namespace StockTraderRI.ChartControls
 
         public static Point[] CatmullRom(Point[] input)
         {
-            if (input.GetLength(0) < 3)
+            if (input == null || input.GetLength(0) < 3)
             {
                 throw new InvalidOperationException();
             }
@@ -331,6 +336,16 @@ namespace StockTraderRI.ChartControls
 
         public static PathGeometry DrawPolyBezier(Point[] input)
         {
+            if (input == null)
+            {
+                throw new ArgumentNullException("input");
+            }
+
+            if (input.Length == 0)
+            {
+                throw new InvalidOperationException();
+            }
+
             PathGeometry pg = new PathGeometry();
             PathFigure pf = new PathFigure();
             pf.StartPoint = input[0];

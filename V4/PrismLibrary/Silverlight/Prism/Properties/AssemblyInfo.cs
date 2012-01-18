@@ -49,8 +49,9 @@ using System.Windows.Markup;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("4.0.0.0")]
-[assembly: AssemblyFileVersion("4.0.0.0")]
+[assembly: AssemblyVersion("4.1.0.0")]
+[assembly: AssemblyFileVersion("4.1.0.0")]
 [assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.Regions")]
+[assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.Regions.Behaviors")]
 [assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.Commands")]
 [assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.ViewModel")]

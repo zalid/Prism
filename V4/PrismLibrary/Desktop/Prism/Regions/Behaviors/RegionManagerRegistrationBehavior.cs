@@ -18,6 +18,7 @@ using System;
 using System.ComponentModel;
 using System.Windows;
 using Microsoft.Practices.Prism.Properties;
+using System.Globalization;
 
 namespace Microsoft.Practices.Prism.Regions.Behaviors
 {
@@ -123,7 +124,15 @@ namespace Microsoft.Practices.Prism.Regions.Behaviors
                     {
                         this.attachedRegionManagerWeakReference = new WeakReference(regionManager);
 
-                        regionManager.Regions.Add(this.Region);
+                        try
+                        {
+                            regionManager.Regions.Add(this.Region);
+                        }
+
+                        catch (ArgumentException ex)
+                        {
+                            throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, Resources.MovingViewsWithoutUsingMoveFromMethodException, ex.Message), ex);
+                        }
                     }
                 }
             }

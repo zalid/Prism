@@ -48,7 +48,8 @@ namespace Microsoft.Practices.Prism.Events
         {
             if (eventSubscription == null) throw new System.ArgumentNullException("eventSubscription");
 
-            eventSubscription.SubscriptionToken = new SubscriptionToken();
+            eventSubscription.SubscriptionToken = new SubscriptionToken(Unsubscribe);
+
             lock (Subscriptions)
             {
                 Subscriptions.Add(eventSubscription);

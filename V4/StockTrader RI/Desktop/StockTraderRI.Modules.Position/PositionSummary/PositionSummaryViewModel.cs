@@ -20,6 +20,7 @@ using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.ViewModel;
 using StockTraderRI.Infrastructure;
 using StockTraderRI.Modules.Position.Controllers;
+using System;
 
 namespace StockTraderRI.Modules.Position.PositionSummary
 {
@@ -36,6 +37,11 @@ namespace StockTraderRI.Modules.Position.PositionSummary
         [ImportingConstructor]
         public PositionSummaryViewModel(IOrdersController ordersController, IEventAggregator eventAggregator, IObservablePosition observablePosition)
         {
+            if (ordersController == null)
+            {
+                throw new ArgumentNullException("ordersController");
+            }
+
             this.eventAggregator = eventAggregator;
             this.Position = observablePosition;
 

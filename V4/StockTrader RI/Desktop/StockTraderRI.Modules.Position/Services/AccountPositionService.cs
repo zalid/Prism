@@ -50,13 +50,16 @@ namespace StockTraderRI.Modules.Position.Services
 
         private void InitializePositions()
         {
-            XDocument document = XDocument.Load(new StringReader(Resources.AccountPositions));
-            _positions = document.Descendants("AccountPosition")
-                .Select(
-                x => new AccountPosition(x.Element("TickerSymbol").Value,
-                                         decimal.Parse(x.Element("CostBasis").Value, CultureInfo.InvariantCulture),
-                                         long.Parse(x.Element("Shares").Value, CultureInfo.InvariantCulture)))
-                .ToList();
+            using (var sr = new StringReader(Resources.AccountPositions))
+            {
+                XDocument document = XDocument.Load(sr);
+                _positions = document.Descendants("AccountPosition")
+                    .Select(
+                    x => new AccountPosition(x.Element("TickerSymbol").Value,
+                                             decimal.Parse(x.Element("CostBasis").Value, CultureInfo.InvariantCulture),
+                                             long.Parse(x.Element("Shares").Value, CultureInfo.InvariantCulture)))
+                    .ToList();
+            }
         }
 
     }

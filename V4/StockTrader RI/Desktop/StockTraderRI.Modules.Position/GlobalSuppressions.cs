@@ -63,3 +63,5 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily", Scope = "member", Target = "StockTraderRI.Modules.Position.Orders.OrderDetailsView.#System.Windows.Markup.IComponentConnector.Connect(System.Int32,System.Object)")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Scope = "member", Target = "StockTraderRI.Modules.Position.PositionSummary.PositionSummaryView.#positionGrid")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Scope = "member", Target = "StockTraderRI.Modules.Position.PositionSummary.PositionPieChartView.#pieChart")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix", Scope = "type", Target = "StockTraderRI.Modules.Position.Orders.IValueDescriptionList`1")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix", Scope = "type", Target = "StockTraderRI.Modules.Position.Orders.ValueDescriptionList`1")]

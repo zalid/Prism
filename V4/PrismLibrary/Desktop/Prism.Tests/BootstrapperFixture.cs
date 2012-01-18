@@ -163,7 +163,7 @@ namespace Microsoft.Practices.Prism.Tests.Modularity
         }
 
         [TestMethod]
-        public void ConfigureDefaultRegionBehaviorsShouldAddSixDefaultBehaviors()
+        public void ConfigureDefaultRegionBehaviorsShouldAddSevenDefaultBehaviors()
         {
             var bootstrapper = new DefaultBootstrapper();
 
@@ -171,7 +171,7 @@ namespace Microsoft.Practices.Prism.Tests.Modularity
 
             bootstrapper.CallConfigureDefaultRegionBehaviors();
 
-            Assert.AreEqual(6, bootstrapper.DefaultRegionBehaviorTypes.Count());
+            Assert.AreEqual(7, bootstrapper.DefaultRegionBehaviorTypes.Count());
         }
 
         private static void CreateAndConfigureServiceLocatorWithDefaultRegionBehaviors()

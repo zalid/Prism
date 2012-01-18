@@ -18,6 +18,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using StockTraderRI.Infrastructure.Behaviors;
+using System;
 
 namespace StockTraderRI.Infrastructure
 {
@@ -54,6 +55,11 @@ namespace StockTraderRI.Infrastructure
         /// <param name="defaultText">Default text to set.</param>
         public static void SetDefaultTextAfterCommandExecution(TextBox textBox, string defaultText)
         {
+            if (textBox == null)
+            {
+                throw new ArgumentNullException("textBox");
+            }
+
             textBox.SetValue(DefaultTextAfterCommandExecutionProperty, defaultText);
         }
 
@@ -64,6 +70,11 @@ namespace StockTraderRI.Infrastructure
         /// <returns>Default text to set.</returns>
         public static string GetDefaultTextAfterCommandExecution(TextBox textBox)
         {
+            if (textBox == null)
+            {
+                throw new ArgumentNullException("textBox");
+            }
+
             return textBox.GetValue(DefaultTextAfterCommandExecutionProperty) as string;
         }
 
@@ -74,6 +85,11 @@ namespace StockTraderRI.Infrastructure
         /// <param name="command">Command to attach</param>
         public static void SetCommand(TextBox textBox, ICommand command)
         {
+            if (textBox == null)
+            {
+                throw new ArgumentNullException("textBox");
+            }
+
             textBox.SetValue(CommandProperty, command);
         }
 
@@ -84,6 +100,11 @@ namespace StockTraderRI.Infrastructure
         /// <returns>The value of the command attached</returns>
         public static ICommand GetCommand(TextBox textBox)
         {
+            if (textBox == null)
+            {
+                throw new ArgumentNullException("textBox");
+            }
+
             return textBox.GetValue(CommandProperty) as ICommand;
         }
 

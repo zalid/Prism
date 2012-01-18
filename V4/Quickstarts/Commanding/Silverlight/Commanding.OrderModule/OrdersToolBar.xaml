@@ -3,6 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:prism="http://www.codeplex.com/prism">
 
-    <Button AutomationProperties.AutomationId="SaveAllToolBarButton" prism:Click.Command="{Binding SaveAllOrdersCommand}" Content="Save All Orders" Width="120" />
+    <Button AutomationProperties.AutomationId="SaveAllToolBarButton" Command="{Binding SaveAllOrdersCommand}" Content="Save All Orders" Width="120" />
 
 </UserControl>

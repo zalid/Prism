@@ -13,7 +13,7 @@
     <AssemblyName>Microsoft.Practices.Prism.Interactivity</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
-    <TargetFrameworkProfile>WindowsPhone</TargetFrameworkProfile>
+    <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
@@ -45,7 +45,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Expression.Interactions, Version=3.7.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Expression.Interactions, Version=3.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\Lib\Desktop\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone" />
@@ -54,7 +54,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
     <Reference Include="System.Windows" />
-    <Reference Include="System.Windows.Interactivity, Version=3.7.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Windows.Interactivity, Version=3.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\Lib\Desktop\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
@@ -64,9 +64,7 @@
     <Compile Include="ApplicationBarButtonNavigation.cs" />
     <Compile Include="ApplicationBarExtensions.cs" />
     <Compile Include="BindingChangedEventArgs.cs" />
-    <Compile Include="BindingListener.cs" />
     <Compile Include="DependencyPropertyListener.cs" />
-    <Compile Include="InteractionRequest\InteractionRequestTrigger.phone.cs" />
     <Compile Include="InteractionRequest\MessageBoxAction.cs" />
     <Compile Include="InteractionRequest\ToastPopupAction.cs" />
     <Compile Include="..\..\Desktop\Prism.Interactivity\InteractionRequest\Confirmation.cs">

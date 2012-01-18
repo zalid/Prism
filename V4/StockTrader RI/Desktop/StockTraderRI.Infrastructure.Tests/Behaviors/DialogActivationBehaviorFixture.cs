@@ -256,6 +256,15 @@ namespace StockTraderRI.Infrastructure.Tests.Behaviors
                 get { throw new System.NotImplementedException(); }
             }
 
+            public void MoveFrom(IRegion sourceRegion, object view)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public void MoveFrom(IRegion sourceRegion, object view, string viewName)
+            {
+                throw new System.NotImplementedException();
+            }
    
             #endregion
 

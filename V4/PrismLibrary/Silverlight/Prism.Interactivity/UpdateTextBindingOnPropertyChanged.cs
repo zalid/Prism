@@ -26,6 +26,7 @@ using System.Windows.Interactivity;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Diagnostics;
 
 namespace Microsoft.Practices.Prism.Interactivity
 {
@@ -33,6 +34,7 @@ namespace Microsoft.Practices.Prism.Interactivity
     /// <summary>
     /// Custom behavior that updates the source of a binding on a text box as the text changes.
     /// </summary>
+    [Obsolete("The UpdateTextBindingOnPropertyChanged is obsolete. Silverlight now supports UpdateSourceTrigger=\"PropertyChanged\".")]
     public class UpdateTextBindingOnPropertyChanged : Behavior<TextBox>
     {
         private BindingExpression expression;
@@ -46,7 +48,7 @@ namespace Microsoft.Practices.Prism.Interactivity
         /// </remarks>
         protected override void OnAttached()
         {
-            base.OnAttached();
+            base.OnAttached();            
 
             this.expression = this.AssociatedObject.GetBindingExpression(TextBox.TextProperty);
             this.AssociatedObject.TextChanged += this.OnTextChanged;

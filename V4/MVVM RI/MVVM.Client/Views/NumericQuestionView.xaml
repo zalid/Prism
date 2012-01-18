@@ -34,18 +34,15 @@
                 <TextBlock TextWrapping="Wrap"> This is a Numeric Question, a positive integer value is expected.</TextBlock>
                 <TextBlock TextWrapping="Wrap"> • The TextBox that gathers the response is bound to the Response property in the question.</TextBlock>
                 <TextBlock TextWrapping="Wrap"> • Should conversion errors occur, the binding to the question's Response property would not be updated. Because of this, any errors are feed into the NumericQuestionViewModel so it is aware that it is not valid.</TextBlock>
-                <TextBlock TextWrapping="Wrap"> • The UpdateTextBindingOnPropertyChanged behavior is used to update the binding whenever a new character is entered, so the input is validated on every entry.</TextBlock>
+                <TextBlock TextWrapping="Wrap"> • The UpdateSourceTrigger="PropertyChanged" behavior is used to update the binding whenever a new character is entered, so the input is validated on every entry.</TextBlock>
             </StackPanel>
         </GuidanceTools:InfoTipToggleButton>
         <TextBox x:Name="textBox" Grid.Column="0" Grid.Row="1" AutomationProperties.AutomationId="NumericQuestionAutomationId">
             <TextBox.Text>
                 <Binding Path="Question.Response" 
-                         Mode="TwoWay" UpdateSourceTrigger="Default" 
+                         Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" 
                          ValidatesOnExceptions="True"/>
-            </TextBox.Text>
-            <i:Interaction.Behaviors>
-                <prism:UpdateTextBindingOnPropertyChanged/>
-            </i:Interaction.Behaviors>
+            </TextBox.Text>         
         </TextBox>
     </Grid>
 </UserControl>

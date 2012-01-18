@@ -2,6 +2,10 @@
 
 SET Configuration=%1
 
+REM Pick the right program files.
+SET progRoot=%ProgramFiles(x86)%
+IF "%progRoot%" == "" SET progRoot=%ProgramFiles%
+
 pushd "%~dp0"
 
 set compositeDll="..\..\..\Prism\Bin\%Configuration%\Microsoft.Practices.Prism.dll"
@@ -13,17 +17,22 @@ if not exist %cscBin% set cscBin="%FrameworkDir%\%Framework35Version%\Csc.exe"
 if not exist %cscBin% echo ERROR. Could not find %WINDIR%\Microsoft.NET\Framework\v3.5\Csc.exe
 if not exist %cscBin% goto Error
 
-REM Try for Silverlight 2 assemblies
-set silverlightDll="%ProgramFiles%\Microsoft SDKs\Silverlight\v2.0\Reference Assemblies\mscorlib.dll"
-if not exist %silverlightDll% echo Could not find %silverlightDll%. Trying for Silverlight 3 assemblies.
- 
-REM Trying for Silverlight 3 assemblies
-if not exist %silverlightDll% set silverlightDll="%ProgramFiles%\Reference Assemblies\Microsoft\Framework\Silverlight\v3.0\mscorlib.dll"
+REM Try for Silverlight 5 assemblies
+set silverlightDll="%progRoot%\Reference Assemblies\Microsoft\Framework\Silverlight\v5.0\mscorlib.dll"
 if not exist %silverlightDll% echo Could not find %silverlightDll%. Trying for Silverlight 4 assemblies.
 
-REM Trying for Silverlight 4 assemblies
-if not exist %silverlightDll% set silverlightDll="%ProgramFiles%\Reference Assemblies\Microsoft\Framework\Silverlight\v4.0\mscorlib.dll"
-if not exist %silverlightDll% echo ERROR. Could not find %silverlightDll%
+REM Try for Silverlight 4 assemblies
+if not exist %silverlightDll% set silverlightDll="%progRoot%\Reference Assemblies\Microsoft\Framework\Silverlight\v4.0\mscorlib.dll"
+if not exist %silverlightDll% echo Could not find %silverlightDll%. Trying for Silverlight 3 assemblies.
+
+REM Try for Silverlight 3 assemblies
+if not exist %silverlightDll% set silverlightDll="%progRoot%\Reference Assemblies\Microsoft\Framework\Silverlight\v3.0\mscorlib.dll"
+if not exist %silverlightDll% echo Could not find %silverlightDll%. Trying for Silverlight 2 assemblies.
+
+REM Try for Silverlight 2 assemblies
+if not exist %silverlightDll% set silverlightDll="%progRoot%\Microsoft SDKs\Silverlight\v2.0\Reference Assemblies\mscorlib.dll"
+if not exist %silverlightDll% echo Could not find %silverlightDll%.
+ 
 if not exist %silverlightDll% goto Error
 
 REM Build 2 DLLs

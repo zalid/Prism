@@ -17,6 +17,7 @@
 using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using StockTraderRI.Modules.Position.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 
 namespace StockTraderRI.Modules.Position.Orders
 {
@@ -29,6 +30,7 @@ namespace StockTraderRI.Modules.Position.Orders
             InitializeComponent();
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1044:PropertiesShouldNotBeWriteOnly", Justification="This property is only used to set the DataContext to the view model imported with MEF.")]
         [Import]
         public IOrdersViewModel Model
         {

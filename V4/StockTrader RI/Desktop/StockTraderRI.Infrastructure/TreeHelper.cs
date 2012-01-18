@@ -35,6 +35,11 @@ namespace StockTraderRI.Infrastructure
         /// </returns>
         public static DependencyObject FindAncestor(DependencyObject dependencyObject, Func<DependencyObject, bool> predicate)
         {
+            if (predicate == null)
+            {
+                throw new ArgumentNullException("predicate");
+            }
+
             if (predicate(dependencyObject))
             {
                 return dependencyObject;

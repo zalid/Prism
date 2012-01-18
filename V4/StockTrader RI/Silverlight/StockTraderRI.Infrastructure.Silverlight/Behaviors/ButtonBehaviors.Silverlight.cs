@@ -16,6 +16,7 @@
 //===================================================================================
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System;
 
 namespace StockTraderRI.Infrastructure.Behaviors
 {
@@ -37,6 +38,11 @@ namespace StockTraderRI.Infrastructure.Behaviors
         /// <returns>The value of <see cref="CloseAncestorPopupProperty"/>.</returns>
         public static bool GetCloseAncestorPopup(DependencyObject dependencyObject)
         {
+            if (dependencyObject == null)
+            {
+                throw new ArgumentNullException("dependencyObject");
+            }
+
             return (bool)(dependencyObject.GetValue(CloseAncestorPopupProperty) ?? false);
         }
 
@@ -47,6 +53,11 @@ namespace StockTraderRI.Infrastructure.Behaviors
         /// <param name="value">The value to set on <see cref="CloseAncestorPopupProperty"/>.</param>
         public static void SetCloseAncestorPopup(DependencyObject dependencyObject, bool value)
         {
+            if (dependencyObject == null)
+            {
+                throw new ArgumentNullException("dependencyObject");
+            }
+
             dependencyObject.SetValue(CloseAncestorPopupProperty, value);
         }
 

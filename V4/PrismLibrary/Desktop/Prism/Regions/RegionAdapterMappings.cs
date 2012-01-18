@@ -79,7 +79,7 @@ namespace Microsoft.Practices.Prism.Regions
                 }
                 currentType = currentType.BaseType;
             }
-            throw new KeyNotFoundException("controlType");
+            throw new KeyNotFoundException(String.Format(CultureInfo.CurrentCulture, Resources.NoRegionAdapterException, controlType));
         }
     }
 }

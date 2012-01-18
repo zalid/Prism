@@ -63,6 +63,11 @@ namespace StockTraderRI.ChartControls
 
         protected override void OnRender(DrawingContext dc)
         {
+            if (dc == null)
+            {
+                throw new ArgumentNullException("dc");
+            }
+
             base.OnRender(dc);
             if (_childrenPositions.Count == 0)
                 return;
@@ -183,11 +188,21 @@ namespace StockTraderRI.ChartControls
 
         public static ObservableCollection<double> GetXValues(DependencyObject obj)
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
             return (ObservableCollection<double>)obj.GetValue(XValuesProperty);
         }
 
         public static void SetXValues(DependencyObject obj, ObservableCollection<double> value)
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(XValuesProperty, value);
         }
 
@@ -204,11 +219,21 @@ namespace StockTraderRI.ChartControls
 
         public static ObservableCollection<double> GetYValues(DependencyObject obj)
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
             return (ObservableCollection<double>)obj.GetValue(YValuesProperty);
         }
 
         public static void SetYValues(DependencyObject obj, ObservableCollection<double> value)
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(YValuesProperty, value);
         }
 
@@ -220,11 +245,21 @@ namespace StockTraderRI.ChartControls
 
         public static double GetHorizontalAxis(DependencyObject obj)
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
             return (double)obj.GetValue(HorizontalAxisProperty);
         }
 
         public static void SetHorizontalAxis(DependencyObject obj, double value)
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(HorizontalAxisProperty, value);
         }
 

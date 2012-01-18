@@ -217,6 +217,7 @@
     <Compile Include="Regions\Behaviors\BindRegionContextToDependencyObjectBehavior.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Regions\Behaviors\ClearChildViewsRegionBehavior.cs" />
     <Compile Include="Regions\Behaviors\DelayedRegionCreationBehavior.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -310,6 +311,7 @@
     <Compile Include="Regions\SingleActiveRegion.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Regions\SyncActiveStateAttribute.cs" />
     <Compile Include="Regions\UpdateRegionsException.cs">
       <SubType>Code</SubType>
     </Compile>

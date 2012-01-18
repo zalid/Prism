@@ -142,5 +142,16 @@ namespace Microsoft.Practices.Prism.Tests.Mocks
                 throw new NotImplementedException();
             }
         }
+
+
+        public void MoveFrom(IRegion sourceRegion, object view)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void MoveFrom(IRegion sourceRegion, object view, string viewName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

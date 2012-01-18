@@ -87,6 +87,21 @@ namespace Microsoft.Practices.Prism.Regions
         void Remove(object view);
 
         /// <summary>
+        /// Moves the specified view from the specified source region into this region.
+        /// </summary>
+        /// <param name="sourceRegion">The region from which to obtain the view.</param>
+        /// <param name="view">The view being moved.</param>
+        void MoveFrom(IRegion sourceRegion, object view);
+
+        /// <summary>
+        /// Moves the specified view from the specified source region into this region.
+        /// </summary>
+        /// <param name="sourceRegion">The region from which to obtain the view.</param>
+        /// <param name="view">The view being moved.</param>
+        /// <param name="viewName">The name the view will have in the region.</param>
+        void MoveFrom(IRegion sourceRegion, object view, string viewName);
+
+        /// <summary>
         /// Marks the specified view as active. 
         /// </summary>
         /// <param name="view">The view to activate.</param>

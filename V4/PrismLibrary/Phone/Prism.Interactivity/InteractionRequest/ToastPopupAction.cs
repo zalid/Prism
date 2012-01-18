@@ -24,6 +24,7 @@ namespace Microsoft.Practices.Prism.Interactivity.InteractionRequest
     /// <summary>
     /// Displays a toast popup in response to a trigger event.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "Timer is disposed when popup is dismissed.")]
     public class ToastPopupAction : System.Windows.Interactivity.TriggerAction<FrameworkElement>
     {
         /// <summary>

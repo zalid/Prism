@@ -48,6 +48,11 @@ namespace StockTraderRI.Modules.Market.Services
 
         protected MarketFeedService(XDocument document, IEventAggregator eventAggregator)
         {
+            if (document == null)
+            {
+                throw new ArgumentNullException("document");
+            }
+
             EventAggregator = eventAggregator;
             _timer = new Timer(TimerTick);
 

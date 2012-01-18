@@ -62,6 +62,11 @@ namespace StockTraderRI.Controls
 
         protected override void OnSelectionChanged(SelectionChangedEventArgs args)
         {
+            if (args == null)
+            {
+                throw new ArgumentNullException("args");
+            }
+
             if (args.RemovedItems.Count > 0)
             {
                 this.RestoreBufferedTabItemContent();

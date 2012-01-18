@@ -105,8 +105,9 @@ namespace Microsoft.Practices.Prism.Regions.Behaviors
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove && this.Region.Context != null)
             {
-                SetContextToViews(e.OldItems, null);
                 this.DetachNotifyChangeEvent(e.OldItems);
+                SetContextToViews(e.OldItems, null);
+                
             }
         }
 

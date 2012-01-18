@@ -15,6 +15,7 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -25,10 +26,14 @@ namespace Microsoft.Practices.Prism.Commands
     /// </summary>
     /// <typeparam name="T">The target object must derive from Control</typeparam>
     /// <remarks>
-    /// CommandBehaviorBase can be used to provide new behaviors similar to <see cref="ButtonBaseClickCommandBehavior"/>.
+    /// CommandBehaviorBase can be used to provide new behaviors for commands.
     /// </remarks>
-    public class CommandBehaviorBase<T> 
+    public class CommandBehaviorBase<T>
+#if SILVERLIGHT
         where T : Control
+#else
+        where T : UIElement
+#endif
     {
         private ICommand command;
         private object commandParameter;

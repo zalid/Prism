@@ -53,7 +53,7 @@ namespace StockTraderRI.Infrastructure
             }
         }
 
-        [ImportMany(AllowRecomposition = true)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays", Justification = "MEF injected values"), ImportMany(AllowRecomposition = true)]
         public Lazy<object, IViewRegionRegistration>[] RegisteredViews { get; set; }
     }
 }

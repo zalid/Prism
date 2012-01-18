@@ -17,6 +17,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Practices.Prism.Commands;
+using System;
 
 namespace StockTraderRI.Infrastructure.Behaviors
 {
@@ -33,6 +34,11 @@ namespace StockTraderRI.Infrastructure.Behaviors
         public ReturnCommandBehavior(TextBox textBox)
             : base(textBox)
         {
+            if (textBox == null)
+            {
+                throw new ArgumentNullException("textBox");
+            }
+
             textBox.AcceptsReturn = false;
             textBox.KeyDown += (s, e) => this.KeyPressed(e.Key);
             textBox.GotFocus += (s, e) => this.GotFocus();

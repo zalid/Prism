@@ -294,6 +294,67 @@ namespace Microsoft.Practices.Prism.Regions
         }
 
         /// <summary>
+        /// Moves the specified view from the specified source region into this region.
+        /// </summary>
+        /// <param name="view">The view to move.</param>
+        /// <param name="sourceRegion">The region to move the view from.</param>
+        public void MoveFrom(IRegion sourceRegion, object view)
+        {
+            this.MoveFrom(sourceRegion, view, null);
+        }
+
+        /// <summary>
+        /// Moves the specified view from the specified source region into this region.
+        /// </summary>
+        /// <param name="view">The view to move.</param>
+        /// <param name="sourceRegion">The region to move the view from.</param>
+        /// <param name="viewName">The name the view will have in the region.</param>
+        public void MoveFrom(IRegion sourceRegion, object view, string viewName)
+        {
+            if (sourceRegion == this)
+            {
+                throw new ArgumentException(Resources.SourceRegionEqualsTargetRegion);
+            }
+
+            if (sourceRegion == null)
+            {
+                throw new ArgumentNullException("sourceRegion");
+            }
+
+            if (view == null)
+            {
+                throw new ArgumentNullException("view");
+            }
+
+            if (!sourceRegion.Views.Contains(view))
+            {
+                throw new InvalidOperationException(Resources.ViewNotInRegionException);
+            }
+
+            sourceRegion.Remove(view);
+
+            var currentRegionManager = GetRegionManager(view);
+
+            // If the view's RegionManager attached property is null the Region's RegionManager property is null, GetRegionManager will return null. 
+            // Passing null to the scopedRegionManager parameter in a call to InnerAdd is appropriate and will not result in an error.
+            this.InnerAdd(view, viewName, currentRegionManager);
+        }
+
+        private IRegionManager GetRegionManager(object view)
+        {
+            var dependencyObject = view as DependencyObject;
+
+            if (dependencyObject == null)
+            {
+                return this.RegionManager;
+            }
+
+            var regionManagerProperty = Regions.RegionManager.GetRegionManager(dependencyObject);
+
+            return regionManagerProperty ?? this.RegionManager;
+        }
+
+        /// <summary>
         /// Marks the specified view as active. 
         /// </summary>
         /// <param name="view">The view to activate.</param>

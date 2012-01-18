@@ -47,8 +47,8 @@
                 <data:DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Button Commands:Click.Command="{Binding Path=Value, Source={StaticResource BuyCommand}}" Commands:Click.CommandParameter="{Binding Path=TickerSymbol}" AutomationProperties.AutomationId="ActionsBuyButton" Template="{StaticResource AddButtonTemplate}" Cursor="Hand" />
-                            <Button Commands:Click.Command="{Binding Path=Value, Source={StaticResource SellCommand}}" Commands:Click.CommandParameter="{Binding Path=TickerSymbol}" AutomationProperties.AutomationId="ActionsSellButton" Template="{StaticResource RemoveButtonTemplate}" Cursor="Hand" />
+                            <Button Command="{Binding Path=Value, Source={StaticResource BuyCommand}}" CommandParameter="{Binding Path=TickerSymbol}" AutomationProperties.AutomationId="ActionsBuyButton" Template="{StaticResource AddButtonTemplate}" Cursor="Hand" />
+                            <Button Command="{Binding Path=Value, Source={StaticResource SellCommand}}" CommandParameter="{Binding Path=TickerSymbol}" AutomationProperties.AutomationId="ActionsSellButton" Template="{StaticResource RemoveButtonTemplate}" Cursor="Hand" />
                         </StackPanel>
                     </DataTemplate>
                 </data:DataGridTemplateColumn.CellTemplate>

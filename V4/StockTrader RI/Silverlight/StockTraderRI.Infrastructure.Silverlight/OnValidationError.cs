@@ -20,6 +20,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System;
 
 namespace StockTraderRI.Infrastructure
 {
@@ -66,6 +67,11 @@ namespace StockTraderRI.Infrastructure
         /// <returns>Value of the <see cref="ToggleBackgroundProperty"/> property.</returns>
         public static Brush GetToggleBackground(DependencyObject dependencyObject)
         {
+            if (dependencyObject == null)
+            {
+                throw new ArgumentNullException("dependencyObject");
+            }
+
             return dependencyObject.GetValue(ToggleBackgroundProperty) as Brush;
         }
 
@@ -76,6 +82,11 @@ namespace StockTraderRI.Infrastructure
         /// <param name="value">Value to set to the <see cref="ToggleBackgroundProperty"/> property.</param>
         public static void SetToggleBackground(DependencyObject dependencyObject, Brush value)
         {
+            if (dependencyObject == null)
+            {
+                throw new ArgumentNullException("dependencyObject");
+            }
+
             dependencyObject.SetValue(ToggleBackgroundProperty, value);
         }
 
@@ -86,6 +97,11 @@ namespace StockTraderRI.Infrastructure
         /// <returns>Value of the <see cref="ShowToolTipProperty"/> property.</returns>
         public static bool GetShowToolTip(DependencyObject dependencyObject)
         {
+            if (dependencyObject == null)
+            {
+                throw new ArgumentNullException("dependencyObject");
+            }
+
             return (bool)(dependencyObject.GetValue(ShowToolTipProperty) ?? false);
         }
 
@@ -96,6 +112,11 @@ namespace StockTraderRI.Infrastructure
         /// <param name="value">Value to set to the <see cref="ShowToolTipProperty"/> property.</param>
         public static void SetShowToolTip(DependencyObject dependencyObject, bool value)
         {
+            if (dependencyObject == null)
+            {
+                throw new ArgumentNullException("dependencyObject");
+            }
+
             dependencyObject.SetValue(ShowToolTipProperty, value);
         }
 

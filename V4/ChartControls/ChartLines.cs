@@ -18,12 +18,18 @@ using System.Windows;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 using System.Collections.Specialized;
+using System;
 namespace StockTraderRI.ChartControls
 {
     public class ChartLines : FrameworkElement
     {
         protected override void OnRender(DrawingContext drawingContext)
         {
+            if (drawingContext == null)
+            {
+                throw new ArgumentNullException("drawingContext");
+            }
+
             base.OnRender(drawingContext);
             if (VerticalAxisTickPositions != null)
             {

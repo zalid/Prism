@@ -151,7 +151,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
 
             mockFileTypeLoader.Raise(tl => tl.LoadModuleCompleted += null, new LoadModuleCompletedEventArgs(moduleInfo, null));
 
-            Assert.AreEqual("MefModulesForTesting.MefModuleOne, MefModulesForTesting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=null", moduleInfo.ModuleType);
+            Assert.AreEqual("MefModulesForTesting.MefModuleOne, MefModulesForTesting, Version=4.1.0.0, Culture=neutral, PublicKeyToken=null", moduleInfo.ModuleType);
             Assert.IsTrue(wasInit);
         }
 
@@ -200,7 +200,7 @@ namespace Microsoft.Practices.Prism.MefExtensions.Tests
 
             mockFileTypeLoader.Raise(tl => tl.LoadModuleCompleted += null, new LoadModuleCompletedEventArgs(moduleInfo, null));
 
-            Assert.AreEqual("MefModulesForTesting.MefModuleOne, MefModulesForTesting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=null", moduleInfo.ModuleType);
+            Assert.AreEqual("MefModulesForTesting.MefModuleOne, MefModulesForTesting, Version=4.1.0.0, Culture=neutral, PublicKeyToken=null", moduleInfo.ModuleType);
             Assert.IsTrue(wasInit);
         }
 

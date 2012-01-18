@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Practices.Prism</RootNamespace>
     <AssemblyName>Microsoft.Practices.Prism</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>false</ThrowErrorsInValidation><FileUpgradeFlags>
@@ -87,7 +87,10 @@
     </Reference>
     <Reference Include="system" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Controls, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.Windows.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Net" />
   </ItemGroup>
@@ -275,6 +278,9 @@
     <Compile Include="..\..\Desktop\Prism\Regions\Behaviors\BindRegionContextToDependencyObjectBehavior.cs">
       <Link>Regions\Behaviors\BindRegionContextToDependencyObjectBehavior.cs</Link>
     </Compile>
+    <Compile Include="..\..\Desktop\Prism\Regions\Behaviors\ClearChildViewsRegionBehavior.cs">
+      <Link>Regions\Behaviors\ClearChildViewsRegionBehavior.cs</Link>
+    </Compile>
     <Compile Include="..\..\Desktop\Prism\Regions\Behaviors\DelayedRegionCreationBehavior.cs">
       <Link>Regions\Behaviors\DelayedRegionCreationBehavior.cs</Link>
     </Compile>
@@ -430,6 +436,9 @@
     </Compile>
     <Compile Include="..\..\Desktop\Prism\Regions\SingleActiveRegion.cs">
       <Link>Regions\SingleActiveRegion.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Desktop\Prism\Regions\SyncActiveStateAttribute.cs">
+      <Link>Regions\SyncActiveStateAttribute.cs</Link>
     </Compile>
     <Compile Include="..\..\Desktop\Prism\Regions\UpdateRegionsException.cs">
       <Link>Regions\UpdateRegionsException.cs</Link>

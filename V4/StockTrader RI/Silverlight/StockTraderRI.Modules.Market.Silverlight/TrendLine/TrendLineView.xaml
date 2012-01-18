@@ -21,7 +21,7 @@
         <ControlTemplate x:Key="TrendLineEmptyLegendStyle" TargetType="toolkit:Legend">
             <Grid/>
         </ControlTemplate>
-        <Style x:Key="TrendLineChartStyle" TargetType="toolkit:Chart">
+        <Style x:Key="TrendLineChartStyle" TargetType="charting:Chart">
             <Setter Property="BorderBrush" Value="Black"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="IsTabStop" Value="False"/>
@@ -301,7 +301,7 @@
             </Setter>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="toolkit:Chart">
+                    <ControlTemplate TargetType="charting:Chart">
                         <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -338,24 +338,24 @@
                 <TextBlock Text=" HISTORICAL DATA" Style="{StaticResource TextBlockSectionTitle}" AutomationProperties.AutomationId="HistoricalDataTextBlock" />
             </StackPanel>
             <Border Grid.Row="1">
-                <toolkit:Chart Grid.Row="1" x:Name="lineChart" 
+                <charting:Chart Grid.Row="1" x:Name="lineChart" 
             		Title="{Binding TickerSymbol}" 
             		Height="170" 
             		BorderThickness="0" 
             		FontFamily="Arial" 
             		FontSize="10" 
             		Foreground="#FF313131" Style="{StaticResource TrendLineChartStyle}">
-                    <toolkit:Chart.Axes>
+                    <charting:Chart.Axes>
                         <toolkit:LinearAxis Orientation="Y" Minimum="0" ShowGridLines="True" BorderThickness="1" />
                         <toolkit:DateTimeAxis Orientation="X" ShowGridLines="False" IntervalType="Days" MaxWidth="150" BorderThickness="1" />
-                    </toolkit:Chart.Axes>
+                    </charting:Chart.Axes>
 
                     <toolkit:LineSeries
             			ItemsSource="{Binding HistoryCollection}"
             			DependentValueBinding="{Binding Value}"
             			IndependentValueBinding="{Binding DateTimeMarker}"                            
                             />
-                </toolkit:Chart>
+                </charting:Chart>
             </Border>
         </Grid>
     </Border>

@@ -34,6 +34,7 @@ namespace Microsoft.Practices.Prism.ViewModel
     /// In order to determine the template it must use for the new content, this control retrieves it from its
     /// resources using the name for the type of the new content as the key.
     /// </remarks>
+    [Obsolete("The DataTemplateSelector is obsolete.  Silverlight supports implicit data templates.")]
     public class DataTemplateSelector : ContentControl
     {
         /// <summary>

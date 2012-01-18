@@ -18,6 +18,7 @@ using System.ComponentModel;
 using System.Windows;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.ServiceLocation;
+using System;
 
 namespace StockTraderRI.Infrastructure.Behaviors
 {
@@ -51,6 +52,11 @@ namespace StockTraderRI.Infrastructure.Behaviors
         /// <returns>The name of the Popup <see cref="IRegion"/>.</returns>
         public static string GetCreatePopupRegionWithName(DependencyObject owner)
         {
+            if (owner == null)
+            {
+                throw new ArgumentNullException("owner");
+            }
+
             return owner.GetValue(CreatePopupRegionWithNameProperty) as string;
         }
 
@@ -61,6 +67,11 @@ namespace StockTraderRI.Infrastructure.Behaviors
         /// <param name="value">Name of the Popup <see cref="IRegion"/>.</param>
         public static void SetCreatePopupRegionWithName(DependencyObject owner, string value)
         {
+            if (owner == null)
+            {
+                throw new ArgumentNullException("owner");
+            }
+
             owner.SetValue(CreatePopupRegionWithNameProperty, value);
         }
 
@@ -71,6 +82,11 @@ namespace StockTraderRI.Infrastructure.Behaviors
         /// <returns>The <see cref="Style"/> for the Popup.</returns>
         public static Style GetContainerWindowStyle(DependencyObject owner)
         {
+            if (owner == null)
+            {
+                throw new ArgumentNullException("owner");
+            }
+
             return owner.GetValue(ContainerWindowStyleProperty) as Style;
         }
 
@@ -81,6 +97,11 @@ namespace StockTraderRI.Infrastructure.Behaviors
         /// <param name="style"><see cref="Style"/> for the Popup.</param>
         public static void SetContainerWindowStyle(DependencyObject owner, Style style)
         {
+            if (owner == null)
+            {
+                throw new ArgumentNullException("owner");
+            }
+
             owner.SetValue(ContainerWindowStyleProperty, style);
         }
 

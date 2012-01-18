@@ -165,6 +165,9 @@ namespace Microsoft.Practices.Prism
                 defaultRegionBehaviorTypesDictionary.AddIfMissing(RegionMemberLifetimeBehavior.BehaviorKey,
                                                   typeof(RegionMemberLifetimeBehavior));
 
+                defaultRegionBehaviorTypesDictionary.AddIfMissing(ClearChildViewsRegionBehavior.BehaviorKey,
+                                                  typeof(ClearChildViewsRegionBehavior));
+
             }
 
             return defaultRegionBehaviorTypesDictionary;

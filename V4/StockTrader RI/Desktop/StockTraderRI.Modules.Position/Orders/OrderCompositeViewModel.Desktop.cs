@@ -56,6 +56,16 @@ namespace StockTraderRI.Modules.Position.Orders
             /// <returns>Returns a human readable string with the transaction type and ticker symbol</returns>
             public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
             {
+                if (values == null)
+                {
+                    throw new ArgumentNullException("values");
+                }
+
+                if (values.Length < 2)
+                {
+                    throw new InvalidOperationException();
+                }
+
                 return values[0].ToString() + " " + values[1].ToString();
             }
 

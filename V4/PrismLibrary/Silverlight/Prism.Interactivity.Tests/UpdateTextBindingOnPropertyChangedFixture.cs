@@ -30,6 +30,7 @@ using Microsoft.Practices.Prism.Interactivity;
 using Microsoft.Silverlight.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+#pragma warning disable 0618
 namespace Prism.Interactivity.Tests
 {
     [TestClass]
@@ -66,3 +67,4 @@ namespace Prism.Interactivity.Tests
         public string Value { get; set; }
     }
 }
+#pragma warning restore 0618

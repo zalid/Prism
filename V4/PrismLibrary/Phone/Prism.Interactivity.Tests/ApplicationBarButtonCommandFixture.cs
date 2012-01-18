@@ -39,8 +39,7 @@ namespace Microsoft.Practices.Prism.Interactivity.Tests
             var command = new ApplicationBarButtonCommand();
             command.ButtonText = "Foo";
             var bindingSource = new MyCommandHolder();
-            var binding = new Binding("Command") { Source = bindingSource, Mode = BindingMode.OneWay };
-            command.CommandBinding = binding;
+            command.CommandBinding = bindingSource.Command;
             Interaction.GetBehaviors(page).Add(command);
 
             bindingSource.CanExecute = true;
@@ -60,8 +59,7 @@ namespace Microsoft.Practices.Prism.Interactivity.Tests
             var command = new ApplicationBarButtonCommand();
             command.ButtonText = "Foo";
             var bindingSource = new MyCommandHolder();
-            var binding = new Binding("Command") { Source = bindingSource, Mode = BindingMode.OneWay };
-            command.CommandBinding = binding;
+            command.CommandBinding = bindingSource.Command;
             Interaction.GetBehaviors(page).Add(command);
 
             bindingSource.CanExecute = true;

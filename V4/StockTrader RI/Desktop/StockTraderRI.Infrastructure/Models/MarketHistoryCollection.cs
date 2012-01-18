@@ -28,6 +28,11 @@ namespace StockTraderRI.Infrastructure.Models
 
         public MarketHistoryCollection(IEnumerable<MarketHistoryItem> list)
         {
+            if (list == null)
+            {
+                throw new ArgumentNullException("list");
+            }
+
             foreach (MarketHistoryItem marketHistoryItem in list)
             {
                 this.Add(marketHistoryItem);

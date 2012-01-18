@@ -21,15 +21,17 @@ namespace Microsoft.Practices.Prism.Events
     /// <summary>
     /// Subscription token returned from <see cref="EventBase"/> on subscribe.
     /// </summary>
-    public class SubscriptionToken : IEquatable<SubscriptionToken>
+    public class SubscriptionToken : IEquatable<SubscriptionToken>, IDisposable
     {
         private readonly Guid _token;
+        private Action<SubscriptionToken> _unsubscribeAction;
 
         /// <summary>
         /// Initializes a new instance of <see cref="SubscriptionToken"/>.
         /// </summary>
-        public SubscriptionToken()
+        public SubscriptionToken(Action<SubscriptionToken> unsubscribeAction)
         {
+            _unsubscribeAction = unsubscribeAction;
             _token = Guid.NewGuid();
         }
 
@@ -70,6 +72,23 @@ namespace Microsoft.Practices.Prism.Events
         public override int GetHashCode()
         {
             return _token.GetHashCode();
+        }
+
+        /// <summary>
+        /// Disposes the SubscriptionToken, removing the subscription from the corresponding <see cref="EventBase"/>.
+        /// </summary>
+        public virtual void Dispose()
+        {
+            // While the SubsctiptionToken class implements IDisposable, in the case of weak subscriptions 
+            // (i.e. keepSubscriberReferenceAlive set to false in the Subscribe method) it's not necessary to unsubscribe,
+            // as no resources should be kept alive by the event subscription. 
+            // In such cases, if a warning is issued, it could be suppressed.
+
+            if (this._unsubscribeAction != null)
+            {
+                this._unsubscribeAction(this);
+                this._unsubscribeAction = null;
+            }
         }
     }
 }

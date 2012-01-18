@@ -16,6 +16,7 @@
 //===================================================================================
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System;
 
 namespace Microsoft.Practices.Prism.Commands
 {
@@ -25,6 +26,8 @@ namespace Microsoft.Practices.Prism.Commands
     /// <remarks>
     /// This Behavior is required in Silverlight, because Silverlight does not have Commanding support.  
     /// </remarks>
+    [Obsolete("The ButtonBaseClickCommandBehavior is obsolete.  Silverlight supports the Command property for buttons.")]
+#pragma warning disable 0618
     public class ButtonBaseClickCommandBehavior : CommandBehaviorBase<ButtonBase>
     {
         /// <summary>
@@ -43,4 +46,5 @@ namespace Microsoft.Practices.Prism.Commands
             ExecuteCommand();
         }
     }
+#pragma warning restore 0618
 }

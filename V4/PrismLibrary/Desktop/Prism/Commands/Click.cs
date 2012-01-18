@@ -17,6 +17,7 @@
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System;
 
 namespace Microsoft.Practices.Prism.Commands
 {
@@ -27,6 +28,8 @@ namespace Microsoft.Practices.Prism.Commands
     /// <remarks>
     /// This class is required, because Silverlight doesn't have native support for Commands. 
     /// </remarks>
+    [Obsolete("The Click static class is obsolete.  Silverlight supports the Command property for buttons.")]
+#pragma warning disable 0618
     public static class Click
     {
         private static readonly DependencyProperty ClickCommandBehaviorProperty = DependencyProperty.RegisterAttached(
@@ -135,4 +138,5 @@ namespace Microsoft.Practices.Prism.Commands
             return behavior;
         }
     }
+#pragma warning restore 0618
 }

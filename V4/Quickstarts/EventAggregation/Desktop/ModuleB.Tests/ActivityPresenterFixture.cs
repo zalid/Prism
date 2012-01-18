@@ -91,7 +91,7 @@ namespace ModuleB.Tests
             SubscribeArgumentFilter = filter;
             ThreadOption = threadOption;
             SubscribeCount++;
-            return new SubscriptionToken();
+            return new SubscriptionToken(t=> { });
         }
 
         public override void Unsubscribe(SubscriptionToken subscriptionToken)

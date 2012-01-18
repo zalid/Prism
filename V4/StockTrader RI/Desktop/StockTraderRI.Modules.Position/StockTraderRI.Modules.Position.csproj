@@ -110,6 +110,7 @@
     <Compile Include="Orders\IOrderCompositeViewModel.cs" />
     <Compile Include="Orders\IOrderDetailsViewModel.cs" />
     <Compile Include="Orders\IOrdersViewModel.cs" />
+    <Compile Include="Orders\IValueDescriptionList.cs" />
     <Compile Include="Orders\OrderCommandsView.xaml.cs">
       <DependentUpon>OrderCommandsView.xaml</DependentUpon>
     </Compile>
@@ -128,6 +129,7 @@
     <Compile Include="Orders\OrderType.cs" />
     <Compile Include="Orders\TimeInForce.cs" />
     <Compile Include="Orders\ValueDescription.cs" />
+    <Compile Include="Orders\ValueDescriptionList.cs" />
     <Compile Include="PositionModule.cs" />
     <Compile Include="PositionSummary\IPositionSummaryViewModel.cs" />
     <Compile Include="PositionSummary\PositionSummaryItem.cs" />

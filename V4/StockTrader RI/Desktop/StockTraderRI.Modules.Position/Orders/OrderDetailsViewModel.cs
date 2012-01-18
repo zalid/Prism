@@ -52,14 +52,14 @@ namespace StockTraderRI.Modules.Position.Orders
             this.transactionInfo = new TransactionInfo();
 
             //use localizable enum descriptions
-            this.AvailableOrderTypes = new List<ValueDescription<OrderType>>
+            this.AvailableOrderTypes = new ValueDescriptionList<OrderType>
                                         {
                                             new ValueDescription<OrderType>(OrderType.Limit, Resources.OrderType_Limit),
                                             new ValueDescription<OrderType>(OrderType.Market, Resources.OrderType_Market),
                                             new ValueDescription<OrderType>(OrderType.Stop, Resources.OrderType_Stop)
                                         };
 
-            this.AvailableTimesInForce = new List<ValueDescription<TimeInForce>>
+            this.AvailableTimesInForce = new ValueDescriptionList<TimeInForce>
                                           {
                                               new ValueDescription<TimeInForce>(TimeInForce.EndOfDay, Resources.TimeInForce_EndOfDay),
                                               new ValueDescription<TimeInForce>(TimeInForce.ThirtyDays, Resources.TimeInForce_ThirtyDays)
@@ -73,9 +73,9 @@ namespace StockTraderRI.Modules.Position.Orders
 
         public event EventHandler CloseViewRequested = delegate { };
 
-        public IList<ValueDescription<OrderType>> AvailableOrderTypes { get; private set; }
+        public IValueDescriptionList<OrderType> AvailableOrderTypes { get; private set; }
 
-        public IList<ValueDescription<TimeInForce>> AvailableTimesInForce { get; private set; }
+        public IValueDescriptionList<TimeInForce> AvailableTimesInForce { get; private set; }
 
         public TransactionInfo TransactionInfo
         {

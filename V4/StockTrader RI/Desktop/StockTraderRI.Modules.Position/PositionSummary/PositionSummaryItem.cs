@@ -38,6 +38,11 @@ namespace StockTraderRI.Modules.Position.PositionSummary
             }
             set
             {
+                if (value == null)
+                {
+                    value = string.Empty;
+                }
+
                 if (!value.Equals(_tickerSymbol))
                 {
                     _tickerSymbol = value;

@@ -21,6 +21,7 @@ using StockTraderRI.Infrastructure.Models;
 using StockTraderRI.Modules.News.Article;
 using System.ComponentModel.Composition;
 using System.ComponentModel;
+using System;
 
 namespace StockTraderRI.Modules.News.Controllers
 {
@@ -31,13 +32,15 @@ namespace StockTraderRI.Modules.News.Controllers
         private readonly ArticleViewModel articleViewModel;
         private readonly NewsReaderViewModel newsReaderViewModel;
         
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "newsReader")]
         [ImportingConstructor]
         public NewsController(ArticleViewModel articleViewModel, NewsReaderViewModel newsReaderViewModel)
-        {            
+        {
             this.articleViewModel = articleViewModel;         
             this.newsReaderViewModel = newsReaderViewModel;
-            this.articleViewModel.PropertyChanged += this.ArticleViewModel_PropertyChanged;
+            if (articleViewModel != null)
+            {
+                this.articleViewModel.PropertyChanged += this.ArticleViewModel_PropertyChanged;
+            }
         }
 
         private void ArticleViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)

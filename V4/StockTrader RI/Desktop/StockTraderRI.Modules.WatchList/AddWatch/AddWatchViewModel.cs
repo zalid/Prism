@@ -38,8 +38,9 @@ namespace StockTraderRI.Modules.Watch.AddWatch
         {
             if (watchListService == null)
             {
-                throw new ArgumentNullException("service");
+                throw new ArgumentNullException("watchListService");
             }
+
             this.watchListService = watchListService;
         }
 

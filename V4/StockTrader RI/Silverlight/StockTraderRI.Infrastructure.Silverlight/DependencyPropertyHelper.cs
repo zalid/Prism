@@ -15,6 +15,7 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using System.Windows;
+using System;
 
 namespace StockTraderRI.Infrastructure
 {
@@ -32,6 +33,11 @@ namespace StockTraderRI.Infrastructure
         /// <returns>Value of <paramref name="property"/> on <paramref name="dependencyObject"/>.</returns>
         public static T GetOrAddValue<T>(DependencyObject dependencyObject, DependencyProperty property) where T : class, new()
         {
+            if (dependencyObject == null)
+            {
+                throw new ArgumentNullException("dependencyObject");
+            }
+
             T value = dependencyObject.GetValue(property) as T;
             if (value == null)
             {

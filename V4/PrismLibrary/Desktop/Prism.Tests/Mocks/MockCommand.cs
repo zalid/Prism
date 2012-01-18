@@ -25,8 +25,10 @@ namespace Microsoft.Practices.Prism.Tests.Mocks
         public bool CanExecuteReturnValue = true;
         public object ExecuteParameter;
         public object CanExecuteParameter;
+        public int CanExecuteTimesCalled;
 
         public event EventHandler CanExecuteChanged;
+
         public void Execute(object parameter)
         {
             ExecuteCalled = true;
@@ -35,6 +37,7 @@ namespace Microsoft.Practices.Prism.Tests.Mocks
 
         public bool CanExecute(object parameter)
         {
+            CanExecuteTimesCalled++;
             CanExecuteParameter = parameter;
             return CanExecuteReturnValue;
         }

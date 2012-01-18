@@ -25,16 +25,12 @@
             <StackPanel MinWidth="100" MinHeight="24" MaxWidth="400">
                 <TextBlock TextWrapping="Wrap">This is an Open Question, any character is allowed.</TextBlock>
                 <TextBlock TextWrapping="Wrap"> • The OpenQuestionView binds to the AvailableLength property from the OpenQuestionViewModel to show the remaining characters.</TextBlock>
-                <TextBlock TextWrapping="Wrap"> • The UpdateTextBindingOnPropertyChanged behavior is used to update the binding whenever a new character is entered.</TextBlock>
+                <TextBlock TextWrapping="Wrap"> • The UpdateSourceTrigger="PropertyChanged" is used to update the binding whenever a new character is entered.</TextBlock>
             </StackPanel>
         </GuidanceTools:InfoTipToggleButton>
-
         <TextBox Grid.Row="1" Grid.ColumnSpan="2" MinHeight="50"
                  MaxLength="{Binding Question.MaxLength}"
-                 Text="{Binding Question.Response, Mode=TwoWay, UpdateSourceTrigger=Explicit}" AutomationProperties.AutomationId="OpenQuestionAutomationId">
-            <i:Interaction.Behaviors>
-                <prism:UpdateTextBindingOnPropertyChanged/>
-            </i:Interaction.Behaviors>
+                 Text="{Binding Question.Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.AutomationId="OpenQuestionAutomationId">            
         </TextBox>
         <TextBlock Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right"><Run Text="{Binding AvailableLength}"/><Run Text=" chars remaining"/></TextBlock>
     </Grid>

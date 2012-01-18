@@ -16,11 +16,13 @@
 //===================================================================================
 using Microsoft.Practices.Prism.Commands;
 using StockTraderRI.Infrastructure;
+using System.Diagnostics.CodeAnalysis;
 
 namespace StockTraderRI.Modules.Position.Orders
 {
     public partial class OrdersViewModel
     {
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "This member is used for data binding.")]
         public CompositeCommand SubmitAllOrdersCommand
         {
             get
@@ -29,6 +31,7 @@ namespace StockTraderRI.Modules.Position.Orders
             }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification="This member is used for data binding.")]
         public CompositeCommand CancelAllOrdersCommand
         {
             get

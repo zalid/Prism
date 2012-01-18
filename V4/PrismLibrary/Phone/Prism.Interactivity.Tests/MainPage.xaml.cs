@@ -15,7 +15,9 @@
 // places, or events is intended or should be inferred.
 //===================================================================================
 using Microsoft.Phone.Controls;
+using Microsoft.Practices.Prism.TestSupport;
 using Microsoft.Silverlight.Testing;
+using Microsoft.Silverlight.Testing.Harness;
 
 namespace Microsoft.Practices.Prism.Interactivity.Tests
 {
@@ -26,7 +28,11 @@ namespace Microsoft.Practices.Prism.Interactivity.Tests
         {
             InitializeComponent();
 
-            Content = UnitTestSystem.CreateTestPage();
+            LogProvider fileLogProvider = new FileLogProvider();
+            var settings = UnitTestSystem.CreateDefaultSettings();
+            settings.LogProviders.Add(fileLogProvider);
+
+            Content = UnitTestSystem.CreateTestPage(settings);
             BackKeyPress += (x, xe) => xe.Cancel = (Content as IMobileTestPage).NavigateBack();
         }
     }

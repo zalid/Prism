@@ -136,7 +136,7 @@ namespace Microsoft.Practices.Prism.Tests.Events
             var filterDelegateReference = new MockDelegateReference((Predicate<object>)delegate { return true; });
             var eventSubscription = new EventSubscription<object>(actionDelegateReference, filterDelegateReference);
 
-            var subscriptionToken = new SubscriptionToken();
+            var subscriptionToken = new SubscriptionToken(t => { });
 
             eventSubscription.SubscriptionToken = subscriptionToken;
 

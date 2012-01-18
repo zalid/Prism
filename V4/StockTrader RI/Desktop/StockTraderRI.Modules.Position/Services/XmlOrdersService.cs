@@ -59,6 +59,16 @@ namespace StockTraderRI.Modules.Position.Services
 
         public void Submit(Order order, XDocument document)
         {
+            if (order == null)
+            {
+                throw new ArgumentNullException("order");
+            }
+
+            if (document == null)
+            {
+                throw new ArgumentNullException("document");
+            }
+
             var ordersElement = document.Element("Orders");
             if (ordersElement == null)
             {

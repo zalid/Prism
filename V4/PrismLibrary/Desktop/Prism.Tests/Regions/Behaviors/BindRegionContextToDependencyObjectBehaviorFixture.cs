@@ -94,7 +94,7 @@ namespace Microsoft.Practices.Prism.Tests.Regions.Behaviors
         }
 
         [TestMethod]
-        public void ViewInRegionCanBeObject()
+        public void WhenAViewIsRemovedFromARegion_ThenRegionContextIsNotClearedInRegion()
         {
             var behavior = new BindRegionContextToDependencyObjectBehavior();
             var region = new MockPresentationRegion();
@@ -102,8 +102,14 @@ namespace Microsoft.Practices.Prism.Tests.Regions.Behaviors
             behavior.Region = region;
             behavior.Attach();
 
-            region.Add(new object());
+            var myView = new MockFrameworkElement();
+            
+            region.Add(myView);
             region.Context = "new context";
+
+            region.Remove(myView);
+
+            Assert.IsNotNull(region.Context);
         }
     }
 }

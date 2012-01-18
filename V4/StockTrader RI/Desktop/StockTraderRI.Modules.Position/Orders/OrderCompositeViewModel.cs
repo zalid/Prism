@@ -35,6 +35,11 @@ namespace StockTraderRI.Modules.Position.Orders
         [ImportingConstructor]
         public OrderCompositeViewModel(IOrderDetailsViewModel orderDetailsViewModel)
         {
+            if (orderDetailsViewModel == null)
+            {
+                throw new ArgumentNullException("orderDetailsViewModel");
+            }
+
             this.orderDetailsViewModel = orderDetailsViewModel;
             this.orderDetailsViewModel.CloseViewRequested += _orderPresenter_CloseViewRequested;
         }

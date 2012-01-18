@@ -54,6 +54,11 @@ namespace StockTraderRI.Infrastructure
         /// <returns>The value of the <see cref="SelectedValueProperty"/> property.</returns>
         public static object GetSelectedValue(DependencyObject dependencyObject)
         {
+            if (dependencyObject == null)
+            {
+                throw new ArgumentNullException("dependencyObject");
+            }
+
             return dependencyObject.GetValue(SelectedValueProperty);
         }
 
@@ -64,6 +69,11 @@ namespace StockTraderRI.Infrastructure
         /// <param name="value">Value to set to <see cref="SelectedValueProperty"/> attached property.</param>
         public static void SetSelectedValue(DependencyObject dependencyObject, object value)
         {
+            if (dependencyObject == null)
+            {
+                throw new ArgumentNullException("dependencyObject");
+            }
+
             dependencyObject.SetValue(SelectedValueProperty, value);
         }
 
@@ -74,6 +84,11 @@ namespace StockTraderRI.Infrastructure
         /// <returns>The value of the <see cref="SelectedValuePathProperty"/> property.</returns>
         public static string GetSelectedValuePath(DependencyObject dependencyObject)
         {
+            if (dependencyObject == null)
+            {
+                throw new ArgumentNullException("dependencyObject");
+            }
+
             return dependencyObject.GetValue(SelectedValuePathProperty) as string;
         }
 
@@ -84,6 +99,11 @@ namespace StockTraderRI.Infrastructure
         /// <param name="value">Value to set to <see cref="SelectedValuePathProperty"/> attached property.</param>
         public static void SetSelectedValuePath(DependencyObject dependencyObject, string value)
         {
+            if (dependencyObject == null)
+            {
+                throw new ArgumentNullException("dependencyObject");
+            }
+
             dependencyObject.SetValue(SelectedValuePathProperty, value);
         }
 

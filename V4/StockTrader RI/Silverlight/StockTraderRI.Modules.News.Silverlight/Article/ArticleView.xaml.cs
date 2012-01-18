@@ -29,6 +29,7 @@ namespace StockTraderRI.Modules.News.Article
     {
         // Note - this import is here so that the controller is created and gets wired to the article and news reader
         // view models, which are shared instances
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification="This is public to avoid possible problems with MEF and partial trust.")]
         [Import]
         public INewsController newsController;
 

@@ -32,7 +32,7 @@ namespace StockTraderRI.Modules.News.Article
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class ArticleViewModel : NotificationObject
     {
-        private string companySymbol;
+        private string _companySymbol;
         private IList<NewsArticle> articles;
         private NewsArticle selectedArticle;
         private readonly INewsFeedService newsFeedService;
@@ -71,13 +71,13 @@ namespace StockTraderRI.Modules.News.Article
         {
             get
             {
-                return this.companySymbol;
+                return this._companySymbol;
             }
             set
             {
-                if (this.companySymbol != value)
+                if (this._companySymbol != value)
                 {
-                    this.companySymbol = value;
+                    this._companySymbol = value;
                     this.RaisePropertyChanged(() => this.CompanySymbol);
                     this.OnCompanySymbolChanged();
                 }
@@ -129,7 +129,7 @@ namespace StockTraderRI.Modules.News.Article
 
         private void OnCompanySymbolChanged()
         {
-            this.Articles = newsFeedService.GetNews(companySymbol);
+            this.Articles = newsFeedService.GetNews(_companySymbol);
         }
 
         private void ShowArticleList()

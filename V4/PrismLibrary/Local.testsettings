@@ -27,8 +27,7 @@
           <Configuration>
             <CodeCoverage xmlns="">
               <Regular>
-                <CodeCoverageItem binaryFile="Composite.MefExtensions.Desktop\bin\Debug\Microsoft.Practices.Composite.MefExtensions.dll" pdbFile="Composite.MefExtensions.Desktop\bin\Debug\Microsoft.Practices.Composite.MefExtensions.pdb" instrumentInPlace="true" />
-                <CodeCoverageItem binaryFile="Desktop\Composite.UnityExtensions\bin\Debug\Microsoft.Practices.Composite.UnityExtensions.dll" pdbFile="Desktop\Composite.UnityExtensions\bin\Debug\Microsoft.Practices.Composite.UnityExtensions.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Desktop\Prism\bin\Debug\Microsoft.Practices.Prism.dll" pdbFile="Desktop\Prism\bin\Debug\Microsoft.Practices.Prism.pdb" instrumentInPlace="true" />
               </Regular>
             </CodeCoverage>
           </Configuration>

@@ -27,7 +27,7 @@
             <Controls:DataGridTemplateColumn Header="Actions">
                 <Controls:DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                            <Button Commands:Click.Command="{Binding Path=Value, Source={StaticResource RemoveWatchCommand}}" Commands:Click.CommandParameter="{Binding Path=TickerSymbol}" AutomationProperties.AutomationId="ActionsRemoveButton" Template="{StaticResource RemoveXButtonTemplate}" Cursor="Hand" />
+                            <Button Command="{Binding Path=Value, Source={StaticResource RemoveWatchCommand}}" CommandParameter="{Binding Path=TickerSymbol}" AutomationProperties.AutomationId="ActionsRemoveButton" Template="{StaticResource RemoveXButtonTemplate}" Cursor="Hand" />
                     </DataTemplate>
                 </Controls:DataGridTemplateColumn.CellTemplate>
             </Controls:DataGridTemplateColumn>

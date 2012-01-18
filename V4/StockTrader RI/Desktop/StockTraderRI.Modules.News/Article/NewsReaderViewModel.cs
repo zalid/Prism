@@ -21,6 +21,7 @@ using System.Text;
 using System.ComponentModel.Composition;
 using Microsoft.Practices.Prism.ViewModel;
 using StockTraderRI.Infrastructure.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace StockTraderRI.Modules.News.Article
 {

@@ -35,7 +35,7 @@
                 <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Path=Price, Mode=TwoWay, Converter={StaticResource stringToNullableNumberConverter}}" AutomationProperties.AutomationId="PriceTextBox" />
                 <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=Shipping, Mode=TwoWay, Converter={StaticResource stringToNullableNumberConverter}}" AutomationProperties.AutomationId="ShippingTextBox"  />
                 <TextBox Grid.Row="5" Grid.Column="1" IsReadOnly="True"  Text="{Binding Path=Total, Mode=OneWay}" AutomationProperties.AutomationId="TotalTextBox" />
-                <Button Grid.Row="6" Grid.Column="1" Content="Save" prism:Click.Command="{Binding Path=SaveOrderCommand}" AutomationProperties.AutomationId="SaveButton" />
+                <Button Grid.Row="6" Grid.Column="1" Content="Save" Command="{Binding Path=SaveOrderCommand}" AutomationProperties.AutomationId="SaveButton" />
             </Grid>
         </DataTemplate>
     </UserControl.Resources>

@@ -33,27 +33,22 @@ namespace Microsoft.Practices.Prism.Interactivity
         ///<summary>
         /// The parameter to use when calling methods on the <see cref="ICommand"/> interface.
         ///</summary>
-        public static readonly DependencyProperty CommandParameterBindingProperty =
-            DependencyProperty.Register("CommandParameterBinding", typeof(Binding), typeof(ApplicationBarButtonCommand), new PropertyMetadata(HandleBindingChanged));
+        public static readonly DependencyProperty CommandParameterProperty =
+            DependencyProperty.Register("CommandParameter",
+                                        typeof(string),
+                                        typeof(ApplicationBarButtonCommand),
+                                        new PropertyMetadata(HandleCommandChanged));
 
         /// <summary>
         /// The binding for <see cref="ICommand"/> to invoke based on the ApplicationBarIconButton's events.
         /// </summary>
         public static readonly DependencyProperty CommandBindingProperty =
-            DependencyProperty.Register("CommandBinding", typeof(Binding), typeof(ApplicationBarButtonCommand), new PropertyMetadata(HandleBindingChanged));
+            DependencyProperty.Register("CommandBinding",
+                                        typeof(ICommand),
+                                        typeof(ApplicationBarButtonCommand),
+                                        new PropertyMetadata(HandleCommandChanged));
 
         private ClickCommandBinding binding;
-        private BindingListener commandBindinglistener;
-        private BindingListener parameterBindinglistener;
-
-        /// <summary>
-        /// Instantiates a new instance of <see cref="ApplicationBarButtonCommand"/>.
-        /// </summary>
-        public ApplicationBarButtonCommand()
-        {
-            this.commandBindinglistener = new BindingListener(this.HandleCommandBindingValueChanged);
-            this.parameterBindinglistener = new BindingListener(this.HandleCommandParameterBindingValueChanged);    
-        }
 
         /// <summary>
         /// The text indicating which <see cref="ApplicationBarIconButton"/> to bind with.
@@ -61,32 +56,22 @@ namespace Microsoft.Practices.Prism.Interactivity
         public string ButtonText { get; set; }
 
         /// <summary>
-        /// The <see cref="Binding"/> to use that results in an <see cref="ICommand"/>.
+        /// The <see cref="ICommand"/> associated with the instance of ApplicationBarIconButton. 
         /// </summary>
-        public Binding CommandBinding
+        public ICommand CommandBinding
         {
-            get { return (Binding)GetValue(CommandBindingProperty); }
+            get { return (ICommand)GetValue(CommandBindingProperty); }
             set { SetValue(CommandBindingProperty, value); }
         }
 
         /// <summary>
-        /// The <see cref="Binding"/> for the command parameter to use with the <see cref="CommandBinding"/>.
+        /// the string based parameter to be passed to the <see cref="ICommand"/>.
         /// </summary>
-        public Binding CommandParameterBinding
+        public string CommandParameter
         {
-            get { return (Binding)GetValue(CommandParameterBindingProperty); }
-            set { SetValue(CommandParameterBindingProperty, value); }
+            get { return (string)GetValue(CommandParameterProperty); }
+            set { SetValue(CommandParameterProperty, value); }
         }
-
-        /// <summary>
-        /// The <see cref="ICommand"/> to bind to the <see cref="ApplicationBarIconButton"/>.
-        /// </summary>
-        protected ICommand Command { get; set; }
-
-        /// <summary>
-        /// The value to use when calling <see cref="Command"/> methods.
-        /// </summary>
-        protected object CommandParameter { get; set; }
 
         /// <summary>
         /// Called after the behavior is attached to an AssociatedObject.
@@ -96,73 +81,36 @@ namespace Microsoft.Practices.Prism.Interactivity
         /// </remarks>
         protected override void OnAttached()
         {
-            this.commandBindinglistener.Element = this.AssociatedObject;
-            this.parameterBindinglistener.Element = this.AssociatedObject;
-            this.CreateBinding();
             base.OnAttached();
+            this.CreateBinding();
         }
 
         /// <summary>
-        /// Called when the behavior is being detached from its AssociatedObject, but before it has actually occurred.
+        /// Invoked when the <see cref="CommandBinding"/> changes.
         /// </summary>
-        /// <remarks>
-        /// Override this to unhook functionality from the AssociatedObject.
-        /// </remarks>
-        protected override void OnDetaching()
-        {
-            this.commandBindinglistener.Element = null;
-            this.parameterBindinglistener.Element = null;
-            base.OnDetaching();
-        }
-
-        /// <summary>
-        /// Invoked when the <see cref="Binding"/> changes.
-        /// </summary>
-        /// <param name="e"></param>
-        protected void OnBindingChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if (e.Property == CommandBindingProperty)
-            {
-                this.commandBindinglistener.Binding = (Binding)e.NewValue;
-            }
-
-            if (e.Property == CommandParameterBindingProperty)
-            {
-                this.parameterBindinglistener.Binding = (Binding)e.NewValue;
-            }
-
-            this.CreateBinding();
-        }
-
-        private static void HandleBindingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            ((ApplicationBarButtonCommand)sender).OnBindingChanged(e);
-        }
-
-        private void HandleCommandBindingValueChanged(object sender, BindingChangedEventArgs e)
+        protected void OnCommandChanged()
         {
             this.CreateBinding();
         }
 
-        private void HandleCommandParameterBindingValueChanged(object sender, BindingChangedEventArgs e)
+        private static void HandleCommandChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            this.CreateBinding();
+            ((ApplicationBarButtonCommand)sender).OnCommandChanged();
         }
 
         private void CreateBinding()
         {
-            if (this.commandBindinglistener.Value != null)
-            {
-                if (this.binding != null)
-                {
-                    this.binding.Detach();
-                }
+            if (this.CommandBinding == null || this.AssociatedObject == null) return;
 
-                this.binding = new ClickCommandBinding(
-                    this.AssociatedObject.ApplicationBar.FindButton(this.ButtonText),
-                    (ICommand)this.commandBindinglistener.Value,
-                    () => this.parameterBindinglistener.Value);
+            if (this.binding != null)
+            {
+                this.binding.Detach();
             }
+
+            this.binding = new ClickCommandBinding(
+                this.AssociatedObject.ApplicationBar.FindButton(this.ButtonText),
+                (ICommand)this.CommandBinding,
+                () => this.CommandParameter);
         }
 
         /// <summary>

@@ -20,6 +20,7 @@ using System.Windows.Media;
 using System.Windows.Data;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System;
 
 namespace StockTraderRI.ChartControls
 {
@@ -89,11 +90,21 @@ namespace StockTraderRI.ChartControls
 
         public static double GetWedgeAngle(DependencyObject obj)
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
             return (double)obj.GetValue(WedgeAngleProperty);
         }
 
         public static void SetWedgeAngle(DependencyObject obj, double value)
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(WedgeAngleProperty, value);
         }
 
@@ -104,11 +115,21 @@ namespace StockTraderRI.ChartControls
 
         public static Point GetBeginFigurePoint(DependencyObject obj)
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
             return (Point)obj.GetValue(BeginFigurePointProperty);
         }
 
         public static void SetBeginFigurePoint(DependencyObject obj, Point value)
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(BeginFigurePointProperty, value);
         }
 
@@ -119,11 +140,21 @@ namespace StockTraderRI.ChartControls
 
         public static Point GetLineToPoint(DependencyObject obj)
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
             return (Point)obj.GetValue(LineToPointProperty);
         }
 
         public static void SetLineToPoint(DependencyObject obj, Point value)
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(LineToPointProperty, value);
         }
 
@@ -146,11 +177,21 @@ namespace StockTraderRI.ChartControls
 
         public static ObservableCollection<double> GetValues(DependencyObject obj)
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
             return (ObservableCollection<double>)obj.GetValue(ValuesProperty);
         }
 
         public static void SetValues(DependencyObject obj, ObservableCollection<double> value)
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
             obj.SetValue(ValuesProperty, value);
         }
 

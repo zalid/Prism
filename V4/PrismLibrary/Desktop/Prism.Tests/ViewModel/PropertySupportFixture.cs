@@ -66,7 +66,6 @@ namespace Microsoft.Practices.Prism.Tests.ViewModel
         [Ignore]    // cannot build the expression
         public void WhenExpressionRepresentsAPropertyWithNoGetMethod_ThenAnExceptionIsThrown()
         {
-
             ExceptionAssert.Throws<ArgumentException>(() =>
                        PropertySupport.ExtractPropertyName(
                                Expression.Lambda<Func<int>>(

@@ -30,6 +30,8 @@ namespace ModularityWithMef.Desktop
     [Export]
     public partial class Shell : Window, IPartImportsSatisfiedNotification
     {
+
+#pragma warning disable 0649 // Imported by MEF
         // The shell imports IModuleTracker once to record updates as modules are downloaded.        
         [Import(AllowRecomposition = false)] private IModuleTracker moduleTracker;
 
@@ -38,6 +40,7 @@ namespace ModularityWithMef.Desktop
 
         // The shell imports the logger once to output logs to the UI.
         [Import(AllowRecomposition = false)] private CallbackLogger logger;
+#pragma warning restore 0649 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Shell"/> class.

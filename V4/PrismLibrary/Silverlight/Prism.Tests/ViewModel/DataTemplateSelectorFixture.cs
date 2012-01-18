@@ -18,6 +18,8 @@ using System.Windows;
 using Microsoft.Practices.Prism.ViewModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+#pragma warning disable 0618
+
 namespace Microsoft.Practices.Prism.Tests.ViewModel
 {
     [TestClass]
@@ -85,3 +87,5 @@ namespace Microsoft.Practices.Prism.Tests.ViewModel
         public class SecondContentType {}
     }
 }
+
+#pragma warning restore 0618

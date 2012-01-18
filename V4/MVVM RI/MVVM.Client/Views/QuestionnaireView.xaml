@@ -7,6 +7,7 @@
     xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
     xmlns:behaviors="clr-namespace:MVVM.Client.Infrastructure.Behaviors"
     xmlns:Views="clr-namespace:MVVM.Client.Views" 
+    xmlns:ViewModels="clr-namespace:MVVM.Client.ViewModels"
     xmlns:prism="http://www.codeplex.com/prism" xmlns:GuidanceTools="clr-namespace:Microsoft.Practices.Prism.GuidanceTools;assembly=Microsoft.Practices.Prism.GuidanceTools" mc:Ignorable="d"
     x:Class="MVVM.Client.Views.QuestionnaireView"
     d:DesignWidth="640" d:DesignHeight="480" 
@@ -151,25 +152,17 @@
                     </Grid>
                 </Border>
                 <ItemsControl Grid.Row="2" IsTabStop="False" ItemsSource="{Binding Questions}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <prism:DataTemplateSelector Content="{Binding}" HorizontalContentAlignment="Stretch" IsTabStop="False">
-                                <prism:DataTemplateSelector.Resources>
-                                    <DataTemplate x:Key="OpenQuestionViewModel">
-                                        <Views:OpenQuestionView DataContext="{Binding}"/>
-                                    </DataTemplate>
-
-                                    <DataTemplate x:Key="MultipleSelectionQuestionViewModel">
-                                        <Views:MultipleSelectionView DataContext="{Binding}"/>
-                                    </DataTemplate>
-
-                                    <DataTemplate x:Key="NumericQuestionViewModel">
-                                        <Views:NumericQuestionView DataContext="{Binding}"/>
-                                    </DataTemplate>
-                                </prism:DataTemplateSelector.Resources>
-                            </prism:DataTemplateSelector>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.Resources>
+                        <DataTemplate DataType="ViewModels:OpenQuestionViewModel">
+                                <Views:OpenQuestionView DataContext="{Binding}"/>
+                            </DataTemplate>
+                        <DataTemplate DataType="ViewModels:MultipleSelectionQuestionViewModel">
+                                <Views:MultipleSelectionView DataContext="{Binding}"/>
+                            </DataTemplate>
+                        <DataTemplate DataType="ViewModels:NumericQuestionViewModel">
+                                <Views:NumericQuestionView DataContext="{Binding}"/>
+                            </DataTemplate>                        
+                    </ItemsControl.Resources>                    
                 </ItemsControl>
             </Grid>
         </ScrollViewer>

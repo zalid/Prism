@@ -17,6 +17,8 @@
 using System;
 using System.Collections.Specialized;
 using System.Windows;
+using System.Linq;
+using System.Reflection;
 
 namespace Microsoft.Practices.Prism.Regions.Behaviors
 {
@@ -61,27 +63,7 @@ namespace Microsoft.Practices.Prism.Regions.Behaviors
                 collection.CollectionChanged -= OnCollectionChanged;
             }
         }
-
-        private static void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                foreach (object item in e.NewItems)
-                {
-                    InvokeOnActiveAwareElement(item, activeAware => activeAware.IsActive = true);
-                }
-            }
-            else if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                foreach (object item in e.OldItems)
-                {
-                    InvokeOnActiveAwareElement(item, activeAware => activeAware.IsActive = false);
-                }
-            }
-
-            // May need to handle other action values (reset, replace). Currently the ViewsCollection class does not raise CollectionChanged with these values.
-        }
-
+        
         private static void InvokeOnActiveAwareElement(object item, Action<IActiveAware> invocation)
         {
             var activeAware = item as IActiveAware;
@@ -99,6 +81,75 @@ namespace Microsoft.Practices.Prism.Regions.Behaviors
                     invocation(activeAwareDataContext);
                 }
             }
+        }
+
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                foreach (object item in e.NewItems)
+                {
+                    Action<IActiveAware> invocation = activeAware => activeAware.IsActive = true;
+
+                    InvokeOnActiveAwareElement(item, invocation);
+                    InvokeOnSynchronizedActiveAwareChildren(item, invocation);
+                }
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                foreach (object item in e.OldItems)
+                {
+                    Action<IActiveAware> invocation = activeAware => activeAware.IsActive = false;
+
+                    InvokeOnActiveAwareElement(item, invocation);
+                    InvokeOnSynchronizedActiveAwareChildren(item, invocation);
+                }
+            }
+
+            // May need to handle other action values (reset, replace). Currently the ViewsCollection class does not raise CollectionChanged with these values.
+        }
+
+        private void InvokeOnSynchronizedActiveAwareChildren(object item, Action<IActiveAware> invocation)
+        {
+            var dependencyObjectView = item as DependencyObject;
+
+            if (dependencyObjectView != null)
+            {
+                var regionManager = RegionManager.GetRegionManager(dependencyObjectView);
+
+                // If the view's RegionManager attached property is different from the region's RegionManager,
+                // then the view's region manager is a scoped region manager.
+                if (regionManager != this.Region.RegionManager)
+                {
+                    var activeViews = regionManager.Regions.SelectMany(e => e.ActiveViews);
+
+                    var syncActiveViews = activeViews.Where(ShouldSyncActiveState);
+
+                    foreach (var syncActiveView in syncActiveViews)
+                    {
+                        InvokeOnActiveAwareElement(syncActiveView, invocation);
+                    }
+                }
+            }
+        }
+
+        private bool ShouldSyncActiveState(object view)
+        {
+            if (Attribute.IsDefined(view.GetType(), typeof(SyncActiveStateAttribute)))
+            {
+                return true;
+            }
+
+            var viewAsFrameworkElement = view as FrameworkElement;
+
+            if (viewAsFrameworkElement != null)
+            {
+                var viewModel = viewAsFrameworkElement.DataContext;
+
+                return viewModel != null && Attribute.IsDefined(viewModel.GetType(), typeof(SyncActiveStateAttribute));
+            }
+
+            return false;
         }
 
         private INotifyCollectionChanged GetCollection()

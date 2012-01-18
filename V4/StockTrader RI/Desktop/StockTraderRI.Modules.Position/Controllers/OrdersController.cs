@@ -43,6 +43,11 @@ namespace StockTraderRI.Modules.Position.Controllers
         [ImportingConstructor]
         public OrdersController(IRegionManager regionManager, StockTraderRICommandProxy commandProxy, IAccountPositionService accountPositionService)
         {
+            if (commandProxy == null)
+            {
+                throw new ArgumentNullException("commandProxy");
+            }
+
             _regionManager = regionManager;
             _accountPositionService = accountPositionService;
             this.commandProxy = commandProxy;

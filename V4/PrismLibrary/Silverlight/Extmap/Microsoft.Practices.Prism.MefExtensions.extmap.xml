@@ -2,7 +2,7 @@
 <manifest>
   <assembly>
     <name>Microsoft.Practices.Prism.MefExtensions</name>
-    <version>4.0.0.0</version>
+    <version>4.1.0.0</version>
     <publickeytoken>31bf3856ad364e35</publickeytoken>
     <relpath>Microsoft.Practices.Prism.MefExtensions.dll</relpath>
     <extension downloadUri="Microsoft.Practices.Prism.MefExtensions.zip" />

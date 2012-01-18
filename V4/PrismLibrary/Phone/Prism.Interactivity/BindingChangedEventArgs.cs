@@ -20,7 +20,7 @@ using System.Windows;
 namespace Microsoft.Practices.Prism.Interactivity
 {
     ///<summary>
-    /// The event arguments for the <see cref="ChangedHandler"/> delegate.
+    /// The event arguments.
     ///</summary>
     public class BindingChangedEventArgs : EventArgs
     {

@@ -32,3 +32,13 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA2210:AssembliesShouldHaveValidStrongNames")]
 // TODO: Remove SupressMessage when StubServices is removed
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible", Scope = "type", Target = "StockTraderRI.Modules.Position.StubServices+StubOrdersController")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", Scope = "member", Target = "StockTraderRI.Modules.Position.Services.XmlOrdersService.#Submit(StockTraderRI.Modules.Position.Models.Order,System.Xml.Linq.XDocument)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace", Target = "StockTraderRI.Modules.Position.Models")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Scope = "member", Target = "StockTraderRI.Modules.Position.Orders.OrderCompositeView.#HeaderedControl")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Scope = "member", Target = "StockTraderRI.Modules.Position.Orders.OrderCompositeView.#LayoutRoot")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Scope = "member", Target = "StockTraderRI.Modules.Position.Orders.OrderDetailsView.#LayoutRoot")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Scope = "member", Target = "StockTraderRI.Modules.Position.Orders.OrdersView.#LayoutRoot")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Scope = "member", Target = "StockTraderRI.Modules.Position.Orders.OrdersView.#OrdersItemsControl")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Scope = "member", Target = "StockTraderRI.Modules.Position.PositionSummary.PositionSummaryView.#PositionsGrid")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix", Scope = "type", Target = "StockTraderRI.Modules.Position.Orders.IValueDescriptionList`1")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix", Scope = "type", Target = "StockTraderRI.Modules.Position.Orders.ValueDescriptionList`1")]

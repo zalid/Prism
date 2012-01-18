@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
+using System;
 
 namespace StockTraderRI.Controls
 {
@@ -42,6 +43,11 @@ namespace StockTraderRI.Controls
 
         protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
         {
+            if (e == null)
+            {
+                throw new ArgumentNullException("e");
+            }
+
             base.OnItemsChanged(e);
             if (e.Action == NotifyCollectionChangedAction.Add)
             {

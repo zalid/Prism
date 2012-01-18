@@ -142,6 +142,7 @@
     <Compile Include="Events\SubscriptionTokenFixture.cs" />
     <Compile Include="Mocks\MockConfigurationStore.Desktop.cs" />
     <Compile Include="Mocks\MockSortableViews.cs" />
+    <Compile Include="Regions\Behaviors\ClearChildViewsRegionBehaviorFixture.cs" />
     <Compile Include="Regions\Behaviors\RegionMemberLifetimeBehaviorFixture.cs" />
     <Compile Include="Regions\LocatorNavigationTargetHandlerFixture.cs" />
     <Compile Include="Regions\NavigationAsyncExtensionsFixture.cs" />

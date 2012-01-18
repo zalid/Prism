@@ -48,6 +48,16 @@ namespace StockTraderRI.Modules.Watch.WatchList
         [ImportingConstructor]
         public WatchListViewModel(IWatchListService watchListService, IMarketFeedService marketFeedService, IRegionManager regionManager, IEventAggregator eventAggregator)
         {
+            if (watchListService == null)
+            {
+                throw new ArgumentNullException("watchListService");
+            }
+
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException("eventAggregator");
+            }
+
             this.HeaderInfo = Resources.WatchListTitle;
             this.WatchListItems = new ObservableCollection<WatchItem>();
 
@@ -108,6 +118,11 @@ namespace StockTraderRI.Modules.Watch.WatchList
 #if SILVERLIGHT
         public void MarketPricesUpdated(IDictionary<string, decimal> updatedPrices)
         {
+            if (updatedPrices == null)
+            {
+                throw new ArgumentNullException("updatedPrices");
+            }
+
             foreach (WatchItem watchItem in this.WatchListItems)
             {
                 if (updatedPrices.ContainsKey(watchItem.TickerSymbol))
@@ -119,6 +134,11 @@ namespace StockTraderRI.Modules.Watch.WatchList
 #else
         private void MarketPricesUpdated(IDictionary<string, decimal> updatedPrices)
         {
+            if (updatedPrices == null)
+            {
+                throw new ArgumentNullException("updatedPrices");
+            }
+
             foreach (WatchItem watchItem in this.WatchListItems)
             {
                 if (updatedPrices.ContainsKey(watchItem.TickerSymbol))

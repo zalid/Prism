@@ -35,18 +35,15 @@
                 <TextBlock TextWrapping="Wrap"> This is a Numeric Question, a positive integer value is expected.</TextBlock>
                 <TextBlock TextWrapping="Wrap"> • To customize the error message shown, the NumericQuestionViewModel validates the format of the input.</TextBlock>
                 <TextBlock TextWrapping="Wrap"> • The validation of the maximum number accepted (bussiness logic) is performed by the NumericQuestionModel model.</TextBlock>
-                <TextBlock TextWrapping="Wrap"> • The UpdateTextBindingOnPropertyChanged behavior is used to update the binding whenever a new character is entered, so the input is validated on every entry.</TextBlock>
+                <TextBlock TextWrapping="Wrap"> • The UpdateSourceTrigger="PropertyChanged" is used to update the binding whenever a new character is entered, so the input is validated on every entry.</TextBlock>
             </StackPanel>
         </GuidanceTools:InfoTipToggleButton>
         <TextBox x:Name="textBox" Grid.Column="0" Grid.Row="1" AutomationProperties.AutomationId="NumericQuestionAutomationId">
             <TextBox.Text>
                 <Binding Path="Question.Response" 
-                         Mode="TwoWay" UpdateSourceTrigger="Default" 
+                         Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" 
                          ValidatesOnExceptions="True"/>
-            </TextBox.Text>
-            <i:Interaction.Behaviors>
-                <prism:UpdateTextBindingOnPropertyChanged/>
-            </i:Interaction.Behaviors>
+            </TextBox.Text>          
         </TextBox>
     </Grid>
 </UserControl>

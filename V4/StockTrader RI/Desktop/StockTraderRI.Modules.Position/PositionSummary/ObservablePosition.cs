@@ -22,6 +22,7 @@ using StockTraderRI.Infrastructure;
 using StockTraderRI.Infrastructure.Interfaces;
 using StockTraderRI.Infrastructure.Models;
 using System.ComponentModel.Composition;
+using System;
 
 namespace StockTraderRI.Modules.Position.PositionSummary
 {
@@ -37,6 +38,11 @@ namespace StockTraderRI.Modules.Position.PositionSummary
         [ImportingConstructor]
         public ObservablePosition(IAccountPositionService accountPositionService, IMarketFeedService marketFeedService, IEventAggregator eventAggregator)
         {
+            if (eventAggregator == null)
+            {
+                throw new ArgumentNullException("eventAggregator");
+            }
+
             this.Items = new ObservableCollection<PositionSummaryItem>();
 
             this.accountPositionService = accountPositionService;
@@ -51,6 +57,11 @@ namespace StockTraderRI.Modules.Position.PositionSummary
 
         public void MarketPricesUpdated(IDictionary<string, decimal> tickerSymbolsPrice)
         {
+            if (tickerSymbolsPrice == null)
+            {
+                throw new ArgumentNullException("tickerSymbolsPrice");
+            }
+
             foreach (PositionSummaryItem position in this.Items)
             {
                 if (tickerSymbolsPrice.ContainsKey(position.TickerSymbol))

@@ -25,21 +25,21 @@ namespace Microsoft.Practices.Prism.Tests.Events
         [TestMethod]
         public void EqualsShouldReturnFalseIfSubscriptionTokenPassedIsNull()
         {
-            SubscriptionToken token = new SubscriptionToken();
+            SubscriptionToken token = new SubscriptionToken(t=> { });
             Assert.IsFalse(token.Equals(null));
         }
 
         [TestMethod]
         public void EqualsShouldReturnTrueWhenTokenIsTheSame()
         {
-            SubscriptionToken token = new SubscriptionToken();
+            SubscriptionToken token = new SubscriptionToken(t => { });
             Assert.IsTrue(token.Equals(token));
         }
 
         [TestMethod]
         public void EqualsShouldReturnTrueWhenComparingSameObjectInstances()
         {
-            SubscriptionToken token = new SubscriptionToken();
+            SubscriptionToken token = new SubscriptionToken(t => { });
 
             object tokenObject = token;
 
@@ -49,9 +49,9 @@ namespace Microsoft.Practices.Prism.Tests.Events
         [TestMethod]
         public void EqualsShouldReturnFalseWhenComparingDifferentObjectInstances()
         {
-            SubscriptionToken token = new SubscriptionToken();
+            SubscriptionToken token = new SubscriptionToken(t => { });
 
-            object tokenObject = new SubscriptionToken();
+            object tokenObject = new SubscriptionToken(t => { });
 
             Assert.IsFalse(token.Equals(tokenObject));
         }
@@ -59,12 +59,32 @@ namespace Microsoft.Practices.Prism.Tests.Events
         [TestMethod]
         public void HashCodeIsTheSameForSameToken()
         {
-            SubscriptionToken token = new SubscriptionToken();
+            SubscriptionToken token = new SubscriptionToken(t => { });
             int hashCode = token.GetHashCode();
 
             Assert.AreNotEqual(0, hashCode);
             Assert.AreEqual(hashCode, token.GetHashCode());
         }
 
+        [TestMethod]
+        public void WhenSubscriptionTokenIsDisposed_ThenEventUnSubscribes()
+        {
+            bool unsubscribed = false;
+
+            SubscriptionToken token = new SubscriptionToken(t => { unsubscribed = true; });
+
+            token.Dispose();
+
+            Assert.IsTrue(unsubscribed);
+        }
+
+        [TestMethod]
+        public void WhenDisposeIsCalledMoreThanOnce_ThenExceptionIsNotThrown()
+        {
+            SubscriptionToken token = new SubscriptionToken(t => { });
+
+            token.Dispose();
+            token.Dispose();
+        }
     }
 }

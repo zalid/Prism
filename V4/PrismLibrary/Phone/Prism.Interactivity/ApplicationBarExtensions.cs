@@ -35,7 +35,8 @@ namespace Microsoft.Practices.Prism.Interactivity
         public static ApplicationBarIconButton FindButton(this IApplicationBar appBar, string text)
         {
             if (appBar == null) throw new ArgumentNullException("appBar");
-            return (from object button in appBar.Buttons select button as ApplicationBarIconButton).FirstOrDefault(btn => btn != null && btn.Text == text);
+            return (from object button in appBar.Buttons 
+                    select button as ApplicationBarIconButton).FirstOrDefault(btn => btn != null && btn.Text == text);
         }
     }
 }

@@ -38,7 +38,9 @@ namespace ModularityWithMef.Desktop
         private readonly ModuleTrackingState moduleETrackingState;
         private readonly ModuleTrackingState moduleFTrackingState;
 
+#pragma warning disable 649  // MEF will import
         [Import] private ILoggerFacade logger;
+#pragma warning restore 649
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleTracker"/> class.

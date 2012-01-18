@@ -31,6 +31,11 @@ namespace StockTraderRI
             }
             else
             {
+                if (parameter == null)
+                {
+                    throw new ArgumentNullException("parameter");
+                }
+
                 return new GridLength(double.Parse(parameter.ToString(), culture), GridUnitType.Star);
             }
         }
