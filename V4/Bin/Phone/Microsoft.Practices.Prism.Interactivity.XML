@@ -9,7 +9,7 @@
             Associates a command to an <see cref="T:Microsoft.Phone.Shell.ApplicationBarIconButton"/>.
             </summary>
         </member>
-        <member name="F:Microsoft.Practices.Prism.Interactivity.ApplicationBarButtonCommand.CommandParameterBindingProperty">
+        <member name="F:Microsoft.Practices.Prism.Interactivity.ApplicationBarButtonCommand.CommandParameterProperty">
             <summary>
              The parameter to use when calling methods on the <see cref="T:System.Windows.Input.ICommand"/> interface.
             </summary>
@@ -17,11 +17,6 @@
         <member name="F:Microsoft.Practices.Prism.Interactivity.ApplicationBarButtonCommand.CommandBindingProperty">
             <summary>
             The binding for <see cref="T:System.Windows.Input.ICommand"/> to invoke based on the ApplicationBarIconButton's events.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.Prism.Interactivity.ApplicationBarButtonCommand.#ctor">
-            <summary>
-            Instantiates a new instance of <see cref="T:Microsoft.Practices.Prism.Interactivity.ApplicationBarButtonCommand"/>.
             </summary>
         </member>
         <member name="M:Microsoft.Practices.Prism.Interactivity.ApplicationBarButtonCommand.OnAttached">
@@ -32,19 +27,10 @@
             Override this to hook up functionality to the AssociatedObject.
             </remarks>
         </member>
-        <member name="M:Microsoft.Practices.Prism.Interactivity.ApplicationBarButtonCommand.OnDetaching">
+        <member name="M:Microsoft.Practices.Prism.Interactivity.ApplicationBarButtonCommand.OnCommandChanged">
             <summary>
-            Called when the behavior is being detached from its AssociatedObject, but before it has actually occurred.
+            Invoked when the <see cref="P:Microsoft.Practices.Prism.Interactivity.ApplicationBarButtonCommand.CommandBinding"/> changes.
             </summary>
-            <remarks>
-            Override this to unhook functionality from the AssociatedObject.
-            </remarks>
-        </member>
-        <member name="M:Microsoft.Practices.Prism.Interactivity.ApplicationBarButtonCommand.OnBindingChanged(System.Windows.DependencyPropertyChangedEventArgs)">
-            <summary>
-            Invoked when the <see cref="T:System.Windows.Data.Binding"/> changes.
-            </summary>
-            <param name="e"></param>
         </member>
         <member name="P:Microsoft.Practices.Prism.Interactivity.ApplicationBarButtonCommand.ButtonText">
             <summary>
@@ -53,22 +39,12 @@
         </member>
         <member name="P:Microsoft.Practices.Prism.Interactivity.ApplicationBarButtonCommand.CommandBinding">
             <summary>
-            The <see cref="T:System.Windows.Data.Binding"/> to use that results in an <see cref="T:System.Windows.Input.ICommand"/>.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Practices.Prism.Interactivity.ApplicationBarButtonCommand.CommandParameterBinding">
-            <summary>
-            The <see cref="T:System.Windows.Data.Binding"/> for the command parameter to use with the <see cref="P:Microsoft.Practices.Prism.Interactivity.ApplicationBarButtonCommand.CommandBinding"/>.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Practices.Prism.Interactivity.ApplicationBarButtonCommand.Command">
-            <summary>
-            The <see cref="T:System.Windows.Input.ICommand"/> to bind to the <see cref="T:Microsoft.Phone.Shell.ApplicationBarIconButton"/>.
+            The <see cref="T:System.Windows.Input.ICommand"/> associated with the instance of ApplicationBarIconButton. 
             </summary>
         </member>
         <member name="P:Microsoft.Practices.Prism.Interactivity.ApplicationBarButtonCommand.CommandParameter">
             <summary>
-            The value to use when calling <see cref="P:Microsoft.Practices.Prism.Interactivity.ApplicationBarButtonCommand.Command"/> methods.
+            the string based parameter to be passed to the <see cref="T:System.Windows.Input.ICommand"/>.
             </summary>
         </member>
         <member name="T:Microsoft.Practices.Prism.Interactivity.ApplicationBarButtonCommand.ClickCommandBinding">
@@ -131,7 +107,7 @@
         </member>
         <member name="T:Microsoft.Practices.Prism.Interactivity.BindingChangedEventArgs">
             <summary>
-             The event arguments for the <see cref="T:Microsoft.Practices.Prism.Interactivity.ChangedHandler"/> delegate.
+             The event arguments.
             </summary>
         </member>
         <member name="M:Microsoft.Practices.Prism.Interactivity.BindingChangedEventArgs.#ctor(System.Windows.DependencyPropertyChangedEventArgs)">
@@ -143,44 +119,6 @@
         <member name="P:Microsoft.Practices.Prism.Interactivity.BindingChangedEventArgs.EventArgs">
             <summary>
              Gets the underlying <see cref="T:System.Windows.DependencyPropertyChangedEventArgs"/>.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Practices.Prism.Interactivity.ChangedHandler">
-            <summary>
-            The delegate to invoke when the value monitored by the <see cref="T:Microsoft.Practices.Prism.Interactivity.BindingListener"/> changes.
-            </summary>
-            <param name="sender">The sender of the event.</param>
-            <param name="e">The binding changed information.</param>
-        </member>
-        <member name="T:Microsoft.Practices.Prism.Interactivity.BindingListener">
-            <summary>
-            Attaches a binding lister to a <see cref="T:System.Windows.FrameworkElement"/> to enable the use
-            of binding expressions from items that don't support <see cref="P:Microsoft.Practices.Prism.Interactivity.BindingListener.Binding"/> expressions (e.g. Expression Blend
-            Silverlight 3 Behaviors).
-            </summary>
-            <remarks>
-            This was taken, with permission, from Peter Blois (http://blois.us/blog/2009/04/datatrigger-bindings-on-non.html)
-            </remarks>
-        </member>
-        <member name="M:Microsoft.Practices.Prism.Interactivity.BindingListener.#ctor(Microsoft.Practices.Prism.Interactivity.ChangedHandler)">
-            <summary>
-             Intantiates a new instance of the BindingListener.
-            </summary>
-            <param name="changedHandler"></param>
-        </member>
-        <member name="P:Microsoft.Practices.Prism.Interactivity.BindingListener.Binding">
-            <summary>
-            Gets or sets the <see cref="P:Microsoft.Practices.Prism.Interactivity.BindingListener.Binding"/> to when attaching the dependency property.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Practices.Prism.Interactivity.BindingListener.Element">
-            <summary>
-            Gets or sets the framework element to attach the listener to.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Practices.Prism.Interactivity.BindingListener.Value">
-            <summary>
-            The value of the underlying monitored object.
             </summary>
         </member>
         <member name="T:Microsoft.Practices.Prism.Interactivity.DependencyPropertyListener">
@@ -213,60 +151,6 @@
         <member name="E:Microsoft.Practices.Prism.Interactivity.DependencyPropertyListener.Changed">
             <summary>
             This event is raised when the attached property value changes.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Practices.Prism.Interactivity.InteractionRequest.InteractionRequestTrigger">
-            <summary>
-            Custom event trigger for using with <see cref="T:Microsoft.Practices.Prism.Interactivity.InteractionRequest.IInteractionRequest"/> objects.
-            </summary>
-        </member>
-        <member name="F:Microsoft.Practices.Prism.Interactivity.InteractionRequest.InteractionRequestTrigger.SourceObjectProperty">
-            <summary>
-            The binding to the <see cref="T:Microsoft.Practices.Prism.Interactivity.InteractionRequest.IInteractionRequest"/>.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.Prism.Interactivity.InteractionRequest.InteractionRequestTrigger.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Microsoft.Practices.Prism.Interactivity.InteractionRequest.InteractionRequestTrigger"/> class. 
-            </summary>
-        </member>
-        <member name="M:Microsoft.Practices.Prism.Interactivity.InteractionRequest.InteractionRequestTrigger.OnBindingChanged(System.Windows.DependencyPropertyChangedEventArgs)">
-            <summary>
-            Invoked when the binding value changes.
-            </summary>
-            <param name="e"></param>
-        </member>
-        <member name="M:Microsoft.Practices.Prism.Interactivity.InteractionRequest.InteractionRequestTrigger.OnDetaching">
-            <summary>
-            Called when the behavior is being detached from its AssociatedObject, but before it has actually occurred.
-            </summary>
-            <remarks>
-            Override this to unhook functionality from the AssociatedObject.
-            </remarks>
-        </member>
-        <member name="M:Microsoft.Practices.Prism.Interactivity.InteractionRequest.InteractionRequestTrigger.OnAttached">
-            <summary>
-            Called after the behavior is attached to an AssociatedObject.
-            </summary>
-            <remarks>
-            Override this to hook up functionality to the AssociatedObject.
-            </remarks>
-        </member>
-        <member name="M:Microsoft.Practices.Prism.Interactivity.InteractionRequest.InteractionRequestTrigger.Notify(System.Object,Microsoft.Practices.Prism.Interactivity.InteractionRequest.InteractionRequestedEventArgs)">
-            <summary>
-            Invoked when the interaction request is raised. 
-            </summary>
-            <param name="sender">The sender of the event.</param>
-            <param name="e">InteractionRequest events</param>
-        </member>
-        <member name="P:Microsoft.Practices.Prism.Interactivity.InteractionRequest.InteractionRequestTrigger.SourceObject">
-            <summary>
-            Gets or sets the <see cref="T:System.Windows.Data.Binding"/> that should resolve to a <see cref="T:Microsoft.Practices.Prism.Interactivity.InteractionRequest.IInteractionRequest"/>
-            </summary>
-        </member>
-        <member name="P:Microsoft.Practices.Prism.Interactivity.InteractionRequest.InteractionRequestTrigger.Request">
-            <summary>
-            Gets or sets the <see cref="T:Microsoft.Practices.Prism.Interactivity.InteractionRequest.IInteractionRequest"/> that is the result of the <see cref="P:Microsoft.Practices.Prism.Interactivity.InteractionRequest.InteractionRequestTrigger.SourceObject"/>.
             </summary>
         </member>
         <member name="T:Microsoft.Practices.Prism.Interactivity.InteractionRequest.MessageBoxAction">

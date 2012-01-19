@@ -619,7 +619,7 @@
             Subscription token returned from <see cref="T:Microsoft.Practices.Prism.Events.EventBase"/> on subscribe.
             </summary>
         </member>
-        <member name="M:Microsoft.Practices.Prism.Events.SubscriptionToken.#ctor">
+        <member name="M:Microsoft.Practices.Prism.Events.SubscriptionToken.#ctor(System.Action{Microsoft.Practices.Prism.Events.SubscriptionToken})">
             <summary>
             Initializes a new instance of <see cref="T:Microsoft.Practices.Prism.Events.SubscriptionToken"/>.
             </summary>
@@ -651,6 +651,11 @@
             A hash code for the current <see cref="T:System.Object" />.
             </returns>
             <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Microsoft.Practices.Prism.Events.SubscriptionToken.Dispose">
+            <summary>
+            Disposes the SubscriptionToken, removing the subscription from the corresponding <see cref="T:Microsoft.Practices.Prism.Events.EventBase"/>.
+            </summary>
         </member>
         <member name="T:Microsoft.Practices.Prism.Events.ThreadOption">
             <summary>
