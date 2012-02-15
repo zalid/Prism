@@ -147,33 +147,6 @@ namespace Microsoft.Practices.Prism.Tests.Regions
 
             regionManager.Regions.Add("another region", region);
         }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void WhenMovingAndTargetRegionIsNull_ThenThrows()
-        {
-            var regionManager = new MockRegionManager();
-            regionManager.Move("some view", new Region(), null);
-        }
-
-        [TestMethod]
-        public void WhenMovedThroughExtensionMethod_ThenViewShouldBePresentInTargetAndNotInSource()
-        {
-            var regionManager = new MockRegionManager();
-
-            var view = new MockFrameworkElement();
-
-            IRegion sourceRegion = new Region();
-            IRegion targetRegion = new Region();
-
-            sourceRegion.Add(view);
-
-            regionManager.Move(view, sourceRegion,targetRegion);
-
-            Assert.AreEqual(0, sourceRegion.Views.Cast<object>().Count());
-
-            Assert.AreEqual(view, targetRegion.Views.First());
-        }
     }
 
     internal class MockRegionContentRegistry : IRegionViewRegistry

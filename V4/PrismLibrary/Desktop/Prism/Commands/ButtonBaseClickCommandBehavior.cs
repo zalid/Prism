@@ -26,7 +26,9 @@ namespace Microsoft.Practices.Prism.Commands
     /// <remarks>
     /// This Behavior is required in Silverlight, because Silverlight does not have Commanding support.  
     /// </remarks>
+#if !WINDOWS_PHONE
     [Obsolete("The ButtonBaseClickCommandBehavior is obsolete.  Silverlight supports the Command property for buttons.")]
+#endif
 #pragma warning disable 0618
     public class ButtonBaseClickCommandBehavior : CommandBehaviorBase<ButtonBase>
     {

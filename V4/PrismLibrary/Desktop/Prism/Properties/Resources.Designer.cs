@@ -401,17 +401,6 @@ namespace Microsoft.Practices.Prism.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}.
-        ///    This might be happening because of an attempt to move a view between regions using IRegion.Remove and then IRegion.Add.
-        ///    Consider using IRegion.MoveFrom method instead..
-        /// </summary>
-        internal static string MovingViewsWithoutUsingMoveFromMethodException {
-            get {
-                return ResourceManager.GetString("MovingViewsWithoutUsingMoveFromMethodException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Navigation is already in progress on region with name &apos;{0}&apos;..
         /// </summary>
         internal static string NavigationInProgress {
@@ -572,15 +561,6 @@ namespace Microsoft.Practices.Prism.Properties {
         internal static string RegionViewNameExistsException {
             get {
                 return ResourceManager.GetString("RegionViewNameExistsException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Source region cannot be the same as the target region..
-        /// </summary>
-        internal static string SourceRegionEqualsTargetRegion {
-            get {
-                return ResourceManager.GetString("SourceRegionEqualsTargetRegion", resourceCulture);
             }
         }
         

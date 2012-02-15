@@ -2740,13 +2740,6 @@
               Looks up a localized string similar to Failed to load type &apos;{0}&apos; from assembly &apos;{1}&apos;..
             </summary>
         </member>
-        <member name="P:Microsoft.Practices.Prism.Properties.Resources.MovingViewsWithoutUsingMoveFromMethodException">
-            <summary>
-              Looks up a localized string similar to {0}.
-               This might be happening because of an attempt to move a view between regions using IRegion.Remove and then IRegion.Add.
-               Consider using IRegion.MoveFrom method instead..
-            </summary>
-        </member>
         <member name="P:Microsoft.Practices.Prism.Properties.Resources.NavigationInProgress">
             <summary>
               Looks up a localized string similar to Navigation is already in progress on region with name &apos;{0}&apos;..
@@ -2837,11 +2830,6 @@
         <member name="P:Microsoft.Practices.Prism.Properties.Resources.RegionViewNameExistsException">
             <summary>
               Looks up a localized string similar to View with name &apos;{0}&apos; already exists in the region..
-            </summary>
-        </member>
-        <member name="P:Microsoft.Practices.Prism.Properties.Resources.SourceRegionEqualsTargetRegion">
-            <summary>
-              Looks up a localized string similar to Source region cannot be the same as the target region..
             </summary>
         </member>
         <member name="P:Microsoft.Practices.Prism.Properties.Resources.StartupModuleDependsOnAnOnDemandModule">
@@ -2952,21 +2940,6 @@
             </summary>
             <param name="view">The view to remove.</param>
         </member>
-        <member name="M:Microsoft.Practices.Prism.Regions.IRegion.MoveFrom(Microsoft.Practices.Prism.Regions.IRegion,System.Object)">
-            <summary>
-            Moves the specified view from the specified source region into this region.
-            </summary>
-            <param name="sourceRegion">The region from which to obtain the view.</param>
-            <param name="view">The view being moved.</param>
-        </member>
-        <member name="M:Microsoft.Practices.Prism.Regions.IRegion.MoveFrom(Microsoft.Practices.Prism.Regions.IRegion,System.Object,System.String)">
-            <summary>
-            Moves the specified view from the specified source region into this region.
-            </summary>
-            <param name="sourceRegion">The region from which to obtain the view.</param>
-            <param name="view">The view being moved.</param>
-            <param name="viewName">The name the view will have in the region.</param>
-        </member>
         <member name="M:Microsoft.Practices.Prism.Regions.IRegion.Activate(System.Object)">
             <summary>
             Marks the specified view as active. 
@@ -3070,21 +3043,6 @@
             Removes the specified view from the region.
             </summary>
             <param name="view">The view to remove.</param>
-        </member>
-        <member name="M:Microsoft.Practices.Prism.Regions.Region.MoveFrom(Microsoft.Practices.Prism.Regions.IRegion,System.Object)">
-            <summary>
-            Moves the specified view from the specified source region into this region.
-            </summary>
-            <param name="view">The view to move.</param>
-            <param name="sourceRegion">The region to move the view from.</param>
-        </member>
-        <member name="M:Microsoft.Practices.Prism.Regions.Region.MoveFrom(Microsoft.Practices.Prism.Regions.IRegion,System.Object,System.String)">
-            <summary>
-            Moves the specified view from the specified source region into this region.
-            </summary>
-            <param name="view">The view to move.</param>
-            <param name="sourceRegion">The region to move the view from.</param>
-            <param name="viewName">The name the view will have in the region.</param>
         </member>
         <member name="M:Microsoft.Practices.Prism.Regions.Region.Activate(System.Object)">
             <summary>
@@ -3418,6 +3376,10 @@
             an object that implements <see cref="T:Microsoft.Practices.Prism.IActiveAware"/> gets added or removed 
             from the collection.
             </summary>
+            <remarks>
+            This class can also sync the active state for any scoped regions directly on the view based on the <see cref="T:Microsoft.Practices.Prism.Regions.SyncActiveStateAttribute"/>.
+            If you use the <see cref="M:Microsoft.Practices.Prism.Regions.Region.Add(System.Object,System.String,System.Boolean)"/> method with the createRegionManagerScope option, the scoped manager will be attached to the view.
+            </remarks>
         </member>
         <member name="F:Microsoft.Practices.Prism.Regions.Behaviors.RegionActiveAwareBehavior.BehaviorKey">
             <summary>
@@ -4608,25 +4570,6 @@
             <param name="regionManager">The regionmanager that this extension method effects.</param>
             <param name="regionName">The name of the region to call Navigate on.</param>
             <param name="source">The URI of the content to display.</param>
-        </member>
-        <member name="M:Microsoft.Practices.Prism.Regions.RegionManagerExtensions.Move(Microsoft.Practices.Prism.Regions.IRegionManager,System.Object,Microsoft.Practices.Prism.Regions.IRegion,Microsoft.Practices.Prism.Regions.IRegion)">
-            <summary>
-            Moves the specified view from the source region into the target region.
-            </summary>
-            <param name="regionManager">The regionmanager that this extension method effects.</param>
-            <param name="view">The view being moved.</param>
-            <param name="sourceRegion">The region the view will be moved from.</param>
-            <param name="targetRegion">The region the view will be moved into.</param>
-        </member>
-        <member name="M:Microsoft.Practices.Prism.Regions.RegionManagerExtensions.Move(Microsoft.Practices.Prism.Regions.IRegionManager,System.Object,Microsoft.Practices.Prism.Regions.IRegion,Microsoft.Practices.Prism.Regions.IRegion,System.String)">
-            <summary>
-            Moves the specified view from the source region into the target region.
-            </summary>
-            <param name="regionManager">The regionmanager that this extension method effects.</param>
-            <param name="view">The view being moved.</param>
-            <param name="sourceRegion">The region the view will be moved from.</param>
-            <param name="targetRegion">The region the view will be moved into.</param>
-            <param name="viewName">The name the view will have in the region.</param>
         </member>
         <member name="T:Microsoft.Practices.Prism.Regions.RegionMemberLifetimeAttribute">
             <summary>

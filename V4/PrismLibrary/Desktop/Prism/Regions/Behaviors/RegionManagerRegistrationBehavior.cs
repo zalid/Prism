@@ -123,16 +123,7 @@ namespace Microsoft.Practices.Prism.Regions.Behaviors
                     if (regionManager != null)
                     {
                         this.attachedRegionManagerWeakReference = new WeakReference(regionManager);
-
-                        try
-                        {
-                            regionManager.Regions.Add(this.Region);
-                        }
-
-                        catch (ArgumentException ex)
-                        {
-                            throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, Resources.MovingViewsWithoutUsingMoveFromMethodException, ex.Message), ex);
-                        }
+                        regionManager.Regions.Add(this.Region);
                     }
                 }
             }

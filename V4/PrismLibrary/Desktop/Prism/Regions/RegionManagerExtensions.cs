@@ -170,37 +170,5 @@ namespace Microsoft.Practices.Prism.Regions
             RequestNavigate(regionManager, regionName, source, nr => { });
         }
 
-        /// <summary>
-        /// Moves the specified view from the source region into the target region.
-        /// </summary>
-        /// <param name="regionManager">The regionmanager that this extension method effects.</param>
-        /// <param name="view">The view being moved.</param>
-        /// <param name="sourceRegion">The region the view will be moved from.</param>
-        /// <param name="targetRegion">The region the view will be moved into.</param>
-        public static void Move(this IRegionManager regionManager, object view, IRegion sourceRegion, IRegion targetRegion)
-        {
-            Move(regionManager, view, sourceRegion, targetRegion, null);
-        }
-
-        /// <summary>
-        /// Moves the specified view from the source region into the target region.
-        /// </summary>
-        /// <param name="regionManager">The regionmanager that this extension method effects.</param>
-        /// <param name="view">The view being moved.</param>
-        /// <param name="sourceRegion">The region the view will be moved from.</param>
-        /// <param name="targetRegion">The region the view will be moved into.</param>
-        /// <param name="viewName">The name the view will have in the region.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "regionManager", Justification = "RegionManager extension method require the regionManager parameter although it isn't used in this case.")]
-        public static void Move(this IRegionManager regionManager, object view, IRegion sourceRegion, IRegion targetRegion, string viewName)
-        {
-
-            // Only this argument is validated, as the IRegion.MoveFrom method already validates the other ones.
-            if (targetRegion == null)
-            {
-                throw new ArgumentNullException("targetRegion");
-            }
-
-            targetRegion.MoveFrom(sourceRegion, view, viewName);
-        }
     }
 }

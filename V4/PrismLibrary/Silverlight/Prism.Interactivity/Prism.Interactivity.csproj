@@ -47,7 +47,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Microsoft.Practices.Prism.Interactivity.XML</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Expression.Interactions">
@@ -69,6 +69,9 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Common\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="..\..\Desktop\Prism.Interactivity\InteractionRequest\Confirmation.cs">
       <Link>InteractionRequest\Confirmation.cs</Link>
     </Compile>

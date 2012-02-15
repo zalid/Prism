@@ -28,6 +28,10 @@ namespace Microsoft.Practices.Prism.Regions.Behaviors
     /// an object that implements <see cref="IActiveAware"/> gets added or removed 
     /// from the collection.
     /// </summary>
+    /// <remarks>
+    /// This class can also sync the active state for any scoped regions directly on the view based on the <see cref="SyncActiveStateAttribute"/>.
+    /// If you use the <see cref="Microsoft.Practices.Prism.Regions.Region.Add(object,string,bool)" /> method with the createRegionManagerScope option, the scoped manager will be attached to the view.
+    /// </remarks>
     public class RegionActiveAwareBehavior : IRegionBehavior
     {
         /// <summary>
@@ -115,20 +119,21 @@ namespace Microsoft.Practices.Prism.Regions.Behaviors
 
             if (dependencyObjectView != null)
             {
+                // We are assuming that any scoped region managers are attached directly to the 
+                // view.
                 var regionManager = RegionManager.GetRegionManager(dependencyObjectView);
 
                 // If the view's RegionManager attached property is different from the region's RegionManager,
                 // then the view's region manager is a scoped region manager.
-                if (regionManager != this.Region.RegionManager)
+                if (regionManager == null || regionManager == this.Region.RegionManager) return;
+
+                var activeViews = regionManager.Regions.SelectMany(e => e.ActiveViews);
+
+                var syncActiveViews = activeViews.Where(ShouldSyncActiveState);
+
+                foreach (var syncActiveView in syncActiveViews)
                 {
-                    var activeViews = regionManager.Regions.SelectMany(e => e.ActiveViews);
-
-                    var syncActiveViews = activeViews.Where(ShouldSyncActiveState);
-
-                    foreach (var syncActiveView in syncActiveViews)
-                    {
-                        InvokeOnActiveAwareElement(syncActiveView, invocation);
-                    }
+                    InvokeOnActiveAwareElement(syncActiveView, invocation);
                 }
             }
         }

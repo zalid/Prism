@@ -34,7 +34,9 @@ namespace Microsoft.Practices.Prism.Interactivity
     /// <summary>
     /// Custom behavior that updates the source of a binding on a text box as the text changes.
     /// </summary>
+#if !WINDOWS_PHONE
     [Obsolete("The UpdateTextBindingOnPropertyChanged is obsolete. Silverlight now supports UpdateSourceTrigger=\"PropertyChanged\".")]
+#endif
     public class UpdateTextBindingOnPropertyChanged : Behavior<TextBox>
     {
         private BindingExpression expression;

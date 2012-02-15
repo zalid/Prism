@@ -26,10 +26,7 @@ using System.Windows.Markup;
 [assembly: AssemblyTitle("Microsoft.Practices.Prism")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft Corporation")]
 [assembly: AssemblyProduct("Prism")]
-[assembly: AssemblyCopyright("Copyright (c) 2008,2009,2010 Microsoft Corporation.  All rights reserved.")]
-[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -40,14 +37,6 @@ using System.Windows.Markup;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("cf8307a9-456d-4ddb-94d3-d9a7a8c3ebd9")]
 
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-[assembly: AssemblyVersion("4.1.0.0")]
-[assembly: AssemblyFileVersion("4.1.0.0")]
 [assembly: CLSCompliant(true)]
 [assembly: NeutralResourcesLanguage("en")]
 [assembly: XmlnsDefinition("http://www.codeplex.com/CompositeWPF", "Microsoft.Practices.Prism.Regions")]

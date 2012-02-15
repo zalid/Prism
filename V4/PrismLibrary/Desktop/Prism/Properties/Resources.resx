@@ -316,14 +316,6 @@ Error was: {1}.</value>
   <data name="DelegateCommandInvalidGenericPayloadType" xml:space="preserve">
     <value>T for DelegateCommand&lt;T&gt; is not an object nor Nullable.</value>
   </data>
-  <data name="MovingViewsWithoutUsingMoveFromMethodException" xml:space="preserve">
-    <value>{0}.
-    This might be happening because of an attempt to move a view between regions using IRegion.Remove and then IRegion.Add.
-    Consider using IRegion.MoveFrom method instead.</value>
-  </data>
-  <data name="SourceRegionEqualsTargetRegion" xml:space="preserve">
-    <value>Source region cannot be the same as the target region.</value>
-  </data>
   <data name="NoRegionAdapterException" xml:space="preserve">
     <value>The IRegionAdapter for the type {0} is not registered in the region adapter mappings. You can register an IRegionAdapter for this control by overriding the ConfigureRegionAdapterMappings method in the bootstrapper.</value>
   </data>

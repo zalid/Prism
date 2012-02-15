@@ -26,10 +26,7 @@ using System.Windows.Markup;
 [assembly: AssemblyTitle("Microsoft.Practices.Prism")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft Corporation")]
 [assembly: AssemblyProduct("Prism")]
-[assembly: AssemblyCopyright("Copyright (c) 2008,2009,2010 Microsoft Corporation.  All rights reserved.")]
-[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]
 
@@ -42,15 +39,6 @@ using System.Windows.Markup;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("073bd8e7-3fe0-43ca-b531-ed51a57c34e6")]
 
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-[assembly: AssemblyVersion("4.1.0.0")]
-[assembly: AssemblyFileVersion("4.1.0.0")]
 [assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.Regions")]
 [assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.Regions.Behaviors")]
 [assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.Commands")]

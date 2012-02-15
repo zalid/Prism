@@ -59,6 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Common\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="..\..\Desktop\Prism\Commands\CompositeCommand.cs">
       <Link>Commands\CompositeCommand.cs</Link>
     </Compile>

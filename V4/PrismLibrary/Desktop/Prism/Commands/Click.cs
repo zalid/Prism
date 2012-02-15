@@ -28,7 +28,9 @@ namespace Microsoft.Practices.Prism.Commands
     /// <remarks>
     /// This class is required, because Silverlight doesn't have native support for Commands. 
     /// </remarks>
+#if !WINDOWS_PHONE
     [Obsolete("The Click static class is obsolete.  Silverlight supports the Command property for buttons.")]
+#endif
 #pragma warning disable 0618
     public static class Click
     {

@@ -55,6 +55,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Common\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="DefaultPrismServiceRegistrar.cs" />
     <Compile Include="Events\MefEventAggregator.cs" />
     <Compile Include="GlobalSuppressions.cs" />

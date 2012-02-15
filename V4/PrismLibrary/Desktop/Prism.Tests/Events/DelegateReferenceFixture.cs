@@ -134,7 +134,9 @@ namespace Microsoft.Practices.Prism.Tests.Events
 
             public static void StaticMethod()
             {
+#pragma warning disable 0219
                 int i = 0;
+#pragma warning restore 0219
             }
 
             public void MyAction(string arg)

@@ -24,10 +24,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Microsoft.Practices.Prism.Interactivity")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyProduct("Prism")]
-[assembly: AssemblyCopyright("Copyright (c) 2008,2009,2010 Microsoft Corporation.  All rights reserved.")]
-[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -37,18 +34,6 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("7a3dc8b2-2d32-44d3-884c-e2fed92c7af7")]
-
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-[assembly: AssemblyVersion("4.1.0.0")]
-[assembly: AssemblyFileVersion("4.1.0.0")]
 
 [assembly: System.Windows.Markup.XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.Interactivity")]
 [assembly: System.Windows.Markup.XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.Interactivity.InteractionRequest")]

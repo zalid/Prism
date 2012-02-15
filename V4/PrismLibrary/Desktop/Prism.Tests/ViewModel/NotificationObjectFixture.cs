@@ -46,10 +46,8 @@ namespace Microsoft.Practices.Prism.Tests.ViewModel
         {
             var serializer = new System.Runtime.Serialization.DataContractSerializer(typeof (TestNotificationObject));
             var stream = new System.IO.MemoryStream();
-            bool invoked = false;
 
             var testObject = new TestNotificationObject();
-            testObject.PropertyChanged += (o, e) => { invoked = true; };
 
             serializer.WriteObject(stream, testObject);
 

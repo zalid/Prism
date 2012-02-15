@@ -31,6 +31,7 @@ namespace Microsoft.Practices.Prism.Tests.Regions.Behaviors
         public void SetsIsActivePropertyOnIActiveAwareObjects()
         {
             var region = new MockPresentationRegion();
+            region.RegionManager = new MockRegionManager();
             var behavior = new RegionActiveAwareBehavior { Region = region };
             behavior.Attach();
             var collection = region.MockActiveViews.Items;

@@ -22,7 +22,6 @@ using Microsoft.Practices.Prism.Tests.Mocks;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Windows.Controls;
 
 namespace Microsoft.Practices.Prism.Tests.Regions
 {
@@ -542,109 +541,6 @@ namespace Microsoft.Practices.Prism.Tests.Regions
             Assert.AreEqual(view, region.Views.First());
 
             Assert.AreSame(newScopedRegion, view.GetValue(RegionManager.RegionManagerProperty));
-        }
-
-        [TestMethod]
-        public void WhenMoved_ThenViewShouldBePresentInTargetAndNotInSource()
-        {
-            IRegion sourceRegion = new Region();
-            IRegion targetRegion = new Region();
-
-            var view = new MockFrameworkElement();
-
-            sourceRegion.Add(view);
-
-            Assert.AreEqual(view, sourceRegion.Views.First());
-
-            targetRegion.MoveFrom(sourceRegion, view);
-
-            Assert.AreEqual(0, sourceRegion.Views.Cast<object>().Count());
-
-            Assert.AreEqual(view, targetRegion.Views.First());
-        }
-
-        [TestMethod]
-        public void WhenViewIsMovedWithAName_ThenViewCanBeRetrievedWithThatName()
-        {
-            IRegion sourceRegion = new Region();
-            IRegion targetRegion = new Region();
-
-            var view = new MockFrameworkElement();
-
-            sourceRegion.Add(view);
-
-            Assert.AreEqual(view, sourceRegion.Views.First());
-
-            targetRegion.MoveFrom(sourceRegion, view, "someName");
-
-            Assert.AreEqual(view, targetRegion.GetView("someName"));
-        }
-
-        [TestMethod]
-        public void WhenViewWithScopedRegionsIsMoved_ThenRegionManagerPropertyIsPreserved()
-        {
-            IRegion sourceRegion = new Region { RegionManager = new MockRegionManager() };
-            IRegion targetRegion = new Region { RegionManager = new MockRegionManager() };
-
-            var view = new MockFrameworkElement();
-
-            var scopedRegionManager = sourceRegion.Add(view, null, true);
-
-            Assert.AreEqual(view, sourceRegion.Views.First());
-
-            targetRegion.MoveFrom(sourceRegion, view);
-
-            Assert.AreEqual(view, targetRegion.Views.First());
-
-            Assert.AreSame(scopedRegionManager, view.GetValue(RegionManager.RegionManagerProperty));
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void WhenMovingAndSourceRegionEqualsTargetRegion_ThenThrows()
-        {
-            IRegion sourceRegion = new Region();
-
-            var view = new MockFrameworkElement();
-
-            sourceRegion.Add(view);
-
-            sourceRegion.MoveFrom(sourceRegion, view);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void WhenMovingAndViewDoesNotBelongToSourceRegion_ThenThrows()
-        {
-            IRegion sourceRegion = new Region();
-            IRegion targetRegion = new Region();
-
-            var view = new MockFrameworkElement();
-
-            targetRegion.MoveFrom(sourceRegion, view);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void WhenMovingAndSourceRegionIsNull_ThenThrows()
-        {
-            IRegion targetRegion = new Region();
-
-            var view = new MockFrameworkElement();
-
-            targetRegion.MoveFrom(null, view);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void WhenMovingAndViewIsNull_ThenThrows()
-        {
-            IRegion targetRegion = new Region();
-            IRegion sourceRegion = new Region();
-
-            var view = new MockFrameworkElement();
-
-            targetRegion.MoveFrom(sourceRegion, null);
         }
 
         [ViewSortHint("C")]

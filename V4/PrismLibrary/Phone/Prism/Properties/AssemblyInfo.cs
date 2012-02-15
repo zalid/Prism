@@ -43,10 +43,7 @@ using System.Windows.Markup;
 [assembly: AssemblyTitle("Microsoft.Practices.Prism")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft Corporation")]
 [assembly: AssemblyProduct("Prism for Phone")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2010")]
-[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en-US")]
 
@@ -58,18 +55,6 @@ using System.Windows.Markup;
 [assembly: CLSCompliant(true)]
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("7e8e39f8-f448-4551-a6ca-16bc7f1256b2")]
-
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-[assembly: AssemblyVersion("4.0.1")]
-[assembly: AssemblyFileVersion("4.0.1")]
 
 [assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.Commands")]
 [assembly: XmlnsDefinition("http://www.codeplex.com/prism", "Microsoft.Practices.Prism.ViewModel")]

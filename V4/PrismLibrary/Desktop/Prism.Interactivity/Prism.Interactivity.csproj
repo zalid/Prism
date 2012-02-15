@@ -54,6 +54,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Common\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="InteractionRequest\Confirmation.cs" />
     <Compile Include="InteractionRequest\IInteractionRequest.cs" />
     <Compile Include="InteractionRequest\InteractionRequest.cs" />

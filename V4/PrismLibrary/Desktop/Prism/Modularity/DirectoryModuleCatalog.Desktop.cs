@@ -151,10 +151,9 @@ namespace Microsoft.Practices.Prism.Modularity
                 
                 foreach (FileInfo fileInfo in fileInfos)
                 {
-                    Assembly assembly = null;
                     try
                     {
-                        assembly = Assembly.ReflectionOnlyLoadFrom(fileInfo.FullName);
+                        Assembly.ReflectionOnlyLoadFrom(fileInfo.FullName);
                         validAssemblies.Add(fileInfo);
                     }
                     catch (BadImageFormatException)
